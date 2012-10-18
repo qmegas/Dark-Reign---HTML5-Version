@@ -1,7 +1,9 @@
 function HeadquarterBuilding(pos_x, pos_y)
 {
 	this.uid = -1;
-	this.health = 1000;
+	this.health = 0;
+	this.construction_now = 0;
+	
 	this.is_building = true;
 	this.is_selected = false;
 	
@@ -20,10 +22,67 @@ function HeadquarterBuilding(pos_x, pos_y)
 	
 	this.run = function()
 	{
+		if (this.state == 'CONSTRUCTION')
+		{
+			this.construction_now++;
+			this.health++;
+			if (this.construction_now > this.construction_max)
+			{
+				game.resources.get('construction_complete').play();
+				this.state = 'NORMAL';
+			}
+		}
 	}
 	
 	this.drawSelection = function()
 	{
+		var top_x = this.position.x - 0.5,
+			top_y = this.position.y + CELL_SIZE*HeadquarterBuilding.cell_size.y + 10.5;
+			
+		game.viewport_ctx.strokeStyle = (this.is_selected) ? '#ffffff' : '#393939';
+		game.viewport_ctx.lineWidth = 1;
+		
+		game.viewport_ctx.beginPath();
+		game.viewport_ctx.moveTo(top_x - 3, top_y - 8);
+		game.viewport_ctx.lineTo(top_x, top_y);
+		game.viewport_ctx.lineTo(top_x + CELL_SIZE*HeadquarterBuilding.cell_size.x, top_y);
+		game.viewport_ctx.lineTo(top_x + CELL_SIZE*HeadquarterBuilding.cell_size.x + 3, top_y - 8);
+		game.viewport_ctx.stroke();
+		
+		//Health
+		var health_width = parseInt(CELL_SIZE*HeadquarterBuilding.cell_size.x*0.66);
+		top_x += health_width/4;
+		game.viewport_ctx.fillStyle = '#000000';
+		game.viewport_ctx.fillRect(top_x, top_y-2, health_width, 4);
+		
+		if (this.health < this.health_max)
+		{
+			game.viewport_ctx.fillStyle = '#bbbbbb';
+			game.viewport_ctx.fillRect(top_x + 1, top_y - 1, health_width - 2, 2);
+		}
+
+		var health_proc = this.health / this.health_max;
+		if (health_proc > 0.66)
+			game.viewport_ctx.fillStyle = '#51FA00';
+		else if (health_proc > 0.33)
+			game.viewport_ctx.fillStyle = '#FCFC00';
+		else
+			game.viewport_ctx.fillStyle = '#FC0000';
+		game.viewport_ctx.fillRect(top_x + 1, top_y - 1, (health_width - 2)*health_proc, 2);
+		
+		//Construction progress
+		if (this.state == 'CONSTRUCTION')
+		{
+			var const_proc = this.construction_now / this.construction_max;
+			top_y = this.position.y - CELL_SIZE - 0.5;
+			
+			game.viewport_ctx.fillStyle = '#000000';
+			game.viewport_ctx.fillRect(top_x, top_y-2, health_width, 4);
+			game.viewport_ctx.fillStyle = '#bbbbbb';
+			game.viewport_ctx.fillRect(top_x + 1, top_y - 1, health_width - 2, 2);
+			game.viewport_ctx.fillStyle = '#FCFC00';
+			game.viewport_ctx.fillRect(top_x + 1, top_y - 1, (health_width - 2)*const_proc, 2);
+		}
 	}
 	
 	this.canBeSelected = function()
@@ -33,6 +92,7 @@ function HeadquarterBuilding(pos_x, pos_y)
 	
 	this.select = function(is_select, play_sound)
 	{
+		this.is_selected = is_select;
 	}
 	
 	this.draw = function()
@@ -73,8 +133,9 @@ function HeadquarterBuilding(pos_x, pos_y)
 
 HeadquarterBuilding.prototype = {
 	build_count: 0,
-	health_max: 1000,
-	cost: 100
+	health_max: 750,
+	cost: 100,
+	construction_max: 750
 }
 
 HeadquarterBuilding.box_image = 'headquarter_box.png';

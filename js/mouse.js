@@ -58,7 +58,7 @@ function MousePointer(game)
 		{
 			this._drawCursor(current_time, 1, 8);
 		}
-		else if (game.selected_objects.length > 0)
+		else if (game.selected_objects.length>0 && !game.selected_info.is_building)
 		{
 			ptype = game.level.map_cells[pos.x][pos.y].type
 			if (!game.selected_info.is_fly && (ptype==2 || ptype==3))

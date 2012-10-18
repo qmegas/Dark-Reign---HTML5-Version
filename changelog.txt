@@ -1,5 +1,6 @@
-Build 16 (16.10.2012)
+Build 16 (18.10.2012)
 - Finially added ability to build Headquarter, but still no option to produce new units.
+- Project source code moved to GitHub
 
 Build 15 (13.09.2012)
 - Added ability to select building and choose place to build. But actually still no way to build it.

@@ -274,7 +274,11 @@ function Game()
 		{
 			var cunit = this.level.map_cells[pos.x][pos.y].unit;
 			if ((cunit !== -1) && this.objects[cunit].canBeSelected())
+			{
 				this.regionSelect(pos.x, pos.y, pos.x, pos.y);
+				if (this.selected_objects.length==1 && this.objects[this.selected_objects[0]].is_building)
+					this.selected_info.is_building = true;
+			}
 			
 			//If not new selection move selected units
 			if (cunit==-1 && this.selected_objects.length>0)
@@ -339,6 +343,7 @@ function Game()
 		
 		//Common resources
 		this.resources.addSound('construction_under_way', 'sounds/construction_under_way.ogg');
+		this.resources.addSound('construction_complete', 'sounds/construction_complete.ogg');
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();

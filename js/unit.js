@@ -126,7 +126,7 @@ function TestUnit(pos_x, pos_y)
 
 		if (this.health < this.health_max)
 		{
-			game.viewport_ctx.fillStyle = '#686868';
+			game.viewport_ctx.fillStyle = '#bbbbbb';
 			game.viewport_ctx.fillRect(top_x + (sel_width - health_width)/2 + 1, top_y, health_width - 2, 2);
 		}
 
@@ -251,12 +251,12 @@ TestUnit.prototype = {
 	cost: 100,
 	width: 35,
 	height: 35,
-	health_max: 100,
-	require_building: [HeadquarterBuilding]
+	health_max: 100
 };
 
 TestUnit.box_image = 'test_unit_box.png';
 TestUnit.enabled = false;
+TestUnitrequire_building = [HeadquarterBuilding];
 TestUnit.loadResources = function() {
 	game.resources.addImage('test_unit_stand.png', 'images/units/test_unit_stand.png');
 	game.resources.addImage('test_unit_move.png', 'images/units/test_unit_move.png');
