@@ -1,0 +1,77 @@
+Build 16 (16.10.2012)
+- Finially added ability to build Headquarter, but still no option to produce new units.
+
+Build 15 (13.09.2012)
+- Added ability to select building and choose place to build. But actually still no way to build it.
+
+Build 14 (11.09.2012)
+- Interface stop button now working
+- Implemented "Can't move there" mouse cursor
+- Implemented "Sell building" & "Power building" cursor and interface buttons
+- View building options on right panel when selecting single Construction Rig
+- Added some preparations for first building
+
+Build 13 (04.09.2012)
+- First implementation of pathfinding algorithm
+- Units can avoid impact when moving toward each other
+- Bridges, Crystal & water resources added to test level
+- Implemented multi-select feature
+- When press keyboard "S" button selected unit stop movement
+- Improved unit selection drawing
+- Draw unit health on mouseover
+
+Build 12 (01.09.2012)
+- Added Firefox support
+- Added browser support check
+- All cursors merged in to one sprite
+- Added unit move sounds
+
+Build 11 (31.08.2012)
+- Added unit select & move cursors
+- Testing unit movment animation (still no implementation of pathfinding algorithm)
+- Some small code improvments
+
+Build 10 (28.08.2012)
+- Improved & optimized unit sprites and interface images
+- Added few missing elements in right panel
+- First test of replacing default cursor by custom one
+- Key event handling optimisations
+- Added normal resource preloader
+- Added unit sounds support
+- Using tiles to build map image instead of loading one big image
+
+Build 9 (25.08.2012)
+- Creating this page
+- Added loading screen & progress bar
+
+Build 8 (24.08.2012)
+- Added money showing & change animation
+
+Build 7 (21.08.2012)
+- Added available construction units on right panel
+
+Build 6 (21.08.2012)
+- Unit selection & health showing
+- Testing of sprite animation (when selecting unit)
+
+Build 5 (20.08.2012)
+- Added support of objects
+- Synchronization of map layer and objects layer
+
+Build 4 (19.08.2012)
+- Improved map scrolling by keyboard
+- View rectangle on minimap
+- Scrolling map from minimap
+
+Build 3 (18.08.2012)
+- Scrolling map by arrow keys
+- Added minimap
+- Minimized map image to 1.9 Mb
+
+Build 2 (15.08.2012)
+- Showing map in main window
+- Map loaded as png image 5Mb (!)
+- For test purposes I use original 2jungle map
+
+Build 1 (14.08.2012)
+- Created interface

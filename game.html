@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Dark Reign HTML5</title>
+		<link href="css/main.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/constants.js"></script>
+		<script type="text/javascript" src="js/money.js"></script>
+		<script type="text/javascript" src="js/mouse.js"></script>
+		<script type="text/javascript" src="js/resources.js"></script>
+		<script type="text/javascript" src="js/buildings/headquarter.js"></script>
+		<script type="text/javascript" src="js/unit.js"></script>
+		<script type="text/javascript" src="js/construct_manager.js"></script>
+		<script type="text/javascript" src="js/pathfinding.js"></script>
+		<script type="text/javascript" src="js/levels/level1.js"></script>
+		<script type="text/javascript" src="js/shell.js"></script>
+	</head>
+	<body>
+		<div class="load-screen">
+			<div class="progress" id="progress-bar"></div>
+		</div>
+		<div class="game">
+			<div class="left-frame">
+				<div class="top-panel">
+					<div class="dummy-first"></div>
+					<div class="button sell" id="top_button_sell"></div>
+					<div class="button power" id="top_button_power"></div>
+					<div class="button repair"></div>
+					<div class="money">
+						<div class="num empty" id="money1"></div>
+						<div class="num empty" id="money2"></div>
+						<div class="num empty" id="money3"></div>
+						<div class="num empty" id="money4"></div>
+						<div class="num d1" id="money5"></div>
+						<div class="num d5" id="money6"></div>
+						<div class="num d0" id="money7"></div>
+						<div class="num d0" id="money8"></div>
+						<div class="num d0" id="money9"></div>
+					</div>
+					<div class="button attack"></div>
+					<div class="button move"></div>
+					<div class="button hand" id="top_button_stop"></div>
+					<div class="dummy-last"></div>
+				</div>
+				<div class="game-area">
+					<canvas class="level" id="map_view"></canvas>
+					<canvas id="viewport" width="448" height="448"></canvas>
+				</div>
+			</div>
+			<div class="right-frame">
+				<div class="tab-buttons">
+					<div class="tab build active"></div>
+					<div class="tab comms"></div>
+					<div class="tab menu"></div>
+					<div class="tab orders"></div>
+					<div class="tab paths"></div>
+					<div class="tab special"></div>
+				</div>
+				<div class="panel">
+					<div class="unit-boxes">
+						<div class="box" id="unit_box0" data-cell="0"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box1" data-cell="1"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box2" data-cell="2"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box3" data-cell="3"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box4" data-cell="4"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box5" data-cell="5"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box6" data-cell="6"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box7" data-cell="7"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box8" data-cell="8"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box9" data-cell="9"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box10" data-cell="10"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box11" data-cell="11"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box12" data-cell="12"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box13" data-cell="13"><div class="unit-image"></div></div>
+						<div class="box" id="unit_box14" data-cell="14"><div class="unit-image"></div></div>
+					</div>
+					<div class="ext-buttons">
+						<div class="up"></div>
+						<div class="down"></div>
+						<div class="dk-button-small disable btn">
+							<img src="images/shell/texts/upgrade.png" style="padding: 7px 0 0 16px;" />
+						</div>
+						<div class="dk-button-small btn">
+							<img src="images/shell/texts/decoy.png" style="padding: 7px 0 0 22px;" />
+						</div>
+					</div>
+				</div>
+				<div class="bottom-right">
+					<div class="map">
+						<canvas id="minimap" width="130" height="127"></canvas>
+					</div>
+					<div class="resources">
+						<div class="switches"></div>
+						<div class="metrics"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div>
+			<input type="button" value="Add money" id="tmp_add_money" />
+		</div>
+	</body>
+</html>

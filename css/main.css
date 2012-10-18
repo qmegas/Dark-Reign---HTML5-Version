@@ -1,0 +1,318 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+
+.load-screen {
+	margin: 0;
+	width: 640px;
+	height: 480px;
+	background: url("../images/shell/load-screen.png") no-repeat 0 0;
+}
+.load-screen .progress {
+	width: 0px;
+	height: 20px;
+	background: url("../images/shell/load-bar.png") no-repeat 0 0;
+	position: relative;
+	top: 419px;
+	left: 70px;
+}
+
+.game {
+	width: 640px;
+	height: 480px;
+	display: none;
+}
+.game .left-frame {
+	float: left;
+	width: 448px;
+	height: 480px;
+}
+.game .left-frame .top-panel {
+	height: 32px;
+}
+.game .left-frame .top-panel .dummy-first {
+	width: 6px;
+	height: 32px;
+	float: left;
+	background: url("../images/shell/money.png") no-repeat 0 0;
+}
+.game .left-frame .top-panel .dummy-last {
+	width: 7px;
+	height: 32px;
+	float: left;
+	background: url("../images/shell/money.png") no-repeat -147px 0;
+}
+.game .left-frame .top-panel .button {
+	cursor: pointer;
+	float: left;
+	width: 49px;
+	height: 32px;
+	background-image: url("../images/shell/topbuttons.png");
+}
+.game .left-frame .top-panel .button.sell {
+	background-position: 0 0;
+}
+.game .left-frame .top-panel .button.power {
+	background-position: -49px 0;
+}
+.game .left-frame .top-panel .button.repair {
+	background-position: -98px 0;
+}
+.game .left-frame .top-panel .button.attack {
+	background-position: -147px 0;
+}
+.game .left-frame .top-panel .button.move {
+	background-position: -196px 0;
+}
+.game .left-frame .top-panel .button.hand {
+	background-position: -245px 0;
+}
+.game .left-frame .top-panel .button.sell:hover {
+	background-position: -294px 0;
+}
+.game .left-frame .top-panel .button.power:hover {
+	background-position: -343px 0;
+}
+.game .left-frame .top-panel .button.repair:hover {
+	background-position: -392px 0;
+}
+.game .left-frame .top-panel .button.attack:hover {
+	background-position: -441px 0;
+}
+.game .left-frame .top-panel .button.move:hover {
+	background-position: -490px 0;
+}
+.game .left-frame .top-panel .button.hand:hover {
+	background-position: -539px 0;
+}
+.game .left-frame .top-panel .button.sell.active {
+	background-position: -588px 0;
+}
+.game .left-frame .top-panel .button.power.active {
+	background-position: -637px 0;
+}
+.game .left-frame .top-panel .button.repair.active {
+	background-position: -686px 0;
+}
+.game .left-frame .top-panel .button.attack.active {
+	background-position: -735px 0;
+}
+.game .left-frame .top-panel .button.move.active {
+	background-position: -784px 0;
+}
+.game .left-frame .top-panel .button.hand.active {
+	background-position: -833px 0;
+}
+.game .left-frame .top-panel .money {
+	float: left;
+	width: 116px;
+	height: 26px;
+	background: url("../images/shell/money.png") no-repeat -6px 0;
+	padding: 6px 0 0 25px;
+}
+.game .left-frame .top-panel .money .num {
+	float: left;
+	width: 10px;
+	height: 16px;
+	background-image: url("../images/shell/money_numbers.png");
+}
+.game .left-frame .top-panel .money .num.d0 {
+	background-position: -1px 0;
+}
+.game .left-frame .top-panel .money .num.d1 {
+	background-position: -12px 0;
+}
+.game .left-frame .top-panel .money .num.d2 {
+	background-position: -23px 0;
+}
+.game .left-frame .top-panel .money .num.d3 {
+	background-position: -34px 0;
+}
+.game .left-frame .top-panel .money .num.d4 {
+	background-position: -45px 0;
+}
+.game .left-frame .top-panel .money .num.d5 {
+	background-position: -56px 0;
+}
+.game .left-frame .top-panel .money .num.d6 {
+	background-position: -67px 0;
+}
+.game .left-frame .top-panel .money .num.d7 {
+	background-position: -78px 0;
+}
+.game .left-frame .top-panel .money .num.d8 {
+	background-position: -89px 0;
+}
+.game .left-frame .top-panel .money .num.d9 {
+	background-position: -100px 0;
+}
+.game .left-frame .top-panel .money .num.empty {
+	background-position: -111px 0;
+}
+.game .left-frame .game-area {
+	height: 448px;
+	background: #000;
+	overflow: hidden;
+}
+.game .left-frame .game-area .level {
+	position: relative;
+}
+.game .left-frame .game-area #viewport {
+	position: relative;
+	cursor: none;
+}
+.game .right-frame {
+	float: left;
+	width: 192px;
+	height: 480px;
+}
+.game .right-frame .tab-buttons {
+	width: 192px;
+	height: 64px;
+}
+.game .right-frame .tab-buttons .tab {
+	float: left;
+	cursor: pointer;
+	width: 64px;
+	height: 32px;
+	background-image: url("../images/shell/menutabs.png");
+}
+.game .right-frame .tab-buttons .tab.build {
+	background-position: 0 0;
+}
+.game .right-frame .tab-buttons .tab.comms {
+	background-position: -64px 0;
+}
+.game .right-frame .tab-buttons .tab.menu {
+	background-position: -128px 0;
+}
+.game .right-frame .tab-buttons .tab.orders {
+	background-position: 0 -32px;
+}
+.game .right-frame .tab-buttons .tab.paths {
+	background-position: -64px -32px;
+}
+.game .right-frame .tab-buttons .tab.special {
+	background-position: -128px -32px;
+}
+.game .right-frame .tab-buttons .tab.build:hover {
+	background-position: -192px 0;
+}
+.game .right-frame .tab-buttons .tab.comms:hover {
+	background-position: -256px 0;
+}
+.game .right-frame .tab-buttons .tab.menu:hover {
+	background-position: -320px 0;
+}
+.game .right-frame .tab-buttons .tab.orders:hover {
+	background-position: -192px -32px;
+}
+.game .right-frame .tab-buttons .tab.paths:hover {
+	background-position: -256px -32px;
+}
+.game .right-frame .tab-buttons .tab.special:hover {
+	background-position: -320px -32px;
+}
+.game .right-frame .tab-buttons .tab.build.active {
+	background-position: -384px 0;
+}
+.game .right-frame .tab-buttons .tab.comms.active {
+	background-position: -448px 0;
+}
+.game .right-frame .tab-buttons .tab.menu.active {
+	background-position: -512px 0;
+}
+.game .right-frame .tab-buttons .tab.orders.active {
+	background-position: -384px -32px;
+}
+.game .right-frame .tab-buttons .tab.paths.active {
+	background-position: -448px -32px;
+}
+.game .right-frame .tab-buttons .tab.special.active {
+	background-position: -512px -32px;
+}
+.game .right-frame .panel {
+	height: 278px;
+	background-image: url("../images/shell/panel.png");
+}
+.game .right-frame .panel .unit-boxes .box {
+	float: left;
+	width: 64px;
+	height: 50px;
+	background-position: 9px 2px;
+}
+.game .right-frame .panel .unit-boxes .box .unit-image {
+	width: 64px;
+	height: 50px;
+	background-image: url("../images/shell/unit_box.png");
+}
+.game .right-frame .panel .unit-boxes .box .unit-image:hover {
+	background-position: -64px 0;
+}
+.game .right-frame .panel .unit-boxes .box .unit-image.active {
+	background-position: -128px 0;
+}
+.game .right-frame .panel .ext-buttons {
+	clear: both;
+	padding: 5px 0 0 4px;
+}
+.game .right-frame .panel .ext-buttons .up {
+	width: 22px;
+	height: 22px;
+	float: left;
+	background: url("../images/shell/b_buttons.png");
+}
+.game .right-frame .panel .ext-buttons .up:hover {
+	background-position: -22px 0;
+}
+.game .right-frame .panel .ext-buttons .down {
+	width: 22px;
+	height: 22px;
+	float: left;
+	background: url("../images/shell/b_buttons.png") no-repeat -66px 0;
+}
+.game .right-frame .panel .ext-buttons .btn {
+	float: left;
+	margin-right: 1px;
+}
+.game .right-frame .panel .ext-buttons .down:hover {
+	background-position: -88px 0;
+}
+.game .right-frame .bottom-right {
+	height: 138px;
+}
+.game .right-frame .bottom-right .map {
+	float: left;
+	width: 130px;
+	height: 127px;
+	background-image: url("../images/shell/minimap.png");
+	text-align: center;
+	padding: 6px 5px 5px 5px;
+}
+.game .right-frame .bottom-right .resources {
+	float: left;
+	width: 52px;
+	height: 138px;
+}
+.game .right-frame .bottom-right .resources .switches {
+	height: 34px;
+	background: url("../images/shell/switches.png") no-repeat 0 0;
+}
+.game .right-frame .bottom-right .resources .metrics {
+	height: 104px;
+	background: url("../images/shell/metrics.png") no-repeat 0 0;
+}
+
+/* Buttons */
+.dk-button-small {
+	width: 71px;
+	height: 22px;
+	background: url("../images/shell/buttons.png") no-repeat 0 0;
+}
+.dk-button-small:hover {
+	background-position: -71px 0;
+}
+.dk-button-small.disable {
+	background-position: -213px 0;
+}

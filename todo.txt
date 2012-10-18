@@ -1,0 +1,9 @@
+- Building selection
+- Do not select building when not selected
+- Do not call move when building is selected
+- Building constrtion progress
+- Play sound on construction finish
+
+
+- Add shadows to test unit
+- Show units on minimap
