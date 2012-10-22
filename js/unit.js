@@ -256,7 +256,7 @@ TestUnit.prototype = {
 
 TestUnit.box_image = 'test_unit_box.png';
 TestUnit.enabled = false;
-TestUnitrequire_building = [HeadquarterBuilding];
+TestUnit.require_building = [HeadquarterBuilding];
 TestUnit.loadResources = function() {
 	game.resources.addImage('test_unit_stand.png', 'images/units/test_unit_stand.png');
 	game.resources.addImage('test_unit_move.png', 'images/units/test_unit_move.png');

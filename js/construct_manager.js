@@ -6,6 +6,38 @@ function ConstructManager(units, buildings)
 	this.current_view_type = CONST_VIEW_DEFAULT;
 	this.current_view_offset = 0;
 	
+	this.recalcUnitAvailability = function()
+	{
+		var obj, i, j, cur_enabled, have_new = false;
+		
+		for (i=0; i<this.available_units.length; ++i)
+		{
+			obj = this.available_units[i];
+			if (!obj.enabled)
+			{
+				cur_enabled = true;
+				
+				for (j=0; j<obj.require_building.length; ++j)
+					if (obj.require_building[j].count == 0)
+					{
+						cur_enabled = false;
+						break;
+					}
+					
+				if (cur_enabled)
+				{
+					obj.enabled = true;
+					have_new = true;
+				}
+			}
+		}
+		
+		if (have_new)
+			this._drawCells();
+		
+		return have_new;
+	}
+	
 	this.loadUnitResources = function()
 	{
 		for (var i=0; i<this.available_units.length; ++i)
@@ -24,38 +56,45 @@ function ConstructManager(units, buildings)
 	this.drawUnits = function(start)
 	{
 		this.removeCellSelection();
-		
-		if (!start)
-			start = 0;
-		
-		this.current_view_offset = start;
+		this.current_view_offset = (!start) ? 0 : start;
 		this.current_view_type = CONST_VIEW_DEFAULT;
-		
-		for (var i = start; i<start+15; ++i)
-		{
-			if (!this.available_units[i])
-				this._drawCellEmpty(i-start);
-			else
-				this._drawCell(i-start, 'images/units/' + this.available_units[i].box_image, this.available_units[i].enabled);
-		}
+		this._drawCells();
 	}
 	
 	this.drawBuildings = function(start)
 	{
 		this.removeCellSelection();
-		
-		if (!start)
-			start = 0;
-		
-		this.current_view_offset = start;
+		this.current_view_offset = (!start) ? 0 : start;
 		this.current_view_type = CONST_VIEW_BUILDINGS;
-		
-		for (var i = start; i<start+15; ++i)
+		this._drawCells();
+	}
+	
+	this._drawCells = function()
+	{
+		for (var i = this.current_view_offset; i<this.current_view_offset+15; ++i)
 		{
 			if (!this.available_buildings[i])
-				this._drawCellEmpty(i-start);
+				this._drawCellEmpty(i-this.current_view_offset);
 			else
-				this._drawCell(i-start, 'images/buildings/' + this.available_buildings[i].box_image, this.available_buildings[i].enabled);
+			{
+				switch (this.current_view_type)
+				{
+					case CONST_VIEW_DEFAULT:
+						this._drawCell(
+							i-this.current_view_offset, 
+							'images/units/' + this.available_units[i].box_image, 
+							this.available_units[i].enabled
+						);
+						break;
+					case CONST_VIEW_BUILDINGS:
+						this._drawCell(
+							i-this.current_view_offset, 
+							'images/buildings/' + this.available_buildings[i].box_image, 
+							this.available_buildings[i].enabled
+						);
+						break;
+				}
+			}
 		}
 	}
 	

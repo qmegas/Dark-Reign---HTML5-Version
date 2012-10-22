@@ -344,6 +344,7 @@ function Game()
 		//Common resources
 		this.resources.addSound('construction_under_way', 'sounds/construction_under_way.ogg');
 		this.resources.addSound('construction_complete', 'sounds/construction_complete.ogg');
+		this.resources.addSound('new_units_available', 'sounds/new_units_available.ogg');
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();

@@ -28,7 +28,17 @@ function HeadquarterBuilding(pos_x, pos_y)
 			this.health++;
 			if (this.construction_now > this.construction_max)
 			{
-				game.resources.get('construction_complete').play();
+				HeadquarterBuilding.count++;
+				
+				var sound = game.resources.get('construction_complete');
+				
+				sound.play();
+				if (game.constructor.recalcUnitAvailability())
+					sound.addEventListener('ended', function(){
+						game.resources.get('new_units_available').play();
+						this.removeEventListener('ended', arguments.callee, false);
+					});
+				
 				this.state = 'NORMAL';
 			}
 		}
@@ -140,6 +150,7 @@ HeadquarterBuilding.prototype = {
 
 HeadquarterBuilding.box_image = 'headquarter_box.png';
 HeadquarterBuilding.enabled = true;
+HeadquarterBuilding.count = 0;
 HeadquarterBuilding.cell_size = {x: 5, y: 4};
 HeadquarterBuilding.cell_padding = {x: 2, y: 2};
 HeadquarterBuilding.image_size = {x: 103, y: 138};
