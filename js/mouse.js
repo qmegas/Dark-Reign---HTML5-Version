@@ -49,7 +49,7 @@ function MousePointer(game)
 					this._drawCursor(current_time, 5, 8);
 					break;
 				case ACTION_STATE_BUILD:
-					game.action_state_options.object.drawBuildMouse(pos.x, pos.y);
+					AbstractBuilding.drawBuildMouse(game.action_state_options.object, pos.x, pos.y);
 					this._drawCursor(current_time, 7, 1);
 					break;
 			}
@@ -132,7 +132,7 @@ function MousePointer(game)
 			
 			case ACTION_STATE_BUILD:
 				var pos = this.getCellPosition()
-				if (game.action_state_options.object.canBuild(pos.x, pos.y, game.selected_objects[0]))
+				if (AbstractBuilding.canBuild(game.action_state_options.object, pos.x, pos.y, game.selected_objects[0]))
 				{
 					game.objects[game.selected_objects[0]].build(pos.x, pos.y, game.action_state_options.object);
 					game.cleanActionState();

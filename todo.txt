@@ -1,2 +1,3 @@
-- Add shadows to test unit
+- Constructing "Construction Rig"
 - Show units on minimap
+- Add shadows to test unit

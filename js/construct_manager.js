@@ -8,11 +8,22 @@ function ConstructManager(units, buildings)
 	
 	this.recalcUnitAvailability = function()
 	{
-		var obj, i, j, cur_enabled, have_new = false;
+		var have_new_units = this._checkArrayAvailability(this.available_units);
+		var have_new_buildings = this._checkArrayAvailability(this.available_buildings);
 		
-		for (i=0; i<this.available_units.length; ++i)
+		if (have_new_units || have_new_buildings)
+			this._drawCells();
+		
+		return have_new_units;
+	}
+	
+	this._checkArrayAvailability = function(arr)
+	{
+		var i, j, obj, have_new = false, cur_enabled;
+		
+		for (i=0; i<arr.length; ++i)
 		{
-			obj = this.available_units[i];
+			obj = arr[i];
 			if (!obj.enabled)
 			{
 				cur_enabled = true;
@@ -31,9 +42,6 @@ function ConstructManager(units, buildings)
 				}
 			}
 		}
-		
-		if (have_new)
-			this._drawCells();
 		
 		return have_new;
 	}
@@ -73,27 +81,28 @@ function ConstructManager(units, buildings)
 	{
 		for (var i = this.current_view_offset; i<this.current_view_offset+15; ++i)
 		{
-			if (!this.available_buildings[i])
-				this._drawCellEmpty(i-this.current_view_offset);
-			else
+			switch (this.current_view_type)
 			{
-				switch (this.current_view_type)
-				{
-					case CONST_VIEW_DEFAULT:
+				case CONST_VIEW_DEFAULT:
+					if (!this.available_units[i])
+						this._drawCellEmpty(i-this.current_view_offset);
+					else
 						this._drawCell(
 							i-this.current_view_offset, 
 							'images/units/' + this.available_units[i].box_image, 
 							this.available_units[i].enabled
 						);
-						break;
-					case CONST_VIEW_BUILDINGS:
+					break;
+				case CONST_VIEW_BUILDINGS:
+					if (!this.available_buildings[i])
+						this._drawCellEmpty(i-this.current_view_offset);
+					else
 						this._drawCell(
 							i-this.current_view_offset, 
 							'images/buildings/' + this.available_buildings[i].box_image, 
 							this.available_buildings[i].enabled
 						);
-						break;
-				}
+					break;
 			}
 		}
 	}

@@ -157,9 +157,9 @@ function TestUnit(pos_x, pos_y)
 						var cell = this.getCell();
 						if (cell.x==this.build_pos.x && cell.y==this.build_pos.y)
 						{
-							if (this.build_obj.canBuild(cell.x, cell.y, this.uid))
+							if (AbstractBuilding.canBuild(this.build_obj, cell.x, cell.y, this.uid))
 							{
-								this.build_obj.createNew(cell.x, cell.y);
+								AbstractBuilding.createNew(this.build_obj, cell.x, cell.y);
 								game.constructor.drawUnits();
 								game.kill_objects.push(this.uid);
 							}
