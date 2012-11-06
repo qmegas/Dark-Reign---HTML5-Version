@@ -21,6 +21,7 @@ function Game()
 	
 	this.money = new MoneyDraw();
 	this.mouse = new MousePointer(this);
+	this.fontDraw = new DKFont();
 	
 	this.action_state = 0;
 	this.action_state_options = {};
@@ -124,6 +125,7 @@ function Game()
 		this.resources.addImage('map-tiles', 'images/levels/'+this.level.tiles);
 		this.resources.addImage('minimap', 'images/levels/'+this.level.minimap.image);
 		this.resources.addImage('clr', 'images/buildings/clr.png');
+		this.resources.addImage('font', 'images/font.png');
 		this._loadGameResources();
 		this.resources.onLoaded = function(loaded, total){
 			var progress = parseInt(500/total*loaded);
@@ -213,8 +215,8 @@ function Game()
 		//On mouse selection
 		var mouse_pos = this.mouse.getCellPosition();
 		unitid = this.level.map_cells[mouse_pos.x][mouse_pos.y].unit;
-		if (unitid!=-1 && !this.objects[unitid].is_selected)
-			this.objects[unitid].drawSelection();
+		if (unitid!=-1) // && !this.objects[unitid].is_selected)
+			this.objects[unitid].drawSelection(true);
 		
 		//DEBUG: Unit placement
 //		this.viewport_ctx.fillStyle = 'rgba(0, 0, 255, 0.3)';

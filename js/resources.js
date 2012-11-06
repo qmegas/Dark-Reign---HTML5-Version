@@ -37,6 +37,16 @@ function ResourseLoader()
 		});
 	}
 	
+	this.addDirect = function(key, obj)
+	{
+		this.items[key] = obj;
+	}
+	
+	this.isSet = function(key)
+	{
+		return (typeof this.items[key] !== 'undefined');
+	}
+	
 	this.get = function(key)
 	{
 		return this.items[key];

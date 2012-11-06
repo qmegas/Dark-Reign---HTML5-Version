@@ -1,3 +1,6 @@
+Build 18 (06.11.2012)
+- Added building and unit name when mouseover the object
+
 Build 17 (05.11.2012)
 - Some building based code optimisations
 - Added new building: Camera Tower

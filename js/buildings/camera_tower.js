@@ -1,6 +1,6 @@
-function CameraTower(pos_x, pos_y)
+function CameraTowerBuilding(pos_x, pos_y)
 {
-	this._proto = CameraTower;
+	this._proto = CameraTowerBuilding;
 	this.health_max = 200;
 	this.cost = 100;
 	this.construction_max = 200;
@@ -23,18 +23,19 @@ function CameraTower(pos_x, pos_y)
 	}
 }
 
-CameraTower.prototype = new AbstractBuilding();
+CameraTowerBuilding.prototype = new AbstractBuilding();
 
-CameraTower.box_image = 'camera_tower_box.png';
-CameraTower.res_key = 'camera_tower.png';
-CameraTower.enabled = false;
-CameraTower.count = 0;
-CameraTower.cell_size = {x: 1, y: 2};
-CameraTower.cell_padding = {x: 0, y: 1};
-CameraTower.image_size = {x: 24, y: 48};
-CameraTower.image_padding = {x: 0, y: 0};
-CameraTower.require_building = [HeadquarterBuilding];
+CameraTowerBuilding.box_image = 'camera_tower_box.png';
+CameraTowerBuilding.res_key = 'camera_tower.png';
+CameraTowerBuilding.obj_name = 'Camera Tower';
+CameraTowerBuilding.enabled = false;
+CameraTowerBuilding.count = 0;
+CameraTowerBuilding.cell_size = {x: 1, y: 2};
+CameraTowerBuilding.cell_padding = {x: 0, y: 1};
+CameraTowerBuilding.image_size = {x: 24, y: 48};
+CameraTowerBuilding.image_padding = {x: 0, y: 0};
+CameraTowerBuilding.require_building = [HeadquarterBuilding];
 
-CameraTower.loadResources = function(){
+CameraTowerBuilding.loadResources = function(){
 	game.resources.addImage(this.res_key, 'images/buildings/camera_tower.png');
 };

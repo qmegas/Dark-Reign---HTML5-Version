@@ -27,7 +27,7 @@ function AbstractBuilding()
 		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
 	}
 	
-	this.drawSelection = function()
+	this.drawSelection = function(is_onmouse)
 	{
 		var top_x = this.position.x - 0.5,
 			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y + 10.5;
@@ -67,7 +67,7 @@ function AbstractBuilding()
 		if (this.state == 'CONSTRUCTION')
 		{
 			var const_proc = this.construction_now / this.construction_max;
-			top_y = this.position.y - CELL_SIZE - 0.5;
+			top_y = this.position.y - this._proto.image_padding.y - 0.5;
 			
 			game.viewport_ctx.fillStyle = '#000000';
 			game.viewport_ctx.fillRect(top_x, top_y-2, health_width, 4);
@@ -75,6 +75,17 @@ function AbstractBuilding()
 			game.viewport_ctx.fillRect(top_x + 1, top_y - 1, health_width - 2, 2);
 			game.viewport_ctx.fillStyle = '#FCFC00';
 			game.viewport_ctx.fillRect(top_x + 1, top_y - 1, (health_width - 2)*const_proc, 2);
+		}
+		
+		//Draw name
+		if (is_onmouse)
+		{
+			top_y = this.position.y - this._proto.image_padding.y - 16.5;
+			top_x = this.position.x - 0.5 + health_width/4;
+			game.fontDraw.drawOnCanvas(
+				this._proto.obj_name, game.viewport_ctx, top_x, top_y, 
+				'yellow', 'center', health_width
+			);
 		}
 	}
 	
@@ -102,7 +113,7 @@ function AbstractBuilding()
 	//Must be implemented
 	this.run = function() {}
 	
-	this.draw = function()
+	this.draw = function(is_onmouse)
 	{
 		if (this.state == 'CONSTRUCTION')
 		{

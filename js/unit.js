@@ -100,7 +100,7 @@ function TestUnit(pos_x, pos_y)
 	}
 	
 	//Draw Selection
-	this.drawSelection = function()
+	this.drawSelection = function(is_onmouse)
 	{
 		var top_x = this.position.x - game.viewport_x + 0.5, top_y = this.position.y - game.viewport_y + 0.5;
 		var sel_width = this.width, health_width = parseInt(sel_width*0.63);
@@ -138,6 +138,10 @@ function TestUnit(pos_x, pos_y)
 		else
 			game.viewport_ctx.fillStyle = '#FC0000';
 		game.viewport_ctx.fillRect(top_x + (sel_width - health_width)/2 + 1, top_y, (health_width - 2)*health_proc, 2);
+		
+		//Draw name
+		if (is_onmouse)
+			game.fontDraw.drawOnCanvas(TestUnit.obj_name, game.viewport_ctx, top_x, top_y - 16, 'yellow', 'center', sel_width);
 	}
 	
 	this.run = function() 
@@ -255,6 +259,7 @@ TestUnit.prototype = {
 };
 
 TestUnit.box_image = 'test_unit_box.png';
+TestUnit.obj_name = 'Construction Rig';
 TestUnit.enabled = false;
 TestUnit.require_building = [HeadquarterBuilding];
 TestUnit.loadResources = function() {
