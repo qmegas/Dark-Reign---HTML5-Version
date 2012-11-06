@@ -2,7 +2,6 @@ function CameraTowerBuilding(pos_x, pos_y)
 {
 	this._proto = CameraTowerBuilding;
 	this.health_max = 200;
-	this.cost = 100;
 	this.construction_max = 200;
 	
 	this.setPosition(pos_x, pos_y);
@@ -28,6 +27,7 @@ CameraTowerBuilding.prototype = new AbstractBuilding();
 CameraTowerBuilding.box_image = 'camera_tower_box.png';
 CameraTowerBuilding.res_key = 'camera_tower.png';
 CameraTowerBuilding.obj_name = 'Camera Tower';
+CameraTowerBuilding.cost = 150;
 CameraTowerBuilding.enabled = false;
 CameraTowerBuilding.count = 0;
 CameraTowerBuilding.cell_size = {x: 1, y: 2};

@@ -149,4 +149,52 @@ function ConstructManager(units, buildings)
 		{
 		}
 	}
+	
+	this.cellPopupPrepere = function(cell_id)
+	{
+		var MAX_X = 400, MAX_Y = 200;
+		var i = this.current_view_offset + parseInt(cell_id), ctx = $('#cell_popup').get(0).getContext('2d'), text;
+		
+		//Clear popup anyway
+		ctx.clearRect(0, 0, MAX_X, MAX_Y);
+		
+		if (this.current_view_type == CONST_VIEW_BUILDINGS)
+		{
+			if (typeof this.available_buildings[i] == 'undefined')
+				return;
+			
+			text = this.available_buildings[i].obj_name + ' ' + this.available_buildings[i].cost + 'c';
+		}
+		else
+		{
+			if (typeof this.available_units[i] == 'undefined')
+				return;
+			
+			text = this.available_units[i].obj_name + ' ' + this.available_units[i].cost + 'c';
+		}
+		
+		//Draw name
+		var text_size = game.fontDraw.getSize(text) + 4, left = text_size + 13;
+		
+		//Black backgound & border 1
+		ctx.fillStyle = '#07f4ff';
+		ctx.fillRect(MAX_X - 15.5 - text_size, 0.5, text_size + 2, 18);
+		ctx.fillStyle = '#000000';
+		ctx.fillRect(MAX_X - 14.5 - text_size, 1.5, text_size, 16);
+		
+		//Draw border 2
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = '#07b4b4';
+		
+		ctx.beginPath();
+		ctx.moveTo(MAX_X - 15.5 - text_size, 18.5);
+		ctx.lineTo(MAX_X - 13.5, 18.5);
+		ctx.lineTo(MAX_X - 13.5, 0.5);
+		ctx.moveTo(MAX_X - 13.5, 10.5);
+		ctx.lineTo(MAX_X, 10.5);
+		ctx.stroke();
+		
+		//Draw text
+		game.fontDraw.drawOnCanvas(text, ctx, MAX_X - 12.5 - text_size, 2.5, 'green')
+	}
 }

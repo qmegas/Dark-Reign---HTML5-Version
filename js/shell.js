@@ -465,6 +465,17 @@ $(function(){
 		var cellid = $(this).parent('div').attr('data-cell');
 		game.constructor.cellClick(cellid);
 	});
+	$('.unit-image').mouseover(function(){
+		var cellid = $(this).parent('div').attr('data-cell'), position = $(this).offset();
+		game.constructor.cellPopupPrepere(cellid);
+		
+		position.left -= 392;
+		$('#cell_popup').css(position);
+		$('#cell_popup').show();
+	});
+	$('.unit-image').mouseout(function(e){
+		$('#cell_popup').hide();
+	});
 	
 	$('#minimap').mousedown(function(event){
 		game.minimapNavigation(true);

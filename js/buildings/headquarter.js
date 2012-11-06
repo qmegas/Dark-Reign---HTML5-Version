@@ -2,7 +2,6 @@ function HeadquarterBuilding(pos_x, pos_y)
 {
 	this._proto = HeadquarterBuilding;
 	this.health_max = 750;
-	this.cost = 100;
 	this.construction_max = 750;
 	
 	this.setPosition(pos_x, pos_y);
@@ -37,6 +36,7 @@ HeadquarterBuilding.prototype = new AbstractBuilding();
 HeadquarterBuilding.box_image = 'headquarter_box.png';
 HeadquarterBuilding.res_key = 'headquarter.png';
 HeadquarterBuilding.obj_name = 'Headquarter 1';
+HeadquarterBuilding.cost = 100;
 HeadquarterBuilding.enabled = true;
 HeadquarterBuilding.count = 0;
 HeadquarterBuilding.cell_size = {x: 5, y: 4};

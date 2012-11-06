@@ -252,7 +252,6 @@ function TestUnit(pos_x, pos_y)
 }
 
 TestUnit.prototype = {
-	cost: 100,
 	width: 35,
 	height: 35,
 	health_max: 100
@@ -260,6 +259,7 @@ TestUnit.prototype = {
 
 TestUnit.box_image = 'test_unit_box.png';
 TestUnit.obj_name = 'Construction Rig';
+TestUnit.cost = 100;
 TestUnit.enabled = false;
 TestUnit.require_building = [HeadquarterBuilding];
 TestUnit.loadResources = function() {
