@@ -52,7 +52,7 @@ function DKFont()
 		
 		ctx.drawImage(
 			$('#text_buffer').get(0), 0, this._cache_table[key].top, this._cache_table[key].width, this._size,
-			x, y, this._cache_table[key].width, this._size
+			x+0.5, y+0.5, this._cache_table[key].width, this._size
 		);
 	}
 	
