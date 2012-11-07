@@ -2416,7 +2416,7 @@ function Level1()
 	
 	this.getAvailableBuildings = function()
 	{
-		return [HeadquarterBuilding, CameraTowerBuilding];
+		return [HeadquarterBuilding, WaterLaunchPadBuilding, CameraTowerBuilding];
 	}
 	
 	this.generateMap = function()

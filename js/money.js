@@ -11,6 +11,11 @@ function MoneyDraw()
 		this.setMoney(this.money_current + num);
 	}
 	
+	this.decMoney = function(num)
+	{
+		this.setMoney(this.money_current - num);
+	}
+	
 	this.setMoney = function(num)
 	{
 		this.money_was = this.money_current;

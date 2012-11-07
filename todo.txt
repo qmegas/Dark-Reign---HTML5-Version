@@ -1,3 +1,5 @@
-- Constructing "Construction Rig"
+- Producing "Construction Rig"
 - Show units on minimap
-- Add shadows to test unit
+
+- Bugs:
+	- Correct building position for Water Launch Pad (and future buildings)

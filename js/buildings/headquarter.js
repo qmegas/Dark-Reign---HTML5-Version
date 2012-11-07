@@ -10,23 +10,7 @@ function HeadquarterBuilding(pos_x, pos_y)
 	{
 		if (this.state == 'CONSTRUCTION')
 		{
-			this.construction_now++;
-			this.health++;
-			if (this.construction_now > this.construction_max)
-			{
-				this._proto.count++;
-				
-				var sound = game.resources.get('construction_complete');
-				
-				sound.play();
-				if (game.constructor.recalcUnitAvailability())
-					sound.addEventListener('ended', function(){
-						game.resources.get('new_units_available').play();
-						this.removeEventListener('ended', arguments.callee, false);
-					});
-				
-				this.state = 'NORMAL';
-			}
+			this._runStandartConstruction();
 		}
 	}
 }
@@ -36,7 +20,7 @@ HeadquarterBuilding.prototype = new AbstractBuilding();
 HeadquarterBuilding.box_image = 'headquarter_box.png';
 HeadquarterBuilding.res_key = 'headquarter.png';
 HeadquarterBuilding.obj_name = 'Headquarter 1';
-HeadquarterBuilding.cost = 100;
+HeadquarterBuilding.cost = 750;
 HeadquarterBuilding.enabled = true;
 HeadquarterBuilding.count = 0;
 HeadquarterBuilding.cell_size = {x: 5, y: 4};

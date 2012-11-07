@@ -259,7 +259,7 @@ TestUnit.prototype = {
 
 TestUnit.box_image = 'test_unit_box.png';
 TestUnit.obj_name = 'Construction Rig';
-TestUnit.cost = 100;
+TestUnit.cost = 150;
 TestUnit.enabled = false;
 TestUnit.require_building = [HeadquarterBuilding];
 TestUnit.loadResources = function() {

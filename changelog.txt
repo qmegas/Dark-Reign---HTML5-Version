@@ -1,13 +1,17 @@
+Build 19 (07.11.2012)
+- Improved popup for units on building panel, now it shows required buildings too
+- Added "Water Launch Pad" building (without Freighter)
+
 Build 18 (06.11.2012)
 - Added building and unit name when mouseover the object
 - Added popup for units on building panel
 
 Build 17 (05.11.2012)
-- Some building based code optimisations
+- Some building based code optimizations
 - Added new building: Camera Tower
 
 Build 16 (18.10.2012)
-- Finially added ability to build Headquarter, but still no option to produce new units.
+- Finally added ability to build Headquarter, but still no option to produce new units.
 - Project source code moved to GitHub
 
 Build 15 (13.09.2012)

@@ -29,16 +29,21 @@ function AbstractBuilding()
 	
 	this.drawSelection = function(is_onmouse)
 	{
-		var top_x = this.position.x - 0.5,
-			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y + 10.5;
+		this._drawSelectionStandart(is_onmouse);
+	}
+	
+	this._drawSelectionStandart = function(is_onmouse)
+	{
+		var top_x = this.position.x,
+			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y + 10;
 			
 		game.viewport_ctx.strokeStyle = (this.is_selected) ? '#ffffff' : '#393939';
 		game.viewport_ctx.lineWidth = 1;
 		
 		game.viewport_ctx.beginPath();
 		game.viewport_ctx.moveTo(top_x - 3, top_y - 8);
-		game.viewport_ctx.lineTo(top_x, top_y);
-		game.viewport_ctx.lineTo(top_x + CELL_SIZE*this._proto.cell_size.x, top_y);
+		game.viewport_ctx.lineTo(top_x, top_y + 0.5);
+		game.viewport_ctx.lineTo(top_x + CELL_SIZE*this._proto.cell_size.x, top_y + 0.5);
 		game.viewport_ctx.lineTo(top_x + CELL_SIZE*this._proto.cell_size.x + 3, top_y - 8);
 		game.viewport_ctx.stroke();
 		
@@ -67,7 +72,7 @@ function AbstractBuilding()
 		if (this.state == 'CONSTRUCTION')
 		{
 			var const_proc = this.construction_now / this.construction_max;
-			top_y = this.position.y - this._proto.image_padding.y - 0.5;
+			top_y = this.position.y - this._proto.image_padding.y;
 			
 			game.viewport_ctx.fillStyle = '#000000';
 			game.viewport_ctx.fillRect(top_x, top_y-2, health_width, 4);
@@ -78,15 +83,22 @@ function AbstractBuilding()
 		}
 		
 		//Draw name
-		if (is_onmouse)
+		top_y = this.position.y - this._proto.image_padding.y - 16.5;
+		top_x = this.position.x - 0.5 + health_width/4;
+		if (this.state == 'CONSTRUCTION')
 		{
-			top_y = this.position.y - this._proto.image_padding.y - 16.5;
-			top_x = this.position.x - 0.5 + health_width/4;
+			game.fontDraw.drawOnCanvas(
+				'Under Construction', game.viewport_ctx, top_x, top_y, 
+				'yellow', 'center', health_width
+			);
+			top_y -= 15;
+		}
+		
+		if (is_onmouse)
 			game.fontDraw.drawOnCanvas(
 				this._proto.obj_name, game.viewport_ctx, top_x, top_y, 
 				'yellow', 'center', health_width
 			);
-		}
 	}
 	
 	this.canBeSelected = function()
@@ -136,6 +148,27 @@ function AbstractBuilding()
 			);
 		}
 	}
+	
+	this._runStandartConstruction = function()
+	{
+		this.construction_now++;
+		this.health++;
+		if (this.construction_now > this.construction_max)
+		{
+			this._proto.count++;
+
+			var sound = game.resources.get('construction_complete');
+
+			sound.play();
+			if (game.constructor.recalcUnitAvailability())
+				sound.addEventListener('ended', function(){
+					game.resources.get('new_units_available').play();
+					this.removeEventListener('ended', arguments.callee, false);
+				});
+
+			this.state = 'NORMAL';
+		}
+	}
 }
 
 //Static methods
@@ -181,6 +214,8 @@ AbstractBuilding.createNew = function(obj, x, y)
 	game.objects.push(new obj(x, y));
 	game.objects[uid].uid = uid;
 	game.objects[uid].markCellsOnMap(uid);
+	
+	game.money.decMoney(obj.cost);
 	
 	game.resources.get('construction_under_way').play();
 };

@@ -10,14 +10,7 @@ function CameraTowerBuilding(pos_x, pos_y)
 	{
 		if (this.state == 'CONSTRUCTION')
 		{
-			this.construction_now++;
-			this.health++;
-			if (this.construction_now > this.construction_max)
-			{
-				this._proto.count++;
-				game.resources.get('construction_complete').play();
-				this.state = 'NORMAL';
-			}
+			this._runStandartConstruction();
 		}
 	}
 }
@@ -27,7 +20,7 @@ CameraTowerBuilding.prototype = new AbstractBuilding();
 CameraTowerBuilding.box_image = 'camera_tower_box.png';
 CameraTowerBuilding.res_key = 'camera_tower.png';
 CameraTowerBuilding.obj_name = 'Camera Tower';
-CameraTowerBuilding.cost = 150;
+CameraTowerBuilding.cost = 200;
 CameraTowerBuilding.enabled = false;
 CameraTowerBuilding.count = 0;
 CameraTowerBuilding.cell_size = {x: 1, y: 2};

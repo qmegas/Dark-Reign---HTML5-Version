@@ -153,7 +153,7 @@ function ConstructManager(units, buildings)
 	this.cellPopupPrepere = function(cell_id)
 	{
 		var MAX_X = 400, MAX_Y = 200;
-		var i = this.current_view_offset + parseInt(cell_id), ctx = $('#cell_popup').get(0).getContext('2d'), text;
+		var i = this.current_view_offset + parseInt(cell_id), ctx = $('#cell_popup').get(0).getContext('2d'), obj, text;
 		
 		//Clear popup anyway
 		ctx.clearRect(0, 0, MAX_X, MAX_Y);
@@ -163,38 +163,76 @@ function ConstructManager(units, buildings)
 			if (typeof this.available_buildings[i] == 'undefined')
 				return;
 			
-			text = this.available_buildings[i].obj_name + ' ' + this.available_buildings[i].cost + 'c';
+			obj = this.available_buildings[i];
 		}
 		else
 		{
 			if (typeof this.available_units[i] == 'undefined')
 				return;
 			
-			text = this.available_units[i].obj_name + ' ' + this.available_units[i].cost + 'c';
+			obj = this.available_units[i];
 		}
 		
+		text = obj.obj_name + ' ' + obj.cost + 'c';
+		
 		//Draw name
-		var text_size = game.fontDraw.getSize(text) + 4, left = text_size + 13;
+		var text_size = game.fontDraw.getSize(text) + 4, left = MAX_X - text_size - 13;
 		
-		//Black backgound & border 1
 		ctx.fillStyle = '#07f4ff';
-		ctx.fillRect(MAX_X - 15.5 - text_size, 0.5, text_size + 2, 18);
+		ctx.fillRect(MAX_X - 15 - text_size, 0, text_size + 2, 18);
 		ctx.fillStyle = '#000000';
-		ctx.fillRect(MAX_X - 14.5 - text_size, 1.5, text_size, 16);
+		ctx.fillRect(MAX_X - 14 - text_size, 1, text_size, 16);
 		
-		//Draw border 2
 		ctx.lineWidth = 1;
 		ctx.strokeStyle = '#07b4b4';
 		
 		ctx.beginPath();
-		ctx.moveTo(MAX_X - 15.5 - text_size, 18.5);
-		ctx.lineTo(MAX_X - 13.5, 18.5);
-		ctx.lineTo(MAX_X - 13.5, 0.5);
-		ctx.moveTo(MAX_X - 13.5, 10.5);
+		ctx.moveTo(MAX_X - 15 - text_size, 18);
+		ctx.lineTo(MAX_X - 13, 18);
+		ctx.lineTo(MAX_X - 13, 0);
+		ctx.moveTo(MAX_X - 13, 10.5);
 		ctx.lineTo(MAX_X, 10.5);
 		ctx.stroke();
 		
-		//Draw text
-		game.fontDraw.drawOnCanvas(text, ctx, MAX_X - 12.5 - text_size, 2.5, 'green')
+		game.fontDraw.drawOnCanvas(text, ctx, MAX_X - 12.5 - text_size, 2.5, 'green');
+		
+		//Draw required
+		var texts = [], max_text_size = 0;
+		text_size = 0;
+		if (obj.enabled)
+			return;
+		
+		for (i in obj.require_building)
+			if (obj.require_building[i].count == 0)
+				texts.push(obj.require_building[i].obj_name);
+		if (texts.length == 0)
+			return;
+		
+		for (i=0; i<texts.length; ++i)
+		{
+			text_size = game.fontDraw.getSize(texts[i]);
+			if (text_size > max_text_size)
+				max_text_size = text_size;
+		}
+		
+		max_text_size += 4;
+		var box_height = texts.length*15 + 3;
+		
+		ctx.fillStyle = '#07f4ff';
+		ctx.fillRect(left - 15 - max_text_size, 0, max_text_size + 2, box_height);
+		ctx.fillStyle = '#000000';
+		ctx.fillRect(left - 14 - max_text_size, 1, max_text_size, box_height - 2);
+		
+		ctx.strokeStyle = '#07b4b4';
+		ctx.beginPath();
+		ctx.moveTo(left - 15 - max_text_size, box_height);
+		ctx.lineTo(left - 13, box_height);
+		ctx.lineTo(left - 13, 0.5);
+		ctx.moveTo(left - 13, 10.5);
+		ctx.lineTo(left - 2, 10.5);
+		ctx.stroke();
+		
+		for (i=0; i<texts.length; ++i)
+			game.fontDraw.drawOnCanvas(texts[i], ctx, left - 12.5 - max_text_size, i*15 + 2.5, 'red');
 	}
 }
