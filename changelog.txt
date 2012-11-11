@@ -1,3 +1,8 @@
+Build 20 (11.11.2012)
+- More correct way to check of building position
+- Added energy indicator
+- Added "Low power" sound notification, when power is too low
+
 Build 19 (07.11.2012)
 - Improved popup for units on building panel, now it shows required buildings too
 - Added "Water Launch Pad" building (without Freighter)

@@ -19,12 +19,15 @@ function Game()
 	this.selected_info = {};
 	this.constructor = {};
 	
-	this.money = new MoneyDraw();
 	this.mouse = new MousePointer(this);
 	this.fontDraw = new DKFont();
 	
 	this.action_state = 0;
 	this.action_state_options = {};
+	
+	//Player cars
+	this.money = new MoneyDraw();
+	this.energy = new EnergyDraw();
 	
 	this.moveViewport = function(x, y, relative)
 	{
@@ -137,6 +140,7 @@ function Game()
 			game.constructor.drawUnits();
 			game.level.generateMap();
 			game._resetSelectionInfo();
+			game.energy.addToMax(0);
 			
 			$('.load-screen').hide();
 			$('.game').show();
@@ -218,14 +222,13 @@ function Game()
 		if (unitid!=-1) // && !this.objects[unitid].is_selected)
 			this.objects[unitid].drawSelection(true);
 		
-		//DEBUG: Unit placement
+//		//DEBUG: Unit placement
 //		this.viewport_ctx.fillStyle = 'rgba(0, 0, 255, 0.3)';
 //		var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24);
 //		for (var x=0; x<20; ++x)
 //			for (var y=0; y<20; ++y)
 //				if (this.level.map_cells[start_x+x][start_y+y].unit != -1)
 //					this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
-		
 
 		//DEBUG: Cells grid
 //		this.viewport_ctx.strokeStyle = '#ffffff';
@@ -246,6 +249,9 @@ function Game()
 
 		//Mouse
 		this.mouse.draw(cur_time);
+		
+		//Energy
+		this.energy.draw(cur_time, false);
 		
 		window.requestAnimFrame(function(){
 			game.draw();
@@ -347,6 +353,7 @@ function Game()
 		this.resources.addSound('construction_under_way', 'sounds/construction_under_way.ogg');
 		this.resources.addSound('construction_complete', 'sounds/construction_complete.ogg');
 		this.resources.addSound('new_units_available', 'sounds/new_units_available.ogg');
+		this.resources.addSound('low_power', 'sounds/low_power.ogg');
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();

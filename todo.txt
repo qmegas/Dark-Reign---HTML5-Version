@@ -1,5 +1,19 @@
-- Producing "Construction Rig"
-- Show units on minimap
+To do:
+	- Producing "Construction Rig"
+	- Show units on minimap
 
-- Bugs:
-	- Correct building position for Water Launch Pad (and future buildings)
+- High priority bugs:
+
+
+- Medium priority bugs:
+	- 
+
+- Low priority bugs:
+	- Map: Water animation
+	- Add shadows to all units & buildings
+	- Energy meter blinking incorrectly
+	- Need to add animation when energy state changed
+	- When construction building, money should decrease gradually
+
+- Very low priority bugs:
+	- When mouseover building or unit, it's name should be shown with small delay

@@ -113,10 +113,14 @@ function AbstractBuilding()
 	
 	this.markCellsOnMap = function(userid)
 	{
-		var x, y, cell = this.getCell(), cell_type = (userid==-1) ? CELL_TYPE_EMPTY : CELL_TYPE_BUILDING;
+		var i = -1, x, y, cell = this.getCell(), cell_type = (userid==-1) ? CELL_TYPE_EMPTY : CELL_TYPE_BUILDING;
 		for (x=0; x<this._proto.cell_size.x; ++x)
 			for (y=0; y<this._proto.cell_size.y; ++y)
 			{
+				++i;
+				if (this._proto.cell_matrix[i] == 0)
+					continue;
+				
 				game.level.map_cells[cell.x+x][cell.y+y].unit = userid;
 				game.level.map_cells[cell.x+x][cell.y+y].type = cell_type;
 			}
@@ -166,13 +170,17 @@ function AbstractBuilding()
 					this.removeEventListener('ended', arguments.callee, false);
 				});
 
+			game.energy.addToCurrent(this._proto.energy);
 			this.state = 'NORMAL';
 		}
 	}
 }
 
 //Static methods
-AbstractBuilding.drawBuildMouse = function(obj, x, y){
+AbstractBuilding.drawBuildMouse = function(obj, x, y)
+{
+	var i = -1;
+	
 	x -= obj.cell_padding.x;
 	y -= obj.cell_padding.y;
 	
@@ -192,6 +200,10 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y){
 		
 		for (var yy = 0; yy<obj.cell_size.y; ++yy)
 		{
+			++i;
+			if (obj.cell_matrix[i] == 0)
+				continue;
+			
 			var yyy = yy+y;
 			if (yyy<0 || yyy>game.level.size.y-1)
 				continue;
@@ -222,6 +234,8 @@ AbstractBuilding.createNew = function(obj, x, y)
 
 AbstractBuilding.canBuild = function(obj, x, y, unit)
 {
+	var i = -1;
+	
 	x -= obj.cell_padding.x;
 	y -= obj.cell_padding.y;
 	
@@ -233,6 +247,10 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 		
 		for (var yy = 0; yy<obj.cell_size.y; ++yy)
 		{
+			++i;
+			if (obj.cell_matrix[i] == 0)
+				continue;
+			
 			var yyy = yy+y;
 			if (yyy<0 || yyy>game.level.size.y-1)
 				return false;

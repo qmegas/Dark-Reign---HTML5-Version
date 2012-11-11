@@ -7,6 +7,7 @@
 		<script type="text/javascript" src="js/constants.js"></script>
 		<script type="text/javascript" src="js/money.js"></script>
 		<script type="text/javascript" src="js/mouse.js"></script>
+		<script type="text/javascript" src="js/energy.js"></script>
 		<script type="text/javascript" src="js/resources.js"></script>
 		<script type="text/javascript" src="js/buildings/abstract.js"></script>
 		<script type="text/javascript" src="js/buildings/headquarter.js"></script>
@@ -95,7 +96,9 @@
 					</div>
 					<div class="resources">
 						<div class="switches"></div>
-						<div class="metrics"></div>
+						<div class="metrics" id="metrics_box">
+							<canvas id="energy_scale" width="17" height="81"></canvas>
+						</div>
 					</div>
 				</div>
 			</div>

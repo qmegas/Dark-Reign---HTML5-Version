@@ -303,6 +303,12 @@ body {
 	height: 104px;
 	background: url("../images/shell/metrics.png") no-repeat 0 0;
 }
+.game .right-frame .bottom-right .resources .metrics.blicked {
+	background-position: -52px 0;
+}
+.game .right-frame .bottom-right .resources .metrics #energy_scale {
+	margin: 16px 0 0 8px;
+}
 
 /* Buttons */
 .dk-button-small {
