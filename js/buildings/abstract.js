@@ -34,8 +34,8 @@ function AbstractBuilding()
 	
 	this._drawSelectionStandart = function(is_onmouse)
 	{
-		var top_x = this.position.x,
-			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y + 10;
+		var top_x = this.position.x - game.viewport_x,
+			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y + 10  - game.viewport_y;
 			
 		game.viewport_ctx.strokeStyle = (this.is_selected) ? '#ffffff' : '#393939';
 		game.viewport_ctx.lineWidth = 1;
@@ -72,7 +72,7 @@ function AbstractBuilding()
 		if (this.state == 'CONSTRUCTION')
 		{
 			var const_proc = this.construction_now / this.construction_max;
-			top_y = this.position.y - this._proto.image_padding.y;
+			top_y = this.position.y - this._proto.image_padding.y - game.viewport_y;
 			
 			game.viewport_ctx.fillStyle = '#000000';
 			game.viewport_ctx.fillRect(top_x, top_y-2, health_width, 4);
@@ -83,8 +83,8 @@ function AbstractBuilding()
 		}
 		
 		//Draw name
-		top_y = this.position.y - this._proto.image_padding.y - 16.5;
-		top_x = this.position.x - 0.5 + health_width/4;
+		top_y = this.position.y - this._proto.image_padding.y - 16.5 - game.viewport_y;
+		top_x = this.position.x - 0.5 + health_width/4 - game.viewport_x;
 		if (this.state == 'CONSTRUCTION')
 		{
 			game.fontDraw.drawOnCanvas(
@@ -129,7 +129,7 @@ function AbstractBuilding()
 	//Must be implemented
 	this.run = function() {}
 	
-	this.draw = function(is_onmouse)
+	this.draw = function(cur_time)
 	{
 		if (this.state == 'CONSTRUCTION')
 		{
@@ -172,8 +172,14 @@ function AbstractBuilding()
 
 			game.energy.addToCurrent(this._proto.energy);
 			this.state = 'NORMAL';
+			
+			this.onConstructed();
 		}
 	}
+	
+	//Event functions
+	
+	this.onConstructed = function() {}
 }
 
 //Static methods

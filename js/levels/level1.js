@@ -2405,7 +2405,8 @@ function Level1()
 	{
 		return [
 			new TestUnit(12, 8),
-			new TestUnit(5, 6)
+			new TestUnit(5, 6),
+			new TestUnit(7, 6)
 		];
 	}
 	
@@ -2416,7 +2417,7 @@ function Level1()
 	
 	this.getAvailableBuildings = function()
 	{
-		return [HeadquarterBuilding, WaterLaunchPadBuilding, CameraTowerBuilding];
+		return [HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, CameraTowerBuilding];
 	}
 	
 	this.generateMap = function()

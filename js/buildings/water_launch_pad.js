@@ -17,12 +17,13 @@ function WaterLaunchPadBuilding(pos_x, pos_y)
 		}
 	}
 	
+	//Custom selection bar
 	this.drawSelection = function(is_onmouse)
 	{
 		this._drawSelectionStandart(is_onmouse);
 		
-		var top_x = this.position.x - 4,
-			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 45, 
+		var top_x = this.position.x - 4 - game.viewport_x,
+			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 45 - game.viewport_y, 
 			water_h = parseInt((this.water_now/this.water_max)*46);
 			
 		game.viewport_ctx.fillStyle = '#000000';

@@ -2,6 +2,9 @@ Build 20 (11.11.2012)
 - More correct way to check of building position
 - Added energy indicator
 - Added "Low power" sound notification, when power is too low
+- Added "Taelon Power Generator" building (without Freighter). This is first animated building.
+- Bugfix: Building selection when map view moved from top left corner
+- Added addition Construction Rig to map
 
 Build 19 (07.11.2012)
 - Improved popup for units on building panel, now it shows required buildings too

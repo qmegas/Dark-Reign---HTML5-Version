@@ -1,7 +1,7 @@
 function EnergyDraw()
 {
-	this._max = 1000;
-	this._current = 300;
+	this._max = 0;
+	this._current = 0;
 	
 	this._last_sound_notification = (new Date()).getTime();
 	this._last_blink = this._last_sound_notification;
@@ -29,14 +29,16 @@ function EnergyDraw()
 		if (full_redraw)
 		{
 			var SECTION_STEP = 2500, CANVAS_H = 81;
-			var bar_color = '#ff0000', max_val = Math.ceil(Math.max(this._max, this._current) / SECTION_STEP)*SECTION_STEP, 
+			var bar_color = '#ff0000', max_val = Math.max(2500, Math.ceil(Math.max(this._max, this._current) / SECTION_STEP)*SECTION_STEP), 
 				bar_size = parseInt(this._max/max_val*CANVAS_H), cur_pos = 80.5-parseInt(this._current/max_val*CANVAS_H);
-			
+				
 			if (this._max > this._current)
 			{
 				$('#metrics_box').removeClass('blicked');
-				bar_color = '#5d953d';
+				bar_color = '#a5ff6c';
 			}
+			else
+				bar_color = ((this._current - this._max) > 250) ? '#ff0e00' : '#ffff00';
 			
 			//Background
 			this._ctx.fillStyle = '#696969';
