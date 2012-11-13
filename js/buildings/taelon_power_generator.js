@@ -10,7 +10,7 @@ function TaelonPowerBuilding(pos_x, pos_y)
 	//Building animation
 	this._draw_last_frame_change = 0;
 	this._draw_cur_frame = 0;
-	this._draw_from_to_pos = [0, this._proto.image_size.x*2, this._proto.image_size.x*3, this._proto.image_size.x*2];
+	this._draw_from_to_pos = [1,2,3,2];
 	
 	this.setPosition(pos_x, pos_y);
 	
@@ -33,24 +33,45 @@ function TaelonPowerBuilding(pos_x, pos_y)
 	{
 		if (this.state == 'CONSTRUCTION')
 		{
-			game.viewport_ctx.drawImage(
-				game.resources.get(this._proto.res_key), this._proto.image_size.x, 0, 
-				this._proto.image_size.x, this._proto.image_size.y, 
-				this.position.x - this._proto.image_padding.x - game.viewport_x, 
-				this.position.y - this._proto.image_padding.y - game.viewport_y, 
-				this._proto.image_size.x, this._proto.image_size.y
-			);
+			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
+				res_key: this._proto.res_key,
+				src_x: 0,
+				src_y: 0,
+				src_width: this._proto.image_size.x,
+				src_height: this._proto.image_size.y,
+				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+				y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			});
+			game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
+				res_key: this._proto.res_key,
+				src_x: this._proto.image_size.x,
+				src_y: 0,
+				src_width: this._proto.image_size.x,
+				src_height: this._proto.image_size.y,
+				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+				y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			});
 		}
 		else
 		{
-			game.viewport_ctx.drawImage(
-				game.resources.get(this._proto.res_key), this._draw_from_to_pos[this._draw_cur_frame], 0, 
-				this._proto.image_size.x, this._proto.image_size.y, 
-				this.position.x - this._proto.image_padding.x - game.viewport_x, 
-				this.position.y - this._proto.image_padding.y - game.viewport_y, 
-				this._proto.image_size.x, this._proto.image_size.y
-			);
-			
+			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
+				res_key: this._proto.res_key,
+				src_x: 0,
+				src_y: this._proto.image_size.y,
+				src_width: this._proto.image_size.x,
+				src_height: this._proto.image_size.y,
+				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+				y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			});
+			game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
+				res_key: this._proto.res_key,
+				src_x: this._draw_from_to_pos[this._draw_cur_frame]*this._proto.image_size.x,
+				src_y: this._proto.image_size.y,
+				src_width: this._proto.image_size.x,
+				src_height: this._proto.image_size.y,
+				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+				y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			});
 			if ((cur_time - this._draw_last_frame_change)>200)
 			{
 				++this._draw_cur_frame;
@@ -64,7 +85,6 @@ function TaelonPowerBuilding(pos_x, pos_y)
 	this.drawSelection = function(is_onmouse)
 	{
 		this._drawSelectionStandart(is_onmouse);
-		
 		
 		var top_x = this.position.x - game.viewport_x + CELL_SIZE*this._proto.cell_size.x,
 			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 57 - game.viewport_y, 
@@ -96,8 +116,8 @@ TaelonPowerBuilding.count = 0;
 TaelonPowerBuilding.cell_size = {x: 4, y: 4};
 TaelonPowerBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,];
 TaelonPowerBuilding.cell_padding = {x: 2, y: 1};
-TaelonPowerBuilding.image_size = {x: 89, y: 108};
-TaelonPowerBuilding.image_padding = {x: -2, y: 18};
+TaelonPowerBuilding.image_size = {x: 90, y: 123};
+TaelonPowerBuilding.image_padding = {x: -4, y: 33};
 TaelonPowerBuilding.require_building = [];
 
 TaelonPowerBuilding.loadResources = function(){

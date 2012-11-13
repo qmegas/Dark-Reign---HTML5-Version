@@ -21,6 +21,7 @@ function Game()
 	
 	this.mouse = new MousePointer(this);
 	this.fontDraw = new DKFont();
+	this.objDraw = new ObjectDraw();
 	
 	this.action_state = 0;
 	this.action_state_options = {};
@@ -194,10 +195,11 @@ function Game()
 		var top_x = parseInt(this.viewport_x / CELL_SIZE) - 1, top_y = parseInt(this.viewport_y / CELL_SIZE) - 1;
 		
 		this.viewport_ctx.clearRect(0, 0, VIEWPORT_SIZE, VIEWPORT_SIZE);
+		this.objDraw.clear();
 		
 		//Detect onscreen units
-		for (var x=0; x<21; ++x)
-			for (var y=0; y<21; ++y)
+		for (var y=0; y<21; ++y)
+			for (var x=0; x<21; ++x)
 			{
 				if (this.level.map_cells[top_x+x] && this.level.map_cells[top_x+x][top_y+y])
 				{
@@ -207,16 +209,19 @@ function Game()
 				}
 			}
 			
-		//Round 1: Draw units
+		//Round 1: Put units to draw heap
 		for (unitid in onscreen)
 			this.objects[unitid].draw(cur_time);
 		
-		//Round 2: Draw selections
+		//Round 2: Draw all entries in draw heap
+		this.objDraw.draw();
+		
+		//Round 3: Draw selections
 		for (unitid in onscreen)
 			if (this.objects[unitid].is_selected)
 				this.objects[unitid].drawSelection();
 		
-		//On mouse selection
+		//Round 4: On mouse selection
 		var mouse_pos = this.mouse.getCellPosition();
 		unitid = this.level.map_cells[mouse_pos.x][mouse_pos.y].unit;
 		if (unitid!=-1) // && !this.objects[unitid].is_selected)

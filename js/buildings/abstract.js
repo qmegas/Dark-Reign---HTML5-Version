@@ -133,23 +133,45 @@ function AbstractBuilding()
 	{
 		if (this.state == 'CONSTRUCTION')
 		{
-			game.viewport_ctx.drawImage(
-				game.resources.get(this._proto.res_key), this._proto.image_size.x, 0, 
-				this._proto.image_size.x, this._proto.image_size.y, 
-				this.position.x - this._proto.image_padding.x - game.viewport_x, 
-				this.position.y - this._proto.image_padding.y - game.viewport_y, 
-				this._proto.image_size.x, this._proto.image_size.y
-			);
+			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
+				res_key: this._proto.res_key,
+				src_x: 0,
+				src_y: 0,
+				src_width: this._proto.image_size.x,
+				src_height: this._proto.image_size.y,
+				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+				y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			});
+			game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
+				res_key: this._proto.res_key,
+				src_x: this._proto.image_size.x,
+				src_y: 0,
+				src_width: this._proto.image_size.x,
+				src_height: this._proto.image_size.y,
+				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+				y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			});
 		}
 		else
 		{
-			game.viewport_ctx.drawImage(
-				game.resources.get(this._proto.res_key), 0, 0, 
-				this._proto.image_size.x, this._proto.image_size.y, 
-				this.position.x - this._proto.image_padding.x - game.viewport_x, 
-				this.position.y - this._proto.image_padding.y - game.viewport_y, 
-				this._proto.image_size.x, this._proto.image_size.y
-			);
+			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
+				res_key: this._proto.res_key,
+				src_x: 0,
+				src_y: this._proto.image_size.y,
+				src_width: this._proto.image_size.x,
+				src_height: this._proto.image_size.y,
+				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+				y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			});
+			game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
+				res_key: this._proto.res_key,
+				src_x: this._proto.image_size.x,
+				src_y: this._proto.image_size.y,
+				src_width: this._proto.image_size.x,
+				src_height: this._proto.image_size.y,
+				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+				y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			});
 		}
 	}
 	
@@ -191,7 +213,14 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 	y -= obj.cell_padding.y;
 	
 	game.viewport_ctx.drawImage(
-		game.resources.get(obj.res_key), 0, 0, 
+		game.resources.get(obj.res_key), 0, obj.image_size.y, 
+		obj.image_size.x, obj.image_size.y, 
+		x*CELL_SIZE - game.viewport_x - obj.image_padding.x, 
+		y*CELL_SIZE - game.viewport_y - obj.image_padding.y, 
+		obj.image_size.x, obj.image_size.y
+	);
+	game.viewport_ctx.drawImage(
+		game.resources.get(obj.res_key), obj.image_size.x, obj.image_size.y, 
 		obj.image_size.x, obj.image_size.y, 
 		x*CELL_SIZE - game.viewport_x - obj.image_padding.x, 
 		y*CELL_SIZE - game.viewport_y - obj.image_padding.y, 

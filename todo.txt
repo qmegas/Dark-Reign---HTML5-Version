@@ -1,4 +1,7 @@
 To do:
+	- Redesign map cell structure
+	- Sound notification queue
+	- Correct "Construction Rig" drawing (bug when CR moving around HQ)
 	- Producing "Construction Rig"
 	- Show units on minimap
 

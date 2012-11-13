@@ -82,19 +82,29 @@ function TestUnit(pos_x, pos_y)
 		switch (this.state)
 		{
 			case 'STAND':
-				game.viewport_ctx.drawImage(
-					game.resources.get('test_unit_stand.png'), this.move_direction*this.width, 
-					0, this.width, this.height, top_x, top_y, this.width, this.height
-				);
+				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
+					res_key: 'test_unit_stand.png',
+					src_x: this.move_direction*this.width,
+					src_y: 0,
+					src_width: this.width,
+					src_height: this.height,
+					x: top_x,
+					y: top_y
+				});
 				break;
 			
 			case 'BUILD':
 			case 'MOVE':
 				var diff = (parseInt((current_time - this.startAnimation) / 50) % 6);
-				game.viewport_ctx.drawImage(
-					game.resources.get('test_unit_move.png'), this.move_direction*this.width, 
-					diff*this.height, this.width, this.height, top_x, top_y, this.width, this.height
-				);
+				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
+					res_key: 'test_unit_move.png',
+					src_x: this.move_direction*this.width,
+					src_y: diff*this.height,
+					src_width: this.width,
+					src_height: this.height,
+					x: top_x,
+					y: top_y
+				});
 				break;
 		}
 	}

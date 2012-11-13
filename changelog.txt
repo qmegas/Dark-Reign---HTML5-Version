@@ -1,4 +1,7 @@
-Build 20 (11.11.2012)
+Build 21 (13.11.2012)
+- New object drawing engine, that allows to draw units & building by layers
+
+Build 20 (12.11.2012)
 - More correct way to check of building position
 - Added energy indicator
 - Added "Low power" sound notification, when power is too low
