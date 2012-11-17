@@ -24,7 +24,7 @@ function Graph(grid, ground_unit, avoid_others)
 			type = 1;
 			if (ground_unit && (row[y].type==CELL_TYPE_WATER || row[y].type==CELL_TYPE_NOWALK || row[y].type==CELL_TYPE_BUILDING))
 				type = 0;
-			if (avoid_others && row[y].unit != -1)
+			if (avoid_others && MapCell.getSingleUserId(row[y]) != -1)
 				type = 0;
 			nodes[x][y] = new GraphNode(x, y, type);
 		}

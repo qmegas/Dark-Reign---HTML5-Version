@@ -118,11 +118,12 @@ function AbstractBuilding()
 			for (y=0; y<this._proto.cell_size.y; ++y)
 			{
 				++i;
-				if (this._proto.cell_matrix[i] == 0)
-					continue;
+				if (this._proto.move_matrix[i] == 1)
+					game.level.map_cells[cell.x+x][cell.y+y].type = cell_type;
 				
-				game.level.map_cells[cell.x+x][cell.y+y].unit = userid;
-				game.level.map_cells[cell.x+x][cell.y+y].type = cell_type;
+				if (this._proto.cell_matrix[i] == 1)
+					game.level.map_cells[cell.x+x][cell.y+y].building = userid;
+				
 			}
 	}
 	
@@ -243,8 +244,8 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 			if (yyy<0 || yyy>game.level.size.y-1)
 				continue;
 			
-			var cell = game.level.map_cells[xxx][yyy];
-			if (cell.type!=0 || (cell.unit!=-1 && cell.unit!=game.action_state_options.requested_unit))
+			var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
+			if (cell.type!=0 || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
 			{
 				game.viewport_ctx.drawImage(
 					game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
@@ -290,8 +291,8 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 			if (yyy<0 || yyy>game.level.size.y-1)
 				return false;
 			
-			var cell = game.level.map_cells[xxx][yyy];
-			if (cell.type!=0 || (cell.unit!=-1 && cell.unit!=unit))
+			var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
+			if (cell.type!=0 || (unitid!=-1 && unitid!=unit))
 				return false;
 		}
 	}

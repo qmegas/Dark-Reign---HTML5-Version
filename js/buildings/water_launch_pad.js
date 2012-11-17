@@ -51,6 +51,7 @@ WaterLaunchPadBuilding.enabled = true;
 WaterLaunchPadBuilding.count = 0;
 WaterLaunchPadBuilding.cell_size = {x: 5, y: 3};
 WaterLaunchPadBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0];
+WaterLaunchPadBuilding.move_matrix = [0,1,0,0,1,1,1,1,1,1,0,0,0,0,0];
 WaterLaunchPadBuilding.cell_padding = {x: 2, y: 1};
 WaterLaunchPadBuilding.image_size = {x: 112, y: 77};
 WaterLaunchPadBuilding.image_padding = {x: -10, y: 7};

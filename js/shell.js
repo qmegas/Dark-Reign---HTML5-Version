@@ -93,7 +93,13 @@ function Game()
 		//Init map matrix
 		for (var x=0; x<level.size.x; ++x)
 			for (var y=0; y<level.size.y; ++y)
-				this.level.map_cells[x][y] = {type: this.level.map_cells[x][y], unit: -1};
+				this.level.map_cells[x][y] = {
+					type: this.level.map_cells[x][y], 
+					ground_unit: -1,
+					fly_unit: -1,
+					building: -1,
+					unit: -1
+				};
 		
 		//Init units
 		this.objects = this.level.getInitUnits();
@@ -105,7 +111,10 @@ function Game()
 			
 			this.objects[i].uid = i;
 			var pos = this.objects[i].getCell();
-			this.level.map_cells[pos.x][pos.y].unit = i;
+			if (this.objects[i].is_fly)
+				this.level.map_cells[pos.x][pos.y].fly_unit = i;
+			else
+				this.level.map_cells[pos.x][pos.y].ground_unit = i;
 		}
 		
 		this.constructor = new ConstructManager(this.level.getAvailableUnits(), this.level.getAvailableBuildings());
@@ -161,11 +170,7 @@ function Game()
 			if (unit.is_building)
 				unit.markCellsOnMap(-1);
 			else
-			{
-				cell = unit.getCell();
-				if (this.level.map_cells[cell.x][cell.y].unit == unit.uid)
-					this.level.map_cells[cell.x][cell.y].unit = -1; //Create markCellsOnMap function for user?
-			}
+				unit.markCellsOnMap();
 			
 			//Remove user from selected array
 			var sindex = this.selected_objects.indexOf(unit.uid);
@@ -203,9 +208,13 @@ function Game()
 			{
 				if (this.level.map_cells[top_x+x] && this.level.map_cells[top_x+x][top_y+y])
 				{
-					unitid = this.level.map_cells[top_x+x][top_y+y].unit;
-					if (unitid != -1)
-						onscreen[unitid] = 1; //Preventing duplicate entries (for example building can be placed in few cells)
+					//Preventing duplicate entries (for example building can be placed in few cells)
+					if (this.level.map_cells[top_x+x][top_y+y].ground_unit != -1)
+						onscreen[this.level.map_cells[top_x+x][top_y+y].ground_unit] = 1;
+					if (this.level.map_cells[top_x+x][top_y+y].fly_unit != -1)
+						onscreen[this.level.map_cells[top_x+x][top_y+y].fly_unit] = 1;
+					if (this.level.map_cells[top_x+x][top_y+y].building != -1)
+						onscreen[this.level.map_cells[top_x+x][top_y+y].building] = 1;
 				}
 			}
 			
@@ -223,8 +232,8 @@ function Game()
 		
 		//Round 4: On mouse selection
 		var mouse_pos = this.mouse.getCellPosition();
-		unitid = this.level.map_cells[mouse_pos.x][mouse_pos.y].unit;
-		if (unitid!=-1) // && !this.objects[unitid].is_selected)
+		unitid = MapCell.getSingleUserId(this.level.map_cells[mouse_pos.x][mouse_pos.y]);
+		if (unitid != -1) // && !this.objects[unitid].is_selected)
 			this.objects[unitid].drawSelection(true);
 		
 //		//DEBUG: Unit placement
@@ -232,10 +241,40 @@ function Game()
 //		var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24);
 //		for (var x=0; x<20; ++x)
 //			for (var y=0; y<20; ++y)
-//				if (this.level.map_cells[start_x+x][start_y+y].unit != -1)
+//			{
+//				if (MapCell.getSingleUserId(this.level.map_cells[start_x+x][start_y+y]) != -1)
 //					this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
+//			}
 
-		//DEBUG: Cells grid
+//		//DEBUG: Ground type
+//		var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24), skip;
+//		for (var x=0; x<20; ++x)
+//			for (var y=0; y<20; ++y)
+//			{
+//				skip = false;
+//				switch (this.level.map_cells[start_x+x][start_y+y].type)
+//				{
+//					case CELL_TYPE_EMPTY:
+//						skip = true;
+//						break;
+//					case CELL_TYPE_TREE:
+//						this.viewport_ctx.fillStyle = 'rgba(0, 200, 0, 0.3)';
+//						break;
+//					case CELL_TYPE_WATER:
+//						this.viewport_ctx.fillStyle = 'rgba(0, 0, 255, 0.3)';
+//						break;
+//					case CELL_TYPE_NOWALK:
+//						this.viewport_ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+//						break;
+//					case CELL_TYPE_BUILDING:
+//						this.viewport_ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
+//						break;
+//				}
+//				if (!skip)
+//					this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
+//			}
+
+//		//DEBUG: Cells grid
 //		this.viewport_ctx.strokeStyle = '#ffffff';
 //		this.viewport_ctx.beginPath();
 //		var start = 24 - (this.viewport_x - parseInt(this.viewport_x/24)*24) + 0.5; // - 11.5;
@@ -285,7 +324,7 @@ function Game()
 		
 		if (button == 'left')
 		{
-			var cunit = this.level.map_cells[pos.x][pos.y].unit;
+			var cunit = MapCell.getSingleUserId(this.level.map_cells[pos.x][pos.y]);
 			if ((cunit !== -1) && this.objects[cunit].canBeSelected())
 			{
 				this.regionSelect(pos.x, pos.y, pos.x, pos.y);
@@ -320,7 +359,7 @@ function Game()
 		for (x=x1; x<=x2; ++x)
 			for (y=y1; y<=y2; ++y)
 			{
-				cur_unit = this.level.map_cells[x][y].unit;
+				cur_unit = MapCell.getSingleUserId(this.level.map_cells[x][y]);
 				if ((cur_unit !== -1) && this.objects[cur_unit].canBeSelected())
 				{
 					//Do not select buildings on multiselect

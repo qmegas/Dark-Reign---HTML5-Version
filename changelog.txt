@@ -1,8 +1,9 @@
 Build 21 (13.11.2012)
 - New object drawing engine, that allows to draw units & building by layers
+- New map cell structure that allows to place different types of units in single cell
 
 Build 20 (12.11.2012)
-- More correct way to check of building position
+- More correct way to check building position
 - Added energy indicator
 - Added "Low power" sound notification, when power is too low
 - Added "Taelon Power Generator" building (without Freighter). This is first animated building.

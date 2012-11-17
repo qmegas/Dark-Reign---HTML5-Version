@@ -217,7 +217,7 @@ function TestUnit(pos_x, pos_y)
 		var curr_pos = this.getCell();
 
 		//Check if next cell is not empty. If not empty then 
-		if (game.level.map_cells[this.move_path[0].x][this.move_path[0].y].unit != -1)
+		if (MapCell.getSingleUserId(game.level.map_cells[this.move_path[0].x][this.move_path[0].y]) != -1)
 		{
 			//Stop
 			if (this.move_path.length == 1)
@@ -230,11 +230,17 @@ function TestUnit(pos_x, pos_y)
 			this.move_path = PathFinder.findPath(curr_pos.x, curr_pos.y, last_point.x, last_point.y, true, true);
 		}
 
-		//Move user to next cell
-		game.level.map_cells[this.move_path[0].x][this.move_path[0].y].unit = this.uid;
-
-		//Remove from current
-		game.level.map_cells[curr_pos.x][curr_pos.y].unit = -1;
+		//Move user to next cell + Remove from current
+		if (this.is_fly)
+		{
+			game.level.map_cells[this.move_path[0].x][this.move_path[0].y].fly_unit = this.uid;
+			game.level.map_cells[curr_pos.x][curr_pos.y].fly_unit = -1;
+		}
+		else
+		{
+			game.level.map_cells[this.move_path[0].x][this.move_path[0].y].ground_unit = this.uid;
+			game.level.map_cells[curr_pos.x][curr_pos.y].ground_unit = -1;
+		}
 	}
 	
 	this.canBeSelected = function()
@@ -258,6 +264,22 @@ function TestUnit(pos_x, pos_y)
 	{
 		var i = Math.floor((Math.random()*3)+1);
 		game.resources.get('test_'+type+i).play();
+	}
+	
+	this.markCellsOnMap = function()
+	{
+		var cell = this.getCell();
+		
+		if (this.is_fly)
+		{
+			if (game.level.map_cells[cell.x][cell.y].fly_unit == this.uid)
+				game.level.map_cells[cell.x][cell.y].fly_unit = -1;
+		}
+		else
+		{
+			if (game.level.map_cells[cell.x][cell.y].ground_unit == this.uid)
+				game.level.map_cells[cell.x][cell.y].ground_unit = -1;
+		}
 	}
 }
 

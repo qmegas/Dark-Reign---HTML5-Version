@@ -54,7 +54,7 @@ function MousePointer(game)
 					break;
 			}
 		}
-		else if (game.level.map_cells[pos.x][pos.y].unit != -1)
+		else if (MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]) != -1)
 		{
 			this._drawCursor(current_time, 1, 8);
 		}

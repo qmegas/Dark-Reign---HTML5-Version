@@ -1,12 +1,11 @@
 To do:
-	- Redesign map cell structure
 	- Sound notification queue
-	- Correct "Construction Rig" drawing (bug when CR moving around HQ)
 	- Producing "Construction Rig"
 	- Show units on minimap
+	- Add "Critical power" sound notification
 
 - High priority bugs:
-
+	- Construction Rig selection reset when some building construction is started
 
 - Medium priority bugs:
 	- 
