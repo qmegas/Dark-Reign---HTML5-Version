@@ -2,10 +2,14 @@ Build 21 (18.11.2012)
 - New object drawing engine, that allows to draw units & building by layers
 - New map cell structure that allows to place different types of units in single cell
 - Producing "Construction Rig"
--- Known problems: Where is still no good algorithm for finding exit point. Sometimes units are stuck in buildings 
+-- Known problems: 
+	- Where is still no good algorithm for finding exit point. Sometimes units are stuck in buildings 
+	- There is no progress indicator on right bar
 - Added "Critical power" sound notification
 - A lot of different bug fixes & structure changes
 - Added sound notification queue
+- Added "Training Facility" building
+- Added "Assembly Plant" building
 
 Build 20 (12.11.2012)
 - More correct way to check building position
