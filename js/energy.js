@@ -21,7 +21,7 @@ function EnergyDraw()
 			//Make sound every 15 sec
 			if ((time - this._last_sound_notification) > 15000)
 			{
-				game.resources.get('low_power').play();
+				game.notifications.addSound((this._current-this._max > 250) ? 'power_critical' : 'low_power');
 				this._last_sound_notification = time;
 			}
 		}

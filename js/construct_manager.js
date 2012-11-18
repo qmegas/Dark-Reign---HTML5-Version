@@ -147,7 +147,31 @@ function ConstructManager(units, buildings)
 		}
 		else
 		{
+			if (typeof this.available_units[i] == 'undefined')
+				return;
+			if (!this.available_units[i].enabled)
+				return;
+			
+			var obj = this._findCompatibleInstance(this.available_units[i].construction_building);
+			if (obj === null)
+			{
+				console.log('Construction error: Can not find compatible instance');
+				return;
+			}
+			obj.produce(this.available_units[i]);
+			this.available_units[i].construction_queue++;
 		}
+	}
+	
+	this._findCompatibleInstance = function(proto_obj)
+	{
+		var i;
+		
+		for (i in game.objects)
+			if (game.objects[i] instanceof proto_obj)
+				return game.objects[i];
+		
+		return null;
 	}
 	
 	this.cellPopupPrepere = function(cell_id)

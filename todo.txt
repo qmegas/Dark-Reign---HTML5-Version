@@ -1,11 +1,12 @@
 To do:
-	- Sound notification queue
-	- Producing "Construction Rig"
 	- Show units on minimap
-	- Add "Critical power" sound notification
+	- Show unit production change on right panel
+
 
 - High priority bugs:
-	- Construction Rig selection reset when some building construction is started
+	- Do not allow to build/produce if there is no enough money
+	- Make sure money do not decrease less then 0
+	- Reconvert OGG files for: Power critical, Unit completed
 
 - Medium priority bugs:
 	- 

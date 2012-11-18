@@ -68,29 +68,21 @@ function AbstractBuilding()
 			game.viewport_ctx.fillStyle = '#FC0000';
 		game.viewport_ctx.fillRect(top_x + 1, top_y - 1, (health_width - 2)*health_proc, 2);
 		
-		//Construction progress
-		if (this.state == 'CONSTRUCTION')
-		{
-			var const_proc = this.construction_now / this.construction_max;
-			top_y = this.position.y - this._proto.image_padding.y - game.viewport_y;
-			
-			game.viewport_ctx.fillStyle = '#000000';
-			game.viewport_ctx.fillRect(top_x, top_y-2, health_width, 4);
-			game.viewport_ctx.fillStyle = '#bbbbbb';
-			game.viewport_ctx.fillRect(top_x + 1, top_y - 1, health_width - 2, 2);
-			game.viewport_ctx.fillStyle = '#FCFC00';
-			game.viewport_ctx.fillRect(top_x + 1, top_y - 1, (health_width - 2)*const_proc, 2);
-		}
-		
 		//Draw name
 		top_y = this.position.y - this._proto.image_padding.y - 16.5 - game.viewport_y;
 		top_x = this.position.x - 0.5 + health_width/4 - game.viewport_x;
+		
+		//Construction progress
 		if (this.state == 'CONSTRUCTION')
 		{
-			game.fontDraw.drawOnCanvas(
-				'Under Construction', game.viewport_ctx, top_x, top_y, 
-				'yellow', 'center', health_width
-			);
+			this._drawProgressBar(this.construction_now / this.construction_max, 'Under Construction');
+			top_y -= 15;
+		}
+		
+		if (this.state == 'PRODUCING')
+		{
+			var obj = this.producing_queue[0];
+			this._drawProgressBar(obj.construction_progress, obj.obj_name);
 			top_y -= 15;
 		}
 		
@@ -99,6 +91,27 @@ function AbstractBuilding()
 				this._proto.obj_name, game.viewport_ctx, top_x, top_y, 
 				'yellow', 'center', health_width
 			);
+	}
+	
+	this._drawProgressBar = function(proc, title)
+	{
+		var bar_width = parseInt(CELL_SIZE*this._proto.cell_size.x*0.66), 
+			top_x = top_x = this.position.x - game.viewport_x + bar_width/4,
+			top_y = this.position.y - this._proto.image_padding.y - game.viewport_y;
+			
+		game.viewport_ctx.fillStyle = '#000000';
+		game.viewport_ctx.fillRect(top_x, top_y-2, bar_width, 4);
+		game.viewport_ctx.fillStyle = '#bbbbbb';
+		game.viewport_ctx.fillRect(top_x + 1, top_y - 1, bar_width - 2, 2);
+		game.viewport_ctx.fillStyle = '#FCFC00';
+		game.viewport_ctx.fillRect(top_x + 1, top_y - 1, (bar_width - 2)*proc, 2);
+		
+		top_y = this.position.y - this._proto.image_padding.y - 16.5 - game.viewport_y;
+		
+		game.fontDraw.drawOnCanvas(
+			title, game.viewport_ctx, top_x, top_y, 
+			'yellow', 'center', bar_width
+		);
 	}
 	
 	this.canBeSelected = function()
@@ -183,16 +196,11 @@ function AbstractBuilding()
 		if (this.construction_now > this.construction_max)
 		{
 			this._proto.count++;
-
-			var sound = game.resources.get('construction_complete');
-
-			sound.play();
+			
+			game.notifications.addSound('construction_complete');
 			if (game.constructor.recalcUnitAvailability())
-				sound.addEventListener('ended', function(){
-					game.resources.get('new_units_available').play();
-					this.removeEventListener('ended', arguments.callee, false);
-				});
-
+				game.notifications.addSound('new_units_available');
+			
 			game.energy.addToCurrent(this._proto.energy);
 			this.state = 'NORMAL';
 			
@@ -265,7 +273,7 @@ AbstractBuilding.createNew = function(obj, x, y)
 	
 	game.money.decMoney(obj.cost);
 	
-	game.resources.get('construction_under_way').play();
+	game.notifications.addSound('construction_under_way');
 };
 
 AbstractBuilding.canBuild = function(obj, x, y, unit)

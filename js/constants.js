@@ -15,6 +15,8 @@ var CELL_TYPE_WATER = 2;
 var CELL_TYPE_NOWALK = 3;
 var CELL_TYPE_BUILDING = 4;
 
+var AUDIO_TYPE = 'ogg';
+
 var game;
 
 window.requestAnimFrame = (function(){

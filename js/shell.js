@@ -22,6 +22,7 @@ function Game()
 	this.mouse = new MousePointer(this);
 	this.fontDraw = new DKFont();
 	this.objDraw = new ObjectDraw();
+	this.notifications = new SoundQueue();
 	
 	this.action_state = 0;
 	this.action_state_options = {};
@@ -97,8 +98,7 @@ function Game()
 					type: this.level.map_cells[x][y], 
 					ground_unit: -1,
 					fly_unit: -1,
-					building: -1,
-					unit: -1
+					building: -1
 				};
 		
 		//Init units
@@ -110,11 +110,7 @@ function Game()
 				this.objects[i].health = 30;
 			
 			this.objects[i].uid = i;
-			var pos = this.objects[i].getCell();
-			if (this.objects[i].is_fly)
-				this.level.map_cells[pos.x][pos.y].fly_unit = i;
-			else
-				this.level.map_cells[pos.x][pos.y].ground_unit = i;
+			this.objects[i].markCellsOnMap(i);
 		}
 		
 		this.constructor = new ConstructManager(this.level.getAvailableUnits(), this.level.getAvailableBuildings());
@@ -170,7 +166,7 @@ function Game()
 			if (unit.is_building)
 				unit.markCellsOnMap(-1);
 			else
-				unit.markCellsOnMap();
+				unit.markCellsOnMap(-1);
 			
 			//Remove user from selected array
 			var sindex = this.selected_objects.indexOf(unit.uid);
@@ -374,7 +370,7 @@ function Game()
 			}
 			
 		//Constructor selected?
-		if (this.selected_objects.length==1 && (this.objects[this.selected_objects[0]] instanceof TestUnit))
+		if (this.selected_objects.length==1 && (this.objects[this.selected_objects[0]] instanceof ConstructionRigUnit))
 			this.constructor.drawBuildings();
 		else
 			this.constructor.drawUnits();
@@ -394,10 +390,13 @@ function Game()
 			this.resources.addImage('mapobj_'+i, this.level.map_object_proto[i].image);
 		
 		//Common resources
-		this.resources.addSound('construction_under_way', 'sounds/construction_under_way.ogg');
-		this.resources.addSound('construction_complete', 'sounds/construction_complete.ogg');
-		this.resources.addSound('new_units_available', 'sounds/new_units_available.ogg');
-		this.resources.addSound('low_power', 'sounds/low_power.ogg');
+		this.resources.addSound('construction_under_way', 'sounds/construction_under_way.' + AUDIO_TYPE);
+		this.resources.addSound('construction_complete', 'sounds/construction_complete.' + AUDIO_TYPE);
+		this.resources.addSound('new_units_available', 'sounds/new_units_available.' + AUDIO_TYPE);
+		this.resources.addSound('unit_completed', 'sounds/unit_completed.' + AUDIO_TYPE);
+		this.resources.addSound('low_power', 'sounds/low_power.' + AUDIO_TYPE);
+		this.resources.addSound('power_critical', 'sounds/power_critical.' + AUDIO_TYPE);
+		this.resources.addSound('cant_build', 'sounds/cant_build.' + AUDIO_TYPE);
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();

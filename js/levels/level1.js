@@ -2404,15 +2404,15 @@ function Level1()
 	this.getInitUnits = function()
 	{
 		return [
-			new TestUnit(12, 8),
-			new TestUnit(5, 6),
-			new TestUnit(7, 6)
+			new ConstructionRigUnit(12, 8),
+			new ConstructionRigUnit(5, 6),
+			new ConstructionRigUnit(7, 6)
 		];
 	}
 	
 	this.getAvailableUnits = function()
 	{
-		return [TestUnit];
+		return [ConstructionRigUnit];
 	}
 	
 	this.getAvailableBuildings = function()

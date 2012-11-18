@@ -4,14 +4,47 @@ function HeadquarterBuilding(pos_x, pos_y)
 	this.health_max = 750;
 	this.construction_max = 750;
 	
+	this.producing_queue = [];
+	this.producing_start = 0;
+	
 	this.setPosition(pos_x, pos_y);
 	
 	this.run = function()
 	{
-		if (this.state == 'CONSTRUCTION')
+		switch (this.state)
 		{
-			this._runStandartConstruction();
+			case 'CONSTRUCTION':
+				this._runStandartConstruction();
+				break;
+				
+			case 'PRODUCING':
+				this.producing_queue[0].construction_progress += 1 / (50 * this.producing_queue[0].construction_time);
+				if (this.producing_queue[0].construction_progress > 1)
+				{
+					var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2);
+					//Find compatable point for exit
+					unit.move(cell.x, cell.y + 5);
+					
+					this.producing_queue[0].construction_progress = 0;
+					this.producing_queue[0].construction_queue--;
+					this.producing_queue.shift();
+					this.state = 'NORMAL';
+				}
+				break;
+				
+			case 'NORMAL':
+				if (this.producing_queue.length > 0)
+				{
+					this.producing_start = (new Date).getTime();
+					this.state = 'PRODUCING';
+				}
+				break;
 		}
+	}
+	
+	this.produce = function(obj)
+	{
+		this.producing_queue.push(obj);
 	}
 }
 

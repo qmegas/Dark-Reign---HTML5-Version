@@ -22,9 +22,14 @@ function Graph(grid, ground_unit, avoid_others)
 		for (var y = 0, row = grid[x]; y < row.length; y++)
 		{
 			type = 1;
-			if (ground_unit && (row[y].type==CELL_TYPE_WATER || row[y].type==CELL_TYPE_NOWALK || row[y].type==CELL_TYPE_BUILDING))
-				type = 0;
-			if (avoid_others && MapCell.getSingleUserId(row[y]) != -1)
+			if (ground_unit)
+			{
+				if  (row[y].type==CELL_TYPE_WATER || row[y].type==CELL_TYPE_NOWALK || row[y].type==CELL_TYPE_BUILDING)
+					type = 0;
+				if (avoid_others && row[y].ground_unit != -1)
+					type = 0
+			}
+			else if (avoid_others && row[y].fly_unit != -1)
 				type = 0;
 			nodes[x][y] = new GraphNode(x, y, type);
 		}
