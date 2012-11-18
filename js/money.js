@@ -6,6 +6,11 @@ function MoneyDraw()
 	
 	this.dom_pointers = [];
 	
+	this.haveEnough = function(num)
+	{
+		return (num <= this.money_current);
+	}
+	
 	this.addMoney = function(num)
 	{
 		this.setMoney(this.money_current + num);
@@ -18,6 +23,9 @@ function MoneyDraw()
 	
 	this.setMoney = function(num)
 	{
+		if (num < 0)
+			num = 0;
+		
 		this.money_was = this.money_current;
 		this.money_display = this.money_was;
 		this.money_current = num;

@@ -280,6 +280,9 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 {
 	var i = -1;
 	
+	if (!game.money.haveEnough(obj.cost))
+		return false;
+	
 	x -= obj.cell_padding.x;
 	y -= obj.cell_padding.y;
 	

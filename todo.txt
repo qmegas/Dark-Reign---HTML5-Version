@@ -4,8 +4,6 @@ To do:
 
 
 - High priority bugs:
-	- Do not allow to build/produce if there is no enough money
-	- Make sure money do not decrease less then 0
 	- Reconvert OGG files for: Power critical, Unit completed
 
 - Medium priority bugs:

@@ -135,7 +135,15 @@ function ConstructManager(units, buildings)
 			if (typeof this.available_buildings[i] == 'undefined')
 				return;
 			if (!this.available_buildings[i].enabled)
+			{
+				game.resources.get('cant_build').play();
 				return;
+			}
+			if (!game.money.haveEnough(this.available_buildings[i].cost))
+			{
+				game.resources.get('cant_build').play();
+				return;
+			}
 			
 			this.removeCellSelection();
 			$('#unit_box'+cell_id).children('.unit-image').addClass('active');
@@ -150,7 +158,15 @@ function ConstructManager(units, buildings)
 			if (typeof this.available_units[i] == 'undefined')
 				return;
 			if (!this.available_units[i].enabled)
+			{
+				game.resources.get('cant_build').play();
 				return;
+			}
+			if (!game.money.haveEnough(this.available_units[i].cost))
+			{
+				game.resources.get('cant_build').play();
+				return;
+			}
 			
 			var obj = this._findCompatibleInstance(this.available_units[i].construction_building);
 			if (obj === null)
