@@ -246,6 +246,8 @@ body {
 	width: 64px;
 	height: 50px;
 	background-image: url("../images/shell/unit_box.png");
+	position: relative;
+	top: -55px;
 }
 .game .right-frame .panel .unit-boxes .box .unit-image:hover {
 	background-position: -64px 0;

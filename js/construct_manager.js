@@ -79,6 +79,9 @@ function ConstructManager(units, buildings)
 	
 	this._drawCells = function()
 	{
+		if (this.current_view_type == CONST_VIEW_BUILDINGS)
+			this._clearAllCellCanvases();
+		
 		for (var i = this.current_view_offset; i<this.current_view_offset+15; ++i)
 		{
 			switch (this.current_view_type)
@@ -87,11 +90,15 @@ function ConstructManager(units, buildings)
 					if (!this.available_units[i])
 						this._drawCellEmpty(i-this.current_view_offset);
 					else
+					{
 						this._drawCell(
 							i-this.current_view_offset, 
 							'images/units/' + this.available_units[i].box_image, 
 							this.available_units[i].enabled
 						);
+						if (this.available_units[i].construction_queue > 0)
+							this._canvasRedraw(this.current_view_offset-i);
+					}
 					break;
 				case CONST_VIEW_BUILDINGS:
 					if (!this.available_buildings[i])
@@ -162,6 +169,8 @@ function ConstructManager(units, buildings)
 				game.resources.get('cant_build').play();
 				return;
 			}
+			if (this.available_units[i].construction_queue >= 11)
+				return;
 			if (!game.money.haveEnough(this.available_units[i].cost))
 			{
 				game.resources.get('cant_build').play();
@@ -274,5 +283,78 @@ function ConstructManager(units, buildings)
 		
 		for (i=0; i<texts.length; ++i)
 			game.fontDraw.drawOnCanvas(texts[i], ctx, left - 12.5 - max_text_size, i*15 + 2.5, 'red');
+	}
+	
+	
+	this.redrawProductionState = function()
+	{
+		var i, index;
+		
+		if (this.current_view_type == CONST_VIEW_BUILDINGS)
+			return;
+		
+		for (i = 0; i<15; ++i)
+		{
+			index = this.current_view_offset + i;
+			if (!this.available_units[index])
+				return;
+			
+			if (this.available_units[index].construction_queue > 0)
+				this._canvasRedraw(i);
+		}
+	}
+	
+	this._canvasRedraw = function(index)
+	{
+		var ctx = $('#cell_canvas_' + index).get(0).getContext('2d'), obj = this.available_units[this.current_view_offset + index], to_point;
+		
+		ctx.clearRect(0, 0, 64, 50);
+		
+		if (obj.construction_queue == 0)
+			return;
+		
+		to_point = Math.PI*1.5 - (1-obj.construction_progress)*2*Math.PI;
+					
+		ctx.fillStyle = 'rgba(245, 255, 220, 0.55)';
+		ctx.beginPath();
+		ctx.moveTo(32, 25);
+		ctx.arc(32, 25, 50, Math.PI*1.5, to_point, true); 
+		ctx.moveTo(32, 25);
+		ctx.closePath();
+		ctx.fill();
+
+		ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+		ctx.beginPath();
+		ctx.moveTo(32, 25);
+		ctx.arc(32, 25, 50, to_point - 0.1, to_point + 0.1, false); 
+		ctx.moveTo(32, 25);
+		ctx.closePath();
+		ctx.fill();
+		
+		game.fontDraw.drawOnCanvas(obj.construction_queue.toString(), ctx, 13, 2, 'yellow');
+	}
+	
+	this.clearProducingByObject = function(obj)
+	{
+		var i, index;
+		
+		if (this.current_view_type == CONST_VIEW_BUILDINGS)
+			return;
+		
+		for (i = 0; i<15; ++i)
+		{
+			index = this.current_view_offset + i;
+			if (!this.available_units[index])
+				return;
+			
+			if (this.available_units[index] == obj)
+				$('#cell_canvas_' + i).get(0).getContext('2d').clearRect(0, 0, 64, 50);
+		}
+	}
+	
+	this._clearAllCellCanvases = function()
+	{
+		for (var i = 0; i<15; ++i)
+			$('#cell_canvas_' + i).get(0).getContext('2d').clearRect(0, 0, 64, 50);
 	}
 }

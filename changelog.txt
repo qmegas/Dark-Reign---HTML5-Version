@@ -1,3 +1,6 @@
+Build 22 (19.11.2012)
+- Added unit producing indicator on right panel. He not looks like an original one, but very similar.
+
 Build 21 (18.11.2012)
 - New object drawing engine, that allows to draw units & building by layers
 - New map cell structure that allows to place different types of units in single cell

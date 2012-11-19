@@ -26,6 +26,7 @@ function Game()
 	
 	this.action_state = 0;
 	this.action_state_options = {};
+	this.shell_update_time = 0;
 	
 	//Player cars
 	this.money = new MoneyDraw();
@@ -292,6 +293,18 @@ function Game()
 		
 		//Energy
 		this.energy.draw(cur_time, false);
+		
+		//Once per second update shell info
+		if ((cur_time - this.shell_update_time) > 1000)
+		{
+			this.shell_update_time = cur_time;
+			
+			//Update producing canvases
+			this.constructor.redrawProductionState();
+			
+			//Update minimap
+			//TODO
+		}
 		
 		window.requestAnimFrame(function(){
 			game.draw();

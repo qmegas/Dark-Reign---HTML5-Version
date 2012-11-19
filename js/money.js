@@ -57,7 +57,7 @@ function MoneyDraw()
 		
 		for (i = 0; i<9; ++i)
 		{
-			if (numbers[i]==0 && !view_zero)
+			if (i!=8 && numbers[i]==0 && !view_zero)
 				this.dom_pointers[i].attr('class', 'num empty');
 			else
 			{

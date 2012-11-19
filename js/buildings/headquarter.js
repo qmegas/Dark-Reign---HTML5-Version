@@ -25,6 +25,7 @@ function HeadquarterBuilding(pos_x, pos_y)
 					//Find compatable point for exit
 					unit.move(cell.x, cell.y + 5);
 					
+					game.constructor.clearProducingByObject(this.producing_queue[0]);
 					this.producing_queue[0].construction_progress = 0;
 					this.producing_queue[0].construction_queue--;
 					this.producing_queue.shift();
