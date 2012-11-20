@@ -153,7 +153,7 @@ function AbstractUnit(pos_x, pos_y)
 	
 	this._playSound = function(type)
 	{
-		var i = Math.floor((Math.random()*3)+1);
+		var i = Math.floor((Math.random()*this._proto.sound_count)+1);
 		game.resources.get(this._proto.resource_key + '_' + type + i).play();
 	}
 	
@@ -193,4 +193,16 @@ AbstractUnit.createNew = function(obj, x, y)
 	game.notifications.addSound('unit_completed');
 	
 	return game.objects[uid];
-};
+}
+
+AbstractUnit.loadResources = function(obj) 
+{
+	game.resources.addImage(obj.resource_key + '_stand', 'images/units/' + obj.resource_key + '/stand.png');
+	game.resources.addImage(obj.resource_key + '_move',  'images/units/' + obj.resource_key + '/move.png');
+	
+	for (var i=1; i<=obj.sound_count; ++i)
+	{
+		game.resources.addSound(obj.resource_key + '_move' + i,   'sounds/units/' + obj.resource_key + '/move' + i + '.' + AUDIO_TYPE);
+		game.resources.addSound(obj.resource_key + '_select' + i, 'sounds/units/' + obj.resource_key + '/select' + i + '.' + AUDIO_TYPE);
+	}
+}

@@ -1,10 +1,13 @@
 To do:
 	- Show units on minimap
-	- Show unit production change on right panel
-
+	- Ability to upgrade buildings
+	- Ability to sell buildings 
+	- Ability to power off buildings
 
 - High priority bugs:
-	- Reconvert OGG files for: Power critical, Unit completed
+	- Fix Guardian selection
+	- Units stuck in building on production complete and exit point is not empty
+	- Correct Guardian movement speed 
 
 - Medium priority bugs:
 	- 
@@ -14,7 +17,8 @@ To do:
 	- Add shadows to all units & buildings
 	- Energy meter blinking incorrectly
 	- Need to add animation when energy state changed
-	- When construction building, money should decrease gradually
+	- When construction building/unit, money should decrease gradually
+	- Unit production indicator on right panel looks not exactly as original one
 
 - Very low priority bugs:
-	- When mouseover building or unit, it's name should be shown with small delay
+	- When mouseover building or unit, it's name should be shown after small delay

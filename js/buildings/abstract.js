@@ -12,6 +12,9 @@ function AbstractBuilding()
 	this.is_building = true;
 	this.is_selected = false;
 	
+	this.producing_queue = [];
+	this.producing_start = 0;
+	
 	this.position = {x: 0, y: 0};
 	
 	this.setPosition = function(pos_x, pos_y)
@@ -189,6 +192,12 @@ function AbstractBuilding()
 		}
 	}
 	
+	this.produce = function(obj)
+	{
+		this.producing_queue.push(obj);
+		game.money.decMoney(obj.cost);
+	}
+	
 	this._runStandartConstruction = function()
 	{
 		this.construction_now++;
@@ -205,6 +214,23 @@ function AbstractBuilding()
 			this.state = 'NORMAL';
 			
 			this.onConstructed();
+		}
+	}
+	
+	this._runStandartProducing = function()
+	{
+		this.producing_queue[0].construction_progress += 1 / (50 * this.producing_queue[0].construction_time);
+		if (this.producing_queue[0].construction_progress > 1)
+		{
+			var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2); //TODO: need change?
+			//TODO: Find compatable point for exit
+			unit.move(cell.x, cell.y + 5);
+
+			game.constructor.clearProducingByObject(this.producing_queue[0]);
+			this.producing_queue[0].construction_progress = 0;
+			this.producing_queue[0].construction_queue--;
+			this.producing_queue.shift();
+			this.state = 'NORMAL';
 		}
 	}
 	

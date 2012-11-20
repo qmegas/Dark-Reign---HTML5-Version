@@ -4,9 +4,6 @@ function TrainingFacilityBuilding(pos_x, pos_y)
 	this.health_max = 1500;
 	this.construction_max = 1500;
 	
-	this.producing_queue = [];
-	this.producing_start = 0;
-	
 	this.setPosition(pos_x, pos_y);
 	
 	this.run = function()
@@ -18,18 +15,7 @@ function TrainingFacilityBuilding(pos_x, pos_y)
 				break;
 				
 			case 'PRODUCING':
-				this.producing_queue[0].construction_progress += 1 / (50 * this.producing_queue[0].construction_time);
-				if (this.producing_queue[0].construction_progress > 1)
-				{
-					var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2);
-					//Find compatable point for exit
-					unit.move(cell.x, cell.y + 5);
-					
-					this.producing_queue[0].construction_progress = 0;
-					this.producing_queue[0].construction_queue--;
-					this.producing_queue.shift();
-					this.state = 'NORMAL';
-				}
+				this._runStandartProducing();
 				break;
 				
 			case 'NORMAL':
@@ -40,11 +26,6 @@ function TrainingFacilityBuilding(pos_x, pos_y)
 				}
 				break;
 		}
-	}
-	
-	this.produce = function(obj)
-	{
-		this.producing_queue.push(obj);
 	}
 }
 

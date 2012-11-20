@@ -122,14 +122,18 @@ function ConstructionRigUnit(pos_x, pos_y)
 
 ConstructionRigUnit.prototype = new AbstractUnit();
 
-ConstructionRigUnit.box_image = 'construction_rig/box.png';
 ConstructionRigUnit.obj_name = 'Construction Rig';
-ConstructionRigUnit.cost = 150;
-ConstructionRigUnit.health_max = 100;
 ConstructionRigUnit.resource_key = 'construction_rig';
 ConstructionRigUnit.imgage_size = {width: 35, height: 35};
+ConstructionRigUnit.sound_count = 3;
+
+ConstructionRigUnit.cost = 300;
+ConstructionRigUnit.health_max = 100;
+
 ConstructionRigUnit.enabled = false;
+
 ConstructionRigUnit.require_building = [HeadquarterBuilding];
+
 ConstructionRigUnit.construction_building = HeadquarterBuilding;
 ConstructionRigUnit.construction_time = 6;
 ConstructionRigUnit.construction_queue = 0;
@@ -137,12 +141,5 @@ ConstructionRigUnit.construction_progress = 0;
 
 ConstructionRigUnit.loadResources = function() 
 {
-	game.resources.addImage(ConstructionRigUnit.resource_key + '_stand', 'images/units/construction_rig/stand.png');
-	game.resources.addImage(ConstructionRigUnit.resource_key + '_move',  'images/units/construction_rig/move.png');
-	game.resources.addSound(ConstructionRigUnit.resource_key + '_move1',   'sounds/units/construction_rig/move1.' + AUDIO_TYPE);
-	game.resources.addSound(ConstructionRigUnit.resource_key + '_move2',   'sounds/units/construction_rig/move2.' + AUDIO_TYPE);
-	game.resources.addSound(ConstructionRigUnit.resource_key + '_move3',   'sounds/units/construction_rig/move3.' + AUDIO_TYPE);
-	game.resources.addSound(ConstructionRigUnit.resource_key + '_select1', 'sounds/units/construction_rig/select1.' + AUDIO_TYPE);
-	game.resources.addSound(ConstructionRigUnit.resource_key + '_select2', 'sounds/units/construction_rig/select2.' + AUDIO_TYPE);
-	game.resources.addSound(ConstructionRigUnit.resource_key + '_select3', 'sounds/units/construction_rig/select3.' + AUDIO_TYPE);
+	AbstractUnit.loadResources(this);
 }

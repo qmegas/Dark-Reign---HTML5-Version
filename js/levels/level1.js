@@ -2412,7 +2412,7 @@ function Level1()
 	
 	this.getAvailableUnits = function()
 	{
-		return [ConstructionRigUnit];
+		return [ConstructionRigUnit, GuardianUnit];
 	}
 	
 	this.getAvailableBuildings = function()

@@ -93,7 +93,7 @@ function ConstructManager(units, buildings)
 					{
 						this._drawCell(
 							i-this.current_view_offset, 
-							'images/units/' + this.available_units[i].box_image, 
+							'images/units/' + this.available_units[i].resource_key + '/box.png', 
 							this.available_units[i].enabled
 						);
 						if (this.available_units[i].construction_queue > 0)
