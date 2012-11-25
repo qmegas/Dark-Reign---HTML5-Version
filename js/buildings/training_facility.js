@@ -40,6 +40,7 @@ TrainingFacilityBuilding.build_time = 15;
 TrainingFacilityBuilding.energy = 100;
 TrainingFacilityBuilding.enabled = false;
 TrainingFacilityBuilding.count = 0;
+
 TrainingFacilityBuilding.cell_size = {x: 5, y: 5};
 TrainingFacilityBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1];
 TrainingFacilityBuilding.move_matrix = [0,0,1,1,0,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1,1,0,0];

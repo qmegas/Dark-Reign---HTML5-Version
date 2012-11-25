@@ -44,6 +44,7 @@ HeadquarterBuilding.build_time = 15;
 HeadquarterBuilding.energy = 100;
 HeadquarterBuilding.enabled = true;
 HeadquarterBuilding.count = 0;
+
 HeadquarterBuilding.cell_size = {x: 5, y: 4};
 HeadquarterBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 HeadquarterBuilding.move_matrix = [0,0,1,1,1,1,1,0,0,1,0,0,1,1,1,1,0,1,1,1];
@@ -51,6 +52,11 @@ HeadquarterBuilding.cell_padding = {x: 2, y: 2};
 HeadquarterBuilding.image_size = {x: 103, y: 138};
 HeadquarterBuilding.image_padding = {x: -9, y: 42};
 HeadquarterBuilding.require_building = [];
+
+HeadquarterBuilding.upgradable = true;
+HeadquarterBuilding.upgrade_state = false;
+HeadquarterBuilding.upgrade_obj = null; //Headquarter2Building
+HeadquarterBuilding.upgrade_required = [TrainingFacilityBuilding, AssemblyPlantBuilding];
 
 HeadquarterBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);

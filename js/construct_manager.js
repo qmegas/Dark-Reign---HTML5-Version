@@ -8,42 +8,43 @@ function ConstructManager(units, buildings)
 	
 	this.recalcUnitAvailability = function()
 	{
-		var have_new_units = this._checkArrayAvailability(this.available_units);
-		var have_new_buildings = this._checkArrayAvailability(this.available_buildings);
+		var units = this._checkArrayAvailability(this.available_units);
+		var buildings = this._checkArrayAvailability(this.available_buildings);
 		
-		if (have_new_units || have_new_buildings)
+		if (units.is_new)
+			game.notifications.addSound('new_units_available');
+		
+		if (units.is_changed || buildings.is_changed)
 			this._drawCells();
-		
-		return have_new_units;
 	}
 	
 	this._checkArrayAvailability = function(arr)
 	{
-		var i, j, obj, have_new = false, cur_enabled;
+		var i, j, obj, have_new = false, have_changes = false, cur_enabled;
 		
 		for (i=0; i<arr.length; ++i)
 		{
 			obj = arr[i];
-			if (!obj.enabled)
-			{
-				cur_enabled = true;
+			cur_enabled = true;
 				
-				for (j=0; j<obj.require_building.length; ++j)
-					if (obj.require_building[j].count == 0)
-					{
-						cur_enabled = false;
-						break;
-					}
-					
-				if (cur_enabled)
+			for (j=0; j<obj.require_building.length; ++j)
+				if (obj.require_building[j].count == 0)
 				{
-					obj.enabled = true;
-					have_new = true;
+					cur_enabled = false;
+					break;
 				}
+				
+			if (obj.enabled != cur_enabled)
+			{
+				if (!obj.enabled)
+					have_new = true;
+				
+				obj.enabled = cur_enabled;
+				have_changes = true;
 			}
 		}
 		
-		return have_new;
+		return {is_changed: have_changes, is_new: have_new};
 	}
 	
 	this.loadUnitResources = function()

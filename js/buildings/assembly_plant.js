@@ -59,6 +59,7 @@ AssemblyPlantBuilding.build_time = 44;
 AssemblyPlantBuilding.energy = 100;
 AssemblyPlantBuilding.enabled = false;
 AssemblyPlantBuilding.count = 0;
+
 AssemblyPlantBuilding.cell_size = {x: 5, y: 5};
 AssemblyPlantBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 AssemblyPlantBuilding.move_matrix = [0,0,1,1,0,1,1,1,0,1,1,1,0,1,1,0,1,1,1,0,0,1,1,1,0];

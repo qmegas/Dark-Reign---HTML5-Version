@@ -113,6 +113,7 @@ TaelonPowerBuilding.build_time = 20;
 TaelonPowerBuilding.energy = 0;
 TaelonPowerBuilding.enabled = true;
 TaelonPowerBuilding.count = 0;
+
 TaelonPowerBuilding.cell_size = {x: 4, y: 4};
 TaelonPowerBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1];
 TaelonPowerBuilding.move_matrix = [0,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0];

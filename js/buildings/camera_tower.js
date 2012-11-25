@@ -24,6 +24,7 @@ CameraTowerBuilding.build_time = 4;
 CameraTowerBuilding.energy = 50;
 CameraTowerBuilding.enabled = false;
 CameraTowerBuilding.count = 0;
+
 CameraTowerBuilding.cell_size = {x: 1, y: 2};
 CameraTowerBuilding.cell_matrix = [1,1];
 CameraTowerBuilding.move_matrix = [1,1];

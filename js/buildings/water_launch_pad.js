@@ -51,6 +51,7 @@ WaterLaunchPadBuilding.build_time = 25;
 WaterLaunchPadBuilding.energy = 100;
 WaterLaunchPadBuilding.enabled = true;
 WaterLaunchPadBuilding.count = 0;
+
 WaterLaunchPadBuilding.cell_size = {x: 5, y: 3};
 WaterLaunchPadBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0];
 WaterLaunchPadBuilding.move_matrix = [0,1,0,0,1,1,1,1,1,1,0,0,0,0,0];

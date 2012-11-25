@@ -220,8 +220,7 @@ function AbstractBuilding()
 			this._proto.count++;
 			
 			game.notifications.addSound('construction_complete');
-			if (game.constructor.recalcUnitAvailability())
-				game.notifications.addSound('new_units_available');
+			game.constructor.recalcUnitAvailability();
 			
 			game.energy.addToCurrent(this._proto.energy);
 			this.state = 'NORMAL';
@@ -239,7 +238,7 @@ function AbstractBuilding()
 			this._proto.count--;
 			
 			game.energy.addToCurrent(-1*this._proto.energy);
-			//game.constructor.recalcUnitAvailability();
+			game.constructor.recalcUnitAvailability();
 			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2);
 			
 			this.onDestructed();

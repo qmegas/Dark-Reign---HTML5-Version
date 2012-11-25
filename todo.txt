@@ -1,16 +1,13 @@
 To do:
 	- Show units on minimap
 	- Ability to upgrade buildings
-	- Ability to sell buildings 
-	- Ability to power off buildings
 
 - High priority bugs:
-	- Recalculate unit availability on building demolish
 	- Units stuck in building on production complete and exit point is not empty
-	- Increase building health on construction
 
 - Medium priority bugs:
 	- When creating Camera Tower, need not to destroy construction rig
+	- Increase building health on construction
 
 - Low priority bugs:
 	- Map: Water animation
