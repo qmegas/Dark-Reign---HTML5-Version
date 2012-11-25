@@ -5,12 +5,12 @@ To do:
 	- Ability to power off buildings
 
 - High priority bugs:
-	- Fix Guardian selection
+	- Recalculate unit availability on building demolish
 	- Units stuck in building on production complete and exit point is not empty
-	- Correct Guardian movement speed 
+	- Increase building health on construction
 
 - Medium priority bugs:
-	- 
+	- When creating Camera Tower, need not to destroy construction rig
 
 - Low priority bugs:
 	- Map: Water animation
@@ -22,3 +22,7 @@ To do:
 
 - Very low priority bugs:
 	- When mouseover building or unit, it's name should be shown after small delay
+
+
+- Known browser-related bugs
+	- Chrome: on unit selection there is an empty pixel on top-right corner

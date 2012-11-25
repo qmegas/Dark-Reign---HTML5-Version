@@ -1,10 +1,10 @@
 function TrainingFacilityBuilding(pos_x, pos_y)
 {
 	this._proto = TrainingFacilityBuilding;
-	this.health_max = 1500;
-	this.construction_max = 1500;
+	this.health = this._proto.health_max;
 	
 	this.setPosition(pos_x, pos_y);
+	this.setActionTime(this._proto.build_time);
 	
 	this.run = function()
 	{
@@ -31,10 +31,12 @@ function TrainingFacilityBuilding(pos_x, pos_y)
 
 TrainingFacilityBuilding.prototype = new AbstractBuilding();
 
-TrainingFacilityBuilding.box_image = 'training_facility_box.png';
-TrainingFacilityBuilding.res_key = 'training_facility.png';
+TrainingFacilityBuilding.res_key = 'training_facility';
 TrainingFacilityBuilding.obj_name = 'Training Facility';
 TrainingFacilityBuilding.cost = 1500;
+TrainingFacilityBuilding.sell_cost = 750;
+TrainingFacilityBuilding.health_max = 1500;
+TrainingFacilityBuilding.build_time = 15;
 TrainingFacilityBuilding.energy = 100;
 TrainingFacilityBuilding.enabled = false;
 TrainingFacilityBuilding.count = 0;
@@ -47,5 +49,5 @@ TrainingFacilityBuilding.image_padding = {x: 0, y: 0};
 TrainingFacilityBuilding.require_building = [HeadquarterBuilding];
 
 TrainingFacilityBuilding.loadResources = function(){
-	game.resources.addImage(this.res_key, 'images/buildings/training_facility.png');
+	AbstractBuilding.loadResources(this);
 };

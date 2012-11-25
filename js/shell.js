@@ -497,7 +497,7 @@ $(function(){
 	game = new Game();
 	game.init(new Level1(), function(){
 		game.draw();
-		setInterval(function(){game.run();}, 20);
+		setInterval(function(){game.run();}, 1000/RUNS_PER_SECOND);
 	});
 	
 	//Interface stop button

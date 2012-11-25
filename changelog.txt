@@ -1,6 +1,8 @@
 Build 22 (19.11.2012)
 - Added unit producing indicator on right panel. He not looks like an original one, but very similar.
 - Added "Guardian" unit
+- Added ability to demolish buildings
+- Selection fixes
 
 Build 21 (18.11.2012)
 - New object drawing engine, that allows to draw units & building by layers

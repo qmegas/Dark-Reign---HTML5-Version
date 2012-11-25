@@ -61,7 +61,7 @@ function AbstractUnit(pos_x, pos_y)
 	//Draw Selection
 	this.drawSelection = function(is_onmouse)
 	{
-		var top_x = this.position.x - game.viewport_x + 0.5, top_y = this.position.y - game.viewport_y + 0.5;
+		var top_x = this.position.x - game.viewport_x + 0.5, top_y = this.position.y - game.viewport_y - 2.5;
 		var sel_width = this._proto.imgage_size.width, health_width = parseInt(sel_width*0.63);
 			
 		game.viewport_ctx.strokeStyle = '#ffffff';
@@ -72,21 +72,21 @@ function AbstractUnit(pos_x, pos_y)
 		game.viewport_ctx.lineTo(top_x, top_y);
 		game.viewport_ctx.lineTo(top_x + sel_width, top_y);
 		game.viewport_ctx.lineTo(top_x + sel_width, top_y + 8);
-		game.viewport_ctx.moveTo(top_x + sel_width, top_y + sel_width - 8);
-		game.viewport_ctx.lineTo(top_x + sel_width, top_y + sel_width);
-		game.viewport_ctx.lineTo(top_x, top_y + sel_width);
-		game.viewport_ctx.lineTo(top_x, top_y + sel_width - 8);
+		game.viewport_ctx.moveTo(top_x + sel_width, top_y + sel_width - 3);
+		game.viewport_ctx.lineTo(top_x + sel_width, top_y + sel_width + 5);
+		game.viewport_ctx.lineTo(top_x, top_y + sel_width + 5);
+		game.viewport_ctx.lineTo(top_x, top_y + sel_width - 3);
 		game.viewport_ctx.stroke();
-
+		
 		//Health
-		//health_width += (health_width%2) ? 1 : 0; //Must devide by 2 
+		var health_top_x = top_x + parseInt((sel_width - health_width)/2) - 0.5;
 		game.viewport_ctx.fillStyle = '#000000';
-		game.viewport_ctx.fillRect(top_x + parseInt(sel_width - health_width)/2, top_y-1, health_width, 4);
+		game.viewport_ctx.fillRect(health_top_x, top_y-1.5, health_width, 4);
 
 		if (this.health < this._proto.health_max)
 		{
 			game.viewport_ctx.fillStyle = '#bbbbbb';
-			game.viewport_ctx.fillRect(top_x + (sel_width - health_width)/2 + 1, top_y, health_width - 2, 2);
+			game.viewport_ctx.fillRect(health_top_x + 1, top_y-0.5, health_width - 2, 2);
 		}
 
 		var health_proc = this.health / this._proto.health_max;
@@ -96,7 +96,7 @@ function AbstractUnit(pos_x, pos_y)
 			game.viewport_ctx.fillStyle = '#FCFC00';
 		else
 			game.viewport_ctx.fillStyle = '#FC0000';
-		game.viewport_ctx.fillRect(top_x + (sel_width - health_width)/2 + 1, top_y, (health_width - 2)*health_proc, 2);
+		game.viewport_ctx.fillRect(health_top_x + 1, top_y-0.5, (health_width - 2)*health_proc, 2);
 		
 		//Draw name
 		if (is_onmouse)

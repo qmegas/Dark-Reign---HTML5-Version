@@ -2,12 +2,11 @@ function AbstractBuilding()
 {
 	this.uid = -1;
 	this.health = 0;
-	this.construction_now = 0;
 	this._proto = {};
 	this.state = 'CONSTRUCTION';
-	this.health_max = 750;
-	this.cost = 100;
-	this.construction_max = 750;
+	
+	this.action_start = 0;
+	this.action_ends = 0;
 	
 	this.is_building = true;
 	this.is_selected = false;
@@ -23,6 +22,12 @@ function AbstractBuilding()
 			x: (pos_x - this._proto.cell_padding.x)*CELL_SIZE, 
 			y: (pos_y - this._proto.cell_padding.y)*CELL_SIZE
 		};
+	}
+	
+	this.setActionTime = function(time)
+	{
+		this.action_start = (new Date()).getTime();
+		this.action_ends = this.action_start + time * 1000;
 	}
 	
 	this.getCell = function()
@@ -52,17 +57,17 @@ function AbstractBuilding()
 		
 		//Health
 		var health_width = parseInt(CELL_SIZE*this._proto.cell_size.x*0.66);
-		top_x += health_width/4;
+		top_x += parseInt(health_width/4);
 		game.viewport_ctx.fillStyle = '#000000';
 		game.viewport_ctx.fillRect(top_x, top_y-2, health_width, 4);
 		
-		if (this.health < this.health_max)
+		if (this.health < this._proto.health_max)
 		{
 			game.viewport_ctx.fillStyle = '#bbbbbb';
 			game.viewport_ctx.fillRect(top_x + 1, top_y - 1, health_width - 2, 2);
 		}
 
-		var health_proc = this.health / this.health_max;
+		var health_proc = this.health / this._proto.health_max;
 		if (health_proc > 0.66)
 			game.viewport_ctx.fillStyle = '#51FA00';
 		else if (health_proc > 0.33)
@@ -76,9 +81,10 @@ function AbstractBuilding()
 		top_x = this.position.x - 0.5 + health_width/4 - game.viewport_x;
 		
 		//Construction progress
-		if (this.state == 'CONSTRUCTION')
+		if (this.state == 'CONSTRUCTION' || this.state == 'SELL')
 		{
-			this._drawProgressBar(this.construction_now / this.construction_max, 'Under Construction');
+			var proc = ((new Date()).getTime() - this.action_start) / (this.action_ends - this.action_start);
+			this._drawProgressBar(proc, (this.state == 'CONSTRUCTION') ? 'Under Construction' : 'Demolishing');
 			top_y -= 15;
 		}
 		
@@ -99,7 +105,7 @@ function AbstractBuilding()
 	this._drawProgressBar = function(proc, title)
 	{
 		var bar_width = parseInt(CELL_SIZE*this._proto.cell_size.x*0.66), 
-			top_x = top_x = this.position.x - game.viewport_x + bar_width/4,
+			top_x = top_x = this.position.x - game.viewport_x + parseInt(bar_width/4),
 			top_y = this.position.y - this._proto.image_padding.y - game.viewport_y;
 			
 		game.viewport_ctx.fillStyle = '#000000';
@@ -145,6 +151,15 @@ function AbstractBuilding()
 	
 	//Must be implemented
 	this.run = function() {}
+	
+	this.sell = function()
+	{
+		if (this.state != 'NORMAL')
+			return;
+		
+		this.setActionTime(this._proto.build_time / 2);
+		this.state = 'SELL';
+	}
 	
 	this.draw = function(cur_time)
 	{
@@ -200,9 +215,7 @@ function AbstractBuilding()
 	
 	this._runStandartConstruction = function()
 	{
-		this.construction_now++;
-		this.health++;
-		if (this.construction_now > this.construction_max)
+		if ((new Date()).getTime() > this.action_ends)
 		{
 			this._proto.count++;
 			
@@ -217,9 +230,27 @@ function AbstractBuilding()
 		}
 	}
 	
+	this._runStandartSell = function()
+	{
+		if ((new Date()).getTime() > this.action_ends)
+		{
+			var cell = this.getCell()
+			
+			this._proto.count--;
+			
+			game.energy.addToCurrent(-1*this._proto.energy);
+			//game.constructor.recalcUnitAvailability();
+			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2);
+			
+			this.onDestructed();
+			
+			game.kill_objects.push(this.uid);
+		}
+	}
+	
 	this._runStandartProducing = function()
 	{
-		this.producing_queue[0].construction_progress += 1 / (50 * this.producing_queue[0].construction_time);
+		this.producing_queue[0].construction_progress += 1 / (RUNS_PER_SECOND * this.producing_queue[0].construction_time);
 		if (this.producing_queue[0].construction_progress > 1)
 		{
 			var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2); //TODO: need change?
@@ -237,6 +268,7 @@ function AbstractBuilding()
 	//Event functions
 	
 	this.onConstructed = function() {}
+	this.onDestructed = function() {}
 }
 
 //Static methods
@@ -336,3 +368,8 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 	
 	return true;
 };
+
+AbstractBuilding.loadResources = function(obj)
+{
+	game.resources.addImage(obj.res_key, 'images/buildings/'+obj.res_key+'/sprite.png');
+}

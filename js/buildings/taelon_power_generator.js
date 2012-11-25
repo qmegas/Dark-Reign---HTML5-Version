@@ -1,8 +1,7 @@
 function TaelonPowerBuilding(pos_x, pos_y)
 {
 	this._proto = TaelonPowerBuilding;
-	this.health_max = 1000;
-	this.construction_max = 1000;
+	this.health = this._proto.health_max;
 	
 	this._taelon = 0;
 	this._taelon_max = 1000;
@@ -13,13 +12,12 @@ function TaelonPowerBuilding(pos_x, pos_y)
 	this._draw_from_to_pos = [1,2,3,2];
 	
 	this.setPosition(pos_x, pos_y);
+	this.setActionTime(this._proto.build_time);
 	
 	this.run = function()
 	{
 		if (this.state == 'CONSTRUCTION')
-		{
 			this._runStandartConstruction();
-		}
 	}
 	
 	this.onConstructed = function() 
@@ -106,10 +104,12 @@ function TaelonPowerBuilding(pos_x, pos_y)
 
 TaelonPowerBuilding.prototype = new AbstractBuilding();
 
-TaelonPowerBuilding.box_image = 'taelon_power_box.png';
-TaelonPowerBuilding.res_key = 'taelon_power.png';
+TaelonPowerBuilding.res_key = 'taelon_power';
 TaelonPowerBuilding.obj_name = 'Taelon Power Generator';
 TaelonPowerBuilding.cost = 2000;
+TaelonPowerBuilding.sell_cost = 1000;
+TaelonPowerBuilding.health_max = 1000;
+TaelonPowerBuilding.build_time = 20;
 TaelonPowerBuilding.energy = 0;
 TaelonPowerBuilding.enabled = true;
 TaelonPowerBuilding.count = 0;
@@ -122,5 +122,5 @@ TaelonPowerBuilding.image_padding = {x: -4, y: 33};
 TaelonPowerBuilding.require_building = [];
 
 TaelonPowerBuilding.loadResources = function(){
-	game.resources.addImage(this.res_key, 'images/buildings/taelon_power.png');
+	AbstractBuilding.loadResources(this);
 };

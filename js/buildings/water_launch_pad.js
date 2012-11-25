@@ -1,13 +1,13 @@
 function WaterLaunchPadBuilding(pos_x, pos_y)
 {
 	this._proto = WaterLaunchPadBuilding;
-	this.health_max = 1250;
-	this.construction_max = 1250;
+	this.health = this._proto.health_max;
 	
 	this.water_max = 100;
 	this.water_now = 40;
 	
 	this.setPosition(pos_x, pos_y);
+	this.setActionTime(this._proto.build_time);
 	
 	this.run = function()
 	{
@@ -42,10 +42,12 @@ function WaterLaunchPadBuilding(pos_x, pos_y)
 
 WaterLaunchPadBuilding.prototype = new AbstractBuilding();
 
-WaterLaunchPadBuilding.box_image = 'water_launch_box.png';
-WaterLaunchPadBuilding.res_key = 'water_launch.png';
+WaterLaunchPadBuilding.res_key = 'water_launch';
 WaterLaunchPadBuilding.obj_name = 'Water Launch Pad';
 WaterLaunchPadBuilding.cost = 2500;
+WaterLaunchPadBuilding.sell_cost = 1250;
+WaterLaunchPadBuilding.health_max = 1250;
+WaterLaunchPadBuilding.build_time = 25;
 WaterLaunchPadBuilding.energy = 100;
 WaterLaunchPadBuilding.enabled = true;
 WaterLaunchPadBuilding.count = 0;
@@ -58,5 +60,5 @@ WaterLaunchPadBuilding.image_padding = {x: -10, y: 7};
 WaterLaunchPadBuilding.require_building = [];
 
 WaterLaunchPadBuilding.loadResources = function(){
-	game.resources.addImage(this.res_key, 'images/buildings/water_launch.png');
+	AbstractBuilding.loadResources(this);
 };

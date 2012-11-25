@@ -1,10 +1,10 @@
 function HeadquarterBuilding(pos_x, pos_y)
 {
 	this._proto = HeadquarterBuilding;
-	this.health_max = 75;
-	this.construction_max = 75;
+	this.health = this._proto.health_max;
 	
 	this.setPosition(pos_x, pos_y);
+	this.setActionTime(this._proto.build_time);
 	
 	this.run = function()
 	{
@@ -25,16 +25,22 @@ function HeadquarterBuilding(pos_x, pos_y)
 					this.state = 'PRODUCING';
 				}
 				break;
+				
+			case 'SELL':
+				this._runStandartSell();
+				break;
 		}
 	}
 }
 
 HeadquarterBuilding.prototype = new AbstractBuilding();
 
-HeadquarterBuilding.box_image = 'headquarter_box.png';
-HeadquarterBuilding.res_key = 'headquarter.png';
+HeadquarterBuilding.res_key = 'headquarter';
 HeadquarterBuilding.obj_name = 'Headquarter 1';
 HeadquarterBuilding.cost = 750;
+HeadquarterBuilding.sell_cost = 375;
+HeadquarterBuilding.health_max = 750;
+HeadquarterBuilding.build_time = 15;
 HeadquarterBuilding.energy = 100;
 HeadquarterBuilding.enabled = true;
 HeadquarterBuilding.count = 0;
@@ -47,5 +53,5 @@ HeadquarterBuilding.image_padding = {x: -9, y: 42};
 HeadquarterBuilding.require_building = [];
 
 HeadquarterBuilding.loadResources = function(){
-	game.resources.addImage(this.res_key, 'images/buildings/headquarter.png');
+	AbstractBuilding.loadResources(this);
 };

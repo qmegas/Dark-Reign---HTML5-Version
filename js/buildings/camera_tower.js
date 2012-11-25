@@ -1,26 +1,26 @@
 function CameraTowerBuilding(pos_x, pos_y)
 {
 	this._proto = CameraTowerBuilding;
-	this.health_max = 200;
-	this.construction_max = 200;
+	this.health = this._proto.health_max;
 	
 	this.setPosition(pos_x, pos_y);
+	this.setActionTime(this._proto.build_time);
 	
 	this.run = function()
 	{
 		if (this.state == 'CONSTRUCTION')
-		{
 			this._runStandartConstruction();
-		}
 	}
 }
 
 CameraTowerBuilding.prototype = new AbstractBuilding();
 
-CameraTowerBuilding.box_image = 'camera_tower_box.png';
-CameraTowerBuilding.res_key = 'camera_tower.png';
+CameraTowerBuilding.res_key = 'camera_tower';
 CameraTowerBuilding.obj_name = 'Camera Tower';
 CameraTowerBuilding.cost = 200;
+CameraTowerBuilding.sell_cost = 100;
+CameraTowerBuilding.health_max = 200;
+CameraTowerBuilding.build_time = 4;
 CameraTowerBuilding.energy = 50;
 CameraTowerBuilding.enabled = false;
 CameraTowerBuilding.count = 0;
@@ -33,5 +33,5 @@ CameraTowerBuilding.image_padding = {x: 0, y: 0};
 CameraTowerBuilding.require_building = [HeadquarterBuilding];
 
 CameraTowerBuilding.loadResources = function(){
-	game.resources.addImage(this.res_key, 'images/buildings/camera_tower.png');
+	AbstractBuilding.loadResources(this);
 };

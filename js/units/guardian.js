@@ -3,7 +3,7 @@ function GuardianUnit(pos_x, pos_y)
 	this._proto = GuardianUnit;
 	
 	this.health = 100;
-	this.speed = 1.2;
+	this.speed = 1.371;
 	
 	this.move_direction = 0; //[E, NE, N, NW, W, SW, S, SE]
 	this.direction_matrix = [3, 4, 5, -1, 2, -1, 6, -1, 1, 0, 7];

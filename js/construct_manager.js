@@ -106,7 +106,7 @@ function ConstructManager(units, buildings)
 					else
 						this._drawCell(
 							i-this.current_view_offset, 
-							'images/buildings/' + this.available_buildings[i].box_image, 
+							'images/buildings/' + this.available_buildings[i].res_key + '/box.png', 
 							this.available_buildings[i].enabled
 						);
 					break;
