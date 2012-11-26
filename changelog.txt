@@ -3,6 +3,7 @@ Build 22 (19.11.2012)
 - Added "Guardian" unit
 - Added ability to demolish buildings
 - Selection fixes
+- Showing units on minimap
 
 Build 21 (18.11.2012)
 - New object drawing engine, that allows to draw units & building by layers

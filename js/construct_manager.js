@@ -237,10 +237,10 @@ function ConstructManager(units, buildings)
 		ctx.strokeStyle = '#07b4b4';
 		
 		ctx.beginPath();
-		ctx.moveTo(MAX_X - 15 - text_size, 18);
-		ctx.lineTo(MAX_X - 13, 18);
-		ctx.lineTo(MAX_X - 13, 0);
-		ctx.moveTo(MAX_X - 13, 10.5);
+		ctx.moveTo(MAX_X - 15 - text_size, 17.5);
+		ctx.lineTo(MAX_X - 13.5, 17.5);
+		ctx.lineTo(MAX_X - 13.5, 0);
+		ctx.moveTo(MAX_X - 13.5, 10.5);
 		ctx.lineTo(MAX_X, 10.5);
 		ctx.stroke();
 		
@@ -275,10 +275,10 @@ function ConstructManager(units, buildings)
 		
 		ctx.strokeStyle = '#07b4b4';
 		ctx.beginPath();
-		ctx.moveTo(left - 15 - max_text_size, box_height);
-		ctx.lineTo(left - 13, box_height);
-		ctx.lineTo(left - 13, 0.5);
-		ctx.moveTo(left - 13, 10.5);
+		ctx.moveTo(left - 15 - max_text_size, box_height - 0.5);
+		ctx.lineTo(left - 13.5, box_height - 0.5);
+		ctx.lineTo(left - 13.5, 0.5);
+		ctx.moveTo(left - 13.5, 10.5);
 		ctx.lineTo(left - 2, 10.5);
 		ctx.stroke();
 		

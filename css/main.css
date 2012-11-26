@@ -292,6 +292,9 @@ body {
 	text-align: center;
 	padding: 6px 5px 5px 5px;
 }
+.game .right-frame .bottom-right .map #minimap_viewport {
+	position: absolute;
+}
 .game .right-frame .bottom-right .resources {
 	float: left;
 	width: 52px;

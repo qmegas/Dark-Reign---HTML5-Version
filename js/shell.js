@@ -8,7 +8,7 @@ function Game()
 	this.viewport_move_y = 0;
 	this.viewport_ctx = {};
 	
-	this.minimap_ctx = {};
+	this.minimap = new MiniMap();
 	this.minimap_navigation = false;
 	
 	this.resources = new ResourseLoader();
@@ -59,16 +59,7 @@ function Game()
 			top: -this.viewport_y
 		}, 'fast');
 		
-		this.minimap_ctx.drawImage(this.resources.get('minimap'), 0, 0);
-		this.minimap_ctx.strokeStyle = '#ffffff';
-		this.minimap_ctx.lineWidth = 1;
-		
-		this.minimap_ctx.strokeRect(
-			parseInt(this.viewport_x/(this.level.size.x/this.level.minimap.x*CELL_SIZE)) + 0.5,  
-			parseInt(this.viewport_y/(this.level.size.y/this.level.minimap.y*CELL_SIZE)) + 0.5, 
-			this.level.minimap.rect_x, 
-			this.level.minimap.rect_y
-		);
+		this.minimap.drawViewport();
 	}
 
 	this.init = function(level, init_finish_callback)
@@ -79,7 +70,6 @@ function Game()
 			return;
 		}
 		
-		this.minimap_ctx = $('#minimap').get(0).getContext('2d');
 		this.viewport_ctx = $('#viewport').get(0).getContext('2d');
 		
 		this.level = level;
@@ -88,7 +78,7 @@ function Game()
 		
 		$('#viewport').css('top', '-' + (CELL_SIZE*this.level.size.y+5) + 'px');
 		
-		$('#minimap')
+		$('#minimap_viewport, #minimap_objects')
 			.attr('width', this.level.minimap.x)
 			.attr('height', this.level.minimap.y);
 			
@@ -303,7 +293,7 @@ function Game()
 			this.constructor.redrawProductionState();
 			
 			//Update minimap
-			//TODO
+			this.minimap.drawObjects();
 		}
 		
 		window.requestAnimFrame(function(){
@@ -540,17 +530,17 @@ $(function(){
 		$('#cell_popup').hide();
 	});
 	
-	$('#minimap').mousedown(function(event){
+	$('#minimap_viewport').mousedown(function(event){
 		game.minimapNavigation(true);
-		game.minimapMove(event.layerX - this.offsetLeft, event.layerY - this.offsetTop);
+		game.minimapMove(event.layerX, event.layerY);
 	});
 	
-	$('#minimap').mouseup(function(){
+	$('#minimap_viewport').mouseup(function(){
 		game.minimapNavigation(false);
 	});
 	
-	$('#minimap').mousemove(function(event){
-		game.minimapMove(event.layerX - this.offsetLeft, event.layerY - this.offsetTop);
+	$('#minimap_viewport').mousemove(function(event){
+		game.minimapMove(event.layerX, event.layerY);
 	});
 	
 	$('#viewport').bind('contextmenu', function(){

@@ -1,5 +1,4 @@
 To do:
-	- Show units on minimap
 	- Ability to upgrade buildings
 
 - High priority bugs:

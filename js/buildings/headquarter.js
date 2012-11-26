@@ -53,11 +53,6 @@ HeadquarterBuilding.image_size = {x: 103, y: 138};
 HeadquarterBuilding.image_padding = {x: -9, y: 42};
 HeadquarterBuilding.require_building = [];
 
-HeadquarterBuilding.upgradable = true;
-HeadquarterBuilding.upgrade_state = false;
-HeadquarterBuilding.upgrade_obj = null; //Headquarter2Building
-HeadquarterBuilding.upgrade_required = [TrainingFacilityBuilding, AssemblyPlantBuilding];
-
 HeadquarterBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);
 };
