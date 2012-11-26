@@ -1,5 +1,5 @@
 Build 22 (26.11.2012)
-- Added unit producing indicator on right panel. He not looks like an original one, but very similar.
+- Added unit producing indicator on right panel. It not looks like an original one, but very similar.
 - Added "Guardian" unit
 - Added ability to demolish buildings
 - Many selection fixes

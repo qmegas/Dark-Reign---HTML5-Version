@@ -28,6 +28,8 @@ function Game()
 	this.action_state_options = {};
 	this.shell_update_time = 0;
 	
+	this.debug = new Debuger();
+	
 	//Player cars
 	this.money = new MoneyDraw();
 	this.energy = new EnergyDraw();
@@ -223,60 +225,85 @@ function Game()
 		if (unitid != -1) // && !this.objects[unitid].is_selected)
 			this.objects[unitid].drawSelection(true);
 		
-//		//DEBUG: Unit placement
-//		this.viewport_ctx.fillStyle = 'rgba(0, 0, 255, 0.3)';
-//		var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24);
-//		for (var x=0; x<20; ++x)
-//			for (var y=0; y<20; ++y)
-//			{
-//				if (MapCell.getSingleUserId(this.level.map_cells[start_x+x][start_y+y]) != -1)
-//					this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
-//			}
+		//DEBUG: Unit placement
+		if (this.debug.show_obj)
+		{
+			this.viewport_ctx.fillStyle = 'rgba(0, 0, 255, 0.3)';
+			var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24);
+			for (var x=0; x<20; ++x)
+			{
+				if (this.level.map_cells[start_x+x] === undefined)
+					continue;
+				
+				for (var y=0; y<20; ++y)
+				{
+					if (this.level.map_cells[start_x+x][start_y+y] === undefined)
+						continue;
+					
+					if (MapCell.getSingleUserId(this.level.map_cells[start_x+x][start_y+y]) != -1)
+						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
+				}
+			}
+		}
 
-//		//DEBUG: Ground type
-//		var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24), skip;
-//		for (var x=0; x<20; ++x)
-//			for (var y=0; y<20; ++y)
-//			{
-//				skip = false;
-//				switch (this.level.map_cells[start_x+x][start_y+y].type)
-//				{
-//					case CELL_TYPE_EMPTY:
-//						skip = true;
-//						break;
-//					case CELL_TYPE_TREE:
-//						this.viewport_ctx.fillStyle = 'rgba(0, 200, 0, 0.3)';
-//						break;
-//					case CELL_TYPE_WATER:
-//						this.viewport_ctx.fillStyle = 'rgba(0, 0, 255, 0.3)';
-//						break;
-//					case CELL_TYPE_NOWALK:
-//						this.viewport_ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
-//						break;
-//					case CELL_TYPE_BUILDING:
-//						this.viewport_ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
-//						break;
-//				}
-//				if (!skip)
-//					this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
-//			}
+		//DEBUG: Ground type
+		if (this.debug.show_type)
+		{
+			var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24), skip;
+			for (var x=0; x<20; ++x)
+			{
+				if (this.level.map_cells[start_x+x] === undefined)
+					continue;
+				
+				for (var y=0; y<20; ++y)
+				{
+					if (this.level.map_cells[start_x+x][start_y+y] === undefined)
+						continue;
+					
+					skip = false;
+					switch (this.level.map_cells[start_x+x][start_y+y].type)
+					{
+						case CELL_TYPE_EMPTY:
+							skip = true;
+							break;
+						case CELL_TYPE_TREE:
+							this.viewport_ctx.fillStyle = 'rgba(0, 200, 0, 0.3)';
+							break;
+						case CELL_TYPE_WATER:
+							this.viewport_ctx.fillStyle = 'rgba(0, 0, 255, 0.3)';
+							break;
+						case CELL_TYPE_NOWALK:
+							this.viewport_ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+							break;
+						case CELL_TYPE_BUILDING:
+							this.viewport_ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
+							break;
+					}
+					if (!skip)
+						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
+				}
+			}
+		}
 
-//		//DEBUG: Cells grid
-//		this.viewport_ctx.strokeStyle = '#ffffff';
-//		this.viewport_ctx.beginPath();
-//		var start = 24 - (this.viewport_x - parseInt(this.viewport_x/24)*24) + 0.5; // - 11.5;
-//		for (var i=0; i<20; ++i)
-//		{
-//			this.viewport_ctx.moveTo(start + i*24, 0);
-//			this.viewport_ctx.lineTo(start + i*24, 448);
-//		}
-//		start = 24 - (this.viewport_y - parseInt(this.viewport_y/24)*24) + 0.5; // - 11.5;
-//		for (var i=0; i<20; ++i)
-//		{
-//			this.viewport_ctx.moveTo(0, start + i*24);
-//			this.viewport_ctx.lineTo(448, start + i*24);
-//		}
-//		this.viewport_ctx.stroke();
+		//DEBUG: Cells grid
+		if (this.debug.show_grid)
+		{
+			this.viewport_ctx.strokeStyle = '#ffffff';
+			this.viewport_ctx.beginPath();
+			var start = 24 - (this.viewport_x - parseInt(this.viewport_x/24)*24) + 0.5; // - 11.5;
+			for (var i=0; i<20; ++i)
+			{
+				this.viewport_ctx.moveTo(start + i*24, 0);
+				this.viewport_ctx.lineTo(start + i*24, 448);
+			}
+			start = 24 - (this.viewport_y - parseInt(this.viewport_y/24)*24) + 0.5; // - 11.5;
+			for (i=0; i<20; ++i)
+			{
+				this.viewport_ctx.moveTo(0, start + i*24);
+				this.viewport_ctx.lineTo(448, start + i*24);
+			}
+			this.viewport_ctx.stroke();
+		}
 
 		//Mouse
 		this.mouse.draw(cur_time);
@@ -536,8 +563,16 @@ $(function(){
 	});
 	
 	$('.tab').click(function(){
+		var $this = $(this);
+		
 		$('.tab').removeClass('active');
-		$(this).addClass('active');
+		$this.addClass('active');
+		
+		if ($this.attr('data-panel'))
+		{
+			$('.panel').addClass('hidden');
+			$('#'+$this.attr('data-panel')).removeClass('hidden');
+		}
 	});
 	
 	$('.unit-image').click(function(){
@@ -635,9 +670,5 @@ $(function(){
 		}
 		if (prevent)
 			event.preventDefault();
-	});
-	
-	$('#tmp_add_money').click(function(){
-		game.money.addMoney(15000);
 	});
 });

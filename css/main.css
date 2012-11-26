@@ -236,6 +236,12 @@ body {
 	height: 278px;
 	background-image: url("../images/shell/panel.png");
 }
+.game .right-frame .panel.hidden {
+	display: none;
+}
+.game .right-frame .panel#panel_special {
+	color: #fff;
+}
 .game .right-frame .panel .unit-boxes .box {
 	float: left;
 	width: 64px;

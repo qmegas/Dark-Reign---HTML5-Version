@@ -155,6 +155,12 @@ function MousePointer(game)
 				if (game.level.map_cells[pos.x][pos.y].building != -1)
 					game.objects[game.level.map_cells[pos.x][pos.y].building].sell();
 				break;
+				
+			case ACTION_STATE_ATTACK:
+				for (var i in game.selected_objects)
+					game.objects[game.selected_objects[i]].attack(/* Add parameters here */);
+				game.toggleActionState(ACTION_STATE_ATTACK);
+				break;
 		}
 	}
 	

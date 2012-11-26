@@ -5,6 +5,7 @@
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		<script type="text/javascript" src="js/constants.js"></script>
+		<script type="text/javascript" src="js/debug.js"></script>
 		<script type="text/javascript" src="js/money.js"></script>
 		<script type="text/javascript" src="js/mouse.js"></script>
 		<script type="text/javascript" src="js/sound_queue.js"></script>
@@ -64,14 +65,14 @@
 			</div>
 			<div class="right-frame">
 				<div class="tab-buttons">
-					<div class="tab build active"></div>
+					<div class="tab build active" data-panel="panel_build"></div>
 					<div class="tab comms"></div>
 					<div class="tab menu"></div>
 					<div class="tab orders"></div>
 					<div class="tab paths"></div>
-					<div class="tab special"></div>
+					<div class="tab special" data-panel="panel_special"></div>
 				</div>
-				<div class="panel">
+				<div class="panel" id="panel_build">
 					<div class="unit-boxes">
 						<div class="box" id="unit_box0" data-cell="0">
 							<canvas id="cell_canvas_0" width="64" height="50"></canvas>
@@ -145,6 +146,13 @@
 						</div>
 					</div>
 				</div>
+				<div class="panel hidden" id="panel_special">
+					<input type="checkbox" id="debug_quick_build"> Quick building<br>
+					<input type="checkbox" id="debug_show_obj"> Show object places<br>
+					<input type="checkbox" id="debug_show_type"> Show ground type<br>
+					<input type="checkbox" id="debug_show_grid"> Show cell grid<br>
+					<input type="button" value="Add money" id="debug_add_money" />
+				</div>
 				<div class="bottom-right">
 					<div class="map">
 						<canvas id="minimap_viewport" width="130" height="127"></canvas>
@@ -161,9 +169,5 @@
 		</div>
 		<canvas style="display: none; position: absolute" id="cell_popup" width="400" height="200"></canvas>
 		<canvas style="display: none" id="text_buffer" width="1000" height="1000"></canvas>
-		
-		<div>
-			<input type="button" value="Add money" id="tmp_add_money" />
-		</div>
 	</body>
 </html>

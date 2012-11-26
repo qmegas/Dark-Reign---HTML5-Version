@@ -26,6 +26,10 @@ function AbstractBuilding()
 	
 	this.setActionTime = function(time)
 	{
+		//DEBUG
+		if (game.debug.quick_build)
+			time = 2;
+		
 		this.action_start = (new Date()).getTime();
 		this.action_ends = this.action_start + time * 1000;
 	}
@@ -210,6 +214,10 @@ function AbstractBuilding()
 	this.isCanAttack = function()
 	{
 		return false; //Change it later because Guard Towers can attack
+	}
+	
+	this.attack = function()
+	{
 	}
 	
 	this.produce = function(obj)
