@@ -4,6 +4,7 @@ To do:
 	- Ability to upgrade buildings
 
 - High priority bugs:
+	- Fix demolishing bug
 	- Units stuck in building on production complete and exit point is not empty
 
 - Medium priority bugs:

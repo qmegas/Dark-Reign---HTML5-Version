@@ -6,6 +6,7 @@ Build 22 (26.11.2012)
 - Showing units on mini-map
 - Added repair mouse pointer
 - Added "attack mode". Can be enabled by pressing A button or attack icon on top menu. Weapon still not implemented.
+- Added debug options in "special" panel
 
 Build 21 (18.11.2012)
 - New object drawing engine, that allows to draw units & building by layers
