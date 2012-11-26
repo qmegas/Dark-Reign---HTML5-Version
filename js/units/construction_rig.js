@@ -25,41 +25,6 @@ function ConstructionRigUnit(pos_x, pos_y)
 		this.state = 'BUILD';
 	}
 	
-	this.draw = function(current_time) 
-	{
-		var top_x = this.position.x - game.viewport_x, top_y = this.position.y - game.viewport_y;
-		
-		//Draw unit
-		switch (this.state)
-		{
-			case 'STAND':
-				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
-					res_key: this._proto.resource_key + '_stand',
-					src_x: this.move_direction * this._proto.imgage_size.width,
-					src_y: 0,
-					src_width: this._proto.imgage_size.width,
-					src_height: this._proto.imgage_size.height,
-					x: top_x,
-					y: top_y
-				});
-				break;
-			
-			case 'BUILD':
-			case 'MOVE':
-				var diff = (parseInt((current_time - this.startAnimation) / 50) % 6);
-				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
-					res_key: this._proto.resource_key + '_move',
-					src_x: this.move_direction * this._proto.imgage_size.width,
-					src_y: diff * this._proto.imgage_size.height,
-					src_width: this._proto.imgage_size.width,
-					src_height: this._proto.imgage_size.height,
-					x: top_x,
-					y: top_y
-				});
-				break;
-		}
-	}
-	
 	this.run = function() 
 	{
 		switch (this.state)
@@ -124,12 +89,13 @@ ConstructionRigUnit.prototype = new AbstractUnit();
 
 ConstructionRigUnit.obj_name = 'Construction Rig';
 ConstructionRigUnit.resource_key = 'construction_rig';
-ConstructionRigUnit.imgage_size = {width: 35, height: 35};
+ConstructionRigUnit.image_size = {width: 35, height: 35};
+ConstructionRigUnit.image_padding = {x: 7, y: 7};
 ConstructionRigUnit.sound_count = 3;
 
 ConstructionRigUnit.cost = 300;
 ConstructionRigUnit.health_max = 100;
-
+ConstructionRigUnit.weapon = null;
 ConstructionRigUnit.enabled = false;
 
 ConstructionRigUnit.require_building = [HeadquarterBuilding];

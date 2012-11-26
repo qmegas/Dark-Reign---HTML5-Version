@@ -52,6 +52,15 @@ function MousePointer(game)
 					AbstractBuilding.drawBuildMouse(game.action_state_options.object, pos.x, pos.y);
 					this._drawCursor(current_time, 7, 1);
 					break;
+				case ACTION_STATE_REPAIR:
+					this._drawCursor(current_time, 8, 9);
+					break;
+				case ACTION_STATE_ATTACK:
+					if (game.selected_info.is_can_attack)
+						this._drawCursor(current_time, 3, 8);
+					else
+						this._drawCursor(current_time, 4, 2);
+					break;
 			}
 		}
 		else if (MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]) != -1)

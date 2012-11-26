@@ -338,13 +338,19 @@ function Game()
 		}
 		else
 		{
-			if (this.action_state == ACTION_STATE_NONE)
+			switch (this.action_state)
 			{
-				this._deselectUnits();
-				this.constructor.drawUnits();
+				case ACTION_STATE_ATTACK:
+					this.cleanActionState();
+				case ACTION_STATE_NONE:
+					this._deselectUnits();
+					this.constructor.drawUnits();
+					break;
+					
+				default:
+					this.cleanActionState();
+					break;
 			}
-			else
-				this.cleanActionState();
 		}
 	}
 	
@@ -369,6 +375,7 @@ function Game()
 					play_sound = false;
 					this.selected_objects.push(cur_unit);
 					this.selected_info.is_fly = this.selected_info.is_fly || this.objects[cur_unit].is_fly;
+					this.selected_info.is_can_attack = this.selected_info.is_can_attack || this.objects[cur_unit].isCanAttack();
 				}
 			}
 			
@@ -438,7 +445,8 @@ function Game()
 		this.selected_info = {
 			is_building: false,
 			is_fly: false,
-			is_produce: false
+			is_produce: false,
+			is_can_attack: false
 		};
 	}
 	
@@ -459,6 +467,12 @@ function Game()
 			case ACTION_STATE_POWER:
 				$('#top_button_power').addClass('active');
 				break;
+			case ACTION_STATE_REPAIR:
+				$('#top_button_repair').addClass('active');
+				break;
+			case ACTION_STATE_ATTACK:
+				$('#top_button_attack').addClass('active');
+				break;
 		}
 		
 		this.action_state = state;
@@ -476,6 +490,12 @@ function Game()
 				break;
 			case ACTION_STATE_BUILD:
 				this.constructor.removeCellSelection();
+				break;
+			case ACTION_STATE_REPAIR:
+				$('#top_button_repair').removeClass('active');
+				break;
+			case ACTION_STATE_ATTACK:
+				$('#top_button_attack').removeClass('active');
 				break;
 		}
 		
@@ -507,6 +527,12 @@ $(function(){
 	//Interface power building button
 	$('#top_button_power').click(function(){
 		game.toggleActionState(ACTION_STATE_POWER);
+	});
+	$('#top_button_repair').click(function(){
+		game.toggleActionState(ACTION_STATE_REPAIR);
+	});
+	$('#top_button_attack').click(function(){
+		game.toggleActionState(ACTION_STATE_ATTACK);
 	});
 	
 	$('.tab').click(function(){
@@ -578,6 +604,9 @@ $(function(){
 				break;
 			case 40: //Down
 				game.viewport_move_y = 1;
+				break;
+			case 65: //a - attack
+				game.toggleActionState(ACTION_STATE_ATTACK);
 				break;
 			case 83: //s - stop selected units
 				game.shellStopButton();

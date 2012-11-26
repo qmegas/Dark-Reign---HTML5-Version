@@ -1,4 +1,6 @@
 To do:
+	- Teach units to attack
+	- Add more buildings/units
 	- Ability to upgrade buildings
 
 - High priority bugs:

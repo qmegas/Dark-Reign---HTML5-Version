@@ -9,6 +9,9 @@ function ResourseLoader()
 	
 	this.addImage = function(key, image_path)
 	{
+		if (this.isSet(key))
+			return;
+		
 		var img = new Image(), obj = this;
 		img.src = image_path;
 		this.items[key] = img;
@@ -24,6 +27,9 @@ function ResourseLoader()
 	
 	this.addSound = function(key, sound_path)
 	{
+		if (this.isSet(key))
+			return;
+		
 		var audio = new Audio(), obj = this;;
 		audio.src = sound_path;
 		this.items[key] = audio;

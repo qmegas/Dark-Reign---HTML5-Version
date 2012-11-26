@@ -58,11 +58,48 @@ function AbstractUnit(pos_x, pos_y)
 		}
 	}
 	
+	this.draw = function(current_time) 
+	{
+		var top_x = this.position.x - game.viewport_x - this._proto.image_padding.x, 
+			top_y = this.position.y - game.viewport_y - this._proto.image_padding.y;
+		
+		//Draw unit
+		switch (this.state)
+		{
+			case 'STAND':
+				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
+					res_key: this._proto.resource_key + '_stand',
+					src_x: this.move_direction * this._proto.image_size.width,
+					src_y: 0,
+					src_width: this._proto.image_size.width,
+					src_height: this._proto.image_size.height,
+					x: top_x,
+					y: top_y
+				});
+				break;
+			
+			case 'BUILD':
+			case 'MOVE':
+				var diff = (parseInt((current_time - this.startAnimation) / 50) % 6);
+				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
+					res_key: this._proto.resource_key + '_move',
+					src_x: this.move_direction * this._proto.image_size.width,
+					src_y: diff * this._proto.image_size.height,
+					src_width: this._proto.image_size.width,
+					src_height: this._proto.image_size.height,
+					x: top_x,
+					y: top_y
+				});
+				break;
+		}
+	}
+	
 	//Draw Selection
 	this.drawSelection = function(is_onmouse)
 	{
-		var top_x = this.position.x - game.viewport_x + 0.5, top_y = this.position.y - game.viewport_y - 2.5;
-		var sel_width = this._proto.imgage_size.width, health_width = parseInt(sel_width*0.63);
+		var top_x = this.position.x - game.viewport_x + 0.5 - this._proto.image_padding.x, 
+			top_y = this.position.y - game.viewport_y - 2.5  - this._proto.image_padding.y,
+			sel_width = this._proto.image_size.width, health_width = parseInt(sel_width*0.63);
 			
 		game.viewport_ctx.strokeStyle = '#ffffff';
 		game.viewport_ctx.lineWidth = 1;
@@ -182,6 +219,11 @@ function AbstractUnit(pos_x, pos_y)
 				game.level.map_cells[cell.x][cell.y].ground_unit = unitid;
 		}
 	}
+	
+	this.isCanAttack = function()
+	{
+		return (this._proto.weapon !== null);
+	}
 }
 
 AbstractUnit.createNew = function(obj, x, y)
@@ -205,4 +247,7 @@ AbstractUnit.loadResources = function(obj)
 		game.resources.addSound(obj.resource_key + '_move' + i,   'sounds/units/' + obj.resource_key + '/move' + i + '.' + AUDIO_TYPE);
 		game.resources.addSound(obj.resource_key + '_select' + i, 'sounds/units/' + obj.resource_key + '/select' + i + '.' + AUDIO_TYPE);
 	}
+	
+	if (obj.weapon !== null)
+		obj.weapon.loadResources();
 }

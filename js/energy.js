@@ -3,7 +3,7 @@ function EnergyDraw()
 	this._max = 0;
 	this._current = 0;
 	
-	this._last_sound_notification = (new Date()).getTime();
+	this._last_sound_notification = (new Date()).getTime() + 10000;
 	this._last_blink = this._last_sound_notification;
 	this._ctx = $('#energy_scale').get(0).getContext('2d');
 	
@@ -21,7 +21,7 @@ function EnergyDraw()
 			//Make sound every 15 sec
 			if ((time - this._last_sound_notification) > 15000)
 			{
-				//game.notifications.addSound((this._current-this._max > 250) ? 'power_critical' : 'low_power');
+				game.notifications.addSound((this._current-this._max > 250) ? 'power_critical' : 'low_power');
 				this._last_sound_notification = time;
 			}
 		}

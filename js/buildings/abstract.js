@@ -56,8 +56,8 @@ function AbstractBuilding()
 		game.viewport_ctx.stroke();
 		
 		//Health
-		var health_width = parseInt(CELL_SIZE*this._proto.cell_size.x*0.66);
-		top_x += parseInt(health_width/4);
+		var health_width = Math.round(CELL_SIZE*this._proto.cell_size.x*0.66);
+		top_x += Math.round(health_width/4);
 		game.viewport_ctx.fillStyle = '#000000';
 		game.viewport_ctx.fillRect(top_x, top_y-2, health_width, 4);
 		
@@ -104,8 +104,8 @@ function AbstractBuilding()
 	
 	this._drawProgressBar = function(proc, title)
 	{
-		var bar_width = parseInt(CELL_SIZE*this._proto.cell_size.x*0.66), 
-			top_x = top_x = this.position.x - game.viewport_x + parseInt(bar_width/4),
+		var bar_width = Math.round(CELL_SIZE*this._proto.cell_size.x*0.66), 
+			top_x = top_x = this.position.x - game.viewport_x + Math.round(bar_width/4),
 			top_y = this.position.y - this._proto.image_padding.y - game.viewport_y;
 			
 		game.viewport_ctx.fillStyle = '#000000';
@@ -205,6 +205,11 @@ function AbstractBuilding()
 				y: this.position.y - this._proto.image_padding.y - game.viewport_y
 			});
 		}
+	}
+	
+	this.isCanAttack = function()
+	{
+		return false; //Change it later because Guard Towers can attack
 	}
 	
 	this.produce = function(obj)
