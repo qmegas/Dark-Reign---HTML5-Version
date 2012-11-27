@@ -1,6 +1,7 @@
-function GuardianUnit(pos_x, pos_y)
+function GuardianUnit(pos_x, pos_y, player)
 {
 	this._proto = GuardianUnit;
+	this.player = player;
 	
 	this.health = 100;
 	

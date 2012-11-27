@@ -95,16 +95,7 @@ function Game()
 				};
 		
 		//Init units
-		this.objects = this.level.getInitUnits();
-		for (var i in this.objects)
-		{
-			//Just for test
-			if (i==0)
-				this.objects[i].health = 30;
-			
-			this.objects[i].uid = i;
-			this.objects[i].markCellsOnMap(i);
-		}
+		this.level.getInitUnits();
 		
 		this.constructor = new ConstructManager(this.level.getAvailableUnits(), this.level.getAvailableBuildings());
 		
@@ -434,6 +425,10 @@ function Game()
 		this.resources.addSound('low_power', 'sounds/low_power.' + AUDIO_TYPE);
 		this.resources.addSound('power_critical', 'sounds/power_critical.' + AUDIO_TYPE);
 		this.resources.addSound('cant_build', 'sounds/cant_build.' + AUDIO_TYPE);
+		
+		//Neutral buildings
+		WaterWellBuilding.loadResources();
+		TaelonMineBuilding.loadResources();
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();

@@ -1,6 +1,7 @@
-function AbstractUnit(pos_x, pos_y)
+function AbstractUnit(pos_x, pos_y, player)
 {
 	this.uid = -1;
+	this.player = player;
 	
 	this._proto = {};
 	
@@ -93,7 +94,7 @@ function AbstractUnit(pos_x, pos_y)
 						{
 							if (AbstractBuilding.canBuild(this.build_obj, cell.x, cell.y, this.uid))
 							{
-								AbstractBuilding.createNew(this.build_obj, cell.x, cell.y);
+								AbstractBuilding.createNew(this.build_obj, cell.x, cell.y, this.player);
 								if (this.is_selected)
 									game.constructor.drawUnits();
 								game.kill_objects.push(this.uid);
@@ -305,13 +306,15 @@ function AbstractUnit(pos_x, pos_y)
 	}
 }
 
-AbstractUnit.createNew = function(obj, x, y)
+AbstractUnit.createNew = function(obj, x, y, player, instant_build)
 {
 	var uid = game.objects.length;
-	game.objects.push(new obj(x, y));
+	game.objects.push(new obj(x, y, player));
 	game.objects[uid].uid = uid;
 	game.objects[uid].markCellsOnMap(uid);
-	game.notifications.addSound('unit_completed');
+	
+	if (!instant_build)
+		game.notifications.addSound('unit_completed');
 	
 	return game.objects[uid];
 }

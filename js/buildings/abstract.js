@@ -1,6 +1,7 @@
 function AbstractBuilding()
 {
 	this.uid = -1;
+	this.player = 0;
 	this.health = 0;
 	this._proto = {};
 	this.state = 'CONSTRUCTION';
@@ -48,8 +49,11 @@ function AbstractBuilding()
 	{
 		var top_x = this.position.x - game.viewport_x,
 			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y + 10  - game.viewport_y;
-			
-		game.viewport_ctx.strokeStyle = (this.is_selected) ? '#ffffff' : '#393939';
+		
+		if (this.player == PLAYER_NEUTRAL)
+			game.viewport_ctx.strokeStyle = '#ffff00';
+		else
+			game.viewport_ctx.strokeStyle = (this.is_selected) ? '#ffffff' : '#393939';
 		game.viewport_ctx.lineWidth = 1;
 		
 		game.viewport_ctx.beginPath();
@@ -252,7 +256,7 @@ function AbstractBuilding()
 			
 			game.energy.addToCurrent(-1*this._proto.energy);
 			game.constructor.recalcUnitAvailability();
-			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2);
+			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2, this.player);
 			
 			this.onDestructed();
 			
@@ -265,7 +269,7 @@ function AbstractBuilding()
 		this.producing_queue[0].construction_progress += 1 / (RUNS_PER_SECOND * this.producing_queue[0].construction_time);
 		if (this.producing_queue[0].construction_progress > 1)
 		{
-			var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2); //TODO: need change?
+			var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2, this.player); //TODO: need change?
 			//TODO: Find compatable point for exit
 			unit.move(cell.x, cell.y + 5);
 
@@ -334,16 +338,24 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 	}
 };
 
-AbstractBuilding.createNew = function(obj, x, y)
+AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 {
-	var uid = game.objects.length;
-	game.objects.push(new obj(x, y));
-	game.objects[uid].uid = uid;
-	game.objects[uid].markCellsOnMap(uid);
+	var uid = game.objects.length, new_obj;
+	game.objects.push(new obj(x, y, player));
+	new_obj = game.objects[uid];
+	new_obj.uid = uid;
+	new_obj.markCellsOnMap(uid);
 	
-	game.money.decMoney(obj.cost);
-	
-	game.notifications.addSound('construction_under_way');
+	if (instant_build)
+	{
+		new_obj.state = 'NORMAL';
+		new_obj.health = obj.health_max;
+	}
+	else
+	{
+		game.money.decMoney(obj.cost);
+		game.notifications.addSound('construction_under_way');
+	}
 };
 
 AbstractBuilding.canBuild = function(obj, x, y, unit)

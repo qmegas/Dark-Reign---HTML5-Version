@@ -1,6 +1,7 @@
-function TrainingFacilityBuilding(pos_x, pos_y)
+function TrainingFacilityBuilding(pos_x, pos_y, player)
 {
 	this._proto = TrainingFacilityBuilding;
+	this.player = player;
 	this.health = this._proto.health_max;
 	
 	this.setPosition(pos_x, pos_y);
@@ -24,6 +25,10 @@ function TrainingFacilityBuilding(pos_x, pos_y)
 					this.producing_start = (new Date).getTime();
 					this.state = 'PRODUCING';
 				}
+				break;
+				
+			case 'SELL':
+				this._runStandartSell();
 				break;
 		}
 	}

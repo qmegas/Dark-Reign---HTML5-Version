@@ -19,6 +19,9 @@ var CELL_TYPE_WATER = 2;
 var CELL_TYPE_NOWALK = 3;
 var CELL_TYPE_BUILDING = 4;
 
+var PLAYER_NEUTRAL = 0;
+var PLAYER_HUMAN = 1;
+
 var AUDIO_TYPE = 'ogg';
 
 var game;

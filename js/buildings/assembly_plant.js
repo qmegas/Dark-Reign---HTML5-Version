@@ -1,6 +1,7 @@
-function AssemblyPlantBuilding(pos_x, pos_y)
+function AssemblyPlantBuilding(pos_x, pos_y, player)
 {
 	this._proto = AssemblyPlantBuilding;
+	this.player = player;
 	this.health = this._proto.health_max;
 	
 	this.producing_queue = [];
@@ -18,18 +19,7 @@ function AssemblyPlantBuilding(pos_x, pos_y)
 				break;
 				
 			case 'PRODUCING':
-				this.producing_queue[0].construction_progress += 1 / (RUNS_PER_SECOND * this.producing_queue[0].construction_time);
-				if (this.producing_queue[0].construction_progress > 1)
-				{
-					var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2);
-					//Find compatable point for exit
-					unit.move(cell.x, cell.y + 5);
-					
-					this.producing_queue[0].construction_progress = 0;
-					this.producing_queue[0].construction_queue--;
-					this.producing_queue.shift();
-					this.state = 'NORMAL';
-				}
+				this._runStandartProducing();
 				break;
 				
 			case 'NORMAL':
@@ -38,6 +28,10 @@ function AssemblyPlantBuilding(pos_x, pos_y)
 					this.producing_start = (new Date).getTime();
 					this.state = 'PRODUCING';
 				}
+				break;
+				
+			case 'SELL':
+				this._runStandartSell();
 				break;
 		}
 	}

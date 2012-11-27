@@ -1,6 +1,7 @@
-function WaterLaunchPadBuilding(pos_x, pos_y)
+function WaterLaunchPadBuilding(pos_x, pos_y, player)
 {
 	this._proto = WaterLaunchPadBuilding;
+	this.player = player;
 	this.health = this._proto.health_max;
 	
 	this.water_max = 100;
@@ -11,9 +12,15 @@ function WaterLaunchPadBuilding(pos_x, pos_y)
 	
 	this.run = function()
 	{
-		if (this.state == 'CONSTRUCTION')
+		switch (this.state)
 		{
-			this._runStandartConstruction();
+			case 'CONSTRUCTION':
+				this._runStandartConstruction();
+				break;
+				
+			case 'SELL':
+				this._runStandartSell();
+				break;
 		}
 	}
 	
