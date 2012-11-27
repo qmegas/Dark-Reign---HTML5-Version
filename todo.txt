@@ -1,17 +1,17 @@
 To do:
 	- Teach units to attack
-	- Add more buildings/units
 	- Ability to upgrade buildings
 
 - High priority bugs:
-	- Fix demolishing bug
-	- Units stuck in building on production complete and exit point is not empty
+	- Add empty Water well image
+	- Units stuck in building on production complete and exit point is not empty (improvement of path finding algorithm)
 
 - Medium priority bugs:
 	- When creating Camera Tower, need not to destroy construction rig
 	- Increase building health on construction
 
 - Low priority bugs:
+	- Mouse cursor should not change when mouse over units of other players
 	- Map: Water animation
 	- Add shadows to all units & buildings
 	- Energy meter blinking incorrectly

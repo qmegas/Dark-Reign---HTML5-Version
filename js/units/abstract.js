@@ -177,7 +177,13 @@ function AbstractUnit(pos_x, pos_y, player)
 			top_y = this.position.y - game.viewport_y - 2.5  - this._proto.image_padding.y,
 			sel_width = this._proto.image_size.width, health_width = parseInt(sel_width*0.63);
 			
-		game.viewport_ctx.strokeStyle = '#ffffff';
+		if (this.player == PLAYER_NEUTRAL)
+			game.viewport_ctx.strokeStyle = '#ffff00';
+		else if (this.player == PLAYER_HUMAN)
+			game.viewport_ctx.strokeStyle = '#ffffff';
+		else
+			game.viewport_ctx.strokeStyle = '#fc0800'; //Change it later to support aliances
+		
 		game.viewport_ctx.lineWidth = 1;
 		
 		game.viewport_ctx.beginPath();
@@ -249,7 +255,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.canBeSelected = function()
 	{
-		return true;
+		return (this.player == PLAYER_HUMAN);
 	}
 	
 	this.select = function(is_select, play_sound)

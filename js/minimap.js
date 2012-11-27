@@ -27,7 +27,7 @@ function MiniMap()
 			pos = game.objects[i].getCell();
 			x = parseInt((pos.x / game.level.size.x) * game.level.minimap.x);
 			y = parseInt((pos.y / game.level.size.y) * game.level.minimap.y);
-			this.objects_ctx.fillStyle = (game.objects[i].player == PLAYER_NEUTRAL) ? '#ffff00' : '#ffffbb';
+			this.objects_ctx.fillStyle = game.players[game.objects[i].player].getMapColor();
 				
 			if (game.objects[i].is_building)
 				this.objects_ctx.fillRect(

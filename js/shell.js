@@ -13,6 +13,7 @@ function Game()
 	
 	this.resources = new ResourseLoader();
 	
+	this.players = [];
 	this.objects = [];
 	this.kill_objects = [];
 	this.selected_objects = [];

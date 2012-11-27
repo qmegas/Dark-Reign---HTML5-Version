@@ -52,8 +52,11 @@ function AbstractBuilding()
 		
 		if (this.player == PLAYER_NEUTRAL)
 			game.viewport_ctx.strokeStyle = '#ffff00';
-		else
+		else if (this.player == PLAYER_HUMAN)
 			game.viewport_ctx.strokeStyle = (this.is_selected) ? '#ffffff' : '#393939';
+		else
+			game.viewport_ctx.strokeStyle = '#fc0800'; //Change it later to support aliances
+		
 		game.viewport_ctx.lineWidth = 1;
 		
 		game.viewport_ctx.beginPath();
@@ -88,19 +91,21 @@ function AbstractBuilding()
 		top_y = this.position.y - this._proto.image_padding.y - 16.5 - game.viewport_y;
 		top_x = this.position.x - 0.5 + health_width/4 - game.viewport_x;
 		
-		//Construction progress
-		if (this.state == 'CONSTRUCTION' || this.state == 'SELL')
+		if (this.player == PLAYER_HUMAN)
 		{
-			var proc = ((new Date()).getTime() - this.action_start) / (this.action_ends - this.action_start);
-			this._drawProgressBar(proc, (this.state == 'CONSTRUCTION') ? 'Under Construction' : 'Demolishing');
-			top_y -= 15;
-		}
-		
-		if (this.state == 'PRODUCING')
-		{
-			var obj = this.producing_queue[0];
-			this._drawProgressBar(obj.construction_progress, obj.obj_name);
-			top_y -= 15;
+			if (this.state == 'CONSTRUCTION' || this.state == 'SELL')
+			{
+				var proc = ((new Date()).getTime() - this.action_start) / (this.action_ends - this.action_start);
+				this._drawProgressBar(proc, (this.state == 'CONSTRUCTION') ? 'Under Construction' : 'Demolishing');
+				top_y -= 15;
+			}
+
+			if (this.state == 'PRODUCING')
+			{
+				var obj = this.producing_queue[0];
+				this._drawProgressBar(obj.construction_progress, obj.obj_name);
+				top_y -= 15;
+			}
 		}
 		
 		if (is_onmouse)

@@ -2385,6 +2385,10 @@ function Level1()
 	
 	this.getInitUnits = function()
 	{
+		game.players[PLAYER_NEUTRAL] = new Player('#ffff00');
+		game.players[PLAYER_HUMAN] = new Player('#ffffbb');
+		game.players[PLAYER_COMPUTER1] = new Player('#fc3c58');
+		
 		AbstractUnit.createNew(ConstructionRigUnit, 12, 8, PLAYER_HUMAN, true).health = 30;
 		AbstractUnit.createNew(ConstructionRigUnit, 5, 6, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 7, 6, PLAYER_HUMAN, true);
@@ -2397,6 +2401,9 @@ function Level1()
 		AbstractBuilding.createNew(WaterWellBuilding, 23, 113, PLAYER_NEUTRAL, true);
 		AbstractBuilding.createNew(TaelonMineBuilding, 3, 2, PLAYER_NEUTRAL, true);
 		AbstractBuilding.createNew(TaelonMineBuilding, 74, 114, PLAYER_NEUTRAL, true);
+		
+		//Test unit
+		AbstractUnit.createNew(ConstructionRigUnit, 65, 110, PLAYER_COMPUTER1, true);
 	}
 	
 	this.getAvailableUnits = function()
