@@ -147,9 +147,10 @@ function ConstructManager(units, buildings)
 				game.resources.get('cant_build').play();
 				return;
 			}
-			if (!game.money.haveEnough(this.available_buildings[i].cost))
+			if (!game.players[PLAYER_HUMAN].haveEnoughMoney(this.available_buildings[i].cost))
 			{
 				game.resources.get('cant_build').play();
+				game.notifications.addIfEmpty('insufficient_credits');
 				return;
 			}
 			
@@ -172,9 +173,10 @@ function ConstructManager(units, buildings)
 			}
 			if (this.available_units[i].construction_queue >= 11)
 				return;
-			if (!game.money.haveEnough(this.available_units[i].cost))
+			if (!game.players[PLAYER_HUMAN].haveEnoughMoney(this.available_units[i].cost))
 			{
 				game.resources.get('cant_build').play();
+				game.notifications.addIfEmpty('insufficient_credits');
 				return;
 			}
 			

@@ -8,9 +8,6 @@ function Game()
 	this.viewport_move_y = 0;
 	this.viewport_ctx = {};
 	
-	this.minimap = new MiniMap();
-	this.minimap_navigation = false;
-	
 	this.resources = new ResourseLoader();
 	
 	this.players = [];
@@ -18,22 +15,24 @@ function Game()
 	this.kill_objects = [];
 	this.selected_objects = [];
 	this.selected_info = {};
-	this.constructor = {};
 	
+	//Drawers
 	this.mouse = new MousePointer(this);
 	this.fontDraw = new DKFont();
 	this.objDraw = new ObjectDraw();
 	this.notifications = new SoundQueue();
+	this.moneyDraw = new MoneyDraw();
+	this.energyDraw = new EnergyDraw();
+	this.constructor = {};
+	this.minimap = new MiniMap();
 	
+	//Flags
 	this.action_state = 0;
 	this.action_state_options = {};
 	this.shell_update_time = 0;
+	this.minimap_navigation = false;
 	
 	this.debug = new Debuger();
-	
-	//Player cars
-	this.money = new MoneyDraw();
-	this.energy = new EnergyDraw();
 	
 	this.moveViewport = function(x, y, relative)
 	{
@@ -127,11 +126,11 @@ function Game()
 		};
 		this.resources.onComplete = function(){
 			game.moveViewport(0, 0, false);
-			game.money.setMoney(15000);
+			game.players[PLAYER_HUMAN].addMoney(15000); //Should add money to all players
 			game.constructor.drawUnits();
 			game.level.generateMap();
 			game._resetSelectionInfo();
-			game.energy.addToMax(0);
+			game.players[PLAYER_HUMAN].energyAddMax(0); //Just redraw the indicator
 			
 			$('.load-screen').hide();
 			$('.game').show();
@@ -172,7 +171,7 @@ function Game()
 			this.moveViewport(this.viewport_move_x, this.viewport_move_y, true);
 		
 		//Money draw
-		this.money.draw();
+		this.moneyDraw.draw();
 	}
 	
 	this.draw = function()
@@ -301,7 +300,7 @@ function Game()
 		this.mouse.draw(cur_time);
 		
 		//Energy
-		this.energy.draw(cur_time, false);
+		this.energyDraw.draw(cur_time, false);
 		
 		//Once per second update shell info
 		if ((cur_time - this.shell_update_time) > 1000)
@@ -426,6 +425,7 @@ function Game()
 		this.resources.addSound('low_power', 'sounds/low_power.' + AUDIO_TYPE);
 		this.resources.addSound('power_critical', 'sounds/power_critical.' + AUDIO_TYPE);
 		this.resources.addSound('cant_build', 'sounds/cant_build.' + AUDIO_TYPE);
+		this.resources.addSound('insufficient_credits', 'sounds/insufficient_credits.' + AUDIO_TYPE);
 		
 		//Neutral buildings
 		WaterWellBuilding.loadResources();

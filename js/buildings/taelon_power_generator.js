@@ -32,7 +32,12 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 	this.onConstructed = function() 
 	{
 		this._taelon = 500;
-		game.energy.addToMax(this._taelon);
+		game.players[this.player].energyAddMax(this._taelon);
+	}
+	
+	this.onDestructed = function()
+	{
+		game.players[this.player].energyAddMax(-1*this._taelon);
 	}
 	
 	//Custom animated draw function

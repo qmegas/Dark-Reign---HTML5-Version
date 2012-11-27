@@ -21,6 +21,6 @@ function Debuger()
 	});
 	
 	$('#debug_add_money').click(function(){
-		game.money.addMoney(15000);
+		game.players[PLAYER_HUMAN].addMoney(15000);
 	});
 }

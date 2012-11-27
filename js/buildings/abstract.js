@@ -118,7 +118,7 @@ function AbstractBuilding()
 	this._drawProgressBar = function(proc, title)
 	{
 		var bar_width = Math.round(CELL_SIZE*this._proto.cell_size.x*0.66), 
-			top_x = top_x = this.position.x - game.viewport_x + Math.round(bar_width/4),
+			top_x = this.position.x - game.viewport_x + Math.round(bar_width/4),
 			top_y = this.position.y - this._proto.image_padding.y - game.viewport_y;
 			
 		game.viewport_ctx.fillStyle = '#000000';
@@ -131,7 +131,7 @@ function AbstractBuilding()
 		top_y = this.position.y - this._proto.image_padding.y - 16.5 - game.viewport_y;
 		
 		game.fontDraw.drawOnCanvas(
-			title, game.viewport_ctx, top_x, top_y, 
+			title, game.viewport_ctx, top_x + 0.5, top_y, 
 			'yellow', 'center', bar_width
 		);
 	}
@@ -232,7 +232,7 @@ function AbstractBuilding()
 	this.produce = function(obj)
 	{
 		this.producing_queue.push(obj);
-		game.money.decMoney(obj.cost);
+		game.players[this.player].decMoney(obj.cost);
 	}
 	
 	this._runStandartConstruction = function()
@@ -244,7 +244,7 @@ function AbstractBuilding()
 			game.notifications.addSound('construction_complete');
 			game.constructor.recalcUnitAvailability();
 			
-			game.energy.addToCurrent(this._proto.energy);
+			game.players[this.player].energyAddCurrent(this._proto.energy);
 			this.state = 'NORMAL';
 			
 			this.onConstructed();
@@ -259,7 +259,8 @@ function AbstractBuilding()
 			
 			this._proto.count--;
 			
-			game.energy.addToCurrent(-1*this._proto.energy);
+			game.players[this.player].energyAddCurrent(-1*this._proto.energy);
+			game.players[this.player].addMoney(this._proto.sell_cost);
 			game.constructor.recalcUnitAvailability();
 			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2, this.player);
 			
@@ -358,7 +359,7 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 	}
 	else
 	{
-		game.money.decMoney(obj.cost);
+		game.players[player].decMoney(obj.cost);
 		game.notifications.addSound('construction_under_way');
 	}
 };
@@ -367,7 +368,7 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 {
 	var i = -1;
 	
-	if (!game.money.haveEnough(obj.cost))
+	if (!game.players[PLAYER_HUMAN].haveEnoughMoney(obj.cost))
 		return false;
 	
 	x -= obj.cell_padding.x;
