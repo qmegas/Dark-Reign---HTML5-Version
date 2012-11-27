@@ -56,7 +56,7 @@ function MousePointer(game)
 					this._drawCursor(current_time, 8, 9);
 					break;
 				case ACTION_STATE_ATTACK:
-					if (game.selected_info.is_can_attack)
+					if (game.selected_info.can_shoot_ground)
 						this._drawCursor(current_time, 3, 8);
 					else
 						this._drawCursor(current_time, 4, 2);

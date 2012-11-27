@@ -135,6 +135,37 @@ function AbstractUnit(pos_x, pos_y, player)
 		}
 	}
 	
+	this._moveToNextCell = function()
+	{
+		var curr_pos = this.getCell();
+
+		//Check if next cell is not empty. If not empty then 
+		if (MapCell.getIdByType(game.level.map_cells[this.move_path[0].x][this.move_path[0].y], this.is_fly) != -1)
+		{
+			//Stop
+			if (this.move_path.length == 1)
+			{
+				this.move_path = [];
+				return;
+			}
+			//recalculate route
+			var last_point = this.move_path.pop();
+			this.move_path = PathFinder.findPath(curr_pos.x, curr_pos.y, last_point.x, last_point.y, true, true);
+		}
+
+		//Move user to next cell + Remove from current
+		if (this.is_fly)
+		{
+			game.level.map_cells[this.move_path[0].x][this.move_path[0].y].fly_unit = this.uid;
+			game.level.map_cells[curr_pos.x][curr_pos.y].fly_unit = -1;
+		}
+		else
+		{
+			game.level.map_cells[this.move_path[0].x][this.move_path[0].y].ground_unit = this.uid;
+			game.level.map_cells[curr_pos.x][curr_pos.y].ground_unit = -1;
+		}
+	}
+	
 	this.draw = function(current_time) 
 	{
 		var top_x = this.position.x - game.viewport_x - this._proto.image_padding.x, 
@@ -222,37 +253,6 @@ function AbstractUnit(pos_x, pos_y, player)
 			game.fontDraw.drawOnCanvas(this._proto.obj_name, game.viewport_ctx, top_x, top_y - 16, 'yellow', 'center', sel_width);
 	}
 	
-	this._moveToNextCell = function()
-	{
-		var curr_pos = this.getCell();
-
-		//Check if next cell is not empty. If not empty then 
-		if (MapCell.getSingleUserId(game.level.map_cells[this.move_path[0].x][this.move_path[0].y]) != -1)
-		{
-			//Stop
-			if (this.move_path.length == 1)
-			{
-				this.move_path = [];
-				return;
-			}
-			//recalculate route
-			var last_point = this.move_path.pop();
-			this.move_path = PathFinder.findPath(curr_pos.x, curr_pos.y, last_point.x, last_point.y, true, true);
-		}
-
-		//Move user to next cell + Remove from current
-		if (this.is_fly)
-		{
-			game.level.map_cells[this.move_path[0].x][this.move_path[0].y].fly_unit = this.uid;
-			game.level.map_cells[curr_pos.x][curr_pos.y].fly_unit = -1;
-		}
-		else
-		{
-			game.level.map_cells[this.move_path[0].x][this.move_path[0].y].ground_unit = this.uid;
-			game.level.map_cells[curr_pos.x][curr_pos.y].ground_unit = -1;
-		}
-	}
-	
 	this.canBeSelected = function()
 	{
 		return (this.player == PLAYER_HUMAN);
@@ -302,9 +302,18 @@ function AbstractUnit(pos_x, pos_y, player)
 		}
 	}
 	
-	this.isCanAttack = function()
+	this.canAttackGround = function()
 	{
-		return (this._proto.weapon !== null);
+		if (this._proto.weapon === null)
+			return false;
+		return this._proto.weapon.can_shoot_ground;
+	}
+	
+	this.canAttackFly = function()
+	{
+		if (this._proto.weapon === null)
+			return false;
+		return this._proto.weapon.can_shoot_flyer;
 	}
 	
 	this.attack = function(/* Add parameters here */)

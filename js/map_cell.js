@@ -13,3 +13,10 @@ MapCell.getSingleUserId = function(cell)
 	
 	return -1;
 }
+
+MapCell.getIdByType = function(cell, is_fly)
+{
+	if (is_fly)
+		return cell.fly_unit;
+	return cell.ground_unit;
+}

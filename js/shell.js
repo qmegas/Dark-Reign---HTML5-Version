@@ -393,7 +393,8 @@ function Game()
 					play_sound = false;
 					this.selected_objects.push(cur_unit);
 					this.selected_info.is_fly = this.selected_info.is_fly || this.objects[cur_unit].is_fly;
-					this.selected_info.is_can_attack = this.selected_info.is_can_attack || this.objects[cur_unit].isCanAttack();
+					this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
+					this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
 				}
 			}
 			
@@ -469,7 +470,8 @@ function Game()
 			is_building: false,
 			is_fly: false,
 			is_produce: false,
-			is_can_attack: false
+			can_attack_ground: false,
+			can_attack_fly: false
 		};
 	}
 	
