@@ -1,6 +1,7 @@
 body {
 	padding: 0;
 	margin: 0;
+	cursor: url("../images/icursor.png"), auto;
 }
 
 .load-screen {
@@ -44,7 +45,6 @@ body {
 	background: url("../images/shell/money.png") no-repeat -147px 0;
 }
 .game .left-frame .top-panel .button {
-	cursor: pointer;
 	float: left;
 	width: 49px;
 	height: 32px;
@@ -173,7 +173,6 @@ body {
 }
 .game .right-frame .tab-buttons .tab {
 	float: left;
-	cursor: pointer;
 	width: 64px;
 	height: 32px;
 	background-image: url("../images/shell/menutabs.png");
