@@ -67,6 +67,8 @@ WaterLaunchPadBuilding.image_size = {x: 112, y: 77};
 WaterLaunchPadBuilding.image_padding = {x: -10, y: 7};
 WaterLaunchPadBuilding.require_building = [];
 
+WaterLaunchPadBuilding.upgradable = false;
+
 WaterLaunchPadBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);
 };

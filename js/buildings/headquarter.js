@@ -54,6 +54,10 @@ HeadquarterBuilding.image_size = {x: 103, y: 138};
 HeadquarterBuilding.image_padding = {x: -9, y: 42};
 HeadquarterBuilding.require_building = [];
 
+HeadquarterBuilding.upgradable = true;
+HeadquarterBuilding.upgrade_require = [];
+HeadquarterBuilding.upgrade_to = null;
+
 HeadquarterBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);
 };

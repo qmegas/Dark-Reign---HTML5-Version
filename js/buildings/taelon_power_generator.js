@@ -136,6 +136,8 @@ TaelonPowerBuilding.image_size = {x: 90, y: 123};
 TaelonPowerBuilding.image_padding = {x: -4, y: 33};
 TaelonPowerBuilding.require_building = [];
 
+TaelonPowerBuilding.upgradable = false;
+
 TaelonPowerBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);
 };

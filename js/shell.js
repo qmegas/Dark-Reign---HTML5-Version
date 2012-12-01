@@ -496,6 +496,8 @@ function Game()
 				$('#top_button_repair').addClass('active');
 				break;
 			case ACTION_STATE_ATTACK:
+				if (this.selected_objects.length == 0)
+					return;
 				$('#top_button_attack').addClass('active');
 				break;
 		}

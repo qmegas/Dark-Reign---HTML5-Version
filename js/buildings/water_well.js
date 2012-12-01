@@ -66,6 +66,8 @@ WaterWellBuilding.image_size = {x: 72, y: 68};
 WaterWellBuilding.image_padding = {x: 0, y: -6};
 WaterWellBuilding.require_building = [];
 
+WaterWellBuilding.upgradable = false;
+
 WaterWellBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);
 };

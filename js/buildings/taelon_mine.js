@@ -66,6 +66,8 @@ TaelonMineBuilding.image_size = {x: 68, y: 57};
 TaelonMineBuilding.image_padding = {x: 0, y: -13};
 TaelonMineBuilding.require_building = [];
 
+TaelonMineBuilding.upgradable = false;
+
 TaelonMineBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);
 };

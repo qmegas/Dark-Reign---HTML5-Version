@@ -60,7 +60,9 @@ AssemblyPlantBuilding.move_matrix = [0,0,1,1,0,0,1,1,0,1,0,1,0,1,1,0,1,1,1,0,0,1
 AssemblyPlantBuilding.cell_padding = {x: 2, y: 2};
 AssemblyPlantBuilding.image_size = {x: 119, y: 117};
 AssemblyPlantBuilding.image_padding = {x: -1, y: -3};
-AssemblyPlantBuilding.require_building = [HeadquarterBuilding];
+AssemblyPlantBuilding.require_building = [];
+
+AssemblyPlantBuilding.upgradable = false;
 
 AssemblyPlantBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);

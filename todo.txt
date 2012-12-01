@@ -3,8 +3,7 @@ To do:
 	- Ability to upgrade buildings
 
 - High priority bugs:
-	- Add empty Water well image
-	- Units stuck in building on production complete and exit point is not empty (improvement of path finding algorithm)
+	- Improve pathfinding algorithm
 
 - Medium priority bugs:
 	- When creating Camera Tower, need not to destroy construction rig

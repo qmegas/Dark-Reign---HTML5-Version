@@ -52,7 +52,9 @@ TrainingFacilityBuilding.move_matrix = [0,0,1,1,0,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,
 TrainingFacilityBuilding.cell_padding = {x: 2, y: 2};
 TrainingFacilityBuilding.image_size = {x: 113, y: 100};
 TrainingFacilityBuilding.image_padding = {x: 0, y: 0};
-TrainingFacilityBuilding.require_building = [HeadquarterBuilding];
+TrainingFacilityBuilding.require_building = [];
+
+TrainingFacilityBuilding.upgradable = false;
 
 TrainingFacilityBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);

@@ -262,7 +262,7 @@ function AbstractBuilding()
 			game.players[this.player].energyAddCurrent(-1*this._proto.energy);
 			game.players[this.player].addMoney(this._proto.sell_cost);
 			game.constructor.recalcUnitAvailability();
-			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2, this.player);
+			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2, this.player, true);
 			
 			this.onDestructed();
 			
