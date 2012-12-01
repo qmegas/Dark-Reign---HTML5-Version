@@ -2,6 +2,8 @@
 
 Just download the files and open `game.html` in Chrome or Firefox browsers. IE9/10 still not supported.
 
+[See it live](http://qmegas.info/dark-reign-html5/)
+
 ## Folders & files
 
 * css - game interface CSS files
