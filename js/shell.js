@@ -343,11 +343,7 @@ function Game()
 		{
 			var cunit = MapCell.getSingleUserId(this.level.map_cells[pos.x][pos.y]);
 			if ((cunit !== -1) && this.objects[cunit].canBeSelected())
-			{
 				this.regionSelect(pos.x, pos.y, pos.x, pos.y);
-				if (this.selected_objects.length==1 && this.objects[this.selected_objects[0]].is_building)
-					this.selected_info.is_building = true;
-			}
 			
 			//If not new selection move selected units
 			if (cunit==-1 && this.selected_objects.length>0)
@@ -391,6 +387,9 @@ function Game()
 					
 					this.objects[cur_unit].select(true, play_sound);
 					play_sound = false;
+					
+					if (this.objects[cur_unit].is_building)
+						this.selected_info.is_building = true;
 					this.selected_objects.push(cur_unit);
 					this.selected_info.is_fly = this.selected_info.is_fly || this.objects[cur_unit].is_fly;
 					this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
@@ -427,6 +426,7 @@ function Game()
 		this.resources.addSound('power_critical', 'sounds/power_critical.' + AUDIO_TYPE);
 		this.resources.addSound('cant_build', 'sounds/cant_build.' + AUDIO_TYPE);
 		this.resources.addSound('insufficient_credits', 'sounds/insufficient_credits.' + AUDIO_TYPE);
+		this.resources.addSound('upgrade_available', 'sounds/upgrade_available.' + AUDIO_TYPE);
 		
 		//Neutral buildings
 		WaterWellBuilding.loadResources();
@@ -588,6 +588,21 @@ $(function(){
 		$('#cell_popup').show();
 	});
 	$('.unit-image').mouseout(function(e){
+		$('#cell_popup').hide();
+	});
+	
+	$('#upgrade_button').mouseover(function(){
+		if ($(this).hasClass('disable'))
+			return;
+		
+		var position = $(this).offset();
+		game.constructor.upgradePopupPrepere();
+		
+		position.left -= 398;
+		$('#cell_popup').css(position);
+		$('#cell_popup').show();
+	});
+	$('#upgrade_button').mouseout(function(){
 		$('#cell_popup').hide();
 	});
 	

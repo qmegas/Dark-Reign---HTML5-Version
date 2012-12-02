@@ -332,3 +332,13 @@ body {
 .dk-button-small.disable {
 	background-position: -213px 0;
 }
+
+.dk-button-small#upgrade_button .caption {
+	margin: 7px 0 0 16px;
+	width: 40px;
+	height: 12px;
+	background: url("../images/shell/texts/upgrade.png") no-repeat 0 -12px;
+}
+.dk-button-small.disable#upgrade_button .caption {
+	background-position: 0 0;
+}

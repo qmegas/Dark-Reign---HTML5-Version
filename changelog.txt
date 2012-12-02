@@ -1,3 +1,7 @@
+Build 24 (02.12.2012)
+- Changed interface cursor
+- Units marked blue on right panel when selected building can't produce that unit
+
 Build 23 (27.11.2012)
 - Added neutral player
 - Added neutral objects: Water well, Taelon mine

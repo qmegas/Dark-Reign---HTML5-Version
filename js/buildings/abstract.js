@@ -17,6 +17,8 @@ function AbstractBuilding()
 	
 	this.position = {x: 0, y: 0};
 	
+	this._text_under_construction = 'Under Construction';
+	
 	this.setPosition = function(pos_x, pos_y)
 	{
 		this.position = {
@@ -96,7 +98,7 @@ function AbstractBuilding()
 			if (this.state == 'CONSTRUCTION' || this.state == 'SELL')
 			{
 				var proc = ((new Date()).getTime() - this.action_start) / (this.action_ends - this.action_start);
-				this._drawProgressBar(proc, (this.state == 'CONSTRUCTION') ? 'Under Construction' : 'Demolishing');
+				this._drawProgressBar(proc, (this.state == 'CONSTRUCTION') ? this._text_under_construction : 'Demolishing');
 				top_y -= 15;
 			}
 
@@ -105,6 +107,15 @@ function AbstractBuilding()
 				var obj = this.producing_queue[0];
 				this._drawProgressBar(obj.construction_progress, obj.obj_name);
 				top_y -= 15;
+			}
+			
+			if (this._proto.upgradable && this._proto.can_upgrade_now)
+			{
+				var up_top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 8.5 - game.viewport_y;;
+				game.fontDraw.drawOnCanvas(
+					'Upgrade ' + this._proto.upgrade_to.cost + 'c', game.viewport_ctx, top_x, up_top_y, 
+					'yellow', 'center', health_width
+				);
 			}
 		}
 		
@@ -220,7 +231,12 @@ function AbstractBuilding()
 		}
 	}
 	
-	this.isCanAttack = function()
+	this.canAttackFly = function()
+	{
+		return false; //Change it later because Guard Towers can attack
+	}
+	
+	this.canAttackGround = function()
 	{
 		return false; //Change it later because Guard Towers can attack
 	}

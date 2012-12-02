@@ -22,6 +22,7 @@ function HeadquarterBuilding(pos_x, pos_y, player)
 			case 'NORMAL':
 				if (this.producing_queue.length > 0)
 				{
+					console.log('Start producing: ' + this.uid);
 					this.producing_start = (new Date).getTime();
 					this.state = 'PRODUCING';
 				}
@@ -40,7 +41,7 @@ HeadquarterBuilding.res_key = 'headquarter';
 HeadquarterBuilding.obj_name = 'Headquarter 1';
 HeadquarterBuilding.cost = 750;
 HeadquarterBuilding.sell_cost = 375;
-HeadquarterBuilding.health_max = 750;
+HeadquarterBuilding.health_max = 1440;
 HeadquarterBuilding.build_time = 15;
 HeadquarterBuilding.energy = 100;
 HeadquarterBuilding.enabled = true;
@@ -55,7 +56,7 @@ HeadquarterBuilding.image_padding = {x: -9, y: 42};
 HeadquarterBuilding.require_building = [];
 
 HeadquarterBuilding.upgradable = true;
-HeadquarterBuilding.upgrade_require = [];
+HeadquarterBuilding.can_upgrade_now = false;
 HeadquarterBuilding.upgrade_to = null;
 
 HeadquarterBuilding.loadResources = function(){
