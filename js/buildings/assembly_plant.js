@@ -42,7 +42,7 @@ function AssemblyPlantBuilding(pos_x, pos_y, player)
 	}
 }
 
-AssemblyPlantBuilding.prototype = new AbstractBuilding();
+AbstractBuilding.setBuildingCommonOptions(AssemblyPlantBuilding);
 
 AssemblyPlantBuilding.res_key = 'assembly_plant';
 AssemblyPlantBuilding.obj_name = 'Assembly Plant';
@@ -51,9 +51,7 @@ AssemblyPlantBuilding.sell_cost = 1100;
 AssemblyPlantBuilding.health_max = 1200;
 AssemblyPlantBuilding.build_time = 44;
 AssemblyPlantBuilding.energy = 100;
-AssemblyPlantBuilding.enabled = false;
 AssemblyPlantBuilding.can_build = true;
-AssemblyPlantBuilding.count = 0;
 
 AssemblyPlantBuilding.cell_size = {x: 5, y: 5};
 AssemblyPlantBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
@@ -61,11 +59,3 @@ AssemblyPlantBuilding.move_matrix = [0,0,1,1,0,0,1,1,0,1,0,1,0,1,1,0,1,1,1,0,0,1
 AssemblyPlantBuilding.cell_padding = {x: 2, y: 2};
 AssemblyPlantBuilding.image_size = {x: 119, y: 117};
 AssemblyPlantBuilding.image_padding = {x: -1, y: -3};
-AssemblyPlantBuilding.require_building = [];
-
-AssemblyPlantBuilding.upgradable = false;
-AssemblyPlantBuilding.upgrade_from = null;
-
-AssemblyPlantBuilding.loadResources = function(){
-	AbstractBuilding.loadResources(this);
-};

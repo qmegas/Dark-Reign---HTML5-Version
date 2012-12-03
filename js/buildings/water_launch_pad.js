@@ -47,7 +47,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 	}
 }
 
-WaterLaunchPadBuilding.prototype = new AbstractBuilding();
+AbstractBuilding.setBuildingCommonOptions(WaterLaunchPadBuilding);
 
 WaterLaunchPadBuilding.res_key = 'water_launch';
 WaterLaunchPadBuilding.obj_name = 'Water Launch Pad';
@@ -58,7 +58,6 @@ WaterLaunchPadBuilding.build_time = 25;
 WaterLaunchPadBuilding.energy = 100;
 WaterLaunchPadBuilding.enabled = true;
 WaterLaunchPadBuilding.can_build = true;
-WaterLaunchPadBuilding.count = 0;
 
 WaterLaunchPadBuilding.cell_size = {x: 5, y: 3};
 WaterLaunchPadBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0];
@@ -66,11 +65,3 @@ WaterLaunchPadBuilding.move_matrix = [0,1,0,0,1,1,1,1,1,1,0,0,0,0,0];
 WaterLaunchPadBuilding.cell_padding = {x: 2, y: 1};
 WaterLaunchPadBuilding.image_size = {x: 112, y: 77};
 WaterLaunchPadBuilding.image_padding = {x: -10, y: 7};
-WaterLaunchPadBuilding.require_building = [];
-
-WaterLaunchPadBuilding.upgradable = false;
-WaterLaunchPadBuilding.upgrade_from = null;
-
-WaterLaunchPadBuilding.loadResources = function(){
-	AbstractBuilding.loadResources(this);
-};

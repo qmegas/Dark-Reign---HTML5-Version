@@ -35,7 +35,7 @@ function HeadquarterBuilding(pos_x, pos_y, player)
 	}
 }
 
-HeadquarterBuilding.prototype = new AbstractBuilding();
+AbstractBuilding.setBuildingCommonOptions(HeadquarterBuilding);
 
 HeadquarterBuilding.res_key = 'headquarter';
 HeadquarterBuilding.obj_name = 'Headquarter 1';
@@ -46,7 +46,6 @@ HeadquarterBuilding.build_time = 15;
 HeadquarterBuilding.energy = 100;
 HeadquarterBuilding.enabled = true;
 HeadquarterBuilding.can_build = true;
-HeadquarterBuilding.count = 0;
 
 HeadquarterBuilding.cell_size = {x: 5, y: 4};
 HeadquarterBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
@@ -54,13 +53,5 @@ HeadquarterBuilding.move_matrix = [0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1];
 HeadquarterBuilding.cell_padding = {x: 2, y: 2};
 HeadquarterBuilding.image_size = {x: 103, y: 138};
 HeadquarterBuilding.image_padding = {x: -9, y: 42};
-HeadquarterBuilding.require_building = [];
 
 HeadquarterBuilding.upgradable = true;
-HeadquarterBuilding.upgrade_from = null;
-HeadquarterBuilding.can_upgrade_now = false;
-HeadquarterBuilding.upgrade_to = null;
-
-HeadquarterBuilding.loadResources = function(){
-	AbstractBuilding.loadResources(this);
-};

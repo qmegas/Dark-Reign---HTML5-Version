@@ -473,16 +473,28 @@ function Game()
 	
 	this.buildingUpgrade = function()
 	{
+		var upgraded = false;
+		
 		if (this.selected_info.is_building && this.objects[game.selected_objects[0]].isUpgradePossible())
 		{
-			var old_obj = this.objects[game.selected_objects[0]], pos = old_obj.getCell();
-			var new_obj = new old_obj._proto.upgrade_to(pos.x + old_obj._proto.cell_padding.x, pos.y + old_obj._proto.cell_padding.y, old_obj.player);
+			var new_obj, old_obj = this.objects[game.selected_objects[0]], pos;
 			
-			new_obj.uid = old_obj.uid;
-			delete old_obj;
-			this.objects[new_obj.uid] = new_obj;
+			if (this.players[PLAYER_HUMAN].haveEnoughMoney(old_obj._proto.upgrade_to.cost))
+			{
+				pos = old_obj.getCell();
+				new_obj = new old_obj._proto.upgrade_to(pos.x + old_obj._proto.cell_padding.x, pos.y + old_obj._proto.cell_padding.y, old_obj.player);
+			
+				new_obj.uid = old_obj.uid;
+				delete old_obj;
+				this.objects[new_obj.uid] = new_obj;
+				
+				this.players[PLAYER_HUMAN].decMoney(old_obj._proto.upgrade_to.cost);
+				
+				upgraded = true;
+			}
 		}
-		else
+		
+		if (!upgraded)
 			game.resources.get('cant_build').play();
 	}
 	

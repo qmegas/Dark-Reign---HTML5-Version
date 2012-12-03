@@ -46,18 +46,10 @@ function WaterWellBuilding(pos_x, pos_y, player)
 	}
 }
 
-WaterWellBuilding.prototype = new AbstractBuilding();
+AbstractBuilding.setBuildingCommonOptions(WaterWellBuilding);
 
 WaterWellBuilding.res_key = 'water_well';
 WaterWellBuilding.obj_name = 'Pure Water Spring';
-WaterWellBuilding.cost = 0;
-WaterWellBuilding.sell_cost = 0;
-WaterWellBuilding.health_max = 100;
-WaterWellBuilding.build_time = 0;
-WaterWellBuilding.energy = 0;
-WaterWellBuilding.enabled = false;
-WaterWellBuilding.can_build = false;
-WaterWellBuilding.count = 0;
 
 WaterWellBuilding.cell_size = {x: 3, y: 3};
 WaterWellBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];
@@ -65,11 +57,3 @@ WaterWellBuilding.move_matrix = [0,0,0,0,0,0,0,0,0];
 WaterWellBuilding.cell_padding = {x: 0, y: 0};
 WaterWellBuilding.image_size = {x: 72, y: 68};
 WaterWellBuilding.image_padding = {x: 0, y: -6};
-WaterWellBuilding.require_building = [];
-
-WaterWellBuilding.upgradable = false;
-WaterWellBuilding.upgrade_from = null;
-
-WaterWellBuilding.loadResources = function(){
-	AbstractBuilding.loadResources(this);
-};

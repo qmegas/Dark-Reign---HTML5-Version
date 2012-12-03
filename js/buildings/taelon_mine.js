@@ -46,18 +46,10 @@ function TaelonMineBuilding(pos_x, pos_y, player)
 	}
 }
 
-TaelonMineBuilding.prototype = new AbstractBuilding();
+AbstractBuilding.setBuildingCommonOptions(TaelonMineBuilding);
 
 TaelonMineBuilding.res_key = 'taelon_mine';
 TaelonMineBuilding.obj_name = 'Taelon';
-TaelonMineBuilding.cost = 0;
-TaelonMineBuilding.sell_cost = 0;
-TaelonMineBuilding.health_max = 100;
-TaelonMineBuilding.build_time = 0;
-TaelonMineBuilding.energy = 0;
-TaelonMineBuilding.enabled = false;
-TaelonMineBuilding.can_build = false;
-TaelonMineBuilding.count = 0;
 
 TaelonMineBuilding.cell_size = {x: 3, y: 3};
 TaelonMineBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];
@@ -65,11 +57,3 @@ TaelonMineBuilding.move_matrix = [0,0,0,0,0,0,0,0,0];
 TaelonMineBuilding.cell_padding = {x: 0, y: 0};
 TaelonMineBuilding.image_size = {x: 68, y: 57};
 TaelonMineBuilding.image_padding = {x: 0, y: -13};
-TaelonMineBuilding.require_building = [];
-
-TaelonMineBuilding.upgradable = false;
-TaelonMineBuilding.upgrade_from = null;
-
-TaelonMineBuilding.loadResources = function(){
-	AbstractBuilding.loadResources(this);
-};

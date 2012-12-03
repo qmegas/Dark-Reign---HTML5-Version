@@ -116,7 +116,7 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 	}
 }
 
-TaelonPowerBuilding.prototype = new AbstractBuilding();
+AbstractBuilding.setBuildingCommonOptions(TaelonPowerBuilding);
 
 TaelonPowerBuilding.res_key = 'taelon_power';
 TaelonPowerBuilding.obj_name = 'Taelon Power Generator';
@@ -124,10 +124,8 @@ TaelonPowerBuilding.cost = 2000;
 TaelonPowerBuilding.sell_cost = 1000;
 TaelonPowerBuilding.health_max = 1450;
 TaelonPowerBuilding.build_time = 20;
-TaelonPowerBuilding.energy = 0;
 TaelonPowerBuilding.enabled = true;
 TaelonPowerBuilding.can_build = true;
-TaelonPowerBuilding.count = 0;
 
 TaelonPowerBuilding.cell_size = {x: 4, y: 4};
 TaelonPowerBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1];
@@ -135,11 +133,3 @@ TaelonPowerBuilding.move_matrix = [0,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0];
 TaelonPowerBuilding.cell_padding = {x: 2, y: 1};
 TaelonPowerBuilding.image_size = {x: 90, y: 123};
 TaelonPowerBuilding.image_padding = {x: -4, y: 33};
-TaelonPowerBuilding.require_building = [];
-
-TaelonPowerBuilding.upgradable = false;
-TaelonPowerBuilding.upgrade_from = null;
-
-TaelonPowerBuilding.loadResources = function(){
-	AbstractBuilding.loadResources(this);
-};

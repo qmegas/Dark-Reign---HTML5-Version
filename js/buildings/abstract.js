@@ -407,6 +407,9 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 	if (!game.players[PLAYER_HUMAN].haveEnoughMoney(obj.cost))
 		return false;
 	
+	if (!obj.enabled)
+		return false;
+	
 	x -= obj.cell_padding.x;
 	y -= obj.cell_padding.y;
 	
@@ -439,3 +442,36 @@ AbstractBuilding.loadResources = function(obj)
 {
 	game.resources.addImage(obj.res_key, 'images/buildings/'+obj.res_key+'/sprite.png');
 }
+
+AbstractBuilding.setBuildingCommonOptions = function(obj)
+{
+	obj.prototype = new AbstractBuilding();
+	
+	obj.res_key = '';  //Must redeclare
+	obj.obj_name = ''; //Must redeclare
+	obj.cost = 0;
+	obj.sell_cost = 0;
+	obj.health_max = 100;
+	obj.build_time = 0;
+	obj.energy = 0;
+	obj.enabled = false;
+	obj.can_build = false;
+	obj.count = 0;
+
+	obj.cell_size = null;       //Must redeclare
+	obj.cell_matrix = null;     //Must redeclare
+	obj.move_matrix = null;     //Must redeclare
+	obj.cell_padding = null;    //Must redeclare
+	obj.image_size = null;      //Must redeclare
+	obj.image_padding = null;
+	obj.require_building = [];
+
+	obj.upgradable = false;
+	obj.upgrade_from = null;
+	obj.can_upgrade_now = false;
+	obj.upgrade_to = null;
+	
+	obj.loadResources = function(){
+		AbstractBuilding.loadResources(this);
+	};
+};

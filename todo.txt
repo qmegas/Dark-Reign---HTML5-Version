@@ -3,7 +3,6 @@ To do:
 
 - High priority bugs:
 	- Improve pathfinding algorithm
-	- Some very strange bug when two different building objects share same abstract object
 
 - Medium priority bugs:
 	- When creating Camera Tower, need not to destroy construction rig
