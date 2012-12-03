@@ -55,6 +55,9 @@ function ResourseLoader()
 	
 	this.get = function(key)
 	{
+		if (!this.isSet(key))
+			console.log('Requesting unexisting resource: ' + key);
+		
 		return this.items[key];
 	}
 }

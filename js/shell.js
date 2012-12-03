@@ -428,10 +428,6 @@ function Game()
 		this.resources.addSound('insufficient_credits', 'sounds/insufficient_credits.' + AUDIO_TYPE);
 		this.resources.addSound('upgrade_available', 'sounds/upgrade_available.' + AUDIO_TYPE);
 		
-		//Neutral buildings
-		WaterWellBuilding.loadResources();
-		TaelonMineBuilding.loadResources();
-		
 		//Units & Buildings
 		this.constructor.loadUnitResources();
 		this.constructor.loadBuildingResources();
@@ -473,6 +469,21 @@ function Game()
 			can_attack_ground: false,
 			can_attack_fly: false
 		};
+	}
+	
+	this.buildingUpgrade = function()
+	{
+		if (this.selected_info.is_building && this.objects[game.selected_objects[0]].isUpgradePossible())
+		{
+			var old_obj = this.objects[game.selected_objects[0]], pos = old_obj.getCell();
+			var new_obj = new old_obj._proto.upgrade_to(pos.x + old_obj._proto.cell_padding.x, pos.y + old_obj._proto.cell_padding.y, old_obj.player);
+			
+			new_obj.uid = old_obj.uid;
+			delete old_obj;
+			this.objects[new_obj.uid] = new_obj;
+		}
+		else
+			game.resources.get('cant_build').play();
 	}
 	
 	this.toggleActionState = function(state)
@@ -591,6 +602,9 @@ $(function(){
 		$('#cell_popup').hide();
 	});
 	
+	$('#upgrade_button').click(function(){
+		game.buildingUpgrade();
+	});
 	$('#upgrade_button').mouseover(function(){
 		if ($(this).hasClass('disable'))
 			return;

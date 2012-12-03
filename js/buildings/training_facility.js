@@ -4,7 +4,7 @@ function TrainingFacilityBuilding(pos_x, pos_y, player)
 	this.player = player;
 	this.health = this._proto.health_max;
 	
-	this.setPosition(pos_x, pos_y);
+	this.init(pos_x, pos_y);
 	this.setActionTime(this._proto.build_time);
 	
 	this.run = function()
@@ -40,10 +40,11 @@ TrainingFacilityBuilding.res_key = 'training_facility';
 TrainingFacilityBuilding.obj_name = 'Training Facility';
 TrainingFacilityBuilding.cost = 1500;
 TrainingFacilityBuilding.sell_cost = 750;
-TrainingFacilityBuilding.health_max = 1500;
+TrainingFacilityBuilding.health_max = 900;
 TrainingFacilityBuilding.build_time = 15;
 TrainingFacilityBuilding.energy = 100;
 TrainingFacilityBuilding.enabled = false;
+TrainingFacilityBuilding.can_build = true;
 TrainingFacilityBuilding.count = 0;
 
 TrainingFacilityBuilding.cell_size = {x: 5, y: 5};
@@ -55,6 +56,7 @@ TrainingFacilityBuilding.image_padding = {x: 0, y: 0};
 TrainingFacilityBuilding.require_building = [];
 
 TrainingFacilityBuilding.upgradable = false;
+TrainingFacilityBuilding.upgrade_from = null;
 
 TrainingFacilityBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);

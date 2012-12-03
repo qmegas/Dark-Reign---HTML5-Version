@@ -24,7 +24,7 @@ GuardianUnit.enabled = false;
 
 GuardianUnit.require_building = [TrainingFacilityBuilding];
 
-GuardianUnit.construction_building = TrainingFacilityBuilding;
+GuardianUnit.construction_building = [TrainingFacilityBuilding];
 GuardianUnit.construction_time = 4;
 GuardianUnit.construction_queue = 0;
 GuardianUnit.construction_progress = 0;

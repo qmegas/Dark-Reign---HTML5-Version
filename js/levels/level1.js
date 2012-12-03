@@ -2414,7 +2414,12 @@ function Level1()
 	this.getAvailableBuildings = function()
 	{
 		return [HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
-			TrainingFacilityBuilding, AssemblyPlantBuilding, CameraTowerBuilding];
+			TrainingFacilityBuilding, AssemblyPlantBuilding, CameraTowerBuilding,
+			
+			Headquarter2Building, //Upgrades
+			
+			WaterWellBuilding, TaelonMineBuilding //Civilian buildings
+		];
 	}
 	
 	this.generateMap = function()

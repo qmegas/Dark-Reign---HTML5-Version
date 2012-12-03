@@ -7,7 +7,7 @@ function AssemblyPlantBuilding(pos_x, pos_y, player)
 	this.producing_queue = [];
 	this.producing_start = 0;
 	
-	this.setPosition(pos_x, pos_y);
+	this.init(pos_x, pos_y);
 	this.setActionTime(this._proto.build_time);
 	
 	this.run = function()
@@ -48,10 +48,11 @@ AssemblyPlantBuilding.res_key = 'assembly_plant';
 AssemblyPlantBuilding.obj_name = 'Assembly Plant';
 AssemblyPlantBuilding.cost = 2200;
 AssemblyPlantBuilding.sell_cost = 1100;
-AssemblyPlantBuilding.health_max = 1500;
+AssemblyPlantBuilding.health_max = 1200;
 AssemblyPlantBuilding.build_time = 44;
 AssemblyPlantBuilding.energy = 100;
 AssemblyPlantBuilding.enabled = false;
+AssemblyPlantBuilding.can_build = true;
 AssemblyPlantBuilding.count = 0;
 
 AssemblyPlantBuilding.cell_size = {x: 5, y: 5};
@@ -63,6 +64,7 @@ AssemblyPlantBuilding.image_padding = {x: -1, y: -3};
 AssemblyPlantBuilding.require_building = [];
 
 AssemblyPlantBuilding.upgradable = false;
+AssemblyPlantBuilding.upgrade_from = null;
 
 AssemblyPlantBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);

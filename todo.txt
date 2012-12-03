@@ -1,6 +1,5 @@
 To do:
 	- Teach units to attack
-	- Ability to upgrade buildings
 
 - High priority bugs:
 	- Improve pathfinding algorithm

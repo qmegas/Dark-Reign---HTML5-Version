@@ -27,7 +27,7 @@ ConstructionRigUnit.enabled = false;
 
 ConstructionRigUnit.require_building = [HeadquarterBuilding];
 
-ConstructionRigUnit.construction_building = HeadquarterBuilding;
+ConstructionRigUnit.construction_building = [HeadquarterBuilding, Headquarter2Building];
 ConstructionRigUnit.construction_time = 6;
 ConstructionRigUnit.construction_queue = 0;
 ConstructionRigUnit.construction_progress = 0;

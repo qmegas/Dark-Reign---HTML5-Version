@@ -6,7 +6,7 @@ function TaelonMineBuilding(pos_x, pos_y, player)
 	this._taelon_level = 500;
 	this._taelon_level_max = 500;
 	
-	this.setPosition(pos_x, pos_y);
+	this.init(pos_x, pos_y);
 	
 	this.run = function() {}
 	
@@ -56,6 +56,7 @@ TaelonMineBuilding.health_max = 100;
 TaelonMineBuilding.build_time = 0;
 TaelonMineBuilding.energy = 0;
 TaelonMineBuilding.enabled = false;
+TaelonMineBuilding.can_build = false;
 TaelonMineBuilding.count = 0;
 
 TaelonMineBuilding.cell_size = {x: 3, y: 3};
@@ -67,6 +68,7 @@ TaelonMineBuilding.image_padding = {x: 0, y: -13};
 TaelonMineBuilding.require_building = [];
 
 TaelonMineBuilding.upgradable = false;
+TaelonMineBuilding.upgrade_from = null;
 
 TaelonMineBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);

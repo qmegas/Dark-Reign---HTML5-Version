@@ -1,12 +1,19 @@
 function ConstructManager(units, buildings)
 {
 	this.available_units = units;
-	this.available_buildings = buildings;
+	this.available_buildings = [];
+	this.all_buildings = buildings;
 	
 	this.current_view_type = CONST_VIEW_DEFAULT;
 	this.current_view_offset = 0;
 	
 	this._popup_ctx = $('#cell_popup').get(0).getContext('2d');
+	
+	//Constructor
+	for (var i in buildings)
+		if (buildings[i].can_build)
+			this.available_buildings.push(buildings[i]);
+	//Constructor end
 	
 	this.recalcUnitAvailability = function()
 	{
@@ -26,12 +33,12 @@ function ConstructManager(units, buildings)
 	{
 		var i, j, obj, new_state, new_upgrade = false;
 		
-		for (i=0; i<this.available_buildings.length; ++i)
+		for (i=0; i<this.all_buildings.length; ++i)
 		{
-			if (this.available_buildings[i].upgradable)
+			if (this.all_buildings[i].upgradable)
 			{
 				new_state = true;
-				obj = this.available_buildings[i].upgrade_to;
+				obj = this.all_buildings[i].upgrade_to;
 				
 				for (j=0; j<obj.require_building.length; ++j)
 					if (obj.require_building[j].count == 0)
@@ -40,9 +47,9 @@ function ConstructManager(units, buildings)
 						break;
 					}
 					
-				if (this.available_buildings[i].can_upgrade_now != new_state)
+				if (this.all_buildings[i].can_upgrade_now != new_state)
 				{
-					this.available_buildings[i].can_upgrade_now = new_state;
+					this.all_buildings[i].can_upgrade_now = new_state;
 					if (new_state)
 						new_upgrade = true;
 				}
@@ -93,8 +100,8 @@ function ConstructManager(units, buildings)
 	
 	this.loadBuildingResources = function()
 	{
-		for (var i=0; i<this.available_buildings.length; ++i)
-			this.available_buildings[i].loadResources();
+		for (var i=0; i<this.all_buildings.length; ++i)
+			this.all_buildings[i].loadResources();
 	}
 	
 	this.drawUnits = function(start)
@@ -159,7 +166,7 @@ function ConstructManager(units, buildings)
 	this._canSelectedProduce = function(obj)
 	{
 		if (game.selected_info.is_building)
-			return (game.objects[game.selected_objects[0]]._proto == obj.construction_building);
+			return (obj.construction_building.indexOf(game.objects[game.selected_objects[0]]._proto) != -1);
 		
 		return true;
 	}
@@ -255,13 +262,14 @@ function ConstructManager(units, buildings)
 		}
 	}
 	
-	this._findCompatibleInstance = function(proto_obj)
+	this._findCompatibleInstance = function(proto_obj_arr)
 	{
-		var i;
+		var i, j;
 		
 		for (i in game.objects)
-			if (game.objects[i] instanceof proto_obj)
-				return game.objects[i];
+			for (j in proto_obj_arr)
+				if (game.objects[i] instanceof proto_obj_arr[j])
+					return game.objects[i];
 		
 		return null;
 	}

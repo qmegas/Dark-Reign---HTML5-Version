@@ -12,19 +12,18 @@ function AbstractBuilding()
 	this.is_building = true;
 	this.is_selected = false;
 	
-	this.producing_queue = [];
+	this.producing_queue = null;
 	this.producing_start = 0;
 	
 	this.position = {x: 0, y: 0};
 	
-	this._text_under_construction = 'Under Construction';
-	
-	this.setPosition = function(pos_x, pos_y)
+	this.init = function(pos_x, pos_y)
 	{
 		this.position = {
 			x: (pos_x - this._proto.cell_padding.x)*CELL_SIZE, 
 			y: (pos_y - this._proto.cell_padding.y)*CELL_SIZE
 		};
+		this.producing_queue = [];
 	}
 	
 	this.setActionTime = function(time)
@@ -95,10 +94,16 @@ function AbstractBuilding()
 		
 		if (this.player == PLAYER_HUMAN)
 		{
-			if (this.state == 'CONSTRUCTION' || this.state == 'SELL')
+			if (this.state == 'CONSTRUCTION' || this.state == 'SELL' || this.state == 'UPGRADING')
 			{
-				var proc = ((new Date()).getTime() - this.action_start) / (this.action_ends - this.action_start);
-				this._drawProgressBar(proc, (this.state == 'CONSTRUCTION') ? this._text_under_construction : 'Demolishing');
+				var text = 'Under Construction', proc = ((new Date()).getTime() - this.action_start) / (this.action_ends - this.action_start);
+				
+				if (this.state == 'SELL')
+					text = 'Demolishing';
+				else if (this.state == 'UPGRADING')
+					text = 'Upgrading';
+					
+				this._drawProgressBar(proc, text);
 				top_y -= 15;
 			}
 
@@ -187,7 +192,7 @@ function AbstractBuilding()
 	
 	this.draw = function(cur_time)
 	{
-		if (this.state == 'CONSTRUCTION')
+		if (this.state == 'CONSTRUCTION' || this.state == 'UPGRADING')
 		{
 			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
 				res_key: this._proto.res_key,
@@ -247,6 +252,7 @@ function AbstractBuilding()
 	
 	this.produce = function(obj)
 	{
+		console.log('Add producing for: ' + this.uid);
 		this.producing_queue.push(obj);
 		game.players[this.player].decMoney(obj.cost);
 	}
@@ -257,7 +263,8 @@ function AbstractBuilding()
 		{
 			this._proto.count++;
 			
-			game.notifications.addSound('construction_complete');
+			if (this.state == 'CONSTRUCTION')
+				game.notifications.addSound('construction_complete');
 			game.constructor.recalcUnitAvailability();
 			
 			game.players[this.player].energyAddCurrent(this._proto.energy);
@@ -271,11 +278,10 @@ function AbstractBuilding()
 	{
 		if ((new Date()).getTime() > this.action_ends)
 		{
-			var cell = this.getCell()
+			var cell = this.getCell();
 			
-			this._proto.count--;
+			this._sellRecalc(this._proto);
 			
-			game.players[this.player].energyAddCurrent(-1*this._proto.energy);
 			game.players[this.player].addMoney(this._proto.sell_cost);
 			game.constructor.recalcUnitAvailability();
 			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2, this.player, true);
@@ -284,6 +290,15 @@ function AbstractBuilding()
 			
 			game.kill_objects.push(this.uid);
 		}
+	}
+	
+	this._sellRecalc = function(obj_proto)
+	{
+		obj_proto.count--;
+		game.players[this.player].energyAddCurrent(-1*obj_proto.energy);
+		
+		if (obj_proto.upgrade_from !== null)
+			this._sellRecalc(obj_proto.upgrade_from);
 	}
 	
 	this._runStandartProducing = function()
@@ -301,6 +316,11 @@ function AbstractBuilding()
 			this.producing_queue.shift();
 			this.state = 'NORMAL';
 		}
+	}
+	
+	this.isUpgradePossible = function()
+	{
+		return (this._proto.upgradable && this._proto.can_upgrade_now && this.state=='NORMAL');
 	}
 	
 	//Event functions

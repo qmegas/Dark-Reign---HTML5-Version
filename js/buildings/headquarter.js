@@ -4,7 +4,7 @@ function HeadquarterBuilding(pos_x, pos_y, player)
 	this.player = player;
 	this.health = this._proto.health_max;
 	
-	this.setPosition(pos_x, pos_y);
+	this.init(pos_x, pos_y);
 	this.setActionTime(this._proto.build_time);
 	
 	this.run = function()
@@ -45,6 +45,7 @@ HeadquarterBuilding.health_max = 1440;
 HeadquarterBuilding.build_time = 15;
 HeadquarterBuilding.energy = 100;
 HeadquarterBuilding.enabled = true;
+HeadquarterBuilding.can_build = true;
 HeadquarterBuilding.count = 0;
 
 HeadquarterBuilding.cell_size = {x: 5, y: 4};
@@ -56,6 +57,7 @@ HeadquarterBuilding.image_padding = {x: -9, y: 42};
 HeadquarterBuilding.require_building = [];
 
 HeadquarterBuilding.upgradable = true;
+HeadquarterBuilding.upgrade_from = null;
 HeadquarterBuilding.can_upgrade_now = false;
 HeadquarterBuilding.upgrade_to = null;
 

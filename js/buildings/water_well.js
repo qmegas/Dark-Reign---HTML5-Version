@@ -6,7 +6,7 @@ function WaterWellBuilding(pos_x, pos_y, player)
 	this._water_level = 10000;
 	this._water_level_max = 10000;
 	
-	this.setPosition(pos_x, pos_y);
+	this.init(pos_x, pos_y);
 	
 	this.run = function() {}
 	
@@ -56,6 +56,7 @@ WaterWellBuilding.health_max = 100;
 WaterWellBuilding.build_time = 0;
 WaterWellBuilding.energy = 0;
 WaterWellBuilding.enabled = false;
+WaterWellBuilding.can_build = false;
 WaterWellBuilding.count = 0;
 
 WaterWellBuilding.cell_size = {x: 3, y: 3};
@@ -67,6 +68,7 @@ WaterWellBuilding.image_padding = {x: 0, y: -6};
 WaterWellBuilding.require_building = [];
 
 WaterWellBuilding.upgradable = false;
+WaterWellBuilding.upgrade_from = null;
 
 WaterWellBuilding.loadResources = function(){
 	AbstractBuilding.loadResources(this);
