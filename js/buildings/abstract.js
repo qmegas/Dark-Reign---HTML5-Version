@@ -3,7 +3,7 @@ function AbstractBuilding()
 	this.uid = -1;
 	this.player = 0;
 	this.health = 0;
-	this._proto = {};
+	this._proto = null;
 	this.state = 'CONSTRUCTION';
 	
 	this.action_start = 0;

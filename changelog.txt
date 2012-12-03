@@ -1,8 +1,9 @@
-Build 24 (02.12.2012)
+Build 24 (03.12.2012)
 - Changed interface cursor
 - Units marked blue on right panel when selected building can't produce that unit
 - Added "Headquarter 2" building
 - Added ability to upgrade buildings
+- Added "Advanced Training Facility" building
 
 Build 23 (27.11.2012)
 - Added neutral player

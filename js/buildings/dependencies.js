@@ -10,6 +10,11 @@ AssemblyPlantBuilding.require_building = [HeadquarterBuilding];
 
 //IG - Training Facility
 TrainingFacilityBuilding.require_building = [HeadquarterBuilding];
+TrainingFacilityBuilding.upgrade_to = TrainingFacility2Building;
+
+//IG - Advanced Training Facility
+TrainingFacility2Building.require_building = [Headquarter2Building];
+TrainingFacility2Building.upgrade_from = TrainingFacilityBuilding;
 
 //IG - Camera Tower
 CameraTowerBuilding.require_building = [Headquarter2Building];

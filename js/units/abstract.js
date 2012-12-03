@@ -3,16 +3,16 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.uid = -1;
 	this.player = player;
 	
-	this._proto = {};
+	this._proto = null;
 	
 	this.health = 100;
 	this.is_selected = false;
 	this.is_fly = false;
 	this.is_building = false;
-	this.position = {};
+	this.position = null;
 	
-	this.move_direction = 0; //[E, NE, N, NW, W, SW, S, SE]
-	this.direction_matrix = [3, 4, 5, -1, 2, -1, 6, -1, 1, 0, 7];
+	this.move_direction = 0; //[E, NE, N,    NW,     W,    SW, S, SE]
+	this.direction_matrix =    [3,  4, 5, -1, 2, -1, 6, -1, 1, 0,  7];
 	this.move_path = [];
 	
 	this.startAnimation = 0; 

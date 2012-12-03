@@ -41,7 +41,7 @@ AbstractBuilding.setBuildingCommonOptions(Headquarter2Building);
 Headquarter2Building.res_key = 'headquarter2';
 Headquarter2Building.obj_name = 'Headquarter 2';
 Headquarter2Building.cost = 1000;
-Headquarter2Building.sell_cost = 500;
+Headquarter2Building.sell_cost = 656;
 Headquarter2Building.health_max = 2880;
 Headquarter2Building.build_time = 20;
 Headquarter2Building.energy = 100;

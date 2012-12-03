@@ -2413,12 +2413,13 @@ function Level1()
 	
 	this.getAvailableBuildings = function()
 	{
-		return [HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
+		return [//Main buildings
+			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
 			TrainingFacilityBuilding, AssemblyPlantBuilding, CameraTowerBuilding,
-			
-			Headquarter2Building, //Upgrades
-			
-			WaterWellBuilding, TaelonMineBuilding //Civilian buildings
+			//Upgrades
+			Headquarter2Building, TrainingFacility2Building,
+			//Civilian buildings
+			WaterWellBuilding, TaelonMineBuilding
 		];
 	}
 	
