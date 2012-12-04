@@ -4,6 +4,8 @@ Build 24 (03.12.2012)
 - Added "Headquarter 2" building
 - Added ability to upgrade buildings
 - Added "Advanced Training Facility" building
+- Guardian now can shoot (Only in test mode, many things are still not implemented)
+- Attack volume changing depends on how far your viewport is placed
 
 Build 23 (27.11.2012)
 - Added neutral player

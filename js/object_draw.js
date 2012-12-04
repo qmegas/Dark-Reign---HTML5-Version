@@ -1,7 +1,8 @@
 var DRAW_LAYER_GBUILD = 0;
 var DRAW_LAYER_GUNIT = 1;
 var DRAW_LAYER_TBUILD = 2;
-//var DRAW_LAYER_FUNIT = 3;
+var DRAW_LAYER_FUNIT = 3;
+var DRAW_LAYER_EFFECTS = 4;
 
 function ObjectDraw()
 {
@@ -9,7 +10,7 @@ function ObjectDraw()
 	
 	this.clear = function()
 	{
-		this._layers = [{}, {}, {}];
+		this._layers = [{}, {}, {}, {}, {}];
 	}
 	
 	this.addElement = function(layerid, index, draw_object)

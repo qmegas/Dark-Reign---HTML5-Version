@@ -9,6 +9,8 @@ function AbstractBuilding()
 	this.action_start = 0;
 	this.action_ends = 0;
 	
+	this.is_effect = false;
+	this.is_fly = false;
 	this.is_building = true;
 	this.is_selected = false;
 	
@@ -246,7 +248,7 @@ function AbstractBuilding()
 		return false; //Change it later because Guard Towers can attack
 	}
 	
-	this.attack = function()
+	this.attack = function(target)
 	{
 	}
 	
@@ -324,6 +326,11 @@ function AbstractBuilding()
 	}
 	
 	//Event functions
+	
+	this.onObjectDeletion = function() 
+	{
+		this.markCellsOnMap(-1);
+	}
 	
 	this.onConstructed = function() {}
 	this.onDestructed = function() {}

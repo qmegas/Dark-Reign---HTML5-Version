@@ -12,6 +12,7 @@ function Game()
 	
 	this.players = [];
 	this.objects = [];
+	this.effects = [];
 	this.kill_objects = [];
 	this.selected_objects = [];
 	this.selected_info = {};
@@ -141,16 +142,14 @@ function Game()
 	
 	this.run = function()
 	{
-		var i, cell;
+		var i;
 		
 		//Kill objects
 		for (i = 0; i<this.kill_objects.length; ++i)
 		{
 			var unit = this.objects[this.kill_objects[i]];
-			if (unit.is_building)
-				unit.markCellsOnMap(-1);
-			else
-				unit.markCellsOnMap(-1);
+			
+			unit.onObjectDeletion();
 			
 			//Remove user from selected array
 			var sindex = this.selected_objects.indexOf(unit.uid);
@@ -176,7 +175,7 @@ function Game()
 	
 	this.draw = function()
 	{
-		var cur_time = new Date().getTime(), onscreen = [], unitid;
+		var cur_time = (new Date()).getTime(), onscreen = [], unitid, eindex;
 		var top_x = parseInt(this.viewport_x / CELL_SIZE) - 1, top_y = parseInt(this.viewport_y / CELL_SIZE) - 1;
 		
 		this.viewport_ctx.clearRect(0, 0, VIEWPORT_SIZE, VIEWPORT_SIZE);
@@ -201,6 +200,10 @@ function Game()
 		//Round 1: Put units to draw heap
 		for (unitid in onscreen)
 			this.objects[unitid].draw(cur_time);
+		
+		//Round 1.5: Put effects to draw heap
+		for (eindex in this.effects)
+			this.objects[this.effects[eindex]].draw(cur_time);
 		
 		//Round 2: Draw all entries in draw heap
 		this.objDraw.draw();
@@ -550,6 +553,24 @@ function Game()
 		}
 		
 		this.action_state = ACTION_STATE_NONE;
+	}
+	
+	this.addEffect = function(effect)
+	{
+		var uid = this.objects.length;
+		this.objects.push(effect);
+		this.effects.push(uid);
+		return uid;
+	}
+	
+	this.deleteEffect = function(effectid)
+	{
+		//Remove user from effects array
+		var sindex = this.effects.indexOf(effectid);
+		if (sindex != -1)
+			this.effects.splice(sindex, 1);
+		
+		this.kill_objects.push(effectid);
 	}
 }
 

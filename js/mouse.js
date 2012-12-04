@@ -120,6 +120,8 @@ function MousePointer(game)
 	
 	this.selectionStop = function()
 	{
+		var pos = this.getCellPosition();
+		
 		this.is_selection = false;
 		
 		switch (game.action_state)
@@ -140,7 +142,6 @@ function MousePointer(game)
 				break;
 			
 			case ACTION_STATE_BUILD:
-				var pos = this.getCellPosition();
 				if (AbstractBuilding.canBuild(game.action_state_options.object, pos.x, pos.y, game.selected_objects[0]))
 				{
 					game.objects[game.selected_objects[0]].build(pos.x, pos.y, game.action_state_options.object);
@@ -151,14 +152,20 @@ function MousePointer(game)
 				break;
 				
 			case ACTION_STATE_SELL:
-				var pos = this.getCellPosition();
 				if (game.level.map_cells[pos.x][pos.y].building != -1)
 					game.objects[game.level.map_cells[pos.x][pos.y].building].sell();
 				break;
 				
 			case ACTION_STATE_ATTACK:
+				var target, unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+				
+				if (unitid == -1)
+					target = {type: 'ground', x: pos.x, y: pos.y};
+				else
+					target = {type: 'object', objid: unitid};
+				
 				for (var i in game.selected_objects)
-					game.objects[game.selected_objects[i]].attack(/* Add parameters here */);
+					game.objects[game.selected_objects[i]].attack(target);
 				game.toggleActionState(ACTION_STATE_ATTACK);
 				break;
 		}

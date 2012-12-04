@@ -24,6 +24,9 @@ function MiniMap()
 		
 		for (i in game.objects)
 		{
+			if (game.objects[i].is_effect)
+				continue;
+			
 			pos = game.objects[i].getCell();
 			x = parseInt((pos.x / game.level.size.x) * game.level.minimap.x);
 			y = parseInt((pos.y / game.level.size.y) * game.level.minimap.y);

@@ -8,7 +8,7 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 	this.build_pos = {};
 	this.build_obj = {};
 	
-	this.setPosition(pos_x, pos_y);
+	this.init(pos_x, pos_y);
 }
 
 ConstructionRigUnit.prototype = new AbstractUnit();

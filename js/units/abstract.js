@@ -9,25 +9,31 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.is_selected = false;
 	this.is_fly = false;
 	this.is_building = false;
+	this.is_effect = false;
 	this.position = null;
+	this.weapon = null;
 	
 	this.move_direction = 0; //[E, NE, N,    NW,     W,    SW, S, SE]
 	this.direction_matrix =    [3,  4, 5, -1, 2, -1, 6, -1, 1, 0,  7];
 	this.move_path = [];
 	
 	this.startAnimation = 0; 
+	this.anim_attack_frame = 0;
 	
 	this.state = 'STAND';
 	this.substate = '';
 	
+	this.init = function(pos_x, pos_y)
+	{
+		this.position = {x: pos_x*CELL_SIZE, y: pos_y*CELL_SIZE};
+		
+		if (this._proto.weapon != null)
+			this.weapon = new this._proto.weapon(this);
+	}
+	
 	this.getCell = function()
 	{
 		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
-	}
-	
-	this.setPosition = function(pos_x, pos_y)
-	{
-		this.position = {x: pos_x*CELL_SIZE, y: pos_y*CELL_SIZE};
 	}
 	
 	this.move = function(x, y, play_sound) 
@@ -61,9 +67,13 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		if (this.state == 'MOVE')
 		{
-			this.state = 'MOVE';
 			this.substate = '';
 			this.move_path = this.move_path.slice(0, 1);
+		}
+		else
+		{
+			this.state = 'STAND';
+			this.substate = '';
 		}
 	}
 	
@@ -87,23 +97,34 @@ function AbstractUnit(pos_x, pos_y, player)
 			case 'MOVE':
 				if (this.move_path.length == 0)
 				{
-					if (this.substate == 'BUILD')
+					switch (this.substate)
 					{
-						var cell = this.getCell();
-						if (cell.x==this.build_pos.x && cell.y==this.build_pos.y)
-						{
-							if (AbstractBuilding.canBuild(this.build_obj, cell.x, cell.y, this.uid))
+						case 'BUILD':
+							var cell = this.getCell();
+							if (cell.x==this.build_pos.x && cell.y==this.build_pos.y)
 							{
-								AbstractBuilding.createNew(this.build_obj, cell.x, cell.y, this.player);
-								if (this.is_selected)
-									game.constructor.drawUnits();
-								game.kill_objects.push(this.uid);
+								if (AbstractBuilding.canBuild(this.build_obj, cell.x, cell.y, this.uid))
+								{
+									AbstractBuilding.createNew(this.build_obj, cell.x, cell.y, this.player);
+									if (this.is_selected)
+										game.constructor.drawUnits();
+									game.kill_objects.push(this.uid);
+								}
 							}
-						}
+							this.state = 'STAND';
+							break;
+							
+						case 'ATTACK':
+							this.state = 'ATTACK';
+							this.substate = '';
+							break;
+							
+						default:
+							this.state = 'STAND';
+							this.substate = '';
+							break;
 					}
 					
-					this.state = 'STAND';
-					this.substate = '';
 					return;
 				}
 				var next_cell = this.move_path[0], x_movement = 0, y_movement = 0, next_x = next_cell.x * CELL_SIZE, 
@@ -130,6 +151,30 @@ function AbstractUnit(pos_x, pos_y, player)
 					
 					if (this.move_path.length != 0)
 						this._moveToNextCell();
+				}
+				break;
+				
+			case 'ATTACK':
+				if (this.weapon.canReach())
+				{
+					if (this.weapon.canShoot())
+					{
+						this.state = 'ATTACKING';
+						this.anim_attack_frame = 0;
+					}
+				}
+				else
+				{
+					//@todo Move user toward target
+				}
+				break;
+				
+			case 'ATTACKING':
+				this.anim_attack_frame += 0.5;
+				if (this.anim_attack_frame > 2) //There is 2 only frames by default
+				{
+					this.weapon.shoot();
+					this.state = 'ATTACK';
 				}
 				break;
 		}
@@ -169,13 +214,15 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.draw = function(current_time) 
 	{
 		var top_x = this.position.x - game.viewport_x - this._proto.image_padding.x, 
-			top_y = this.position.y - game.viewport_y - this._proto.image_padding.y;
+			top_y = this.position.y - game.viewport_y - this._proto.image_padding.y,
+			layer = (this.is_fly) ? DRAW_LAYER_FUNIT : DRAW_LAYER_GUNIT;
 		
 		//Draw unit
 		switch (this.state)
 		{
+			case 'ATTACK':
 			case 'STAND':
-				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
+				game.objDraw.addElement(layer, this.position.x, {
 					res_key: this._proto.resource_key + '_stand',
 					src_x: this.move_direction * this._proto.image_size.width,
 					src_y: 0,
@@ -187,11 +234,23 @@ function AbstractUnit(pos_x, pos_y, player)
 				break;
 			
 			case 'MOVE':
-				var diff = (parseInt((current_time - this.startAnimation) / 50) % 6);
-				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
+				var diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 6);
+				game.objDraw.addElement(layer, this.position.x, {
 					res_key: this._proto.resource_key + '_move',
 					src_x: this.move_direction * this._proto.image_size.width,
 					src_y: diff * this._proto.image_size.height,
+					src_width: this._proto.image_size.width,
+					src_height: this._proto.image_size.height,
+					x: top_x,
+					y: top_y
+				});
+				break;
+				
+			case 'ATTACKING':
+				game.objDraw.addElement(layer, this.position.x, {
+					res_key: this._proto.resource_key + '_attack',
+					src_x: this.move_direction * this._proto.image_size.width,
+					src_y: Math.floor(this.anim_attack_frame/2) * this._proto.image_size.height,
 					src_width: this._proto.image_size.width,
 					src_height: this._proto.image_size.height,
 					x: top_x,
@@ -316,8 +375,28 @@ function AbstractUnit(pos_x, pos_y, player)
 		return this._proto.weapon.can_shoot_flyer;
 	}
 	
-	this.attack = function(/* Add parameters here */)
+	this.attack = function(target)
 	{
+		if (this.weapon === null)
+			return;
+		
+		if (this.weapon.canAttackTarget(target))
+			this.weapon.setTarget(target);
+		
+		if (this.state == 'MOVE')
+		{
+			this.stop();
+			this.substate = 'ATTACK';
+		}
+		else
+			this.state = 'ATTACK';
+	}
+	
+	//Events
+	
+	this.onObjectDeletion = function() 
+	{
+		this.markCellsOnMap(-1);
 	}
 }
 
@@ -346,5 +425,8 @@ AbstractUnit.loadResources = function(obj)
 	}
 	
 	if (obj.weapon !== null)
+	{
+		game.resources.addImage(obj.resource_key + '_attack',  'images/units/' + obj.resource_key + '/attack.png');
 		obj.weapon.loadResources();
+	}
 }

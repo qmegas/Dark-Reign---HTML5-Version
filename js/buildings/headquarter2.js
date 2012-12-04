@@ -24,7 +24,7 @@ function Headquarter2Building(pos_x, pos_y, player)
 			case 'NORMAL':
 				if (this.producing_queue.length > 0)
 				{
-					this.producing_start = (new Date).getTime();
+					this.producing_start = (new Date()).getTime();
 					this.state = 'PRODUCING';
 				}
 				break;

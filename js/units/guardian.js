@@ -5,7 +5,7 @@ function GuardianUnit(pos_x, pos_y, player)
 	
 	this.health = 100;
 	
-	this.setPosition(pos_x, pos_y);
+	this.init(pos_x, pos_y);
 }
 
 GuardianUnit.prototype = new AbstractUnit();
