@@ -254,7 +254,6 @@ function AbstractBuilding()
 	
 	this.produce = function(obj)
 	{
-		console.log('Add producing for: ' + this.uid);
 		this.producing_queue.push(obj);
 		game.players[this.player].decMoney(obj.cost);
 	}

@@ -22,7 +22,6 @@ function HeadquarterBuilding(pos_x, pos_y, player)
 			case 'NORMAL':
 				if (this.producing_queue.length > 0)
 				{
-					console.log('Start producing: ' + this.uid);
 					this.producing_start = (new Date()).getTime();
 					this.state = 'PRODUCING';
 				}

@@ -145,7 +145,7 @@ function ConstructManager(units, buildings)
 							!this._canSelectedProduce(this.available_units[i])
 						);
 						if (this.available_units[i].construction_queue > 0)
-							this._canvasRedraw(this.current_view_offset-i);
+							this._canvasRedraw(i-this.current_view_offset);
 					}
 					break;
 				case CONST_VIEW_BUILDINGS:
@@ -256,7 +256,6 @@ function ConstructManager(units, buildings)
 			if (obj === null)
 				return;
 			
-			console.log('Add for producing: ' + obj.uid);
 			obj.produce(this.available_units[i]);
 			this.available_units[i].construction_queue++;
 		}
