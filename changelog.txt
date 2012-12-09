@@ -1,5 +1,7 @@
 Build 25 (09.12.2012)
 - Added "Advanced Assembly Plant" building
+- Added "Freighter" unit (it still can't harvest)
+- Power generator & Water launch pad now constructed with one Freighter unit
 
 Build 24 (03.12.2012)
 - Changed interface cursor

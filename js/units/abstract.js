@@ -263,6 +263,11 @@ function AbstractUnit(pos_x, pos_y, player)
 	//Draw Selection
 	this.drawSelection = function(is_onmouse)
 	{
+		this._drawStandardSelection(is_onmouse);
+	}
+	
+	this._drawStandardSelection = function(is_onmouse)
+	{
 		var top_x = this.position.x - game.viewport_x + 0.5 - this._proto.image_padding.x, 
 			top_y = this.position.y - game.viewport_y - 2.5  - this._proto.image_padding.y,
 			sel_width = this._proto.image_size.width, health_width = parseInt(sel_width*0.63);
@@ -430,3 +435,32 @@ AbstractUnit.loadResources = function(obj)
 		obj.weapon.loadResources();
 	}
 }
+
+AbstractUnit.setUnitCommonOptions = function(obj)
+{
+	obj.prototype = new AbstractUnit();
+
+	obj.obj_name = '';      //Must redeclare
+	obj.resource_key = '';  //Must redeclare
+	obj.image_size = {width: 1, height: 1};
+	obj.image_padding = {x: 0, y: 0};
+	obj.sound_count = 4;
+
+	obj.cost = 0;
+	obj.health_max = 5;
+	obj.speed = 0.87;
+	obj.weapon = null;
+	obj.enabled = false;
+
+	obj.require_building = [];
+
+	obj.construction_building = [];
+	obj.construction_time = 0;
+	obj.construction_queue = 0;
+	obj.construction_progress = 0;
+
+	obj.loadResources = function() 
+	{
+		AbstractUnit.loadResources(this);
+	}
+};

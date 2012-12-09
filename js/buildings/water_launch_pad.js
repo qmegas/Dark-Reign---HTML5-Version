@@ -5,7 +5,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 	this.health = this._proto.health_max;
 	
 	this.water_max = 100;
-	this.water_now = 40;
+	this.water_now = 0;
 	
 	this.init(pos_x, pos_y);
 	this.setActionTime(this._proto.build_time);
@@ -44,6 +44,12 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 		
 		game.viewport_ctx.fillStyle = '#00a5ff';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 47 - water_h, 2, water_h);
+	}
+	
+	this.onConstructed = function() 
+	{
+		var cell = this.getCell();
+		AbstractUnit.createNew(FreighterUnit, cell.x + 3, cell.y + 1, this.player, true);
 	}
 }
 

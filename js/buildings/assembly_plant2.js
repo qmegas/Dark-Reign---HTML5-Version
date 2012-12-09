@@ -35,11 +35,6 @@ function AssemblyPlant2Building(pos_x, pos_y, player)
 				break;
 		}
 	}
-	
-	this.produce = function(obj)
-	{
-		this.producing_queue.push(obj);
-	}
 }
 
 AbstractBuilding.setBuildingCommonOptions(AssemblyPlant2Building);

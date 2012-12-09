@@ -31,8 +31,12 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 	
 	this.onConstructed = function() 
 	{
+		var cell = this.getCell();
+		
 		this._taelon = 500;
 		game.players[this.player].energyAddMax(this._taelon);
+		
+		AbstractUnit.createNew(FreighterUnit, cell.x + 1, cell.y + 2, this.player, true);
 	}
 	
 	this.onDestructed = function()
