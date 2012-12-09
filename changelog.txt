@@ -1,3 +1,6 @@
+Build 25 (09.12.2012)
+- Added "Advanced Assembly Plant" building
+
 Build 24 (03.12.2012)
 - Changed interface cursor
 - Units marked blue on right panel when selected building can't produce that unit

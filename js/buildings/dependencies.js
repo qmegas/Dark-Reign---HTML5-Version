@@ -7,6 +7,11 @@ Headquarter2Building.upgrade_from = HeadquarterBuilding;
 
 //IG - Assembly Plant
 AssemblyPlantBuilding.require_building = [HeadquarterBuilding];
+AssemblyPlantBuilding.upgrade_to = AssemblyPlant2Building;
+
+//IG - Advanced Assembly Plant
+AssemblyPlant2Building.require_building = [Headquarter2Building];
+AssemblyPlant2Building.upgrade_from = AssemblyPlantBuilding;
 
 //IG - Training Facility
 TrainingFacilityBuilding.require_building = [HeadquarterBuilding];

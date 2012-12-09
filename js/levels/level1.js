@@ -2391,8 +2391,7 @@ function Level1()
 		
 		AbstractUnit.createNew(ConstructionRigUnit, 12, 8, PLAYER_HUMAN, true).health = 30;
 		AbstractUnit.createNew(ConstructionRigUnit, 5, 6, PLAYER_HUMAN, true);
-		//AbstractUnit.createNew(ConstructionRigUnit, 7, 6, PLAYER_HUMAN, true);
-		AbstractUnit.createNew(GuardianUnit, 7, 6, PLAYER_HUMAN, true);
+		AbstractUnit.createNew(ConstructionRigUnit, 7, 6, PLAYER_HUMAN, true);
 		
 		AbstractBuilding.createNew(WaterWellBuilding, 73, 1, PLAYER_NEUTRAL, true);
 		AbstractBuilding.createNew(WaterWellBuilding, 18, 25, PLAYER_NEUTRAL, true);
@@ -2418,7 +2417,7 @@ function Level1()
 			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
 			TrainingFacilityBuilding, AssemblyPlantBuilding, CameraTowerBuilding,
 			//Upgrades
-			Headquarter2Building, TrainingFacility2Building,
+			Headquarter2Building, TrainingFacility2Building, AssemblyPlant2Building,
 			//Civilian buildings
 			WaterWellBuilding, TaelonMineBuilding
 		];

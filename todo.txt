@@ -3,7 +3,6 @@ To do:
 	- Optimize shooting graphic 
 
 - High priority bugs:
-	- Right-click mouse handler not working when unit in production
 	- Improve pathfinding algorithm
 
 - Medium priority bugs:
