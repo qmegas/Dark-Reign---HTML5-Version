@@ -251,7 +251,7 @@ function ConstructManager(units, buildings)
 				obj = game.objects[game.selected_objects[0]];
 			}
 			else
-				obj = this._findCompatibleInstance(this.available_units[i].construction_building);
+				obj = game.findCompatibleInstance(this.available_units[i].construction_building, PLAYER_HUMAN);
 			
 			if (obj === null)
 				return;
@@ -259,18 +259,6 @@ function ConstructManager(units, buildings)
 			obj.produce(this.available_units[i]);
 			this.available_units[i].construction_queue++;
 		}
-	}
-	
-	this._findCompatibleInstance = function(proto_obj_arr)
-	{
-		var i, j;
-		
-		for (i in game.objects)
-			for (j in proto_obj_arr)
-				if (game.objects[i] instanceof proto_obj_arr[j])
-					return game.objects[i];
-		
-		return null;
 	}
 	
 	this.cellPopupPrepere = function(cell_id)

@@ -44,6 +44,11 @@ function TaelonMineBuilding(pos_x, pos_y, player)
 		game.viewport_ctx.fillStyle = '#ffff00';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 35 - water_h, 2, water_h);
 	}
+	
+	this.isHarvestPlatform = function()
+	{
+		return true;
+	}
 }
 
 AbstractBuilding.setBuildingCommonOptions(TaelonMineBuilding);

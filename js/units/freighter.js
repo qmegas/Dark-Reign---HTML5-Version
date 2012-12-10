@@ -7,6 +7,8 @@ function FreighterUnit(pos_x, pos_y, player)
 	this._res_now = 0;
 	this._res_max = 50;
 	this._res_type = 'water'; //water, taelon
+	this._harvest_well = null;
+	this._harvest_building = null;
 	
 	this.init(pos_x, pos_y);
 	
@@ -64,6 +66,16 @@ function FreighterUnit(pos_x, pos_y, player)
 		
 		game.viewport_ctx.fillStyle = (this._res_type == 'water') ? '#00a5ff' : '#ffff00';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 29 - bar_size, 2, bar_size);
+	}
+	
+	this.canHarvest = function()
+	{
+		return true;
+	}
+	
+	this.harvest = function(obj)
+	{
+		//@todo
 	}
 }
 

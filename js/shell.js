@@ -349,7 +349,7 @@ function Game()
 				this.regionSelect(pos.x, pos.y, pos.x, pos.y);
 			
 			//If not new selection move selected units
-			if (cunit==-1 && this.selected_objects.length>0)
+			if (cunit==-1 && this.selected_objects.length>0 && !this.selected_info.is_building)
 				for (var i in this.selected_objects)
 					this.objects[this.selected_objects[i]].move(pos.x, pos.y, (i==0));
 		}
@@ -373,7 +373,7 @@ function Game()
 	
 	this.regionSelect = function (x1, y1, x2, y2)
 	{
-		var x, y, cur_unit, play_sound = true;
+		var x, y, cur_unit, play_sound = true, harvesters = true;
 		
 		this._deselectUnits();
 		
@@ -397,8 +397,13 @@ function Game()
 					this.selected_info.is_fly = this.selected_info.is_fly || this.objects[cur_unit].is_fly;
 					this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
 					this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
+					harvesters = harvesters && this.objects[cur_unit].canHarvest();
 				}
 			}
+		
+		//Does all selected units can harvest
+		if (this.selected_objects.length > 0)
+			this.selected_info.harvesters = harvesters;
 			
 		//Constructor selected?
 		if (this.selected_objects.length==1 && (this.objects[this.selected_objects[0]] instanceof ConstructionRigUnit))
@@ -470,7 +475,8 @@ function Game()
 			is_fly: false,
 			is_produce: false,
 			can_attack_ground: false,
-			can_attack_fly: false
+			can_attack_fly: false,
+			harvesters: false
 		};
 	}
 	
@@ -571,6 +577,18 @@ function Game()
 			this.effects.splice(sindex, 1);
 		
 		this.kill_objects.push(effectid);
+	}
+	
+	this.findCompatibleInstance = function(object_type_arr, player)
+	{
+		var i, j;
+		
+		for (i in this.objects)
+			for (j in object_type_arr)
+				if ((this.objects[i] instanceof object_type_arr[j]) && (this.objects[i].player==player))
+					return this.objects[i];
+		
+		return null;
 	}
 }
 

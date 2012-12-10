@@ -51,6 +51,11 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 		var cell = this.getCell();
 		AbstractUnit.createNew(FreighterUnit, cell.x + 3, cell.y + 1, this.player, true);
 	}
+	
+	this.isHarvestPlatform = function()
+	{
+		return true;
+	}
 }
 
 AbstractBuilding.setBuildingCommonOptions(WaterLaunchPadBuilding);

@@ -397,6 +397,11 @@ function AbstractUnit(pos_x, pos_y, player)
 			this.state = 'ATTACK';
 	}
 	
+	this.canHarvest = function()
+	{
+		return false;
+	}
+	
 	//Events
 	
 	this.onObjectDeletion = function() 

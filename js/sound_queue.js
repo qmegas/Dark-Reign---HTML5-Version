@@ -15,7 +15,6 @@ function SoundQueue()
 	
 	this.addIfEmpty = function(key)
 	{
-		console.log(this._queue.length);
 		if (this._queue.length == 0)
 			this.addSound(key);
 	}

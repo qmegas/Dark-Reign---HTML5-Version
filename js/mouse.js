@@ -65,7 +65,11 @@ function MousePointer(game)
 		}
 		else if (MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]) != -1)
 		{
-			this._drawCursor(current_time, 1, 8);
+			var objid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+			if (game.objects[objid].is_building && game.selected_info.harvesters && game.objects[objid].isHarvestPlatform())
+				this._drawCursor(current_time, 9, 8);
+			else
+				this._drawCursor(current_time, 1, 8);
 		}
 		else if (game.selected_objects.length>0 && !game.selected_info.is_building)
 		{
@@ -120,7 +124,7 @@ function MousePointer(game)
 	
 	this.selectionStop = function()
 	{
-		var pos = this.getCellPosition();
+		var pos = this.getCellPosition(), unitid;
 		
 		this.is_selection = false;
 		
@@ -130,14 +134,23 @@ function MousePointer(game)
 				var sizes = this._getSelectionSize();
 		
 				if (Math.abs(sizes.width)<4 && Math.abs(sizes.height)<4)
-					game.onClick('left');
+				{
+					//Is harvesting?
+					unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+					if (unitid!=-1 && game.objects[unitid].is_building && game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
+					{
+						for (var i in game.selected_objects)
+							game.objects[game.selected_objects[i]].harvest(game.objects[unitid]);
+					}
+					else
+						game.onClick('left');
+				}
 				else
 				{
 					var start_x = Math.floor(this.selection_start_pos.x/CELL_SIZE), 
-						start_y = Math.floor(this.selection_start_pos.y/CELL_SIZE), 
-						cur_pos = this.getCellPosition();
+						start_y = Math.floor(this.selection_start_pos.y/CELL_SIZE);
 
-					game.regionSelect(Math.min(start_x, cur_pos.x), Math.min(start_y, cur_pos.y), Math.max(start_x, cur_pos.x), Math.max(start_y, cur_pos.y));
+					game.regionSelect(Math.min(start_x, pos.x), Math.min(start_y, pos.y), Math.max(start_x, pos.x), Math.max(start_y, pos.y));
 				}
 				break;
 			
@@ -157,7 +170,8 @@ function MousePointer(game)
 				break;
 				
 			case ACTION_STATE_ATTACK:
-				var target, unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+				var target;
+				unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
 				
 				if (unitid == -1)
 					target = {type: 'ground', x: pos.x, y: pos.y};

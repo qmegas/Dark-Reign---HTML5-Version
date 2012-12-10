@@ -118,6 +118,11 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 		game.viewport_ctx.fillStyle = '#ffff00';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 59 - taelon_h, 2, taelon_h);
 	}
+	
+	this.isHarvestPlatform = function()
+	{
+		return true;
+	}
 }
 
 AbstractBuilding.setBuildingCommonOptions(TaelonPowerBuilding);

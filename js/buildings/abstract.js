@@ -324,6 +324,16 @@ function AbstractBuilding()
 		return (this._proto.upgradable && this._proto.can_upgrade_now && this.state=='NORMAL');
 	}
 	
+	this.canHarvest = function()
+	{
+		return false;
+	}
+	
+	this.isHarvestPlatform = function()
+	{
+		return false;
+	}
+	
 	//Event functions
 	
 	this.onObjectDeletion = function() 
