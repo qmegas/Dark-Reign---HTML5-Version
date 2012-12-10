@@ -2417,7 +2417,8 @@ function Level1()
 			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
 			TrainingFacilityBuilding, AssemblyPlantBuilding, CameraTowerBuilding,
 			//Upgrades
-			Headquarter2Building, TrainingFacility2Building, AssemblyPlant2Building,
+			Headquarter2Building, Headquarter3Building, 
+			TrainingFacility2Building, AssemblyPlant2Building,
 			//Civilian buildings
 			WaterWellBuilding, TaelonMineBuilding
 		];

@@ -24,5 +24,5 @@ ConstructionRigUnit.speed = 0.87;
 
 ConstructionRigUnit.require_building = [HeadquarterBuilding];
 
-ConstructionRigUnit.construction_building = [HeadquarterBuilding, Headquarter2Building];
+ConstructionRigUnit.construction_building = [HeadquarterBuilding, Headquarter2Building, Headquarter3Building];
 ConstructionRigUnit.construction_time = 6;

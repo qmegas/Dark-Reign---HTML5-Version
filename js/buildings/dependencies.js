@@ -4,6 +4,11 @@ HeadquarterBuilding.upgrade_to = Headquarter2Building;
 //IG - Headquarter 2
 Headquarter2Building.require_building = [AssemblyPlantBuilding, TrainingFacilityBuilding];
 Headquarter2Building.upgrade_from = HeadquarterBuilding;
+Headquarter2Building.upgrade_to = Headquarter3Building;
+
+//IG - Headquarter 3
+Headquarter3Building.require_building = [AssemblyPlant2Building, TrainingFacility2Building];
+Headquarter3Building.upgrade_from = Headquarter2Building;
 
 //IG - Assembly Plant
 AssemblyPlantBuilding.require_building = [HeadquarterBuilding];

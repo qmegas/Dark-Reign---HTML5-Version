@@ -2,7 +2,6 @@ function FreighterUnit(pos_x, pos_y, player)
 {
 	this._proto = FreighterUnit;
 	this.player = player;
-	this.move_direction = 3;
 	this.health = 15;
 	
 	this._res_now = 0;

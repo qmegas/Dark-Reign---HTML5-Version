@@ -1,4 +1,6 @@
 To do:
+	- Correct Freighter speed
+	- Implement Freighter harvesting
 	- Check shoot range
 	- Optimize shooting graphic 
 
