@@ -4,8 +4,8 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 	this.player = player;
 	this.health = this._proto.health_max;
 	
-	this.water_max = 100;
-	this.water_now = 0;
+	this.res_now = 0;
+	this.res_max = 200;
 	
 	this.init(pos_x, pos_y);
 	this.setActionTime(this._proto.build_time);
@@ -31,12 +31,12 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 		
 		var top_x = this.position.x - 4 - game.viewport_x,
 			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 45 - game.viewport_y, 
-			water_h = parseInt((this.water_now/this.water_max)*46);
+			water_h = parseInt((this.res_now/this.res_max)*46);
 			
 		game.viewport_ctx.fillStyle = '#000000';
 		game.viewport_ctx.fillRect(top_x, top_y, 4, 48);
 		
-		if (this.water_max > this.water_now)
+		if (this.res_max > this.res_now)
 		{
 			game.viewport_ctx.fillStyle = '#bbbbbb';
 			game.viewport_ctx.fillRect(top_x + 1, top_y + 1, 2, 46);
@@ -49,12 +49,30 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 	this.onConstructed = function() 
 	{
 		var cell = this.getCell();
-		AbstractUnit.createNew(FreighterUnit, cell.x + 3, cell.y + 1, this.player, true);
+		AbstractUnit
+			.createNew(FreighterUnit, cell.x + 3, cell.y + 1, this.player, true)
+			.harvest(this, true);
 	}
 	
 	this.isHarvestPlatform = function()
 	{
 		return true;
+	}
+	
+	this.increaseRes = function(amount)
+	{
+		var incr = this._standardIncreaseRes(amount);
+		
+		if (this.isResFull())
+		{
+			this.res_now = 0;
+			game.players[this.player].addMoney(3000);
+			
+			var effect = new WaterSellEffect(this.getCell()), eid = game.addEffect(effect);
+			effect.uid = eid;
+		}
+		
+		return incr;
 	}
 }
 

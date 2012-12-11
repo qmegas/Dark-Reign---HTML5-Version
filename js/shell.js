@@ -157,6 +157,7 @@ function Game()
 				this.selected_objects.splice(sindex, 1);
 			
 			//Delete object
+			this.objects[this.kill_objects[i]] = null;
 			delete this.objects[this.kill_objects[i]];
 		}
 		this.kill_objects = [];
@@ -439,6 +440,9 @@ function Game()
 		//Units & Buildings
 		this.constructor.loadUnitResources();
 		this.constructor.loadBuildingResources();
+		
+		//Some additional loads
+		WaterSellEffect.loadResources();
 	}
 	
 	this._checkBrowserSupport = function()

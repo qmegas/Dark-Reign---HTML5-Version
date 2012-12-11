@@ -3,12 +3,15 @@ function WaterWellBuilding(pos_x, pos_y, player)
 	this._proto = WaterWellBuilding;
 	this.player = player;
 	
-	this._water_level = 10000;
-	this._water_level_max = 10000;
+	this.res_now = 667;
+	this.res_max = 667;
 	
 	this.init(pos_x, pos_y);
 	
-	this.run = function() {}
+	this.run = function() 
+	{
+		this.increaseRes(0.026);
+	}
 	
 	this.draw = function()
 	{
@@ -30,12 +33,12 @@ function WaterWellBuilding(pos_x, pos_y, player)
 		
 		var top_x = this.position.x - 4 - game.viewport_x,
 			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 33 - game.viewport_y, 
-			water_h = parseInt((this._water_level/this._water_level_max)*34);
+			water_h = parseInt((this.res_now/this.res_max)*34);
 			
 		game.viewport_ctx.fillStyle = '#000000';
 		game.viewport_ctx.fillRect(top_x, top_y, 4, 36);
 		
-		if (this._water_level_max > this._water_level)
+		if (this.res_max > this.res_now)
 		{
 			game.viewport_ctx.fillStyle = '#bbbbbb';
 			game.viewport_ctx.fillRect(top_x + 1, top_y + 1, 2, 34);

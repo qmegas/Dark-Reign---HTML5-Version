@@ -334,6 +334,37 @@ function AbstractBuilding()
 		return false;
 	}
 	
+	//Functions for resource containing buildings
+	//Need to move it to another abstract object
+	
+	this.isResFull = function()
+	{
+		return (this.res_now >= this.res_max);
+	}
+	
+	this.decreaseRes = function(amount)
+	{
+		if (this.res_now < amount)
+			amount = this.res_now;
+		
+		this.res_now -= amount;
+		return amount;
+	}
+	
+	this.increaseRes = function(amount)
+	{
+		return this._standardIncreaseRes(amount);
+	}
+	
+	this._standardIncreaseRes = function(amount)
+	{
+		if ((this.res_now+amount) > this.res_max)
+			amount = this.res_max - this.res_now;
+		
+		this.res_now += amount;
+		return amount;
+	}
+	
 	//Event functions
 	
 	this.onObjectDeletion = function() 

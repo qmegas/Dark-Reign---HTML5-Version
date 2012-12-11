@@ -23,4 +23,10 @@ function Debuger()
 	$('#debug_add_money').click(function(){
 		game.players[PLAYER_HUMAN].addMoney(15000);
 	});
+	
+	$('#debug_add_water').click(function(){
+		var obj = game.findCompatibleInstance([WaterLaunchPadBuilding], PLAYER_HUMAN);
+		if (obj)
+			obj.increaseRes(100);
+	});
 }

@@ -1,3 +1,8 @@
+Build 26 (11.12.2012)
+- Freighter now can harvest
+- Removed Freighter sounds, because they same as Guardian sounds
+- Added water sell sound and water sell effect
+
 Build 25 (10.12.2012)
 - Added "Advanced Assembly Plant" building
 - Added "Freighter" unit (it still can't harvest)

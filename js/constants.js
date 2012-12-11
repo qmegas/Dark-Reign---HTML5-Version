@@ -24,6 +24,9 @@ var PLAYER_NEUTRAL = 0;
 var PLAYER_HUMAN = 1;
 var PLAYER_COMPUTER1 = 2;
 
+var RESOURCE_TAELON = 1;
+var RESOURCE_WATER = 2;
+
 var AUDIO_TYPE = 'ogg';
 
 var game;

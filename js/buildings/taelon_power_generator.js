@@ -4,8 +4,8 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 	this.player = player;
 	this.health = this._proto.health_max;
 	
-	this._taelon = 0;
-	this._taelon_max = 1000;
+	this.res_now = 0;
+	this.res_max = 1000;
 	
 	//Building animation
 	this._draw_last_frame_change = 0;
@@ -33,15 +33,17 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 	{
 		var cell = this.getCell();
 		
-		this._taelon = 500;
-		game.players[this.player].energyAddMax(this._taelon);
+		this.res_now = 500;
+		game.players[this.player].energyAddMax(this.res_now);
 		
-		AbstractUnit.createNew(FreighterUnit, cell.x + 1, cell.y + 2, this.player, true);
+		AbstractUnit
+			.createNew(FreighterUnit, cell.x + 1, cell.y + 2, this.player, true)
+			.harvest(this, true);
 	}
 	
 	this.onDestructed = function()
 	{
-		game.players[this.player].energyAddMax(-1*this._taelon);
+		game.players[this.player].energyAddMax(-1*this.res_now);
 	}
 	
 	//Custom animated draw function
@@ -104,12 +106,12 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 		
 		var top_x = this.position.x - game.viewport_x + CELL_SIZE*this._proto.cell_size.x,
 			top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 57 - game.viewport_y, 
-			taelon_h = parseInt((this._taelon/this._taelon_max)*58);
+			taelon_h = parseInt((this.res_now/this.res_max)*58);
 			
 		game.viewport_ctx.fillStyle = '#000000';
 		game.viewport_ctx.fillRect(top_x, top_y, 4, 60);
 		
-		if (this._taelon_max > this._taelon)
+		if (this.res_max > this.res_now)
 		{
 			game.viewport_ctx.fillStyle = '#bbbbbb';
 			game.viewport_ctx.fillRect(top_x + 1, top_y + 1, 2, 58);
@@ -122,6 +124,13 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 	this.isHarvestPlatform = function()
 	{
 		return true;
+	}
+	
+	this.increaseRes = function(amount)
+	{
+		var incr = this._standardIncreaseRes(amount);
+		game.players[this.player].energyAddMax(incr);
+		return incr;
 	}
 }
 

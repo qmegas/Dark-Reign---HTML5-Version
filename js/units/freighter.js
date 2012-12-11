@@ -6,37 +6,114 @@ function FreighterUnit(pos_x, pos_y, player)
 	
 	this._res_now = 0;
 	this._res_max = 50;
-	this._res_type = 'water'; //water, taelon
-	this._harvest_well = null;
-	this._harvest_building = null;
+	this._res_type = RESOURCE_WATER;
+	this._harvest_well = 0;
+	this._harvest_building = 0;
+	this._harvest_target = null;
+	this._harvest_wait = 0;
+	this._load_speed = 0;
+	this._unload_speed = 0;
 	
 	this.init(pos_x, pos_y);
+	
+	this.run = function() 
+	{
+		var obj;
+		
+		switch (this.state)
+		{
+			case 'MOVE_WELL':
+			case 'MOVE_COLLECTOR':
+			case 'MOVE':
+				this._runStandartMoving();
+				break;
+				
+			case 'MOVE_WAIT':
+				if ((new Date).getTime() > this._harvest_wait)
+				{
+					this.move(this._harvest_target.x, this._harvest_target.y, false);
+					this.state = this.substate;
+					this.substate = '';
+				}
+				break;
+				
+			case 'RESOURCE_GET':
+				obj = this._getBuilding(this._harvest_well);
+				if (obj === null)
+				{
+					this.state = 'STAND';
+					return;
+				}
+				
+				this._res_now += obj.decreaseRes(this._load_speed);
+				
+				if (this._res_now >= this._res_max)
+				{
+					this._res_now = this._res_max;
+					this._moveBase();
+				}
+				break;
+				
+			case 'RESOURCE_PUT':
+				obj = this._getBuilding(this._harvest_building);
+				if (obj===null || obj.isResFull())
+				{
+					this.state = 'STAND';
+					return;
+				}
+				
+				this._res_now -= obj.increaseRes(this._unload_speed);
+				
+				if (this._res_now <= 0)
+				{
+					this._res_now = 0;
+					this._moveWell();
+				}
+				break;
+		}
+	}
 	
 	this.draw = function(current_time) 
 	{
 		var top_x = this.position.x - game.viewport_x - this._proto.image_padding.x, 
-			top_y = this.position.y - game.viewport_y - this._proto.image_padding.y;
+			top_y = this.position.y - game.viewport_y - this._proto.image_padding.y, diff;
 		
 		switch (this.state)
 		{
-			case 'STAND':
+			case 'MOVE_WELL':
+			case 'MOVE_COLLECTOR':
+			case 'MOVE':
+				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 3);
 				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
 					res_key: this._proto.resource_key + '_move',
 					src_x: this.move_direction * this._proto.image_size.width,
-					src_y: 0,
+					src_y: diff * this._proto.image_size.height,
 					src_width: this._proto.image_size.width,
 					src_height: this._proto.image_size.height,
 					x: top_x,
 					y: top_y
 				});
 				break;
-			
-			case 'MOVE':
-				var diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 3);
+				
+			case 'RESOURCE_GET':
+			case 'RESOURCE_PUT':
+				diff = (parseInt((current_time - this.startAnimation) / (ANIMATION_SPEED*2)) % 15);
+				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
+					res_key: this._proto.resource_key + '_load',
+					src_x: 0,
+					src_y: diff * this._proto.image_size.height,
+					src_width: this._proto.image_size.width,
+					src_height: this._proto.image_size.height,
+					x: top_x,
+					y: top_y
+				});
+				break;
+				
+			default:
 				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
 					res_key: this._proto.resource_key + '_move',
 					src_x: this.move_direction * this._proto.image_size.width,
-					src_y: diff * this._proto.image_size.height,
+					src_y: 0,
 					src_width: this._proto.image_size.width,
 					src_height: this._proto.image_size.height,
 					x: top_x,
@@ -52,7 +129,7 @@ function FreighterUnit(pos_x, pos_y, player)
 		
 		var top_x = this.position.x - game.viewport_x - 1 - this._proto.image_padding.x, 
 			top_y = this.position.y - game.viewport_y + 5 - this._proto.image_padding.y,
-			bar_size = parseInt((this._res_now/this._res_max)*28);
+			bar_size = Math.floor((this._res_now/this._res_max)*28);
 			
 			
 		game.viewport_ctx.fillStyle = '#000000';
@@ -64,7 +141,7 @@ function FreighterUnit(pos_x, pos_y, player)
 			game.viewport_ctx.fillRect(top_x + 1, top_y + 1, 2, 28);
 		}
 		
-		game.viewport_ctx.fillStyle = (this._res_type == 'water') ? '#00a5ff' : '#ffff00';
+		game.viewport_ctx.fillStyle = (this._res_type == RESOURCE_WATER) ? '#00a5ff' : '#ffff00';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 29 - bar_size, 2, bar_size);
 	}
 	
@@ -73,9 +150,164 @@ function FreighterUnit(pos_x, pos_y, player)
 		return true;
 	}
 	
-	this.harvest = function(obj)
+	this.harvest = function(obj, silently)
 	{
-		//@todo
+		if (!silently)
+			this._playSound('move');
+		
+		if (obj instanceof TaelonPowerBuilding)
+		{
+			if (this._res_now>0 && this._res_type==RESOURCE_WATER)
+				return;
+			
+			this._res_type = RESOURCE_TAELON;
+			this._harvest_building = obj.uid;
+			this._harvest_well = game.findCompatibleInstance([TaelonMineBuilding], PLAYER_NEUTRAL);
+			
+			if (this._harvest_well === null)
+				return;
+			
+			this._harvest_well = this._harvest_well.uid;
+		}
+		else if (obj instanceof TaelonMineBuilding)
+		{
+			if (this._res_now>0 && this._res_type==RESOURCE_WATER)
+				return;
+				
+			this._res_type = RESOURCE_TAELON;
+			this._harvest_well = obj.uid;
+			this._harvest_building = game.findCompatibleInstance([TaelonPowerBuilding], this.player);
+			
+			if (this._harvest_building === null)
+				return;
+			
+			this._harvest_building = this._harvest_building.uid;
+		}
+		else if (obj instanceof WaterLaunchPadBuilding)
+		{
+			if (this._res_now>0 && this._res_type==RESOURCE_TAELON)
+				return;
+			
+			this._res_type = RESOURCE_WATER;
+			this._harvest_building = obj.uid;
+			this._harvest_well = game.findCompatibleInstance([WaterWellBuilding], PLAYER_NEUTRAL);
+			
+			if (this._harvest_well === null)
+				return;
+			
+			this._harvest_well = this._harvest_well.uid;
+		}
+		else if (obj instanceof WaterWellBuilding)
+		{
+			if (this._res_now>0 && this._res_type==RESOURCE_TAELON)
+				return;
+				
+			this._res_type = RESOURCE_WATER;
+			this._harvest_well = obj.uid;
+			this._harvest_building = game.findCompatibleInstance([WaterLaunchPadBuilding], this.player);
+			
+			if (this._harvest_building === null)
+				return;
+			
+			this._harvest_building = this._harvest_building.uid;
+		}
+		else
+			return;
+		
+		if (this._res_now > 0)
+			this._moveBase();
+		else
+			this._moveWell();
+	}
+	
+	this._getBuilding = function(id)
+	{
+		if (game.objects[id] === undefined)
+			return null;
+		
+		return game.objects[id];
+	}
+	
+	this._moveBase = function()
+	{
+		var obj = this._getBuilding(this._harvest_building);
+		
+		if (obj === null)
+		{
+			this.state = 'STAND';
+			return;
+		}
+		
+		this._harvest_target = obj.getCell();
+		if (this._res_type == RESOURCE_TAELON)
+		{
+			this._harvest_target.x += 1;
+			this._harvest_target.y += 2;
+		}
+		else
+		{
+			this._harvest_target.x += 3;
+			this._harvest_target.y += 1;
+		}
+		
+		this.move(this._harvest_target.x, this._harvest_target.y, false);
+		this.state = 'MOVE_COLLECTOR';
+	}
+	
+	this._moveWell = function()
+	{
+		var obj = this._getBuilding(this._harvest_well);
+		
+		if (obj === null)
+		{
+			this.state = 'STAND';
+			return;
+		}
+		
+		this._harvest_target = obj.getCell();
+		this._harvest_target.x += 1;
+		this._harvest_target.y += 1;
+		this.move(this._harvest_target.x, this._harvest_target.y, false);
+		this.state = 'MOVE_WELL';
+	}
+	
+	this.onStopMoving = function()
+	{
+		if (this.state == 'MOVE_WELL' || this.state == 'MOVE_COLLECTOR')
+		{
+			var cell = this.getCell(), time_now = (new Date).getTime();
+			
+			if (cell.x==this._harvest_target.x && cell.y==this._harvest_target.y)
+			{
+				this.state = (this.state == 'MOVE_WELL') ? 'RESOURCE_GET' : 'RESOURCE_PUT';
+				this._setLoadSpeed();
+				this.startAnimation = time_now;
+				this.move_direction = 4;
+			}
+			else
+			{
+				this.substate = this.state;
+				this.state = 'MOVE_WAIT';
+				this._harvest_wait = time_now + 1000; //Wait 1 second
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	this._setLoadSpeed = function()
+	{
+		if (this.res_type == RESOURCE_TAELON)
+		{
+			this._load_speed = 0.2;
+			this._unload_speed = 0.5;
+		}
+		else
+		{
+			this._load_speed = 0.36;
+			this._unload_speed = 0.36;
+		}
 	}
 }
 
@@ -100,9 +332,10 @@ FreighterUnit.loadResources = function()
 	game.resources.addImage(this.resource_key + '_move',  'images/units/' + this.resource_key + '/move.png');
 	game.resources.addImage(this.resource_key + '_load', 'images/units/' + this.resource_key + '/load.png');
 	
+	//Use same sounds as guardian
 	for (var i=1; i<=this.sound_count; ++i)
 	{
-		game.resources.addSound(this.resource_key + '_move' + i,   'sounds/units/' + this.resource_key + '/move' + i + '.' + AUDIO_TYPE);
-		game.resources.addSound(this.resource_key + '_select' + i, 'sounds/units/' + this.resource_key + '/select' + i + '.' + AUDIO_TYPE);
+		game.resources.addSound(this.resource_key + '_move' + i,   'sounds/units/guardian/move' + i + '.' + AUDIO_TYPE);
+		game.resources.addSound(this.resource_key + '_select' + i, 'sounds/units/guardian/select' + i + '.' + AUDIO_TYPE);
 	}
 }

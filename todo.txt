@@ -1,6 +1,5 @@
 To do:
-	- Correct Freighter speed
-	- Implement Freighter harvesting
+	- Add water indicator on right panel
 	- Check shoot range
 	- Optimize shooting graphic 
 
@@ -12,7 +11,7 @@ To do:
 	- Increase building health on construction
 
 - Low priority bugs:
-	- Mouse cursor should not change when mouse over units of other players
+	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
 	- Add shadows to all units & buildings
 	- Energy meter blinking incorrectly
