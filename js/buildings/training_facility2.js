@@ -4,6 +4,8 @@ function TrainingFacility2Building(pos_x, pos_y, player)
 	this.player = player;
 	this.health = this._proto.health_max;
 	
+	this.state = 'UPGRADING';
+	
 	this.init(pos_x, pos_y);
 	this.setActionTime(this._proto.build_time);
 	
@@ -11,7 +13,7 @@ function TrainingFacility2Building(pos_x, pos_y, player)
 	{
 		switch (this.state)
 		{
-			case 'CONSTRUCTION':
+			case 'UPGRADING':
 				this._runStandartConstruction();
 				break;
 				

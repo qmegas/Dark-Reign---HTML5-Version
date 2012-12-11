@@ -144,6 +144,9 @@ function Game()
 	{
 		var i;
 		
+		//Debug
+		this.debug.countRun();
+		
 		//Kill objects
 		for (i = 0; i<this.kill_objects.length; ++i)
 		{
@@ -178,6 +181,9 @@ function Game()
 	{
 		var cur_time = (new Date()).getTime(), onscreen = [], unitid, eindex;
 		var top_x = parseInt(this.viewport_x / CELL_SIZE) - 1, top_y = parseInt(this.viewport_y / CELL_SIZE) - 1;
+		
+		//Debug
+		this.debug.countDraw();
 		
 		this.viewport_ctx.clearRect(0, 0, VIEWPORT_SIZE, VIEWPORT_SIZE);
 		this.objDraw.clear();
@@ -316,7 +322,13 @@ function Game()
 			
 			//Update minimap
 			this.minimap.drawObjects();
+			
+			//Debug
+			this.debug.resetCounters();
 		}
+		
+		if (this.debug.show_fps)
+			this.debug.drawFPS();
 		
 		window.requestAnimFrame(function(){
 			game.draw();

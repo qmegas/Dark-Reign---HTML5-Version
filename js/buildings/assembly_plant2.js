@@ -4,6 +4,8 @@ function AssemblyPlant2Building(pos_x, pos_y, player)
 	this.player = player;
 	this.health = this._proto.health_max;
 	
+	this.state = 'UPGRADING';
+	
 	this.producing_queue = [];
 	this.producing_start = 0;
 	
@@ -14,7 +16,7 @@ function AssemblyPlant2Building(pos_x, pos_y, player)
 	{
 		switch (this.state)
 		{
-			case 'CONSTRUCTION':
+			case 'UPGRADING':
 				this._runStandartConstruction();
 				break;
 				
