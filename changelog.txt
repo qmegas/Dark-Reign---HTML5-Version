@@ -1,3 +1,10 @@
+Build 27 (16.12.2012)
+- Freighter automatically choose only nearest objects
+- Energy indicator blinking implemented by CSS animation
+- Added water indicator
+- You can urgently sell water by clicking on indicator
+- When selecting construction rig right panel automatically switch to build section
+
 Build 26 (11.12.2012)
 - Freighter now can harvest
 - Removed Freighter sounds, because they same as Guardian sounds

@@ -1,5 +1,4 @@
 To do:
-	- Add water indicator on right panel
 	- Check shoot range
 	- Optimize shooting graphic 
 
@@ -18,6 +17,7 @@ To do:
 	- Need to add animation when energy state changed
 	- When construction building/unit, money should decrease gradually
 	- Unit production indicator on right panel looks not exactly as original one
+	- Add smooth animation on water indicator when selling water
 
 - Very low priority bugs:
 	- When mouseover building or unit, it's name should be shown after small delay

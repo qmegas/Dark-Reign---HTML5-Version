@@ -29,13 +29,13 @@ function Player(map_color)
 	
 	this.energyAddMax = function(val)
 	{
-		game.energyDraw.addToMax(val);
+		game.energyDraw.energyAddToMax(val);
 		this._energy_max += val;
 	}
 	
 	this.energyAddCurrent = function(val)
 	{
-		game.energyDraw.addToCurrent(val);
+		game.energyDraw.energyAddToCurrent(val);
 		this._energy_current += val;
 	}
 }

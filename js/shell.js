@@ -23,7 +23,7 @@ function Game()
 	this.objDraw = new ObjectDraw();
 	this.notifications = new SoundQueue();
 	this.moneyDraw = new MoneyDraw();
-	this.energyDraw = new EnergyDraw();
+	this.energyDraw = new EnergyWaterDraw();
 	this.constructor = {};
 	this.minimap = new MiniMap();
 	
@@ -131,7 +131,7 @@ function Game()
 			game.constructor.drawUnits();
 			game.level.generateMap();
 			game._resetSelectionInfo();
-			game.players[PLAYER_HUMAN].energyAddMax(0); //Just redraw the indicator
+			game.energyDraw.drawAll();
 			
 			$('.load-screen').hide();
 			$('.game').show();
@@ -309,9 +309,6 @@ function Game()
 		//Mouse
 		this.mouse.draw(cur_time);
 		
-		//Energy
-		this.energyDraw.draw(cur_time, false);
-		
 		//Once per second update shell info
 		if ((cur_time - this.shell_update_time) > 1000)
 		{
@@ -322,6 +319,9 @@ function Game()
 			
 			//Update minimap
 			this.minimap.drawObjects();
+			
+			//Energy
+			this.energyDraw.enrgyNotification(cur_time);
 			
 			//Debug
 			this.debug.resetCounters();
@@ -605,6 +605,30 @@ function Game()
 					return this.objects[i];
 		
 		return null;
+	}
+	
+	this.findNearestInstance = function(object_type, player, x, y)
+	{
+		var len = 99999, obj = null, i, tmp_path, cell;
+		
+		for (i in this.objects)
+		{
+			if ((this.objects[i] instanceof object_type) && (this.objects[i].player == player))
+			{
+				cell = this.objects[i].getCell();
+				if (cell.x==x && cell.y==y)
+					return this.objects[i];
+				
+				tmp_path = PathFinder.findPath(x, y, cell.x, cell.y, true, false);
+				if ((tmp_path.length > 0) && (len > tmp_path.length))
+				{
+					len = tmp_path.length;
+					obj = this.objects[i];
+				}
+			}
+		}
+		
+		return obj;
 	}
 }
 

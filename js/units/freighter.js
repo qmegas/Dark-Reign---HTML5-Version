@@ -152,6 +152,8 @@ function FreighterUnit(pos_x, pos_y, player)
 	
 	this.harvest = function(obj, silently)
 	{
+		var cell = this.getCell();
+		
 		if (!silently)
 			this._playSound('move');
 		
@@ -162,7 +164,7 @@ function FreighterUnit(pos_x, pos_y, player)
 			
 			this._res_type = RESOURCE_TAELON;
 			this._harvest_building = obj.uid;
-			this._harvest_well = game.findCompatibleInstance([TaelonMineBuilding], PLAYER_NEUTRAL);
+			this._harvest_well = game.findNearestInstance(TaelonMineBuilding, PLAYER_NEUTRAL, cell.x, cell.y);
 			
 			if (this._harvest_well === null)
 				return;
@@ -176,7 +178,7 @@ function FreighterUnit(pos_x, pos_y, player)
 				
 			this._res_type = RESOURCE_TAELON;
 			this._harvest_well = obj.uid;
-			this._harvest_building = game.findCompatibleInstance([TaelonPowerBuilding], this.player);
+			this._harvest_building = game.findNearestInstance(TaelonPowerBuilding, this.player, cell.x, cell.y);
 			
 			if (this._harvest_building === null)
 				return;
@@ -190,7 +192,7 @@ function FreighterUnit(pos_x, pos_y, player)
 			
 			this._res_type = RESOURCE_WATER;
 			this._harvest_building = obj.uid;
-			this._harvest_well = game.findCompatibleInstance([WaterWellBuilding], PLAYER_NEUTRAL);
+			this._harvest_well = game.findNearestInstance(WaterWellBuilding, PLAYER_NEUTRAL, cell.x, cell.y);
 			
 			if (this._harvest_well === null)
 				return;
@@ -204,7 +206,7 @@ function FreighterUnit(pos_x, pos_y, player)
 				
 			this._res_type = RESOURCE_WATER;
 			this._harvest_well = obj.uid;
-			this._harvest_building = game.findCompatibleInstance([WaterLaunchPadBuilding], this.player);
+			this._harvest_building = game.findNearestInstance(WaterLaunchPadBuilding, this.player, cell.x, cell.y);
 			
 			if (this._harvest_building === null)
 				return;

@@ -122,6 +122,10 @@ function ConstructManager(units, buildings)
 		this.current_view_offset = (!start) ? 0 : start;
 		this.current_view_type = CONST_VIEW_BUILDINGS;
 		this._drawCells();
+		
+		//Make sure build tab is shown
+		if (!$('#tab_button_build').hasClass('active'))
+			$('#tab_button_build').click();
 	}
 	
 	this._drawCells = function()

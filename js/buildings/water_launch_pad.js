@@ -63,16 +63,35 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 	{
 		var incr = this._standardIncreaseRes(amount);
 		
+		if (this.player == PLAYER_HUMAN)
+			game.energyDraw.waterSetLevel(this.res_now);
+		
 		if (this.isResFull())
+			this.sellWater();
+		
+		return incr;
+	}
+	
+	this.sellWater = function()
+	{
+		var money = 0;
+		
+		if (this.isResFull())
+			money = 3000;
+		else
+			money = parseInt(this.res_now * 15 - 500);
+		
+		if (money > 0)
 		{
 			this.res_now = 0;
-			game.players[this.player].addMoney(3000);
+			game.players[this.player].addMoney(money);
 			
 			var effect = new WaterSellEffect(this.getCell()), eid = game.addEffect(effect);
 			effect.uid = eid;
+			
+			if (this.player == PLAYER_HUMAN)
+				game.energyDraw.waterReset();
 		}
-		
-		return incr;
 	}
 }
 
