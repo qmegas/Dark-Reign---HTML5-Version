@@ -12,3 +12,6 @@ Just download the files and open `game.html` in Chrome or Firefox browsers. IE9/
 * nbproject - Project files for NetBeans IDE. Not required for game run.
 * php - just some useful scripts that i use during development. Not required for game run.
 * sounds - game sounds
+
+## Help required
+Need help to improve pathfinding algorithms. If you are good at this, then please contact me.
