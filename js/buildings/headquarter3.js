@@ -52,3 +52,5 @@ Headquarter3Building.move_matrix = [0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1];
 Headquarter3Building.cell_padding = {x: 2, y: 2};
 Headquarter3Building.image_size = {x: 117, y: 144};
 Headquarter3Building.image_padding = {x: 3, y: 48};
+Headquarter3Building.shadow_image_size = {x: 161, y: 73};
+Headquarter3Building.shadow_image_padding = {x: 1, y: -37};

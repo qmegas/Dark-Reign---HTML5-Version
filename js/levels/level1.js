@@ -2416,6 +2416,7 @@ function Level1()
 		return [//Main buildings
 			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
 			TrainingFacilityBuilding, AssemblyPlantBuilding, CameraTowerBuilding,
+			FieldHospitalBuilding,
 			//Upgrades
 			Headquarter2Building, Headquarter3Building, 
 			TrainingFacility2Building, AssemblyPlant2Building,

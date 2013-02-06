@@ -12,7 +12,7 @@ function WaterSellEffect(building_position)
 	this._start_animation = (new Date).getTime();
 	this._stop_animation = this._start_animation + this._proto.frames*this._proto.frame_speed;
 	
-	game.resources.get(this._proto.resource_key + '_sound').play();
+	game.resources.play(this._proto.resource_key + '_sound');
 	
 	this.run = function()
 	{

@@ -52,5 +52,7 @@ Headquarter2Building.move_matrix = [0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1];
 Headquarter2Building.cell_padding = {x: 2, y: 2};
 Headquarter2Building.image_size = {x: 120, y: 144};
 Headquarter2Building.image_padding = {x: 0, y: 48};
+Headquarter2Building.shadow_image_size = {x: 162, y: 107};
+Headquarter2Building.shadow_image_padding = {x: -5, y: 3};
 
 Headquarter2Building.upgradable = true;

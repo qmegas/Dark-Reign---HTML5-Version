@@ -60,4 +60,13 @@ function ResourseLoader()
 		
 		return this.items[key];
 	}
+	
+	this.play = function(key, volume)
+	{
+		var item = this.get(key);
+		
+		if (volume)
+			item.volume = volume;
+		item.play();
+	}
 }

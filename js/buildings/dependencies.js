@@ -28,3 +28,6 @@ TrainingFacility2Building.upgrade_from = TrainingFacilityBuilding;
 
 //IG - Camera Tower
 CameraTowerBuilding.require_building = [Headquarter2Building];
+
+//IG - Field Hospital
+FieldHospitalBuilding.require_building = [TrainingFacilityBuilding];

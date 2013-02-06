@@ -1,3 +1,11 @@
+Build 28 (06.02.2013)
+- Preloading right panel images for buildings and units
+- Do not start game load until start screen is loaded completely
+- Added animation to Advanced Training Facility building
+- Added Field Hospital building (it still can't heal)
+- Added shadow layer to graphic drawer
+- Added shadows for all Headquarter buildings
+
 Build 27 (16.12.2012)
 - Freighter automatically choose only nearest objects
 - Energy indicator blinking implemented by CSS animation

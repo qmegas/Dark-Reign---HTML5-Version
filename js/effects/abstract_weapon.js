@@ -38,9 +38,7 @@ function AbstractWeaponEffect()
 		sound_vol = this._checkSoundVolume();
 		if (sound_vol > 0)
 		{
-			var sound = game.resources.get(this._proto.resource_key + '_shoot_snd');
-			sound.volume = sound_vol;
-			sound.play();
+			game.resources.play(this._proto.resource_key + '_shoot_snd', sound_vol);
 		}
 	}
 	

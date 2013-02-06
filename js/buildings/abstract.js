@@ -196,6 +196,18 @@ function AbstractBuilding()
 	{
 		if (this.state == 'CONSTRUCTION' || this.state == 'UPGRADING')
 		{
+			if (this._proto.shadow_image_size !== null)
+			{
+				game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+					res_key: this._proto.res_key + '_shadow',
+					src_x: 0,
+					src_y: 0,
+					src_width: this._proto.shadow_image_size.x,
+					src_height: this._proto.shadow_image_size.y,
+					x: this.position.x - this._proto.shadow_image_padding.x - game.viewport_x,
+					y: this.position.y - this._proto.shadow_image_padding.y - game.viewport_y
+				});
+			}
 			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
 				res_key: this._proto.res_key,
 				src_x: 0,
@@ -217,6 +229,18 @@ function AbstractBuilding()
 		}
 		else
 		{
+			if (this._proto.shadow_image_size !== null)
+			{
+				game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+					res_key: this._proto.res_key + '_shadow',
+					src_x: 0,
+					src_y: this._proto.shadow_image_size.y,
+					src_width: this._proto.shadow_image_size.x,
+					src_height: this._proto.shadow_image_size.y,
+					x: this.position.x - this._proto.shadow_image_padding.x - game.viewport_x,
+					y: this.position.y - this._proto.shadow_image_padding.y - game.viewport_y
+				});
+			}
 			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
 				res_key: this._proto.res_key,
 				src_x: 0,
@@ -488,6 +512,12 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 AbstractBuilding.loadResources = function(obj)
 {
 	game.resources.addImage(obj.res_key, 'images/buildings/'+obj.res_key+'/sprite.png');
+	
+	if (typeof obj.require_building == 'undefined')
+		game.resources.addImage(obj.res_key + '_box', 'images/buildings/'+obj.res_key+'/box.png');
+	
+	if (obj.shadow_image_size !== null)
+		game.resources.addImage(obj.res_key + '_shadow', 'images/buildings/'+obj.res_key+'/shadow.png');
 }
 
 AbstractBuilding.setBuildingCommonOptions = function(obj)
@@ -511,6 +541,8 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.cell_padding = null;    //Must redeclare
 	obj.image_size = null;      //Must redeclare
 	obj.image_padding = null;
+	obj.shadow_image_size = null;
+	obj.shadow_image_padding = null;
 	obj.require_building = [];
 
 	obj.upgradable = false;

@@ -29,9 +29,7 @@ function LaserRifleEffect(from_x, from_y, to_x, to_y)
 					var volume = this._checkSoundVolume();
 					if (volume > 0)
 					{
-						var sound = game.resources.get(this._proto.resource_key + '_blast_snd');
-						sound.volume = volume;
-						sound.play();
+						game.resources.play(this._proto.resource_key + '_blast_snd', volume);
 					}
 				}
 			}

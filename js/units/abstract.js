@@ -318,7 +318,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this._playSound = function(type)
 	{
 		var i = Math.floor((Math.random()*this._proto.sound_count)+1);
-		game.resources.get(this._proto.resource_key + '_' + type + i).play();
+		game.resources.play(this._proto.resource_key + '_' + type + i);
 	}
 	
 	this.markCellsOnMap = function(unitid)
@@ -383,6 +383,11 @@ function AbstractUnit(pos_x, pos_y, player)
 		return false;
 	}
 	
+	this.isHuman = function()
+	{
+		return this._proto.is_human;
+	}
+	
 	//Events
 	
 	this.onStopMoving = function()
@@ -420,6 +425,7 @@ AbstractUnit.loadResources = function(obj)
 {
 	game.resources.addImage(obj.resource_key + '_stand', 'images/units/' + obj.resource_key + '/stand.png');
 	game.resources.addImage(obj.resource_key + '_move',  'images/units/' + obj.resource_key + '/move.png');
+	game.resources.addImage(obj.resource_key + '_box',  'images/units/' + obj.resource_key + '/box.png');
 	
 	for (var i=1; i<=obj.sound_count; ++i)
 	{
@@ -449,6 +455,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.speed = 0.87;      // 0.87 = 6 config speed
 	obj.weapon = null;
 	obj.enabled = false;
+	obj.is_human = false;
 
 	obj.require_building = [];
 

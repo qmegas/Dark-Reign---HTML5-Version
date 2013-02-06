@@ -19,6 +19,7 @@ GuardianUnit.cost = 150;
 GuardianUnit.health_max = 5;
 GuardianUnit.speed = 1.371;
 GuardianUnit.weapon = LaserRifleWeapon;
+GuardianUnit.is_human = true;
 
 GuardianUnit.require_building = [TrainingFacilityBuilding];
 

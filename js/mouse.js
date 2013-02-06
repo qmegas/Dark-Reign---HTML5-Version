@@ -161,7 +161,7 @@ function MousePointer(game)
 					game.cleanActionState();
 				}
 				else
-					game.resources.get('cant_build').play();
+					game.resources.play('cant_build');
 				break;
 				
 			case ACTION_STATE_SELL:

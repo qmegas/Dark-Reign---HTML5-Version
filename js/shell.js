@@ -520,7 +520,7 @@ function Game()
 		}
 		
 		if (!upgraded)
-			game.resources.get('cant_build').play();
+			game.resources.play('cant_build');
 	}
 	
 	this.toggleActionState = function(state)
@@ -633,11 +633,15 @@ function Game()
 }
 
 $(function(){
-	game = new Game();
-	game.init(new Level1(), function(){
-		game.draw();
-		setInterval(function(){game.run();}, 1000/RUNS_PER_SECOND);
-	});
+	var img = new Image();
+	img.src = 'images/shell/load-screen.png';
+	img.onload = function(){
+		game = new Game();
+		game.init(new Level1(), function(){
+			game.draw();
+			setInterval(function(){game.run();}, 1000/RUNS_PER_SECOND);
+		});
+	};
 	
 	//Interface stop button
 	$('#top_button_stop').mousedown(function(){
