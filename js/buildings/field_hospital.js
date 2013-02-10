@@ -40,3 +40,5 @@ FieldHospitalBuilding.move_matrix = [1,1,0,1,0,1,1,1,1,0,1,1];
 FieldHospitalBuilding.cell_padding = {x: 2, y: 1};
 FieldHospitalBuilding.image_size = {x: 94, y: 69};
 FieldHospitalBuilding.image_padding = {x: -2, y: -2};
+FieldHospitalBuilding.shadow_image_size = {x: 95, y: 70};
+FieldHospitalBuilding.shadow_image_padding = {x: -2, y: -6};

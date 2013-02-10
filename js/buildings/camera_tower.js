@@ -39,3 +39,5 @@ CameraTowerBuilding.move_matrix = [1,1];
 CameraTowerBuilding.cell_padding = {x: 0, y: 1};
 CameraTowerBuilding.image_size = {x: 24, y: 48};
 CameraTowerBuilding.image_padding = {x: 0, y: 0};
+CameraTowerBuilding.shadow_image_size = {x: 34, y: 18};
+CameraTowerBuilding.shadow_image_padding = {x: -11, y: -34};

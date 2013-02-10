@@ -19,6 +19,10 @@ function AbstractBuilding()
 	
 	this.position = {x: 0, y: 0};
 	
+	//Building animation
+	this._draw_last_frame_change = 0;
+	this._draw_cur_frame = 0;
+	
 	this.init = function(pos_x, pos_y)
 	{
 		this.position = {
@@ -250,15 +254,36 @@ function AbstractBuilding()
 				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
 				y: this.position.y - this._proto.image_padding.y - game.viewport_y
 			});
-			game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
-				res_key: this._proto.res_key,
-				src_x: this._proto.image_size.x,
-				src_y: this._proto.image_size.y,
-				src_width: this._proto.image_size.x,
-				src_height: this._proto.image_size.y,
-				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
-				y: this.position.y - this._proto.image_padding.y - game.viewport_y
-			});
+			if (this._proto.image_animated)
+			{
+				game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
+					res_key: this._proto.res_key,
+					src_x: this._proto.image_animation_frames[this._draw_cur_frame]*this._proto.image_size.x,
+					src_y: this._proto.image_size.y,
+					src_width: this._proto.image_size.x,
+					src_height: this._proto.image_size.y,
+					x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+					y: this.position.y - this._proto.image_padding.y - game.viewport_y
+				});
+				if ((cur_time - this._draw_last_frame_change)>200)
+				{
+					++this._draw_cur_frame;
+					this._draw_cur_frame %= this._proto.image_animation_frames.length;
+					this._draw_last_frame_change = cur_time;
+				}
+			}
+			else
+			{
+				game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
+					res_key: this._proto.res_key,
+					src_x: this._proto.image_size.x,
+					src_y: this._proto.image_size.y,
+					src_width: this._proto.image_size.x,
+					src_height: this._proto.image_size.y,
+					x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+					y: this.position.y - this._proto.image_padding.y - game.viewport_y
+				});
+			}
 		}
 	}
 	
@@ -541,6 +566,8 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.cell_padding = null;    //Must redeclare
 	obj.image_size = null;      //Must redeclare
 	obj.image_padding = null;
+	obj.image_animated = false;
+	obj.image_animation_frames = null;
 	obj.shadow_image_size = null;
 	obj.shadow_image_padding = null;
 	obj.require_building = [];

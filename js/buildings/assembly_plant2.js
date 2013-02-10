@@ -55,3 +55,5 @@ AssemblyPlant2Building.move_matrix = [0,0,1,1,0,0,1,1,0,1,0,1,0,1,1,0,1,1,1,0,0,
 AssemblyPlant2Building.cell_padding = {x: 2, y: 2};
 AssemblyPlant2Building.image_size = {x: 119, y: 118};
 AssemblyPlant2Building.image_padding = {x: -1, y: -3};
+AssemblyPlant2Building.shadow_image_size = {x: 143, y: 92};
+AssemblyPlant2Building.shadow_image_padding = {x: -1, y: -45};
