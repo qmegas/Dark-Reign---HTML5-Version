@@ -75,8 +75,7 @@ function FreighterUnit(pos_x, pos_y, player)
 	
 	this.draw = function(current_time) 
 	{
-		var top_x = this.position.x - game.viewport_x - this._proto.image_padding.x, 
-			top_y = this.position.y - game.viewport_y - this._proto.image_padding.y, diff;
+		var top_x = this.position.x - game.viewport_x, top_y = this.position.y - game.viewport_y, diff;
 		
 		switch (this.state)
 		{
@@ -86,12 +85,12 @@ function FreighterUnit(pos_x, pos_y, player)
 				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 3);
 				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
 					res_key: this._proto.resource_key + '_move',
-					src_x: this.move_direction * this._proto.image_size.width,
-					src_y: diff * this._proto.image_size.height,
-					src_width: this._proto.image_size.width,
-					src_height: this._proto.image_size.height,
-					x: top_x,
-					y: top_y
+					src_x: this.move_direction * this._proto.images.move.size.x,
+					src_y: diff * this._proto.images.move.size.y,
+					src_width: this._proto.images.move.size.x,
+					src_height: this._proto.images.move.size.y,
+					x: top_x - this._proto.images.move.padding.x,
+					y: top_y - this._proto.images.move.padding.y
 				});
 				break;
 				
@@ -101,23 +100,23 @@ function FreighterUnit(pos_x, pos_y, player)
 				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
 					res_key: this._proto.resource_key + '_load',
 					src_x: 0,
-					src_y: diff * this._proto.image_size.height,
-					src_width: this._proto.image_size.width,
-					src_height: this._proto.image_size.height,
-					x: top_x,
-					y: top_y
+					src_y: diff * this._proto.images.load.size.y,
+					src_width: this._proto.images.load.size.x,
+					src_height: this._proto.images.load.size.y,
+					x: top_x - this._proto.images.load.padding.x,
+					y: top_y - this._proto.images.load.padding.y
 				});
 				break;
 				
 			default:
 				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
 					res_key: this._proto.resource_key + '_move',
-					src_x: this.move_direction * this._proto.image_size.width,
+					src_x: this.move_direction * this._proto.images.move.size.x,
 					src_y: 0,
-					src_width: this._proto.image_size.width,
-					src_height: this._proto.image_size.height,
-					x: top_x,
-					y: top_y
+					src_width: this._proto.images.move.size.x,
+					src_height: this._proto.images.move.size.y,
+					x: top_x - this._proto.images.move.padding.x,
+					y: top_y - this._proto.images.move.padding.y
 				});
 				break;
 		}
@@ -127,8 +126,8 @@ function FreighterUnit(pos_x, pos_y, player)
 	{
 		this._drawStandardSelection(is_onmouse);
 		
-		var top_x = this.position.x - game.viewport_x - 1 - this._proto.image_padding.x, 
-			top_y = this.position.y - game.viewport_y + 5 - this._proto.image_padding.y,
+		var top_x = this.position.x - game.viewport_x - 1 - this._proto.images.selection.padding.x, 
+			top_y = this.position.y - game.viewport_y + 5 - this._proto.images.selection.padding.y,
 			bar_size = Math.floor((this._res_now/this._res_max)*28);
 			
 			
@@ -317,8 +316,24 @@ AbstractUnit.setUnitCommonOptions(FreighterUnit);
 
 FreighterUnit.obj_name = 'Freighter';
 FreighterUnit.resource_key = 'freighter';
-FreighterUnit.image_size = {width: 40, height: 40};
-FreighterUnit.image_padding = {x: 8, y: 8};
+FreighterUnit.images = {
+	selection: {
+		size: {x: 40, y: 40},
+		padding: {x: 8, y: 8}
+	},
+	stand: {
+		size: {x: 40, y: 40},
+		padding: {x: 8, y: 8}
+	},
+	move: {
+		size: {x: 40, y: 40},
+		padding: {x: 8, y: 8}
+	},
+	load: {
+		size: {x: 40, y: 40},
+		padding: {x: 8, y: 8}
+	}
+};
 
 FreighterUnit.cost = 1000;
 FreighterUnit.health_max = 15;

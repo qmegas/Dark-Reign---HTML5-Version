@@ -386,7 +386,7 @@ function Game()
 	
 	this.regionSelect = function (x1, y1, x2, y2)
 	{
-		var x, y, cur_unit, play_sound = true, harvesters = true;
+		var x, y, cur_unit, play_sound = true, harvesters = true, humans_only = true;
 		
 		this._deselectUnits();
 		
@@ -411,12 +411,15 @@ function Game()
 					this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
 					this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
 					harvesters = harvesters && this.objects[cur_unit].canHarvest();
+					humans_only = humans_only && this.objects[cur_unit].isHuman();
 				}
 			}
 		
-		//Does all selected units can harvest
 		if (this.selected_objects.length > 0)
+		{
 			this.selected_info.harvesters = harvesters;
+			this.selected_info.humans = humans_only;
+		}
 			
 		//Constructor selected?
 		if (this.selected_objects.length==1 && (this.objects[this.selected_objects[0]] instanceof ConstructionRigUnit))
@@ -492,7 +495,8 @@ function Game()
 			is_produce: false,
 			can_attack_ground: false,
 			can_attack_fly: false,
-			harvesters: false
+			harvesters: false,
+			humans: false
 		};
 	}
 	

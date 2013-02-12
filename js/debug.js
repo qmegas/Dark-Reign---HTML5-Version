@@ -68,4 +68,13 @@ function Debuger()
 		game.viewport_ctx.fillText('Game speed: ' + this.run_cache + ' (' + parseInt((this.run_cache/RUNS_PER_SECOND)*100) + '%)', 0, 10);
 		game.viewport_ctx.fillText('FPS: ' + this.fps_cache, 0, 20);
 	}
+	
+	this.drawCustomLine = function(text, line)
+	{
+		if (!line)
+			line = 1;
+		
+		game.viewport_ctx.fillStyle = '#fff';
+		game.viewport_ctx.fillText(text, 0, 10*line);
+	}
 }

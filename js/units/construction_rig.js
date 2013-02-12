@@ -35,8 +35,30 @@ AbstractUnit.setUnitCommonOptions(ConstructionRigUnit);
 
 ConstructionRigUnit.obj_name = 'Construction Rig';
 ConstructionRigUnit.resource_key = 'construction_rig';
-ConstructionRigUnit.image_size = {width: 35, height: 35};
-ConstructionRigUnit.image_padding = {x: 7, y: 7};
+ConstructionRigUnit.images = {
+	selection: {
+		size: {x: 35, y: 35},
+		padding: {x: 7, y: 7}
+	},
+	stand: {
+		size: {x: 35, y: 35},
+		padding: {x: 7, y: 7}
+	},
+	move: {
+		size: {x: 35, y: 35},
+		padding: {x: 7, y: 7}
+	},
+	shadow: {
+		stand: {
+			size: {x: 37, y: 24},
+			padding: {x: 4, y: -11}
+		},
+		move: {
+			size: {x: 39, y: 24},
+			padding: {x: 5, y: -10}
+		}
+	}
+};
 ConstructionRigUnit.sound_count = 3;
 
 ConstructionRigUnit.cost = 300;

@@ -12,8 +12,41 @@ AbstractUnit.setUnitCommonOptions(GuardianUnit);
 
 GuardianUnit.obj_name = 'Guardian';
 GuardianUnit.resource_key = 'guardian';
-GuardianUnit.image_size = {width: 26, height: 26};
-GuardianUnit.image_padding = {x: 1, y: 1};
+GuardianUnit.images = {
+	selection: {
+		size: {x: 26, y: 26},
+		padding: {x: 1, y: 1}
+	},
+	stand: {
+		size: {x: 26, y: 26},
+		padding: {x: 1, y: 1}
+	},
+	move: {
+		size: {x: 26, y: 26},
+		padding: {x: 1, y: 1}
+	},
+	attack: {
+		size: {x: 26, y: 26},
+		padding: {x: 1, y: 1}
+	},
+	shadow: {
+		stand: {
+			size: {x: 19, y: 8},
+			padding: {x: -7, y: -14},
+			static_img: true
+		},
+		move: {
+			size: {x: 19, y: 8},
+			padding: {x: -7, y: -14},
+			static_img: true
+		},
+		attack: {
+			size: {x: 19, y: 8},
+			padding: {x: -7, y: -14},
+			static_img: true
+		}
+	}
+};
 
 GuardianUnit.cost = 150;
 GuardianUnit.health_max = 5;

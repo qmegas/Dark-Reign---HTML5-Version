@@ -373,6 +373,11 @@ function AbstractBuilding()
 		return (this._proto.upgradable && this._proto.can_upgrade_now && this.state=='NORMAL');
 	}
 	
+	this.isHuman = function()
+	{
+		return false;
+	}
+	
 	this.canHarvest = function()
 	{
 		return false;
@@ -428,6 +433,12 @@ function AbstractBuilding()
 //Static methods
 AbstractBuilding.drawBuildMouse = function(obj, x, y)
 {
+	if (obj.is_bridge)
+	{
+		BridgeTypeBuilding.drawBuildMouse(obj, x, y);
+		return;
+	}
+		
 	var i = -1;
 	
 	x -= obj.cell_padding.x;
@@ -451,7 +462,7 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 	for (var xx = 0; xx<obj.cell_size.x; ++xx)
 	{
 		var xxx = xx+x;
-		if (xxx<0 || xxx>game.level.size.x-1)
+		if (!MapCell.isCorrectX(xxx))
 			continue;
 		
 		for (var yy = 0; yy<obj.cell_size.y; ++yy)
@@ -461,7 +472,7 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 				continue;
 			
 			var yyy = yy+y;
-			if (yyy<0 || yyy>game.level.size.y-1)
+			if (!MapCell.isCorrectY(yyy))
 				continue;
 			
 			var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
@@ -498,6 +509,9 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 
 AbstractBuilding.canBuild = function(obj, x, y, unit)
 {
+	if (obj.is_bridge)
+		return BridgeTypeBuilding.canBuild(obj, x, y, unit);
+	
 	var i = -1;
 	
 	if (!game.players[PLAYER_HUMAN].haveEnoughMoney(obj.cost))
@@ -512,7 +526,8 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 	for (var xx = 0; xx<obj.cell_size.x; ++xx)
 	{
 		var xxx = xx+x;
-		if (xxx<0 || xxx>game.level.size.x-1)
+		
+		if (!MapCell.isCorrectX(xxx))
 			return false;
 		
 		for (var yy = 0; yy<obj.cell_size.y; ++yy)
@@ -522,11 +537,11 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 				continue;
 			
 			var yyy = yy+y;
-			if (yyy<0 || yyy>game.level.size.y-1)
+			if (!MapCell.isCorrectX(yyy))
 				return false;
 			
 			var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
-			if (cell.type!=0 || (unitid!=-1 && unitid!=unit))
+			if (cell.type!=CELL_TYPE_EMPTY || (unitid!=-1 && unitid!=unit))
 				return false;
 		}
 	}
@@ -559,6 +574,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.enabled = false;
 	obj.can_build = false;
 	obj.count = 0;
+	obj.is_bridge = false;
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare

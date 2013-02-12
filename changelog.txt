@@ -1,5 +1,9 @@
-Build 29 (?)
+Build 29 (12.02.2013)
 - Added shadow for all buildings
+- Added shadow for units. Unfortunately can't find shadow image for Freighter, for now it will be without shadow. 
+- Added healing cursor
+- Added damage table. Preparing for weapon implementation.
+- Added small horizontal bridge building. Still can't correctly build it, some improvements required for pathfinding algorithm.
 - Small code optimizations
 
 Build 28 (06.02.2013)

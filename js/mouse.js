@@ -65,10 +65,20 @@ function MousePointer(game)
 		}
 		else if (MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]) != -1)
 		{
-			var objid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
-			if (game.objects[objid].is_building && game.selected_info.harvesters && game.objects[objid].isHarvestPlatform())
-				this._drawCursor(current_time, 9, 8);
+			var objid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]), draw_default = false;
+			if (game.objects[objid].is_building)
+			{
+				if (game.selected_info.harvesters && game.objects[objid].isHarvestPlatform())
+					this._drawCursor(current_time, 9, 8);
+				else if (game.selected_info.humans && game.objects[objid]._proto === FieldHospitalBuilding)
+					this._drawCursor(current_time, 10, 5);
+				else 
+					draw_default = true;
+			}	
 			else
+				draw_default = true;
+			
+			if (draw_default)
 				this._drawCursor(current_time, 1, 8);
 		}
 		else if (game.selected_objects.length>0 && !game.selected_info.is_building)

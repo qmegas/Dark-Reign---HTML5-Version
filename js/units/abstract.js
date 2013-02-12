@@ -194,8 +194,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.draw = function(current_time) 
 	{
-		var top_x = this.position.x - game.viewport_x - this._proto.image_padding.x, 
-			top_y = this.position.y - game.viewport_y - this._proto.image_padding.y,
+		var diff, top_x = this.position.x - game.viewport_x, top_y = this.position.y - game.viewport_y,
 			layer = (this.is_fly) ? DRAW_LAYER_FUNIT : DRAW_LAYER_GUNIT;
 		
 		//Draw unit
@@ -203,39 +202,76 @@ function AbstractUnit(pos_x, pos_y, player)
 		{
 			case 'ATTACK':
 			case 'STAND':
+				if (this._proto.images.shadow)
+				{
+					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+						res_key: this._proto.resource_key + '_stand_shadow',
+						src_x: (this._proto.images.shadow.stand.static_img) ? 0 : this.move_direction * this._proto.images.shadow.stand.size.x,
+						src_y: 0,
+						src_width: this._proto.images.shadow.stand.size.x,
+						src_height: this._proto.images.shadow.stand.size.y,
+						x: top_x - this._proto.images.shadow.stand.padding.x,
+						y: top_y - this._proto.images.shadow.stand.padding.y
+					});
+				}
 				game.objDraw.addElement(layer, this.position.x, {
 					res_key: this._proto.resource_key + '_stand',
-					src_x: this.move_direction * this._proto.image_size.width,
+					src_x: this.move_direction * this._proto.images.stand.size.x,
 					src_y: 0,
-					src_width: this._proto.image_size.width,
-					src_height: this._proto.image_size.height,
-					x: top_x,
-					y: top_y
+					src_width: this._proto.images.stand.size.x,
+					src_height: this._proto.images.stand.size.y,
+					x: top_x - this._proto.images.stand.padding.x,
+					y: top_y - this._proto.images.stand.padding.y
 				});
 				break;
 			
 			case 'MOVE':
-				var diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 6);
+				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 6);
+				if (this._proto.images.shadow)
+				{
+					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+						res_key: this._proto.resource_key + '_move_shadow',
+						src_x: (this._proto.images.shadow.move.static_img) ? 0 : this.move_direction * this._proto.images.shadow.move.size.x,
+						src_y: (this._proto.images.shadow.move.static_img) ? 0 : diff * this._proto.images.shadow.move.size.y,
+						src_width: this._proto.images.shadow.move.size.x,
+						src_height: this._proto.images.shadow.move.size.y,
+						x: top_x - this._proto.images.shadow.move.padding.x,
+						y: top_y - this._proto.images.shadow.move.padding.y
+					});
+				}
 				game.objDraw.addElement(layer, this.position.x, {
 					res_key: this._proto.resource_key + '_move',
-					src_x: this.move_direction * this._proto.image_size.width,
-					src_y: diff * this._proto.image_size.height,
-					src_width: this._proto.image_size.width,
-					src_height: this._proto.image_size.height,
-					x: top_x,
-					y: top_y
+					src_x: this.move_direction * this._proto.images.move.size.x,
+					src_y: diff * this._proto.images.move.size.y,
+					src_width: this._proto.images.move.size.x,
+					src_height: this._proto.images.move.size.y,
+					x: top_x - this._proto.images.move.padding.x,
+					y: top_y - this._proto.images.move.padding.y
 				});
 				break;
 				
 			case 'ATTACKING':
+				diff = Math.floor(this.anim_attack_frame/2);
+				if (this._proto.images.shadow)
+				{
+					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+						res_key: this._proto.resource_key + '_attack_shadow',
+						src_x: (this._proto.images.shadow.attack.static_img) ? 0 : this.move_direction * this._proto.images.shadow.attack.size.x,
+						src_y: (this._proto.images.shadow.attack.static_img) ? 0 : diff * this._proto.images.shadow.attack.size.y,
+						src_width: this._proto.images.shadow.attack.size.x,
+						src_height: this._proto.images.shadow.attack.size.y,
+						x: top_x - this._proto.images.shadow.attack.padding.x,
+						y: top_y - this._proto.images.shadow.attack.padding.y
+					});
+				}
 				game.objDraw.addElement(layer, this.position.x, {
 					res_key: this._proto.resource_key + '_attack',
-					src_x: this.move_direction * this._proto.image_size.width,
-					src_y: Math.floor(this.anim_attack_frame/2) * this._proto.image_size.height,
-					src_width: this._proto.image_size.width,
-					src_height: this._proto.image_size.height,
-					x: top_x,
-					y: top_y
+					src_x: this.move_direction * this._proto.images.attack.size.x,
+					src_y: diff * this._proto.images.attack.size.y,
+					src_width: this._proto.images.attack.size.x,
+					src_height: this._proto.images.attack.size.y,
+					x: top_x - this._proto.images.attack.padding.x,
+					y: top_y - this._proto.images.attack.padding.y
 				});
 				break;
 		}
@@ -249,9 +285,9 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this._drawStandardSelection = function(is_onmouse)
 	{
-		var top_x = this.position.x - game.viewport_x + 0.5 - this._proto.image_padding.x, 
-			top_y = this.position.y - game.viewport_y - 2.5  - this._proto.image_padding.y,
-			sel_width = this._proto.image_size.width, health_width = parseInt(sel_width*0.63);
+		var top_x = this.position.x - game.viewport_x + 0.5 - this._proto.images.selection.padding.x, 
+			top_y = this.position.y - game.viewport_y - 2.5  - this._proto.images.selection.padding.y,
+			sel_width = this._proto.images.selection.size.x, health_width = parseInt(sel_width*0.63);
 			
 		if (this.player == PLAYER_NEUTRAL)
 			game.viewport_ctx.strokeStyle = '#ffff00';
@@ -427,6 +463,12 @@ AbstractUnit.loadResources = function(obj)
 	game.resources.addImage(obj.resource_key + '_move',  'images/units/' + obj.resource_key + '/move.png');
 	game.resources.addImage(obj.resource_key + '_box',  'images/units/' + obj.resource_key + '/box.png');
 	
+	if (obj.images.shadow)
+	{
+		game.resources.addImage(obj.resource_key + '_stand_shadow', 'images/units/' + obj.resource_key + '/stand_shadow.png');
+		game.resources.addImage(obj.resource_key + '_move_shadow', 'images/units/' + obj.resource_key + '/move_shadow.png');
+	}
+	
 	for (var i=1; i<=obj.sound_count; ++i)
 	{
 		game.resources.addSound(obj.resource_key + '_move' + i,   'sounds/units/' + obj.resource_key + '/move' + i + '.' + AUDIO_TYPE);
@@ -437,6 +479,9 @@ AbstractUnit.loadResources = function(obj)
 	{
 		game.resources.addImage(obj.resource_key + '_attack',  'images/units/' + obj.resource_key + '/attack.png');
 		obj.weapon.loadResources();
+		
+		if (obj.images.shadow)
+			game.resources.addImage(obj.resource_key + '_attack_shadow', 'images/units/' + obj.resource_key + '/attack_shadow.png');
 	}
 }
 
@@ -446,8 +491,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 
 	obj.obj_name = '';      //Must redeclare
 	obj.resource_key = '';  //Must redeclare
-	obj.image_size = {width: 1, height: 1};
-	obj.image_padding = {x: 0, y: 0};
+	obj.images = {};        //Must redeclare
 	obj.sound_count = 4;
 
 	obj.cost = 0;

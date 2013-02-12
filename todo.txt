@@ -1,4 +1,7 @@
 To do:
+	- Enable healing of the units
+	- Do not select bridge if moving units on it
+	- Add more buildings
 	- Check shoot range
 	- Optimize shooting graphic 
 
@@ -6,13 +9,12 @@ To do:
 	- Improve pathfinding algorithm
 
 - Medium priority bugs:
-	- When creating Camera Tower, need not to destroy construction rig
+	- When creating Camera Tower & bridges need not to destroy construction rig
 	- Increase building health on construction
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
-	- Add shadows to all units & buildings
 	- Energy meter blinking incorrectly
 	- Need to add animation when energy state changed
 	- When construction building/unit, money should decrease gradually
