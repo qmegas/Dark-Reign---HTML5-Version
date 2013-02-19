@@ -63,6 +63,17 @@ function AbstractUnit(pos_x, pos_y, player)
 			this._moveToNextCell();
 	}
 	
+	this.goHeal = function(hospital_id, play_sound)
+	{
+		if (this.health >= this._proto.health_max)
+			return;
+		
+		var pos = game.objects[hospital_id].getCell();
+		
+		//@todo Heal unit when stopping
+		this.move(pos.x + 2, pos.y, play_sound);
+	}
+	
 	this.stop = function()
 	{
 		if (this.state == 'MOVE')

@@ -8,6 +8,8 @@ function Game()
 	this.viewport_move_y = 0;
 	this.viewport_ctx = {};
 	
+	this.paused = false;
+	
 	this.resources = new ResourseLoader();
 	
 	this.players = [];
@@ -146,6 +148,9 @@ function Game()
 		
 		//Debug
 		this.debug.countRun();
+		
+		if (this.paused)
+			return;
 		
 		//Kill objects
 		for (i = 0; i<this.kill_objects.length; ++i)
@@ -728,6 +733,10 @@ $(function(){
 		game.minimapNavigation(false);
 	});
 	
+	$('#minimap_viewport').mouseout(function(){
+		game.minimapNavigation(false);
+	});
+	
 	$('#minimap_viewport').mousemove(function(event){
 		game.minimapMove(event.layerX, event.layerY);
 	});
@@ -770,6 +779,9 @@ $(function(){
 				break;
 			case 65: //a - attack
 				game.toggleActionState(ACTION_STATE_ATTACK);
+				break;
+			case 80: //p - pause/unpause game
+				game.paused = !game.paused;
 				break;
 			case 83: //s - stop selected units
 				game.shellStopButton();

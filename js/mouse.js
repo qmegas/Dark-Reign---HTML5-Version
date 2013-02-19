@@ -145,12 +145,17 @@ function MousePointer(game)
 		
 				if (Math.abs(sizes.width)<4 && Math.abs(sizes.height)<4)
 				{
-					//Is harvesting?
 					unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+					//Is harvesting?
 					if (unitid!=-1 && game.objects[unitid].is_building && game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
 					{
 						for (var i in game.selected_objects)
 							game.objects[game.selected_objects[i]].harvest(game.objects[unitid]);
+					}
+					else if (unitid!=-1 && game.selected_info.humans && game.objects[unitid]._proto === FieldHospitalBuilding) //Heal humans ?
+					{
+						for (var i in game.selected_objects)
+							game.objects[game.selected_objects[i]].goHeal(game.objects[unitid], (i==0));
 					}
 					else
 						game.onClick('left');

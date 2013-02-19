@@ -4,6 +4,10 @@ body {
 	cursor: url("../images/icursor.png"), auto;
 }
 
+::selection {
+	color: #000;
+}
+
 .load-screen {
 	margin: 0;
 	width: 640px;

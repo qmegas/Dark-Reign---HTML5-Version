@@ -1,3 +1,7 @@
+Build 30 (?)
+- Removed div selection when clicking many time on unit box on right panel
+- Ability to pause game, by pressing P key.
+
 Build 29 (12.02.2013)
 - Added shadow for all buildings
 - Added shadow for units. Unfortunately can't find shadow image for Freighter, for now it will be without shadow. 
