@@ -335,12 +335,16 @@ body {
 	width: 71px;
 	height: 22px;
 	background: url("../images/shell/buttons.png") no-repeat 0 0;
+	text-align: center;
 }
 .dk-button-small:hover {
 	background-position: -71px 0;
 }
 .dk-button-small.disable {
 	background-position: -213px 0;
+}
+.dk-button-small img {
+	padding-top: 7px;
 }
 
 .dk-button-small#upgrade_button .caption {
@@ -351,4 +355,34 @@ body {
 }
 .dk-button-small.disable#upgrade_button .caption {
 	background-position: 0 0;
+}
+
+.dialog-screen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	width: 640px;
+	height: 480px;
+}
+.dialog-screen .simple {
+	background: url("../images/dialog/simple_form.png") no-repeat;
+	width: 179px;
+	height: 99px;
+	display: none;
+	position: absolute;
+	top: 130px;
+	left: 134px;
+	text-align: center;
+}
+.dialog-screen .simple .text-container {
+	width: 100%;
+	height: 70px;
+}
+.dialog-screen .simple .text-container #dialog_text {
+	margin-top: 22px;
+}
+.dialog-screen .buttons-box .dk-button-small {
+	float: left;
+	display: none;
 }
