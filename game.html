@@ -44,6 +44,7 @@
 		<script type="text/javascript" src="js/levels/level1.js"></script>
 		<script type="text/javascript" src="js/font.js"></script>
 		<script type="text/javascript" src="js/object_draw.js"></script>
+		<script type="text/javascript" src="js/dialog.js"></script>
 		<script type="text/javascript" src="js/shell.js"></script>
 	</head>
 	<body>
@@ -157,7 +158,7 @@
 							<div class="caption"></div>
 						</div>
 						<div class="dk-button-small btn">
-							<img src="images/shell/texts/decoy.png" style="padding: 7px 0 0 22px;" />
+							<img src="images/shell/texts/decoy.png" />
 						</div>
 					</div>
 				</div>
@@ -187,5 +188,17 @@
 		</div>
 		<canvas style="display: none; position: absolute" id="cell_popup" width="400" height="200"></canvas>
 		<canvas style="display: none" id="text_buffer" width="1000" height="1000"></canvas>
+		
+		<div class="dialog-screen" id="dialog_box">
+			<div class="simple" id="dialog_simple">
+				<div class="text-container">
+					<img src="#" id="dialog_text" />
+				</div>
+				<div class="buttons-box">
+					<div class="dk-button-small" id="d_button1"><img src="#" id="d_button1_img" /></div>
+					<div class="dk-button-small" id="d_button2"><img src="#" id="d_button2_img" /></div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

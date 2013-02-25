@@ -1,6 +1,7 @@
-Build 30 (?)
+Build 30 (20.02.2013)
 - Removed div selection when clicking many time on unit box on right panel
 - Ability to pause game, by pressing P key.
+- Added dialog module, when game paused corresponding dialog is appeared
 
 Build 29 (12.02.2013)
 - Added shadow for all buildings

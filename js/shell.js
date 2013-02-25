@@ -38,6 +38,7 @@ function Game()
 	this.minimap_navigation = false;
 	
 	this.debug = new Debuger();
+	this.dialog = new Dialog();
 	
 	this.moveViewport = function(x, y, relative)
 	{
@@ -146,13 +147,13 @@ function Game()
 	
 	this.run = function()
 	{
+		if (this.paused)
+			return;
+		
 		var i;
 		
 		//Debug
 		this.debug.countRun();
-		
-		if (this.paused)
-			return;
 		
 		//Kill objects
 		for (i = 0; i<this.kill_objects.length; ++i)
@@ -193,6 +194,16 @@ function Game()
 	}
 	
 	this.draw = function()
+	{
+		if (!this.paused)
+			this._draw();
+		
+		window.requestAnimFrame(function(){
+			game.draw();
+		});
+	}
+	
+	this._draw = function()
 	{
 		var cur_time = (new Date()).getTime(), onscreen = [], unitid, eindex;
 		var top_x = parseInt(this.viewport_x / CELL_SIZE) - 1, top_y = parseInt(this.viewport_y / CELL_SIZE) - 1;
@@ -344,10 +355,6 @@ function Game()
 		
 		if (this.debug.show_fps)
 			this.debug.drawFPS();
-		
-		window.requestAnimFrame(function(){
-			game.draw();
-		});
 	}
 	
 	this.minimapNavigation = function(start)
@@ -649,6 +656,29 @@ function Game()
 		
 		return obj;
 	}
+	
+	this.togglePause = function()
+	{
+		this.paused = !this.paused;
+		
+		if (this.paused)
+		{
+			this.dialog.setOptions({
+				text: 'game_paused',
+				buttons: [{
+					text: 'continue',
+					callback: function(){
+						game.togglePause();
+					}
+				}]
+			});
+			this.dialog.show();
+		}
+		else
+		{
+			this.dialog.hide();
+		}
+	}
 }
 
 $(function(){
@@ -791,7 +821,7 @@ $(function(){
 				game.toggleActionState(ACTION_STATE_ATTACK);
 				break;
 			case 80: //p - pause/unpause game
-				game.paused = !game.paused;
+				game.togglePause();
 				break;
 			case 83: //s - stop selected units
 				game.shellStopButton();
