@@ -5,6 +5,7 @@ function Debuger()
 	this.show_type = false;
 	this.show_grid = false;
 	this.show_fps = false;
+	this.mouse_panning = false;
 	
 	this.run_counter = 0;
 	this.draw_counter = 0;
@@ -28,6 +29,9 @@ function Debuger()
 	});
 	$('#debug_show_fps').click(function(){
 		me.show_fps = $(this).is(':checked');
+	});
+	$('#debug_mouse_pan').click(function(){
+		me.mouse_panning = $(this).is(':checked');
 	});
 	
 	$('#debug_add_money').click(function(){

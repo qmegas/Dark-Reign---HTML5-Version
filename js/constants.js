@@ -1,6 +1,8 @@
 var CELL_SIZE = 24;
 var VIEWPORT_SIZE = 448;
 
+var PANNING_FIELD_SIZE = 30;
+
 var RUNS_PER_SECOND = 50;
 var ANIMATION_SPEED = 50; //mspf
 

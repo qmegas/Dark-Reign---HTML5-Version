@@ -10,12 +10,18 @@ function MousePointer(game)
 	this.is_selection = false;
 	this.selection_start_pos = {};
 	
+	this.panning_region_time = 0;
+	this.direction_to_cursor = [18, 20, 16, 0, 22, 0, 21, 0, 17, 19, 15];
+	
 	game.resources.addImage('cursors', 'images/cursors.png');
 	
 	this.draw = function(current_time)
 	{
 		if (!this.show_cursor)
+		{
+			this.panning_region_time = current_time;
 			return;
+		}
 		
 		//Selection draw
 		if (this.is_selection)
@@ -37,6 +43,63 @@ function MousePointer(game)
 		}
 		
 		//Cursor draw
+		
+		if (game.debug.mouse_panning)
+		{
+			var move_x = 0, move_y = 0, cur_icon;
+			
+			if (this.position.x < PANNING_FIELD_SIZE)
+				move_x = -1;
+			else if (this.position.x > (VIEWPORT_SIZE - PANNING_FIELD_SIZE))
+				move_x = 1;
+			else
+				game.viewport_move_mouse_x = 0;
+			
+			if (this.position.y < PANNING_FIELD_SIZE)
+				move_y = -1;
+			else if (this.position.y > (VIEWPORT_SIZE - PANNING_FIELD_SIZE))
+				move_y = 1;
+			else
+				game.viewport_move_mouse_y = 0;
+			
+			if (move_x!=0 || move_y!=0)
+			{
+				if  (current_time > (this.panning_region_time + 800))
+				{
+					game.viewport_move_mouse_x = move_x;
+					game.viewport_move_mouse_y = move_y;
+					
+					//check if can move
+					if (move_x != 0)
+						if ((move_x==-1 && game.viewport_x<=0) || (move_x==1 && game.viewport_x>=game.level.max_movement.x))
+							move_x = 0;
+					if (move_y != 0)
+						if ((move_y==-1 && game.viewport_y<=0) || (move_y==1 && game.viewport_y>=game.level.max_movement.y))
+							move_y = 0;
+					
+					//Draw move pointer
+					if (move_x==0 && move_y==0)
+					{
+						if (game.viewport_move_mouse_y == -1)
+							cur_icon = 14;
+						else if (game.viewport_move_mouse_y == 1)
+							cur_icon = 13;
+						else if (game.viewport_move_mouse_x == -1)
+							cur_icon = 12;
+						else
+							cur_icon = 11;
+						this._drawCursor(current_time, cur_icon, 4);
+					}
+					else
+						this._drawCursor(current_time, this.direction_to_cursor[(move_x+1)*4 + (move_y+1)], 7);
+					
+					return;
+				}
+			}
+			else
+				this.panning_region_time = current_time;
+		}
+		
 		var pos = this.getCellPosition(), ptype;
 		if (game.action_state != ACTION_STATE_NONE)
 		{
@@ -84,7 +147,7 @@ function MousePointer(game)
 		else if (game.selected_objects.length>0 && !game.selected_info.is_building)
 		{
 			ptype = game.level.map_cells[pos.x][pos.y].type
-			if (!game.selected_info.is_fly && (ptype==2 || ptype==3))
+			if (!game.selected_info.is_fly && (ptype==CELL_TYPE_WATER || ptype==CELL_TYPE_NOWALK))
 				this._drawCursor(current_time, 4, 2);
 			else
 				this._drawCursor(current_time, 2, 7);
