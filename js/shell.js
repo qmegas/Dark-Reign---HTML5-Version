@@ -6,6 +6,8 @@ function Game()
 	this.viewport_y = 0;
 	this.viewport_move_x = 0;
 	this.viewport_move_y = 0;
+	this.viewport_move_mouse_x = 0;
+	this.viewport_move_mouse_y = 0;
 	this.viewport_ctx = {};
 	
 	this.paused = false;
@@ -175,8 +177,16 @@ function Game()
 			this.objects[i].run();
 		
 		//Move viewport
-		if (this.viewport_move_x!=0 || this.viewport_move_y!=0)
-			this.moveViewport(this.viewport_move_x, this.viewport_move_y, true);
+		var move_x = this.viewport_move_x, move_y = this.viewport_move_y;
+		if (this.debug.mouse_panning && this.mouse.show_cursor)
+		{
+			if (this.viewport_move_mouse_x != 0)
+				move_x = this.viewport_move_mouse_x;
+			if (this.viewport_move_mouse_y != 0)
+				move_y = this.viewport_move_mouse_y;
+		}
+		if (move_x!=0 || move_y!=0)
+			this.moveViewport(move_x, move_y, true);
 		
 		//Money draw
 		this.moneyDraw.draw();
