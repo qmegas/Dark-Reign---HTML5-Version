@@ -8,18 +8,23 @@ function AbstractWeaponEffect()
 	this._angle_frame = 0;
 	this._position_now = null;
 	this._position_to = null;
+	this._position_to_cells = null;
 	this._move_steps = null;
 	this._current_frame = 0;
 	this._start_animation = 0;
 	this._end_animation = 0;
 	
-	this.init = function(from_x, from_y, to_x, to_y)
+	this._offence = null;
+	
+	this.init = function(from_x, from_y, to_x, to_y, offence)
 	{
 		var len, parts, sound_vol;
 		
 		//Set positions & steps
+		this._offence = offence;
 		this._position_now = {x: from_x*CELL_SIZE + 12, y: from_y*CELL_SIZE + 12};
 		this._position_to = {x: to_x*CELL_SIZE + 12, y: to_y*CELL_SIZE + 12};
+		this._position_to_cells = {x: to_x, y: to_y};
 		len = MapCell.getPixelDistance(from_x, from_y, to_x, to_y);
 		parts = (len / this._proto.speed) * RUNS_PER_SECOND;
 		this._move_steps = {
@@ -72,6 +77,21 @@ function AbstractWeaponEffect()
 	
 	//Event functions
 	
-	this.onImpact = function() {}
+	this.onImpact = function(x, y) 
+	{
+		var dmg, i, ids = MapCell.getAllUserIds(game.level.map_cells[x][y]);
+		
+		for (i = 0; i<ids.length; ++i)
+		{
+			dmg = game.damageTable.calcDamage(
+				game.objects[ids[i]]._proto.shield_type, 
+				this._offence.type, 
+				this._offence.strength
+			);
+			if (dmg > 0)
+				game.objects[ids[i]].applyDamage(dmg);
+		}
+	}
+	
 	this.onObjectDeletion = function() {}
 }

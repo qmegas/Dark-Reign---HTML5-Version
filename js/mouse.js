@@ -218,7 +218,7 @@ function MousePointer(game)
 					else if (unitid!=-1 && game.selected_info.humans && game.objects[unitid]._proto === FieldHospitalBuilding) //Heal humans ?
 					{
 						for (var i in game.selected_objects)
-							game.objects[game.selected_objects[i]].goHeal(game.objects[unitid], (i==0));
+							game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
 					}
 					else
 						game.onClick('left');

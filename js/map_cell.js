@@ -14,6 +14,20 @@ MapCell.getSingleUserId = function(cell)
 	return -1;
 }
 
+MapCell.getAllUserIds = function(cell)
+{
+	var ids = [];
+	
+	if (cell.fly_unit != -1)
+		ids.push(cell.fly_unit);
+	if (cell.ground_unit != -1)
+		ids.push(cell.ground_unit);
+	if (cell.building != -1)
+		ids.push(cell.building);
+	
+	return ids;
+}
+
 MapCell.getIdByType = function(cell, is_fly)
 {
 	if (is_fly)

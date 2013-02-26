@@ -97,6 +97,7 @@ ConstructionRigUnit.sound_count = 3;
 
 ConstructionRigUnit.cost = 300;
 ConstructionRigUnit.speed = 0.87;
+ConstructionRigUnit.shield_type = 'TankPlatingWet';
 
 ConstructionRigUnit.require_building = [HeadquarterBuilding];
 

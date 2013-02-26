@@ -1,12 +1,11 @@
 To do:
+	- Units & building destruction
 	- Enable healing of the units
 	- Do not select bridge if moving units on it
 	- Add more buildings
-	- Check shoot range
-	- Optimize shooting graphic 
 
 - High priority bugs:
-	- Improve pathfinding algorithm
+	- Bug: Check why guardians may destroy water well
 
 - Medium priority bugs:
 	- When creating Camera Tower & bridges need not to destroy construction rig

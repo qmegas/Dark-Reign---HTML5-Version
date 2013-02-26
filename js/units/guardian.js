@@ -3,8 +3,6 @@ function GuardianUnit(pos_x, pos_y, player)
 	this._proto = GuardianUnit;
 	this.player = player;
 	
-	this.health = 5;
-	
 	this.init(pos_x, pos_y);
 }
 
@@ -49,10 +47,11 @@ GuardianUnit.images = {
 };
 
 GuardianUnit.cost = 150;
-GuardianUnit.health_max = 5;
+GuardianUnit.health_max = 100;
 GuardianUnit.speed = 1.371;
 GuardianUnit.weapon = LaserRifleWeapon;
 GuardianUnit.is_human = true;
+GuardianUnit.shield_type = 'PowerHumanWet';
 
 GuardianUnit.require_building = [TrainingFacilityBuilding];
 

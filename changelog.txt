@@ -4,7 +4,8 @@ Build 31 (26.02.2013)
 - Big structural change in unit object class
 - Construction Rig don't need to move to the middle of the building site to start building
 - Attacking unit can pursue it's target
-- Pathfinding algorithm improved, units now can find alternative position to move if target position is occupied by another unit 
+- Pathfinding algorithm improved, units now can find alternative position to move if target position is occupied by another unit
+- Weapons finally cause damage. (Units still can't be killed)
 
 Build 30 (20.02.2013)
 - Removed div selection when clicking many time on unit box on right panel

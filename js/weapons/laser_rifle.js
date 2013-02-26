@@ -78,7 +78,7 @@ function LaserRifleWeapon(unit)
 		//Rotate unit
 		this._unit.move_direction = 4 - parseInt(Math.atan2(pos.y - to.y, pos.x - to.x)*(180/Math.PI)/45);
 		
-		effect = new this._proto.effect(pos.x, pos.y, to.x, to.y);
+		effect = new this._proto.effect(pos.x, pos.y, to.x, to.y, this._proto.offence);
 		uid = game.addEffect(effect);
 		effect.uid = uid;
 	}
@@ -91,6 +91,10 @@ LaserRifleWeapon.maximum_range = 4;
 LaserRifleWeapon.firedelay = 270; //shoot per msec. Calculation: 33.75*cfg_firedelay
 LaserRifleWeapon.can_shoot_ground = true;
 LaserRifleWeapon.can_shoot_flyer = false;
+LaserRifleWeapon.offence = {
+	type: 'E2',
+	strength: 11
+};
 	
 LaserRifleWeapon.loadResources = function()
 {

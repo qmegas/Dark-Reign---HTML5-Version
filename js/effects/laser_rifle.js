@@ -1,8 +1,8 @@
-function LaserRifleEffect(from_x, from_y, to_x, to_y)
+function LaserRifleEffect(from_x, from_y, to_x, to_y, offence)
 {
 	this._proto = LaserRifleEffect;
 	
-	this.init(from_x, from_y, to_x, to_y);
+	this.init(from_x, from_y, to_x, to_y, offence);
 	
 	this.run = function()
 	{
@@ -17,7 +17,7 @@ function LaserRifleEffect(from_x, from_y, to_x, to_y)
 				((this._move_steps.y<0 && this._position_now.y<this._position_to.y) || 
 				(this._move_steps.y>=0 && this._position_now.y>=this._position_to.y)))
 			{
-				this.onImpact();
+				this.onImpact(this._position_to_cells.x, this._position_to_cells.y);
 				
 				this.state = 'BLAST';
 				this._position_now = this._position_to;

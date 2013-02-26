@@ -349,8 +349,9 @@ FreighterUnit.images = {
 };
 
 FreighterUnit.cost = 1000;
-FreighterUnit.health_max = 15;
+FreighterUnit.health_max = 750;
 FreighterUnit.speed = 1.5;
+FreighterUnit.shield_type = 'TankPlatingWet';
 
 FreighterUnit.require_building = [AssemblyPlantBuilding];
 

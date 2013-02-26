@@ -28,6 +28,8 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		this.position = {x: pos_x*CELL_SIZE, y: pos_y*CELL_SIZE};
 		
+		this.health = this._proto.health_max;
+		
 		if (this._proto.weapon != null)
 			this.weapon = new this._proto.weapon(this);
 	}
@@ -35,6 +37,14 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.getCell = function()
 	{
 		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
+	}
+	
+	this.applyDamage = function(damage)
+	{
+		this.health -= damage;
+		//@todo Kill unit
+		if (this.health < 0)
+			this.health = 0;
 	}
 	
 	this.orderMove = function(x, y, play_sound)
@@ -76,6 +86,17 @@ function AbstractUnit(pos_x, pos_y, player)
 		};
 	}
 	
+	this.orderHeal = function(hospital_id, play_sound)
+	{
+		if (this.health >= this._proto.health_max)
+			return;
+		
+		var pos = game.objects[hospital_id].getCell();
+		
+		//@todo Heal unit when stopping
+		//this.move(pos.x + 2, pos.y, play_sound);
+	}
+	
 	this._move = function(x, y) 
 	{
 		var pos, need_move = false, tmp_path;
@@ -104,17 +125,6 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		if (need_move && this.move_path.length>0)
 			this._moveToNextCell();
-	}
-	
-	this.goHeal = function(hospital_id, play_sound)
-	{
-		if (this.health >= this._proto.health_max)
-			return;
-		
-		var pos = game.objects[hospital_id].getCell();
-		
-		//@todo Heal unit when stopping
-		//this.move(pos.x + 2, pos.y, play_sound);
 	}
 	
 	this.run = function() 
@@ -552,6 +562,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.weapon = null;
 	obj.enabled = false;
 	obj.is_human = false;
+	obj.shield_type = 'ToughHumanWet';
 
 	obj.require_building = [];
 

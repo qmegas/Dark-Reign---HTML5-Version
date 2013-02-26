@@ -39,6 +39,7 @@ function Game()
 	
 	this.debug = new Debuger();
 	this.dialog = new Dialog();
+	this.damageTable = new DamageTable();
 	
 	this.moveViewport = function(x, y, relative)
 	{
@@ -99,6 +100,8 @@ function Game()
 					fly_unit: -1,
 					building: -1
 				};
+		
+		this.damageTable.init();
 		
 		//Init units
 		this.level.getInitUnits();

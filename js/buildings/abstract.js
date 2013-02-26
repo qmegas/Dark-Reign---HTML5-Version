@@ -32,6 +32,14 @@ function AbstractBuilding()
 		this.producing_queue = [];
 	}
 	
+	this.applyDamage = function(damage)
+	{
+		this.health -= damage;
+		//@todo Destroy building
+		if (this.health < 0)
+			this.health = 0;
+	}
+	
 	this.setActionTime = function(time)
 	{
 		//DEBUG
@@ -571,6 +579,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.can_build = false;
 	obj.count = 0;
 	obj.is_bridge = false;
+	obj.shield_type = 'BuildingArmour';
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare
