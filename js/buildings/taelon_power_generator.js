@@ -33,7 +33,7 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 		
 		AbstractUnit
 			.createNew(FreighterUnit, cell.x + 1, cell.y + 2, this.player, true)
-			.harvest(this, true);
+			.orderHarvest(this);
 	}
 	
 	this.onDestructed = function()

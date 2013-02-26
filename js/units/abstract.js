@@ -20,6 +20,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.startAnimation = 0; 
 	this.anim_attack_frame = 0;
 	
+	this.action = {type: ''};
 	this.state = 'STAND';
 	this.substate = '';
 	
@@ -36,9 +37,54 @@ function AbstractUnit(pos_x, pos_y, player)
 		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
 	}
 	
-	this.move = function(x, y, play_sound) 
+	this.orderMove = function(x, y, play_sound)
+	{
+		this.action = {type: ''};
+		
+		this._move(x, y);
+		
+		if (this.move_path.length>0 && play_sound)
+			this._playSound('move');
+	}
+	
+	this.orderStop = function()
+	{
+		this.action = {type: ''};
+		
+		if (this.state == 'MOVE')
+			this.move_path = this.move_path.slice(0, 1);
+		else
+			this.state = 'STAND';
+	}
+	
+	this.orderAttack = function(target)
+	{
+		if (this.weapon === null)
+			return;
+		
+		if (this.weapon.canAttackTarget(target))
+			this.weapon.setTarget(target);
+		
+		if (this.state == 'MOVE')
+			this.orderStop();
+		else
+			this.state = 'ATTACK';
+		
+		this.action = {
+			type: 'attack',
+			target: target
+		};
+	}
+	
+	this._move = function(x, y) 
 	{
 		var pos, need_move = false, tmp_path;
+		
+		if (typeof y === 'undefined')
+		{
+			y = x.y;
+			x = x.x;
+		}
 		
 		if (this.move_path.length != 0)
 		{
@@ -52,9 +98,6 @@ function AbstractUnit(pos_x, pos_y, player)
 		}
 		
 		tmp_path = PathFinder.findPath(pos.x, pos.y, x, y, !this.is_fly, false);
-		
-		if (tmp_path.length>0 && play_sound)
-			this._playSound('move');
 		
 		this.move_path = this.move_path.concat(tmp_path);
 		this.state = 'MOVE';
@@ -71,30 +114,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		var pos = game.objects[hospital_id].getCell();
 		
 		//@todo Heal unit when stopping
-		this.move(pos.x + 2, pos.y, play_sound);
-	}
-	
-	this.stop = function()
-	{
-		if (this.state == 'MOVE')
-		{
-			this.substate = '';
-			this.move_path = this.move_path.slice(0, 1);
-		}
-		else
-		{
-			this.state = 'STAND';
-			this.substate = '';
-		}
-	}
-	
-	this.build = function(x, y, build)
-	{
-		this.build_pos = {x: x, y: y};
-		this.build_obj = build;
-		
-		this.move(x, y, true);
-		this.substate = 'BUILD';
+		//this.move(pos.x + 2, pos.y, play_sound);
 	}
 	
 	this.run = function() 
@@ -105,18 +125,31 @@ function AbstractUnit(pos_x, pos_y, player)
 				this._runStandartMoving();
 				break;
 				
+			case 'WAITING':
+				if ((new Date).getTime() > this.action.wait_till)
+					this.afterWaiting();
+				break;
+				
+			case 'STAND':
+				break;
+				
 			case 'ATTACK':
-				if (this.weapon.canReach())
+				if (this.weapon.canShoot() && this.weapon.isTargetAlive())
 				{
-					if (this.weapon.canShoot())
+					if (this.weapon.canReach())
 					{
 						this.state = 'ATTACKING';
 						this.anim_attack_frame = 0;
 					}
-				}
-				else
-				{
-					//@todo Move user toward target
+					else
+					{
+						var pos = this.weapon.getTargetPosition();
+						pos = PathFinder.findNearestEmptyCell(pos.x, pos.y, !this.is_fly);
+						if (pos !== null)
+							this._move(pos.x, pos.y);
+						else
+							this.state = 'STAND';
+					}
 				}
 				break;
 				
@@ -128,6 +161,9 @@ function AbstractUnit(pos_x, pos_y, player)
 					this.state = 'ATTACK';
 				}
 				break;
+				
+			default:
+				this.runCustom();
 		}
 	}
 	
@@ -135,11 +171,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		if (this.move_path.length == 0)
 		{
-			if (!this.onStopMoving())
-			{
-				this.state = 'STAND';
-				this.substate = '';
-			}
+			this.onStopMoving();
 			return;
 		}
 		var next_cell = this.move_path[0], x_movement = 0, y_movement = 0, next_x = next_cell.x * CELL_SIZE, 
@@ -163,6 +195,8 @@ function AbstractUnit(pos_x, pos_y, player)
 		if (next_x==this.position.x && next_y==this.position.y)
 		{
 			this.move_path.shift();
+			
+			this.beforeMoveNextCell();
 
 			if (this.move_path.length != 0)
 				this._moveToNextCell();
@@ -408,23 +442,6 @@ function AbstractUnit(pos_x, pos_y, player)
 		return this._proto.weapon.can_shoot_flyer;
 	}
 	
-	this.attack = function(target)
-	{
-		if (this.weapon === null)
-			return;
-		
-		if (this.weapon.canAttackTarget(target))
-			this.weapon.setTarget(target);
-		
-		if (this.state == 'MOVE')
-		{
-			this.stop();
-			this.substate = 'ATTACK';
-		}
-		else
-			this.state = 'ATTACK';
-	}
-	
 	this.canHarvest = function()
 	{
 		return false;
@@ -437,22 +454,46 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	//Events
 	
+	this.beforeMoveNextCell = function()
+	{
+		switch (this.action.type)
+		{
+			case 'attack':
+				if (this.weapon.canReach())
+					this.move_path = [];
+				break;
+			default:
+				this.beforeMoveNextCellCustom();
+		}
+	}
+	
 	this.onStopMoving = function()
 	{
-		if (this.substate == 'ATTACK')
+		switch (this.action.type)
 		{
-			this.state = 'ATTACK';
-			this.substate = '';
-			return true;
+			case '':
+				this.state = 'STAND';
+				break;
+				
+			case 'attack':
+				this.state = 'ATTACK';
+				break;
+				
+			default:
+				this.onStopMovingCustom();
 		}
-		
-		return false;
 	}
 	
 	this.onObjectDeletion = function() 
 	{
 		this.markCellsOnMap(-1);
 	}
+	
+	//Abstract functions, do not touch it
+	this.onStopMovingCustom = function(){}
+	this.beforeMoveNextCellCustom = function(){}
+	this.runCustom = function(){}
+	this.afterWaiting = function(){}
 }
 
 AbstractUnit.createNew = function(obj, x, y, player, instant_build)

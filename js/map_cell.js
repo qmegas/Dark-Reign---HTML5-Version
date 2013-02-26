@@ -35,3 +35,13 @@ MapCell.isCorrectCord = function(x, y)
 {
 	return (MapCell.isCorrectX(x) && MapCell.isCorrectY(y));
 }
+
+MapCell.getCellDistance = function(x1, y1, x2, y2)
+{
+	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+}
+
+MapCell.getPixelDistance = function(x1, y1, x2, y2)
+{
+	return Math.sqrt(Math.pow((x2 - x1)*CELL_SIZE, 2) + Math.pow((y2 - y1)*CELL_SIZE, 2));
+}

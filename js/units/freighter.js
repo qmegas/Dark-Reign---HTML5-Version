@@ -4,70 +4,59 @@ function FreighterUnit(pos_x, pos_y, player)
 	this.player = player;
 	this.health = 15;
 	
+	this.action = {
+		type: '',
+		building: -1,
+		well: -1,
+		target_position: null
+	};
+	this._res_type = RESOURCE_WATER;
 	this._res_now = 0;
 	this._res_max = 50;
-	this._res_type = RESOURCE_WATER;
-	this._harvest_well = 0;
-	this._harvest_building = 0;
-	this._harvest_target = null;
-	this._harvest_wait = 0;
 	this._load_speed = 0;
 	this._unload_speed = 0;
 	
 	this.init(pos_x, pos_y);
 	
-	this.run = function() 
+	this.runCustom = function() 
 	{
 		var obj;
 		
 		switch (this.state)
 		{
-			case 'MOVE_WELL':
-			case 'MOVE_COLLECTOR':
-			case 'MOVE':
-				this._runStandartMoving();
-				break;
-				
-			case 'MOVE_WAIT':
-				if ((new Date).getTime() > this._harvest_wait)
+			case 'LOADING':
+				if (this.action.type == 'loading')
 				{
-					this.move(this._harvest_target.x, this._harvest_target.y, false);
-					this.state = this.substate;
-					this.substate = '';
+					obj = this._getBuilding(this.action.well);
+					if (obj === null)
+					{
+						this.orderStop();
+						return;
+					}
+					this._res_now += obj.decreaseRes(this._load_speed);
+				
+					if (this._res_now >= this._res_max)
+					{
+						this._res_now = this._res_max;
+						this._moveBase();
+					}
 				}
-				break;
-				
-			case 'RESOURCE_GET':
-				obj = this._getBuilding(this._harvest_well);
-				if (obj === null)
+				else
 				{
-					this.state = 'STAND';
-					return;
-				}
-				
-				this._res_now += obj.decreaseRes(this._load_speed);
-				
-				if (this._res_now >= this._res_max)
-				{
-					this._res_now = this._res_max;
-					this._moveBase();
-				}
-				break;
-				
-			case 'RESOURCE_PUT':
-				obj = this._getBuilding(this._harvest_building);
-				if (obj===null || obj.isResFull())
-				{
-					this.state = 'STAND';
-					return;
-				}
-				
-				this._res_now -= obj.increaseRes(this._unload_speed);
-				
-				if (this._res_now <= 0)
-				{
-					this._res_now = 0;
-					this._moveWell();
+					//Uloading
+					obj = this._getBuilding(this.action.building);
+					if (obj===null || obj.isResFull())
+					{
+						this.orderStop();
+						return;
+					}
+					this._res_now -= obj.increaseRes(this._unload_speed);
+
+					if (this._res_now <= 0)
+					{
+						this._res_now = 0;
+						this._moveWell();
+					}
 				}
 				break;
 		}
@@ -79,8 +68,6 @@ function FreighterUnit(pos_x, pos_y, player)
 		
 		switch (this.state)
 		{
-			case 'MOVE_WELL':
-			case 'MOVE_COLLECTOR':
 			case 'MOVE':
 				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 3);
 				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
@@ -94,8 +81,7 @@ function FreighterUnit(pos_x, pos_y, player)
 				});
 				break;
 				
-			case 'RESOURCE_GET':
-			case 'RESOURCE_PUT':
+			case 'LOADING':
 				diff = (parseInt((current_time - this.startAnimation) / (ANIMATION_SPEED*2)) % 15);
 				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
 					res_key: this._proto.resource_key + '_load',
@@ -149,11 +135,11 @@ function FreighterUnit(pos_x, pos_y, player)
 		return true;
 	}
 	
-	this.harvest = function(obj, silently)
+	this.orderHarvest = function(obj, play_sound)
 	{
-		var cell = this.getCell();
+		var cell = this.getCell(), tmp;
 		
-		if (!silently)
+		if (play_sound)
 			this._playSound('move');
 		
 		if (obj instanceof TaelonPowerBuilding)
@@ -162,27 +148,27 @@ function FreighterUnit(pos_x, pos_y, player)
 				return;
 			
 			this._res_type = RESOURCE_TAELON;
-			this._harvest_building = obj.uid;
-			this._harvest_well = game.findNearestInstance(TaelonMineBuilding, PLAYER_NEUTRAL, cell.x, cell.y);
+			this.action.building = obj.uid;
+			tmp = game.findNearestInstance(TaelonMineBuilding, PLAYER_NEUTRAL, cell.x, cell.y);
 			
-			if (this._harvest_well === null)
+			if (tmp === null)
 				return;
 			
-			this._harvest_well = this._harvest_well.uid;
+			this.action.well = tmp.uid;
 		}
 		else if (obj instanceof TaelonMineBuilding)
 		{
 			if (this._res_now>0 && this._res_type==RESOURCE_WATER)
 				return;
-				
-			this._res_type = RESOURCE_TAELON;
-			this._harvest_well = obj.uid;
-			this._harvest_building = game.findNearestInstance(TaelonPowerBuilding, this.player, cell.x, cell.y);
 			
-			if (this._harvest_building === null)
+			this._res_type = RESOURCE_TAELON;
+			this.action.well = obj.uid;
+			tmp = game.findNearestInstance(TaelonPowerBuilding, this.player, cell.x, cell.y);
+			
+			if (tmp === null)
 				return;
 			
-			this._harvest_building = this._harvest_building.uid;
+			this.action.building = tmp.uid;
 		}
 		else if (obj instanceof WaterLaunchPadBuilding)
 		{
@@ -190,13 +176,13 @@ function FreighterUnit(pos_x, pos_y, player)
 				return;
 			
 			this._res_type = RESOURCE_WATER;
-			this._harvest_building = obj.uid;
-			this._harvest_well = game.findNearestInstance(WaterWellBuilding, PLAYER_NEUTRAL, cell.x, cell.y);
+			this.action.building = obj.uid;
+			tmp = game.findNearestInstance(WaterWellBuilding, PLAYER_NEUTRAL, cell.x, cell.y);
 			
-			if (this._harvest_well === null)
+			if (tmp === null)
 				return;
 			
-			this._harvest_well = this._harvest_well.uid;
+			this.action.well = tmp.uid;
 		}
 		else if (obj instanceof WaterWellBuilding)
 		{
@@ -204,13 +190,13 @@ function FreighterUnit(pos_x, pos_y, player)
 				return;
 				
 			this._res_type = RESOURCE_WATER;
-			this._harvest_well = obj.uid;
-			this._harvest_building = game.findNearestInstance(WaterLaunchPadBuilding, this.player, cell.x, cell.y);
+			this.action.well = obj.uid;
+			tmp = game.findNearestInstance(WaterLaunchPadBuilding, this.player, cell.x, cell.y);
 			
-			if (this._harvest_building === null)
+			if (tmp === null)
 				return;
 			
-			this._harvest_building = this._harvest_building.uid;
+			this.action.building = tmp.uid;
 		}
 		else
 			return;
@@ -231,7 +217,7 @@ function FreighterUnit(pos_x, pos_y, player)
 	
 	this._moveBase = function()
 	{
-		var obj = this._getBuilding(this._harvest_building);
+		var obj = this._getBuilding(this.action.building);
 		
 		if (obj === null)
 		{
@@ -239,63 +225,90 @@ function FreighterUnit(pos_x, pos_y, player)
 			return;
 		}
 		
-		this._harvest_target = obj.getCell();
+		this.action.target_position = obj.getCell();
 		if (this._res_type == RESOURCE_TAELON)
 		{
-			this._harvest_target.x += 1;
-			this._harvest_target.y += 2;
+			this.action.target_position.x += 1;
+			this.action.target_position.y += 2;
 		}
 		else
 		{
-			this._harvest_target.x += 3;
-			this._harvest_target.y += 1;
+			this.action.target_position.x += 3;
+			this.action.target_position.y += 1;
 		}
-		
-		this.move(this._harvest_target.x, this._harvest_target.y, false);
-		this.state = 'MOVE_COLLECTOR';
+		this.action.type = 'go_base';
+		this._move(this.action.target_position.x, this.action.target_position.y, false);
 	}
 	
 	this._moveWell = function()
 	{
-		var obj = this._getBuilding(this._harvest_well);
+		var obj = this._getBuilding(this.action.well), tmp;
 		
 		if (obj === null)
 		{
-			this.state = 'STAND';
+			this.orderStop();
 			return;
 		}
 		
-		this._harvest_target = obj.getCell();
-		this._harvest_target.x += 1;
-		this._harvest_target.y += 1;
-		this.move(this._harvest_target.x, this._harvest_target.y, false);
-		this.state = 'MOVE_WELL';
+		tmp = obj.getCell();
+		tmp.x += 1;
+		tmp.y += 1;
+		this.action.type = 'go_well';
+		this.action.target_position = tmp;
+		this._move(tmp.x, tmp.y, false);
 	}
 	
-	this.onStopMoving = function()
+	this.onStopMovingCustom = function()
 	{
-		if (this.state == 'MOVE_WELL' || this.state == 'MOVE_COLLECTOR')
+		var cell = this.getCell(), time_now = (new Date).getTime();
+		if (cell.x==this.action.target_position.x && cell.y==this.action.target_position.y)
 		{
-			var cell = this.getCell(), time_now = (new Date).getTime();
-			
-			if (cell.x==this._harvest_target.x && cell.y==this._harvest_target.y)
-			{
-				this.state = (this.state == 'MOVE_WELL') ? 'RESOURCE_GET' : 'RESOURCE_PUT';
-				this._setLoadSpeed();
-				this.startAnimation = time_now;
-				this.move_direction = 4;
-			}
+			if (this.action.type == 'go_well')
+				this.action.type = 'loading';
 			else
-			{
-				this.substate = this.state;
-				this.state = 'MOVE_WAIT';
-				this._harvest_wait = time_now + 1000; //Wait 1 second
-			}
-			return true;
+				this.action.type = 'unloading';
+			
+			this.state = 'LOADING';
+			this._setLoadSpeed();
+			this.startAnimation = time_now;
+			this.move_direction = 4;
 		}
-		
-		return false;
+		else
+		{
+			this.state = 'WAITING';
+			this.action.wait_till = time_now + 1000; //Wait 1 second
+		}
 	}
+	
+	this.afterWaiting = function()
+	{
+		this._move(this.action.target_position.x, this.action.target_position.y, false);
+	}
+	
+//	this.onStopMoving = function()
+//	{
+//		if (this.state == 'MOVE_WELL' || this.state == 'MOVE_COLLECTOR')
+//		{
+//			var cell = this.getCell(), time_now = (new Date).getTime();
+//			
+//			if (cell.x==this._harvest_target.x && cell.y==this._harvest_target.y)
+//			{
+//				this.state = (this.state == 'MOVE_WELL') ? 'RESOURCE_GET' : 'RESOURCE_PUT';
+//				this._setLoadSpeed();
+//				this.startAnimation = time_now;
+//				this.move_direction = 4;
+//			}
+//			else
+//			{
+//				this.substate = this.state;
+//				this.state = 'MOVE_WAIT';
+//				this._harvest_wait = time_now + 1000; //Wait 1 second
+//			}
+//			return true;
+//		}
+//		
+//		return false;
+//	}
 	
 	this._setLoadSpeed = function()
 	{

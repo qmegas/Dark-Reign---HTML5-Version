@@ -63,7 +63,7 @@ function ResourseLoader()
 	
 	this.play = function(key, volume)
 	{
-		var item = this.get(key);
+		var item = this.get(key).cloneNode(true);
 		
 		if (volume)
 			item.volume = volume;

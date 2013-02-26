@@ -5,6 +5,35 @@ function LaserRifleWeapon(unit)
 	this._target = null;
 	this._unit = unit;
 	
+	this.isTargetAlive = function()
+	{
+		if (this._target.type == 'object')
+			if (game.objects[this._target.objid] === null)
+			{
+				this._unit.state = 'STAND';
+				this._target = null;
+				return false;
+			}
+		return true;
+	}
+	
+	this.getTargetPosition = function()
+	{
+		var pos = this._target, obj;
+		
+		if (this._target.type == 'object')
+		{
+			obj = game.objects[this._target.objid];
+			pos = obj.getCell();
+			if (obj.is_building)
+			{
+				pos.x += obj._proto.cell_padding.x;
+				pos.y += obj._proto.cell_padding.y;
+			}
+		}
+		return pos;
+	}
+	
 	this.canAttackTarget = function(target)
 	{
 		if (target.type == 'object')
@@ -34,21 +63,17 @@ function LaserRifleWeapon(unit)
 	
 	this.canReach = function()
 	{
-		//@todo check if target is reachable
-		return true;
+		var unit_pos = this._unit.getCell(), target_pos = this.getTargetPosition(), 
+			distance = MapCell.getCellDistance(unit_pos.x, unit_pos.y, target_pos.x, target_pos.y);
+		
+		return ((distance >= this._proto.minimum_range) && (distance <= this._proto.maximum_range));
 	}
 	
 	this.shoot = function()
 	{
-		var pos = this._unit.getCell(), uid, effect, to;
+		var pos = this._unit.getCell(), uid, effect, to = this.getTargetPosition();
 		
 		this._last_shoot = (new Date()).getTime();
-		
-		if (this._target.type == 'object')
-			to = game.objects[this._target.objid].getCell();
-		
-		if (this._target.type == 'ground')
-			to = {x: this._target.x, y: this._target.y};
 		
 		//Rotate unit
 		this._unit.move_direction = 4 - parseInt(Math.atan2(pos.y - to.y, pos.x - to.x)*(180/Math.PI)/45);

@@ -64,7 +64,7 @@ function MousePointer(game)
 			
 			if (move_x!=0 || move_y!=0)
 			{
-				if  (current_time > (this.panning_region_time + 800))
+				if  (current_time > (this.panning_region_time + 500))
 				{
 					game.viewport_move_mouse_x = move_x;
 					game.viewport_move_mouse_y = move_y;
@@ -213,7 +213,7 @@ function MousePointer(game)
 					if (unitid!=-1 && game.objects[unitid].is_building && game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
 					{
 						for (var i in game.selected_objects)
-							game.objects[game.selected_objects[i]].harvest(game.objects[unitid]);
+							game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
 					}
 					else if (unitid!=-1 && game.selected_info.humans && game.objects[unitid]._proto === FieldHospitalBuilding) //Heal humans ?
 					{
@@ -233,9 +233,11 @@ function MousePointer(game)
 				break;
 			
 			case ACTION_STATE_BUILD:
+				pos.x -= game.action_state_options.object.cell_padding.x;
+				pos.y -= game.action_state_options.object.cell_padding.y;
 				if (AbstractBuilding.canBuild(game.action_state_options.object, pos.x, pos.y, game.selected_objects[0]))
 				{
-					game.objects[game.selected_objects[0]].build(pos.x, pos.y, game.action_state_options.object);
+					game.objects[game.selected_objects[0]].orderBuild(pos.x, pos.y, game.action_state_options.object);
 					game.cleanActionState();
 				}
 				else
@@ -257,7 +259,7 @@ function MousePointer(game)
 					target = {type: 'object', objid: unitid};
 				
 				for (var i in game.selected_objects)
-					game.objects[game.selected_objects[i]].attack(target);
+					game.objects[game.selected_objects[i]].orderAttack(target);
 				game.toggleActionState(ACTION_STATE_ATTACK);
 				break;
 		}

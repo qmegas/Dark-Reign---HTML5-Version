@@ -386,7 +386,7 @@ function Game()
 			//If not new selection move selected units
 			if (cunit==-1 && this.selected_objects.length>0 && !this.selected_info.is_building)
 				for (var i in this.selected_objects)
-					this.objects[this.selected_objects[i]].move(pos.x, pos.y, (i==0));
+					this.objects[this.selected_objects[i]].orderMove(pos.x, pos.y, (i==0));
 		}
 		else
 		{
@@ -506,7 +506,7 @@ function Game()
 	this.shellStopButton = function()
 	{
 		for (var i in this.selected_objects)
-			this.objects[this.selected_objects[i]].stop();
+			this.objects[this.selected_objects[i]].orderStop();
 	}
 	
 	this._resetSelectionInfo = function()

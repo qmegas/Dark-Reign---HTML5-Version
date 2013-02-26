@@ -5,29 +5,63 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 	
 	this.health = 5;
 	
-	this.build_pos = {};
-	this.build_obj = {};
-	
 	this.init(pos_x, pos_y);
 	
-	this.onStopMoving = function()
+	this.orderBuild = function(x, y, build)
 	{
-		if (this.substate == 'BUILD')
-		{
-			var cell = this.getCell();
-			if (cell.x==this.build_pos.x && cell.y==this.build_pos.y)
-			{
-				if (AbstractBuilding.canBuild(this.build_obj, cell.x, cell.y, this.uid))
-				{
-					AbstractBuilding.createNew(this.build_obj, cell.x, cell.y, this.player);
-					if (this.is_selected)
-						game.constructor.drawUnits();
-					game.kill_objects.push(this.uid);
-				}
-			}
-		}
+		this.action = {
+			type: 'build',
+			object: build,
+			position: {x: x, y: y}
+		};
 		
-		return false;
+		if (this._isBuldingCell())
+			this._startBuild();
+		else
+		{
+			this._move(x + build.cell_padding.x, y + build.cell_padding.y);
+			this._playSound('move');
+		}
+	}
+	
+	this._isBuldingCell = function()
+	{
+		var pos = this.getCell();
+		if ((pos.x < this.action.position.x) || (pos.x >= (this.action.position.x + this.action.object.cell_size.x)))
+			return false;
+		if ((pos.y < this.action.position.y) || (pos.y >= (this.action.position.y + this.action.object.cell_size.y)))
+			return false;
+		return true;
+	}
+	
+	this._startBuild = function()
+	{
+		if (AbstractBuilding.canBuild(this.action.object, this.action.position.x, this.action.position.y, this.uid))
+		{
+			AbstractBuilding.createNew(this.action.object, this.action.position.x, this.action.position.y, this.player);
+			if (this.is_selected)
+				game.constructor.drawUnits();
+			game.kill_objects.push(this.uid);
+		}
+	}
+	
+	this.onStopMovingCustom = function()
+	{
+		if (this.action.type == 'build')
+		{
+			if (this._isBuldingCell())
+				this._startBuild();
+			this.state = 'STAND';
+		}
+	}
+	
+	this.beforeMoveNextCellCustom = function()
+	{
+		if (this.action.type == 'build')
+		{
+			if (this._isBuldingCell())
+				this.move_path = [];
+		}
 	}
 }
 

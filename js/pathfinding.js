@@ -340,5 +340,79 @@ var PathFinder = {
 		var end = graph.nodes[to_x][to_y];
 		
 		return astar.search(graph.nodes, start, end);
+	},
+	
+	findNearestEmptyCell: function(x, y, ground_unit)
+	{
+		var round, padding, cell;
+		
+		for (round = 1; round < 20; ++round)
+		{
+			for (padding = 0; padding <= round; ++padding)
+			{
+				//left
+				cell = {x: x - round, y: y - padding};
+				if (this.checkCell(cell, ground_unit))
+					return cell;
+				if (padding>0 && padding<round)
+				{
+					cell = {x: x - round, y: y + padding};
+					if (this.checkCell(cell, ground_unit))
+						return cell;
+				}
+				
+				//right
+				cell = {x: x + round, y: y - padding};
+				if (this.checkCell(cell, ground_unit))
+					return cell;
+				if (padding>0 && padding<round)
+				{
+					cell = {x: x + round, y: y + padding};
+					if (this.checkCell(cell, ground_unit))
+						return cell;
+				}
+				
+				//Top
+				cell = {x: x + padding, y: y - round};
+				if (this.checkCell(cell, ground_unit))
+					return cell;
+				if (padding>0 && padding<round)
+				{
+					cell = {x: x - padding, y: y - round};
+					if (this.checkCell(cell, ground_unit))
+						return cell;
+				}
+				
+				//Bottom
+				cell = {x: x + padding, y: y + round};
+				if (this.checkCell(cell, ground_unit))
+					return cell;
+				if (padding>0 && padding<round)
+				{
+					cell = {x: x - padding, y: y + round};
+					if (this.checkCell(cell, ground_unit))
+						return cell;
+				}
+			}
+		}
+		
+		return null;
+	},
+	
+	checkCell: function(cell, ground_unit)
+	{
+		if (!MapCell.isCorrectCord(cell.x, cell.y))
+			return false;
+		
+		var m_cell = game.level.map_cells[cell.x][cell.y];
+		
+		if (ground_unit)
+			if ((m_cell.type == CELL_TYPE_WATER) || (m_cell.type == CELL_TYPE_NOWALK))
+				return false;
+		
+		if (MapCell.getSingleUserId(m_cell) != -1)
+			return false;
+		
+		return true;
 	}
 };

@@ -26,8 +26,8 @@ function AbstractBuilding()
 	this.init = function(pos_x, pos_y)
 	{
 		this.position = {
-			x: (pos_x - this._proto.cell_padding.x)*CELL_SIZE, 
-			y: (pos_y - this._proto.cell_padding.y)*CELL_SIZE
+			x: (pos_x)*CELL_SIZE, 
+			y: (pos_y)*CELL_SIZE
 		};
 		this.producing_queue = [];
 	}
@@ -297,9 +297,7 @@ function AbstractBuilding()
 		return false; //Change it later because Guard Towers can attack
 	}
 	
-	this.attack = function(target)
-	{
-	}
+	this.orderAttack = function(target) {}
 	
 	this.produce = function(obj)
 	{
@@ -357,8 +355,9 @@ function AbstractBuilding()
 		if (this.producing_queue[0].construction_progress > 1)
 		{
 			var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2, this.player); //TODO: need change?
-			//TODO: Find compatable point for exit
-			unit.move(cell.x, cell.y + 5);
+			
+			cell = PathFinder.findNearestEmptyCell(cell.x, cell.y + 5, !unit.is_fly);
+			unit.orderMove(cell);
 
 			game.constructor.clearProducingByObject(this.producing_queue[0]);
 			this.producing_queue[0].construction_progress = 0;
@@ -519,9 +518,6 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 	
 	if (!obj.enabled)
 		return false;
-	
-	x -= obj.cell_padding.x;
-	y -= obj.cell_padding.y;
 	
 	for (var xx = 0; xx<obj.cell_size.x; ++xx)
 	{
