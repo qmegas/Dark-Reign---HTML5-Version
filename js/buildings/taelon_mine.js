@@ -58,6 +58,7 @@ AbstractBuilding.setBuildingCommonOptions(TaelonMineBuilding);
 
 TaelonMineBuilding.res_key = 'taelon_mine';
 TaelonMineBuilding.obj_name = 'Taelon';
+TaelonMineBuilding.shield_type = 'SuperArmour2';
 
 TaelonMineBuilding.cell_size = {x: 3, y: 3};
 TaelonMineBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];

@@ -32,20 +32,22 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		if (this._proto.weapon != null)
 			this.weapon = new this._proto.weapon(this);
-	}
+	};
 	
 	this.getCell = function()
 	{
 		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
-	}
+	};
 	
 	this.applyDamage = function(damage)
 	{
 		this.health -= damage;
-		//@todo Kill unit
-		if (this.health < 0)
-			this.health = 0;
-	}
+		if (this.health <= 0)
+		{
+			AbstractSimpleEffect.createUnitKillEffect(this._proto, this.position);
+			game.kill_objects.push(this.uid);
+		}
+	};
 	
 	this.orderMove = function(x, y, play_sound)
 	{
@@ -55,7 +57,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		if (this.move_path.length>0 && play_sound)
 			this._playSound('move');
-	}
+	};
 	
 	this.orderStop = function()
 	{
@@ -65,7 +67,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			this.move_path = this.move_path.slice(0, 1);
 		else
 			this.state = 'STAND';
-	}
+	};
 	
 	this.orderAttack = function(target)
 	{
@@ -84,7 +86,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			type: 'attack',
 			target: target
 		};
-	}
+	};
 	
 	this.orderHeal = function(hospital_id, play_sound)
 	{
@@ -95,7 +97,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		//@todo Heal unit when stopping
 		//this.move(pos.x + 2, pos.y, play_sound);
-	}
+	};
 	
 	this._move = function(x, y) 
 	{
@@ -125,7 +127,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		if (need_move && this.move_path.length>0)
 			this._moveToNextCell();
-	}
+	};
 	
 	this.run = function() 
 	{
@@ -164,18 +166,23 @@ function AbstractUnit(pos_x, pos_y, player)
 				break;
 				
 			case 'ATTACKING':
-				this.anim_attack_frame += 0.5;
-				if (this.anim_attack_frame > 2) //There is 2 only frames by default
+				if (this.weapon.isTargetAlive())
 				{
-					this.weapon.shoot();
-					this.state = 'ATTACK';
+					this.anim_attack_frame += 0.5;
+					if (this.anim_attack_frame > 2) //There is 2 only frames by default
+					{
+						this.weapon.shoot();
+						this.state = 'ATTACK';
+					}
 				}
+				else
+					this.state = 'STAND';
 				break;
 				
 			default:
 				this.runCustom();
 		}
-	}
+	};
 	
 	this._runStandartMoving = function()
 	{
@@ -211,7 +218,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			if (this.move_path.length != 0)
 				this._moveToNextCell();
 		}
-	}
+	};
 	
 	this._moveToNextCell = function()
 	{
@@ -245,7 +252,7 @@ function AbstractUnit(pos_x, pos_y, player)
 				game.level.map_cells[curr_pos.x][curr_pos.y].ground_unit = -1;
 			}
 		}
-	}
+	};
 	
 	this.draw = function(current_time) 
 	{
@@ -330,13 +337,13 @@ function AbstractUnit(pos_x, pos_y, player)
 				});
 				break;
 		}
-	}
+	};
 	
 	//Draw Selection
 	this.drawSelection = function(is_onmouse)
 	{
 		this._drawStandardSelection(is_onmouse);
-	}
+	};
 	
 	this._drawStandardSelection = function(is_onmouse)
 	{
@@ -387,12 +394,12 @@ function AbstractUnit(pos_x, pos_y, player)
 		//Draw name
 		if (is_onmouse)
 			game.fontDraw.drawOnCanvas(this._proto.obj_name, game.viewport_ctx, top_x, top_y - 16, 'yellow', 'center', sel_width);
-	}
+	};
 	
 	this.canBeSelected = function()
 	{
 		return (this.player == PLAYER_HUMAN);
-	}
+	};
 	
 	this.select = function(is_select, play_sound)
 	{
@@ -404,13 +411,13 @@ function AbstractUnit(pos_x, pos_y, player)
 				this._playSound('select');
 
 		}
-	}
+	};
 	
 	this._playSound = function(type)
 	{
 		var i = Math.floor((Math.random()*this._proto.sound_count)+1);
 		game.resources.play(this._proto.resource_key + '_' + type + i);
-	}
+	};
 	
 	this.markCellsOnMap = function(unitid)
 	{
@@ -436,31 +443,31 @@ function AbstractUnit(pos_x, pos_y, player)
 			else
 				game.level.map_cells[cell.x][cell.y].ground_unit = unitid;
 		}
-	}
+	};
 	
 	this.canAttackGround = function()
 	{
 		if (this._proto.weapon === null)
 			return false;
 		return this._proto.weapon.can_shoot_ground;
-	}
+	};
 	
 	this.canAttackFly = function()
 	{
 		if (this._proto.weapon === null)
 			return false;
 		return this._proto.weapon.can_shoot_flyer;
-	}
+	};
 	
 	this.canHarvest = function()
 	{
 		return false;
-	}
+	};
 	
 	this.isHuman = function()
 	{
 		return this._proto.is_human;
-	}
+	};
 	
 	//Events
 	
@@ -469,13 +476,13 @@ function AbstractUnit(pos_x, pos_y, player)
 		switch (this.action.type)
 		{
 			case 'attack':
-				if (this.weapon.canReach())
+				if (!this.weapon.isTargetAlive() || this.weapon.canReach())
 					this.move_path = [];
 				break;
 			default:
 				this.beforeMoveNextCellCustom();
 		}
-	}
+	};
 	
 	this.onStopMoving = function()
 	{
@@ -492,18 +499,18 @@ function AbstractUnit(pos_x, pos_y, player)
 			default:
 				this.onStopMovingCustom();
 		}
-	}
+	};
 	
 	this.onObjectDeletion = function() 
 	{
 		this.markCellsOnMap(-1);
-	}
+	};
 	
 	//Abstract functions, do not touch it
-	this.onStopMovingCustom = function(){}
-	this.beforeMoveNextCellCustom = function(){}
-	this.runCustom = function(){}
-	this.afterWaiting = function(){}
+	this.onStopMovingCustom = function(){};
+	this.beforeMoveNextCellCustom = function(){};
+	this.runCustom = function(){};
+	this.afterWaiting = function(){};
 }
 
 AbstractUnit.createNew = function(obj, x, y, player, instant_build)
@@ -517,7 +524,7 @@ AbstractUnit.createNew = function(obj, x, y, player, instant_build)
 		game.notifications.addSound('unit_completed');
 	
 	return game.objects[uid];
-}
+};
 
 AbstractUnit.loadResources = function(obj) 
 {
@@ -545,7 +552,7 @@ AbstractUnit.loadResources = function(obj)
 		if (obj.images.shadow)
 			game.resources.addImage(obj.resource_key + '_attack_shadow', 'images/units/' + obj.resource_key + '/attack_shadow.png');
 	}
-}
+};
 
 AbstractUnit.setUnitCommonOptions = function(obj)
 {
@@ -555,9 +562,10 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.resource_key = '';  //Must redeclare
 	obj.images = {};        //Must redeclare
 	obj.sound_count = 4;
+	obj.die_effect = 'splatd_explosion';
 
 	obj.cost = 0;
-	obj.health_max = 5;
+	obj.health_max = 100;
 	obj.speed = 0.87;      // 0.87 = 6 config speed
 	obj.weapon = null;
 	obj.enabled = false;
@@ -574,5 +582,5 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.loadResources = function() 
 	{
 		AbstractUnit.loadResources(this);
-	}
+	};
 };

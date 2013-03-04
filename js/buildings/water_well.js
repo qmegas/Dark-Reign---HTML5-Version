@@ -58,6 +58,7 @@ AbstractBuilding.setBuildingCommonOptions(WaterWellBuilding);
 
 WaterWellBuilding.res_key = 'water_well';
 WaterWellBuilding.obj_name = 'Pure Water Spring';
+WaterWellBuilding.shield_type = 'SuperArmour';
 
 WaterWellBuilding.cell_size = {x: 3, y: 3};
 WaterWellBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];

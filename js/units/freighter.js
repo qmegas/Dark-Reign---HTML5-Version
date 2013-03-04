@@ -60,7 +60,7 @@ function FreighterUnit(pos_x, pos_y, player)
 				}
 				break;
 		}
-	}
+	};
 	
 	this.draw = function(current_time) 
 	{
@@ -106,7 +106,7 @@ function FreighterUnit(pos_x, pos_y, player)
 				});
 				break;
 		}
-	}
+	};
 	
 	this.drawSelection = function(is_onmouse)
 	{
@@ -128,12 +128,12 @@ function FreighterUnit(pos_x, pos_y, player)
 		
 		game.viewport_ctx.fillStyle = (this._res_type == RESOURCE_WATER) ? '#00a5ff' : '#ffff00';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 29 - bar_size, 2, bar_size);
-	}
+	};
 	
 	this.canHarvest = function()
 	{
 		return true;
-	}
+	};
 	
 	this.orderHarvest = function(obj, play_sound)
 	{
@@ -205,7 +205,7 @@ function FreighterUnit(pos_x, pos_y, player)
 			this._moveBase();
 		else
 			this._moveWell();
-	}
+	};
 	
 	this._getBuilding = function(id)
 	{
@@ -213,7 +213,7 @@ function FreighterUnit(pos_x, pos_y, player)
 			return null;
 		
 		return game.objects[id];
-	}
+	};
 	
 	this._moveBase = function()
 	{
@@ -238,7 +238,7 @@ function FreighterUnit(pos_x, pos_y, player)
 		}
 		this.action.type = 'go_base';
 		this._move(this.action.target_position.x, this.action.target_position.y, false);
-	}
+	};
 	
 	this._moveWell = function()
 	{
@@ -256,7 +256,7 @@ function FreighterUnit(pos_x, pos_y, player)
 		this.action.type = 'go_well';
 		this.action.target_position = tmp;
 		this._move(tmp.x, tmp.y, false);
-	}
+	};
 	
 	this.onStopMovingCustom = function()
 	{
@@ -278,37 +278,12 @@ function FreighterUnit(pos_x, pos_y, player)
 			this.state = 'WAITING';
 			this.action.wait_till = time_now + 1000; //Wait 1 second
 		}
-	}
+	};
 	
 	this.afterWaiting = function()
 	{
 		this._move(this.action.target_position.x, this.action.target_position.y, false);
-	}
-	
-//	this.onStopMoving = function()
-//	{
-//		if (this.state == 'MOVE_WELL' || this.state == 'MOVE_COLLECTOR')
-//		{
-//			var cell = this.getCell(), time_now = (new Date).getTime();
-//			
-//			if (cell.x==this._harvest_target.x && cell.y==this._harvest_target.y)
-//			{
-//				this.state = (this.state == 'MOVE_WELL') ? 'RESOURCE_GET' : 'RESOURCE_PUT';
-//				this._setLoadSpeed();
-//				this.startAnimation = time_now;
-//				this.move_direction = 4;
-//			}
-//			else
-//			{
-//				this.substate = this.state;
-//				this.state = 'MOVE_WAIT';
-//				this._harvest_wait = time_now + 1000; //Wait 1 second
-//			}
-//			return true;
-//		}
-//		
-//		return false;
-//	}
+	};
 	
 	this._setLoadSpeed = function()
 	{
@@ -322,13 +297,14 @@ function FreighterUnit(pos_x, pos_y, player)
 			this._load_speed = 0.36;
 			this._unload_speed = 0.36;
 		}
-	}
+	};
 }
 
 AbstractUnit.setUnitCommonOptions(FreighterUnit);
 
 FreighterUnit.obj_name = 'Freighter';
 FreighterUnit.resource_key = 'freighter';
+FreighterUnit.die_effect = 'death_with_sparks_explosion';
 FreighterUnit.images = {
 	selection: {
 		size: {x: 40, y: 40},
@@ -369,4 +345,4 @@ FreighterUnit.loadResources = function()
 		game.resources.addSound(this.resource_key + '_move' + i,   'sounds/units/guardian/move' + i + '.' + AUDIO_TYPE);
 		game.resources.addSound(this.resource_key + '_select' + i, 'sounds/units/guardian/select' + i + '.' + AUDIO_TYPE);
 	}
-}
+};

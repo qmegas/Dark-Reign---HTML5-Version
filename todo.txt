@@ -1,11 +1,9 @@
 To do:
-	- Units & building destruction
 	- Enable healing of the units
 	- Do not select bridge if moving units on it
 	- Add more buildings
 
 - High priority bugs:
-	- Bug: Check why guardians may destroy water well
 
 - Medium priority bugs:
 	- When creating Camera Tower & bridges need not to destroy construction rig
@@ -26,3 +24,4 @@ To do:
 
 - Known browser-related bugs
 	- Chrome: on unit selection there is an empty pixel on top-right corner
+	- Chrome 25: bug with audio element. When moving multiple units, it doesn't play.

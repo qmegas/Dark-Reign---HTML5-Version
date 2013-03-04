@@ -69,7 +69,7 @@ function Game()
 		}, 'fast');
 		
 		this.minimap.drawViewport();
-	}
+	};
 
 	this.init = function(level, init_finish_callback)
 	{
@@ -146,7 +146,7 @@ function Game()
 			
 			init_finish_callback();
 		};
-	}
+	};
 	
 	this.run = function()
 	{
@@ -162,6 +162,9 @@ function Game()
 		for (i = 0; i<this.kill_objects.length; ++i)
 		{
 			var unit = this.objects[this.kill_objects[i]];
+			
+			if (typeof unit === 'undefined')
+				continue;
 			
 			unit.onObjectDeletion();
 			
@@ -194,7 +197,7 @@ function Game()
 		
 		//Money draw
 		this.moneyDraw.draw();
-	}
+	};
 	
 	this.draw = function()
 	{
@@ -204,7 +207,7 @@ function Game()
 		window.requestAnimFrame(function(){
 			game.draw();
 		});
-	}
+	};
 	
 	this._draw = function()
 	{
@@ -358,12 +361,12 @@ function Game()
 		
 		if (this.debug.show_fps)
 			this.debug.drawFPS();
-	}
+	};
 	
 	this.minimapNavigation = function(start)
 	{
 		this.minimap_navigation = start;
-	}
+	};
 	
 	this.minimapMove = function(x, y)
 	{
@@ -374,7 +377,7 @@ function Game()
 			realy = (y-this.level.minimap.rect_y/2);
 			
 		this.moveViewport(realx, realy, false);
-	}
+	};
 	
 	this.onClick = function(button)
 	{
@@ -407,7 +410,7 @@ function Game()
 					break;
 			}
 		}
-	}
+	};
 	
 	this.regionSelect = function (x1, y1, x2, y2)
 	{
@@ -451,14 +454,14 @@ function Game()
 			this.constructor.drawBuildings();
 		else
 			this.constructor.drawUnits();
-	}
+	};
 	
 	this._deselectUnits = function()
 	{
 		this._resetSelectionInfo();
 		while (this.selected_objects.length > 0)
 			this.objects[this.selected_objects.pop()].select(false);
-	}
+	};
 	
 	this._loadGameResources = function()
 	{
@@ -482,8 +485,11 @@ function Game()
 		this.constructor.loadBuildingResources();
 		
 		//Some additional loads
+		SparksExplosionEffect.loadResources();
+		SplatAEffect.loadResources();
+		SplatDEffect.loadResources();
 		WaterSellEffect.loadResources();
-	}
+	};
 	
 	this._checkBrowserSupport = function()
 	{
@@ -504,13 +510,13 @@ function Game()
 			return false;
 		
 		return true;
-	}
+	};
 	
 	this.shellStopButton = function()
 	{
 		for (var i in this.selected_objects)
 			this.objects[this.selected_objects[i]].orderStop();
-	}
+	};
 	
 	this._resetSelectionInfo = function()
 	{
@@ -523,7 +529,7 @@ function Game()
 			harvesters: false,
 			humans: false
 		};
-	}
+	};
 	
 	this.buildingUpgrade = function()
 	{
@@ -550,7 +556,7 @@ function Game()
 		
 		if (!upgraded)
 			game.resources.play('cant_build');
-	}
+	};
 	
 	this.toggleActionState = function(state)
 	{
@@ -580,7 +586,7 @@ function Game()
 		}
 		
 		this.action_state = state;
-	}
+	};
 	
 	this.cleanActionState = function()
 	{
@@ -604,7 +610,7 @@ function Game()
 		}
 		
 		this.action_state = ACTION_STATE_NONE;
-	}
+	};
 	
 	this.addEffect = function(effect)
 	{
@@ -612,7 +618,7 @@ function Game()
 		this.objects.push(effect);
 		this.effects.push(uid);
 		return uid;
-	}
+	};
 	
 	this.deleteEffect = function(effectid)
 	{
@@ -622,7 +628,7 @@ function Game()
 			this.effects.splice(sindex, 1);
 		
 		this.kill_objects.push(effectid);
-	}
+	};
 	
 	this.findCompatibleInstance = function(object_type_arr, player)
 	{
@@ -634,7 +640,7 @@ function Game()
 					return this.objects[i];
 		
 		return null;
-	}
+	};
 	
 	this.findNearestInstance = function(object_type, player, x, y)
 	{
@@ -658,7 +664,7 @@ function Game()
 		}
 		
 		return obj;
-	}
+	};
 	
 	this.togglePause = function()
 	{
@@ -681,7 +687,7 @@ function Game()
 		{
 			this.dialog.hide();
 		}
-	}
+	};
 }
 
 $(function(){

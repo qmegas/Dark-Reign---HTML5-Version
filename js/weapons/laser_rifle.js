@@ -8,14 +8,14 @@ function LaserRifleWeapon(unit)
 	this.isTargetAlive = function()
 	{
 		if (this._target.type == 'object')
-			if (game.objects[this._target.objid] === null)
+			if (typeof game.objects[this._target.objid] === 'undefined')
 			{
 				this._unit.state = 'STAND';
 				this._target = null;
 				return false;
 			}
 		return true;
-	}
+	};
 	
 	this.getTargetPosition = function()
 	{
@@ -32,7 +32,7 @@ function LaserRifleWeapon(unit)
 			}
 		}
 		return pos;
-	}
+	};
 	
 	this.canAttackTarget = function(target)
 	{
@@ -48,18 +48,18 @@ function LaserRifleWeapon(unit)
 			return this._proto.can_shoot_ground;
 		
 		return false;
-	}
+	};
 	
 	this.setTarget = function(target)
 	{
 		this._target = target;
-	}
+	};
 	
 	//Can shoot now?
 	this.canShoot = function()
 	{
 		return ((this._last_shoot + this._proto.firedelay) < (new Date()).getTime());
-	}
+	};
 	
 	this.canReach = function()
 	{
@@ -67,7 +67,7 @@ function LaserRifleWeapon(unit)
 			distance = MapCell.getCellDistance(unit_pos.x, unit_pos.y, target_pos.x, target_pos.y);
 		
 		return ((distance >= this._proto.minimum_range) && (distance <= this._proto.maximum_range));
-	}
+	};
 	
 	this.shoot = function()
 	{
@@ -81,7 +81,7 @@ function LaserRifleWeapon(unit)
 		effect = new this._proto.effect(pos.x, pos.y, to.x, to.y, this._proto.offence);
 		uid = game.addEffect(effect);
 		effect.uid = uid;
-	}
+	};
 }
 
 LaserRifleWeapon.effect = LaserRifleEffect;
@@ -99,4 +99,4 @@ LaserRifleWeapon.offence = {
 LaserRifleWeapon.loadResources = function()
 {
 	this.effect.loadResources();
-}
+};

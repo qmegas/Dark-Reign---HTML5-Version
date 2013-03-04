@@ -47,12 +47,12 @@ function Debuger()
 	this.countRun = function()
 	{
 		this.run_counter++;
-	}
+	};
 	
 	this.countDraw = function()
 	{
 		this.draw_counter++;
-	}
+	};
 	
 	this.resetCounters = function()
 	{
@@ -64,14 +64,14 @@ function Debuger()
 		this.count_time = time;
 		this.draw_counter = 0;
 		this.run_counter = 0;
-	}
+	};
 	
 	this.drawFPS = function()
 	{
 		game.viewport_ctx.fillStyle = '#fff';
 		game.viewport_ctx.fillText('Game speed: ' + this.run_cache + ' (' + parseInt((this.run_cache/RUNS_PER_SECOND)*100) + '%)', 0, 10);
 		game.viewport_ctx.fillText('FPS: ' + this.fps_cache, 0, 20);
-	}
+	};
 	
 	this.drawCustomLine = function(text, line)
 	{
@@ -80,5 +80,5 @@ function Debuger()
 		
 		game.viewport_ctx.fillStyle = '#fff';
 		game.viewport_ctx.fillText(text, 0, 10*line);
-	}
+	};
 }

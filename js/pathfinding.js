@@ -387,7 +387,7 @@ var PathFinder = {
 				cell = {x: x + padding, y: y + round};
 				if (this.checkCell(cell, ground_unit))
 					return cell;
-				if (padding>0 && padding<round)
+				if (padding>0 && padding<=round)
 				{
 					cell = {x: x - padding, y: y + round};
 					if (this.checkCell(cell, ground_unit))

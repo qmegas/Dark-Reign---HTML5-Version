@@ -30,15 +30,19 @@ function AbstractBuilding()
 			y: (pos_y)*CELL_SIZE
 		};
 		this.producing_queue = [];
-	}
+	};
 	
 	this.applyDamage = function(damage)
 	{
 		this.health -= damage;
-		//@todo Destroy building
-		if (this.health < 0)
-			this.health = 0;
-	}
+		
+		if (this.health <= 0)
+		{
+			//@todo Create crater
+			this.onDestructed();
+			game.kill_objects.push(this.uid);
+		}
+	};
 	
 	this.setActionTime = function(time)
 	{
@@ -48,17 +52,17 @@ function AbstractBuilding()
 		
 		this.action_start = (new Date()).getTime();
 		this.action_ends = this.action_start + time * 1000;
-	}
+	};
 	
 	this.getCell = function()
 	{
 		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
-	}
+	};
 	
 	this.drawSelection = function(is_onmouse)
 	{
 		this._drawSelectionStandart(is_onmouse);
-	}
+	};
 	
 	this._drawSelectionStandart = function(is_onmouse)
 	{
@@ -143,7 +147,7 @@ function AbstractBuilding()
 				this._proto.obj_name, game.viewport_ctx, top_x, top_y, 
 				'yellow', 'center', health_width
 			);
-	}
+	};
 	
 	this._drawProgressBar = function(proc, title)
 	{
@@ -164,17 +168,17 @@ function AbstractBuilding()
 			title, game.viewport_ctx, top_x + 0.5, top_y, 
 			'yellow', 'center', bar_width
 		);
-	}
+	};
 	
 	this.canBeSelected = function()
 	{
 		return true;
-	}
+	};
 	
 	this.select = function(is_select, play_sound)
 	{
 		this.is_selected = is_select;
-	}
+	};
 	
 	this.markCellsOnMap = function(userid)
 	{
@@ -190,10 +194,10 @@ function AbstractBuilding()
 					game.level.map_cells[cell.x+x][cell.y+y].building = userid;
 				
 			}
-	}
+	};
 	
 	//Must be implemented
-	this.run = function() {}
+	this.run = function() {};
 	
 	this.sell = function()
 	{
@@ -202,7 +206,7 @@ function AbstractBuilding()
 		
 		this.setActionTime(this._proto.build_time / 2);
 		this.state = 'SELL';
-	}
+	};
 	
 	this.draw = function(cur_time)
 	{
@@ -293,25 +297,25 @@ function AbstractBuilding()
 				});
 			}
 		}
-	}
+	};
 	
 	this.canAttackFly = function()
 	{
 		return false; //Change it later because Guard Towers can attack
-	}
+	};
 	
 	this.canAttackGround = function()
 	{
 		return false; //Change it later because Guard Towers can attack
-	}
+	};
 	
-	this.orderAttack = function(target) {}
+	this.orderAttack = function(target) {};
 	
 	this.produce = function(obj)
 	{
 		this.producing_queue.push(obj);
 		game.players[this.player].decMoney(obj.cost);
-	}
+	};
 	
 	this._runStandartConstruction = function()
 	{
@@ -328,7 +332,7 @@ function AbstractBuilding()
 			
 			this.onConstructed();
 		}
-	}
+	};
 	
 	this._runStandartSell = function()
 	{
@@ -346,7 +350,7 @@ function AbstractBuilding()
 			
 			game.kill_objects.push(this.uid);
 		}
-	}
+	};
 	
 	this._sellRecalc = function(obj_proto)
 	{
@@ -355,7 +359,7 @@ function AbstractBuilding()
 		
 		if (obj_proto.upgrade_from !== null)
 			this._sellRecalc(obj_proto.upgrade_from);
-	}
+	};
 	
 	this._runStandartProducing = function()
 	{
@@ -373,27 +377,27 @@ function AbstractBuilding()
 			this.producing_queue.shift();
 			this.state = 'NORMAL';
 		}
-	}
+	};
 	
 	this.isUpgradePossible = function()
 	{
 		return (this._proto.upgradable && this._proto.can_upgrade_now && this.state=='NORMAL');
-	}
+	};
 	
 	this.isHuman = function()
 	{
 		return false;
-	}
+	};
 	
 	this.canHarvest = function()
 	{
 		return false;
-	}
+	};
 	
 	this.isHarvestPlatform = function()
 	{
 		return false;
-	}
+	};
 	
 	//Functions for resource containing buildings
 	//Need to move it to another abstract object
@@ -401,7 +405,7 @@ function AbstractBuilding()
 	this.isResFull = function()
 	{
 		return (this.res_now >= this.res_max);
-	}
+	};
 	
 	this.decreaseRes = function(amount)
 	{
@@ -410,12 +414,12 @@ function AbstractBuilding()
 		
 		this.res_now -= amount;
 		return amount;
-	}
+	};
 	
 	this.increaseRes = function(amount)
 	{
 		return this._standardIncreaseRes(amount);
-	}
+	};
 	
 	this._standardIncreaseRes = function(amount)
 	{
@@ -424,17 +428,17 @@ function AbstractBuilding()
 		
 		this.res_now += amount;
 		return amount;
-	}
+	};
 	
 	//Event functions
 	
 	this.onObjectDeletion = function() 
 	{
 		this.markCellsOnMap(-1);
-	}
+	};
 	
-	this.onConstructed = function() {}
-	this.onDestructed = function() {}
+	this.onConstructed = function() {};
+	this.onDestructed = function() {};
 }
 
 //Static methods
@@ -562,7 +566,7 @@ AbstractBuilding.loadResources = function(obj)
 	
 	if (obj.shadow_image_size !== null)
 		game.resources.addImage(obj.res_key + '_shadow', 'images/buildings/'+obj.res_key+'/shadow.png');
-}
+};
 
 AbstractBuilding.setBuildingCommonOptions = function(obj)
 {
