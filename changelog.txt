@@ -1,7 +1,8 @@
-Build 32 (?)
+Build 32 (06.03.2013)
 - Units now can die and buildings now can be destroyed
 - Added explosion effects for existing units
 - Few attacking bugs fixed
+- Field Hospital now can heal units
 
 Build 31 (26.02.2013)
 - Added mouse panning. It disabled by default, in order to enable it, go to "Special" tab

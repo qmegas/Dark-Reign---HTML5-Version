@@ -27,7 +27,7 @@ function FreighterUnit(pos_x, pos_y, player)
 			case 'LOADING':
 				if (this.action.type == 'loading')
 				{
-					obj = this._getBuilding(this.action.well);
+					obj = AbstractBuilding.getById(this.action.well);
 					if (obj === null)
 					{
 						this.orderStop();
@@ -44,7 +44,7 @@ function FreighterUnit(pos_x, pos_y, player)
 				else
 				{
 					//Uloading
-					obj = this._getBuilding(this.action.building);
+					obj = AbstractBuilding.getById(this.action.building);
 					if (obj===null || obj.isResFull())
 					{
 						this.orderStop();
@@ -207,17 +207,9 @@ function FreighterUnit(pos_x, pos_y, player)
 			this._moveWell();
 	};
 	
-	this._getBuilding = function(id)
-	{
-		if (game.objects[id] === undefined)
-			return null;
-		
-		return game.objects[id];
-	};
-	
 	this._moveBase = function()
 	{
-		var obj = this._getBuilding(this.action.building);
+		var obj = AbstractBuilding.getById(this.action.building);
 		
 		if (obj === null)
 		{
@@ -242,7 +234,7 @@ function FreighterUnit(pos_x, pos_y, player)
 	
 	this._moveWell = function()
 	{
-		var obj = this._getBuilding(this.action.well), tmp;
+		var obj = AbstractBuilding.getById(this.action.well), tmp;
 		
 		if (obj === null)
 		{
@@ -260,7 +252,7 @@ function FreighterUnit(pos_x, pos_y, player)
 	
 	this.onStopMovingCustom = function()
 	{
-		var cell = this.getCell(), time_now = (new Date).getTime();
+		var cell = this.getCell();
 		if (cell.x==this.action.target_position.x && cell.y==this.action.target_position.y)
 		{
 			if (this.action.type == 'go_well')
@@ -270,19 +262,20 @@ function FreighterUnit(pos_x, pos_y, player)
 			
 			this.state = 'LOADING';
 			this._setLoadSpeed();
-			this.startAnimation = time_now;
+			this.startAnimation = (new Date).getTime();
 			this.move_direction = 4;
 		}
 		else
-		{
-			this.state = 'WAITING';
-			this.action.wait_till = time_now + 1000; //Wait 1 second
-		}
+			this.orderWait(1000); //Wait 1 second
 	};
 	
-	this.afterWaiting = function()
+	this.afterWaitingCustom = function()
 	{
-		this._move(this.action.target_position.x, this.action.target_position.y, false);
+		var obj_id = (this.action.type == 'go_well') ? this.action.well : this.action.building;
+		if (AbstractBuilding.isExists(obj_id))
+			this._move(this.action.target_position.x, this.action.target_position.y, false);
+		else
+			this.orderStop();
 	};
 	
 	this._setLoadSpeed = function()

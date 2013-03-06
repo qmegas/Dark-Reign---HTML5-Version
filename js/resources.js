@@ -4,8 +4,8 @@ function ResourseLoader()
 	this.loaded = 0;
 	this.items = {};
 	
-	this.onLoaded = function(){}
-	this.onComplete = function(){}
+	this.onLoaded = function(){};
+	this.onComplete = function(){};
 	
 	this.addImage = function(key, image_path)
 	{
@@ -22,8 +22,8 @@ function ResourseLoader()
 			obj.onLoaded(obj.loaded, obj.total);
 			if (obj.loaded == obj.total)
 				obj.onComplete();
-		}
-	}
+		};
+	};
 	
 	this.addSound = function(key, sound_path)
 	{
@@ -35,23 +35,23 @@ function ResourseLoader()
 		this.items[key] = audio;
 		this.total++;
 		
-		audio.addEventListener('canplaythrough', function(){ //Cross-browsing? Change to: audio.addEventListener('canplaythrough', callback, false);
+		audio.addEventListener('canplaythrough', function(){
 			obj.loaded++;
 			obj.onLoaded(obj.loaded, obj.total);
 			if (obj.loaded == obj.total)
 				obj.onComplete();
 		});
-	}
+	};
 	
 	this.addDirect = function(key, obj)
 	{
 		this.items[key] = obj;
-	}
+	};
 	
 	this.isSet = function(key)
 	{
 		return (typeof this.items[key] !== 'undefined');
-	}
+	};
 	
 	this.get = function(key)
 	{
@@ -59,14 +59,41 @@ function ResourseLoader()
 			console.log('Requesting unexisting resource: ' + key);
 		
 		return this.items[key];
-	}
+	};
 	
-	this.play = function(key, volume)
+	this.play = function(key, volume, multiple)
 	{
-		var item = this.get(key).cloneNode(true);
+		var item = this.get(key);
 		
+		if (multiple)
+			item = item.cloneNode(true);
 		if (volume)
 			item.volume = volume;
 		item.play();
-	}
+	};
+	
+	this.playOnPosition = function(key, multiple, position, pos_pixels)
+	{
+		var len, half_screen_size = 316, volume;
+		
+		if (!pos_pixels)
+			position = {
+				x: position.x * CELL_SIZE,
+				y: position.y * CELL_SIZE
+			};
+		
+		len =  Math.sqrt(Math.pow((game.viewport_x + VIEWPORT_SIZE/2) - position.x, 2) + Math.pow((game.viewport_y + VIEWPORT_SIZE/2) - position.y, 2));
+		
+		if (len < half_screen_size)
+			volume = 1;
+		else if (len > half_screen_size*2)
+			volume = 0;
+		else
+			volume = (1 - (len-half_screen_size)/half_screen_size);
+		
+		if (volume == 0)
+			return;
+		
+		this.play(key, volume, multiple);
+	};
 }

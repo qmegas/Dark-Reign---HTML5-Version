@@ -479,6 +479,7 @@ function Game()
 		this.resources.addSound('cant_build', 'sounds/cant_build.' + AUDIO_TYPE);
 		this.resources.addSound('insufficient_credits', 'sounds/insufficient_credits.' + AUDIO_TYPE);
 		this.resources.addSound('upgrade_available', 'sounds/upgrade_available.' + AUDIO_TYPE);
+		this.resources.addSound('healing', 'sounds/healing.' + AUDIO_TYPE);
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();

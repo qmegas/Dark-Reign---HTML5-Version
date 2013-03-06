@@ -40,12 +40,8 @@ function AbstractWeaponEffect()
 		this._angle_frame = 12 - parseInt(Math.atan2(from_y - to_y, from_x - to_x)*(180/Math.PI)/15);
 		
 		//Play shoot sound
-		sound_vol = this._checkSoundVolume();
-		if (sound_vol > 0)
-		{
-			game.resources.play(this._proto.resource_key + '_shoot_snd', sound_vol);
-		}
-	}
+		game.resources.playOnPosition(this._proto.resource_key + '_shoot_snd', true, this._position_now, true);
+	};
 	
 	this._checkOnScreen = function()
 	{
@@ -59,21 +55,7 @@ function AbstractWeaponEffect()
 			return false;
 		
 		return true;
-	}
-	
-	this._checkSoundVolume = function()
-	{
-		var len =  Math.sqrt(Math.pow((game.viewport_x + VIEWPORT_SIZE/2) - this._position_now.x, 2) + Math.pow((game.viewport_y + VIEWPORT_SIZE/2) - this._position_now.y, 2)),
-			half_screen_size = 316;
-		
-		if (len < half_screen_size)
-			return 1;
-		
-		if (len > half_screen_size*2)
-			return 0;
-		
-		return (1 - (len-half_screen_size)/half_screen_size);
-	}
+	};
 	
 	//Event functions
 	
@@ -91,7 +73,7 @@ function AbstractWeaponEffect()
 			if (dmg > 0)
 				game.objects[ids[i]].applyDamage(dmg);
 		}
-	}
+	};
 	
-	this.onObjectDeletion = function() {}
+	this.onObjectDeletion = function() {};
 }

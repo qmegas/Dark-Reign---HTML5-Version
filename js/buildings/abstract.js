@@ -568,6 +568,22 @@ AbstractBuilding.loadResources = function(obj)
 		game.resources.addImage(obj.res_key + '_shadow', 'images/buildings/'+obj.res_key+'/shadow.png');
 };
 
+AbstractBuilding.getById = function(obj_id)
+{
+	if (game.objects[obj_id] === undefined)
+		return null;
+		
+	if (!game.objects[obj_id].is_building)
+		return null;
+	
+	return game.objects[obj_id];
+};
+
+AbstractBuilding.isExists = function(obj_id)
+{
+	return (AbstractBuilding.getById(obj_id) !== null);
+};
+
 AbstractBuilding.setBuildingCommonOptions = function(obj)
 {
 	obj.prototype = new AbstractBuilding();

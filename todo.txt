@@ -1,5 +1,5 @@
 To do:
-	- Enable healing of the units
+	- Correct healing speed
 	- Do not select bridge if moving units on it
 	- Add more buildings
 
@@ -24,4 +24,4 @@ To do:
 
 - Known browser-related bugs
 	- Chrome: on unit selection there is an empty pixel on top-right corner
-	- Chrome 25: bug with audio element. When moving multiple units, it doesn't play.
+	- Chrome 25: glitch while playing sound of cloned audio element

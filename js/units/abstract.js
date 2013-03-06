@@ -88,15 +88,29 @@ function AbstractUnit(pos_x, pos_y, player)
 		};
 	};
 	
-	this.orderHeal = function(hospital_id, play_sound)
+	this.orderHeal = function(hospital, play_sound)
 	{
+		if (play_sound)
+			this._playSound('move');
+		
 		if (this.health >= this._proto.health_max)
 			return;
 		
-		var pos = game.objects[hospital_id].getCell();
+		var pos = hospital.getCell();
+		pos.y += 2;
 		
-		//@todo Heal unit when stopping
-		//this.move(pos.x + 2, pos.y, play_sound);
+		this.action = {
+			type: 'go_heal',
+			target_position: pos,
+			target_id: hospital.uid
+		};
+		this._move(pos.x, pos.y, false);
+	};
+	
+	this.orderWait = function(time)
+	{
+		this.state = 'WAITING';
+		this.action.wait_till = (new Date).getTime() + time;
 	};
 	
 	this._move = function(x, y) 
@@ -177,6 +191,17 @@ function AbstractUnit(pos_x, pos_y, player)
 				}
 				else
 					this.state = 'STAND';
+				break;
+				
+			case 'HEALING':
+				this.health++; //@todo Change it!
+				if (this.health >= this._proto.health_max)
+				{
+					this.health = this._proto.health_max;
+					game.resources.playOnPosition('healing', false, this.position, true);
+					var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 6, this.action.target_position.y, !this.is_fly);
+					this.orderMove(pos.x, pos.y);
+				}
 				break;
 				
 			default:
@@ -262,31 +287,6 @@ function AbstractUnit(pos_x, pos_y, player)
 		//Draw unit
 		switch (this.state)
 		{
-			case 'ATTACK':
-			case 'STAND':
-				if (this._proto.images.shadow)
-				{
-					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
-						res_key: this._proto.resource_key + '_stand_shadow',
-						src_x: (this._proto.images.shadow.stand.static_img) ? 0 : this.move_direction * this._proto.images.shadow.stand.size.x,
-						src_y: 0,
-						src_width: this._proto.images.shadow.stand.size.x,
-						src_height: this._proto.images.shadow.stand.size.y,
-						x: top_x - this._proto.images.shadow.stand.padding.x,
-						y: top_y - this._proto.images.shadow.stand.padding.y
-					});
-				}
-				game.objDraw.addElement(layer, this.position.x, {
-					res_key: this._proto.resource_key + '_stand',
-					src_x: this.move_direction * this._proto.images.stand.size.x,
-					src_y: 0,
-					src_width: this._proto.images.stand.size.x,
-					src_height: this._proto.images.stand.size.y,
-					x: top_x - this._proto.images.stand.padding.x,
-					y: top_y - this._proto.images.stand.padding.y
-				});
-				break;
-			
 			case 'MOVE':
 				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 6);
 				if (this._proto.images.shadow)
@@ -334,6 +334,30 @@ function AbstractUnit(pos_x, pos_y, player)
 					src_height: this._proto.images.attack.size.y,
 					x: top_x - this._proto.images.attack.padding.x,
 					y: top_y - this._proto.images.attack.padding.y
+				});
+				break;
+				
+			default:
+				if (this._proto.images.shadow)
+				{
+					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+						res_key: this._proto.resource_key + '_stand_shadow',
+						src_x: (this._proto.images.shadow.stand.static_img) ? 0 : this.move_direction * this._proto.images.shadow.stand.size.x,
+						src_y: 0,
+						src_width: this._proto.images.shadow.stand.size.x,
+						src_height: this._proto.images.shadow.stand.size.y,
+						x: top_x - this._proto.images.shadow.stand.padding.x,
+						y: top_y - this._proto.images.shadow.stand.padding.y
+					});
+				}
+				game.objDraw.addElement(layer, this.position.x, {
+					res_key: this._proto.resource_key + '_stand',
+					src_x: this.move_direction * this._proto.images.stand.size.x,
+					src_y: 0,
+					src_width: this._proto.images.stand.size.x,
+					src_height: this._proto.images.stand.size.y,
+					x: top_x - this._proto.images.stand.padding.x,
+					y: top_y - this._proto.images.stand.padding.y
 				});
 				break;
 		}
@@ -496,6 +520,17 @@ function AbstractUnit(pos_x, pos_y, player)
 				this.state = 'ATTACK';
 				break;
 				
+			case 'go_heal':
+				var cell = this.getCell();
+				if (cell.x==this.action.target_position.x && cell.y==this.action.target_position.y)
+				{
+					this.state = 'HEALING';
+					this.action.type = 'healing';
+				}
+				else
+					this.orderWait(1000);
+				break;
+				
 			default:
 				this.onStopMovingCustom();
 		}
@@ -506,11 +541,27 @@ function AbstractUnit(pos_x, pos_y, player)
 		this.markCellsOnMap(-1);
 	};
 	
-	//Abstract functions, do not touch it
+	this.afterWaiting = function()
+	{
+		switch (this.action.type)
+		{
+			case 'go_heal':
+				if (AbstractBuilding.isExists(this.action.target_id))
+					this._move(this.action.target_position.x, this.action.target_position.y, false);
+				else
+					this.orderStop();
+				break;
+			default:
+				this.afterWaitingCustom();
+				break;
+		}
+	};
+	
+	//Abstract functions
 	this.onStopMovingCustom = function(){};
 	this.beforeMoveNextCellCustom = function(){};
 	this.runCustom = function(){};
-	this.afterWaiting = function(){};
+	this.afterWaitingCustom = function(){};
 }
 
 AbstractUnit.createNew = function(obj, x, y, player, instant_build)

@@ -24,14 +24,8 @@ function LaserRifleEffect(from_x, from_y, to_x, to_y, offence)
 				this._start_animation = (new Date).getTime();
 				this._end_animation = this._start_animation + ANIMATION_SPEED*this._proto.blast_image_frames;
 				
-				if (this._proto.have_blast_sound) 
-				{
-					var volume = this._checkSoundVolume();
-					if (volume > 0)
-					{
-						game.resources.play(this._proto.resource_key + '_blast_snd', volume);
-					}
-				}
+				if (this._proto.have_blast_sound)
+					game.resources.playOnPosition(this._proto.resource_key + '_blast_snd', true, this._position_now, true);
 			}
 		}
 		else if (this.state == 'BLAST')
