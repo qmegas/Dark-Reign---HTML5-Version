@@ -344,7 +344,10 @@ var PathFinder = {
 	
 	findNearestEmptyCell: function(x, y, ground_unit)
 	{
-		var round, padding, cell;
+		var round, padding, cell = {x: x, y: y};
+		
+		if (this.checkCell(cell, ground_unit))
+			return cell;
 		
 		for (round = 1; round < 20; ++round)
 		{

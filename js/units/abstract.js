@@ -194,12 +194,12 @@ function AbstractUnit(pos_x, pos_y, player)
 				break;
 				
 			case 'HEALING':
-				this.health++; //@todo Change it!
+				this.health += HEAL_SPEED;
 				if (this.health >= this._proto.health_max)
 				{
 					this.health = this._proto.health_max;
 					game.resources.playOnPosition('healing', false, this.position, true);
-					var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 6, this.action.target_position.y, !this.is_fly);
+					var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 5, this.action.target_position.y, !this.is_fly);
 					this.orderMove(pos.x, pos.y);
 				}
 				break;
