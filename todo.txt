@@ -1,5 +1,4 @@
 To do:
-	- Correct healing speed
 	- Do not select bridge if moving units on it
 	- Add more buildings
 
@@ -17,6 +16,7 @@ To do:
 	- When construction building/unit, money should decrease gradually
 	- Unit production indicator on right panel looks not exactly as original one
 	- Add smooth animation on water indicator when selling water
+	- Add Light layer for PlasmaRifle blast animation
 
 - Very low priority bugs:
 	- When mouseover building or unit, it's name should be shown after small delay

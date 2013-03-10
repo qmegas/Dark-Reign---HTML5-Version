@@ -69,7 +69,7 @@ function FreighterUnit(pos_x, pos_y, player)
 		switch (this.state)
 		{
 			case 'MOVE':
-				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 3);
+				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.images.move.frames);
 				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
 					res_key: this._proto.resource_key + '_move',
 					src_x: this.move_direction * this._proto.images.move.size.x,
@@ -309,7 +309,8 @@ FreighterUnit.images = {
 	},
 	move: {
 		size: {x: 40, y: 40},
-		padding: {x: 8, y: 8}
+		padding: {x: 8, y: 8},
+		frames: 3
 	},
 	load: {
 		size: {x: 40, y: 40},

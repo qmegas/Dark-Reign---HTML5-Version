@@ -90,6 +90,9 @@ AbstractSimpleEffect.createUnitKillEffect = function(unit_proto, pos_pixel)
 		case 'splata_explosion':
 			effect = new SplatAEffect(ucenter);
 			break;
+		case 'splatb_explosion':
+			effect = new SplatBEffect(ucenter);
+			break;
 		case 'splatd_explosion':
 			effect = new SplatDEffect(ucenter);
 			break;

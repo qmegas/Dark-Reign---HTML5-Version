@@ -31,7 +31,10 @@ function AbstractUnit(pos_x, pos_y, player)
 		this.health = this._proto.health_max;
 		
 		if (this._proto.weapon != null)
-			this.weapon = new this._proto.weapon(this);
+		{
+			this.weapon = new this._proto.weapon();
+			this.weapon.init(this);
+		}
 	};
 	
 	this.getCell = function()
@@ -166,6 +169,7 @@ function AbstractUnit(pos_x, pos_y, player)
 					{
 						this.state = 'ATTACKING';
 						this.anim_attack_frame = 0;
+						this.startAnimation = 0;
 					}
 					else
 					{
@@ -182,8 +186,8 @@ function AbstractUnit(pos_x, pos_y, player)
 			case 'ATTACKING':
 				if (this.weapon.isTargetAlive())
 				{
-					this.anim_attack_frame += 0.5;
-					if (this.anim_attack_frame > 2) //There is 2 only frames by default
+					this.anim_attack_frame++;
+					if (this.anim_attack_frame == this._proto.images.attack.frames)
 					{
 						this.weapon.shoot();
 						this.state = 'ATTACK';
@@ -288,7 +292,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		switch (this.state)
 		{
 			case 'MOVE':
-				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % 6);
+				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.images.move.frames);
 				if (this._proto.images.shadow)
 				{
 					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
@@ -313,7 +317,7 @@ function AbstractUnit(pos_x, pos_y, player)
 				break;
 				
 			case 'ATTACKING':
-				diff = Math.floor(this.anim_attack_frame/2);
+				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.images.attack.frames);
 				if (this._proto.images.shadow)
 				{
 					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {

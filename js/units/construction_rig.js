@@ -80,7 +80,8 @@ ConstructionRigUnit.images = {
 	},
 	move: {
 		size: {x: 35, y: 35},
-		padding: {x: 7, y: 7}
+		padding: {x: 7, y: 7},
+		frames: 6
 	},
 	shadow: {
 		stand: {

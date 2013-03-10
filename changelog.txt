@@ -1,3 +1,8 @@
+Buold 33 (?)
+- Added Bion unit
+- Added Plasma Rifle for Bion unit
+- Fixed building upgrade bug
+
 Build 32 (06.03.2013)
 - Units now can die and buildings now can be destroyed
 - Added explosion effects for existing units

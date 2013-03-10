@@ -238,7 +238,8 @@ function Game()
 			
 		//Round 1: Put units to draw heap
 		for (unitid in onscreen)
-			this.objects[unitid].draw(cur_time);
+			if (this.objects[unitid] !== undefined)
+				this.objects[unitid].draw(cur_time);
 		
 		//Round 1.5: Put effects to draw heap
 		for (eindex in this.effects)
@@ -488,6 +489,7 @@ function Game()
 		//Some additional loads
 		SparksExplosionEffect.loadResources();
 		SplatAEffect.loadResources();
+		SplatBEffect.loadResources();
 		SplatDEffect.loadResources();
 		WaterSellEffect.loadResources();
 	};
@@ -543,7 +545,7 @@ function Game()
 			if (this.players[PLAYER_HUMAN].haveEnoughMoney(old_obj._proto.upgrade_to.cost))
 			{
 				pos = old_obj.getCell();
-				new_obj = new old_obj._proto.upgrade_to(pos.x + old_obj._proto.cell_padding.x, pos.y + old_obj._proto.cell_padding.y, old_obj.player);
+				new_obj = new old_obj._proto.upgrade_to(pos.x, pos.y, old_obj.player);
 			
 				new_obj.uid = old_obj.uid;
 				delete old_obj;

@@ -22,11 +22,13 @@ GuardianUnit.images = {
 	},
 	move: {
 		size: {x: 26, y: 26},
-		padding: {x: 1, y: 1}
+		padding: {x: 1, y: 1},
+		frames: 6
 	},
 	attack: {
 		size: {x: 26, y: 26},
-		padding: {x: 1, y: 1}
+		padding: {x: 1, y: 1},
+		frames: 2
 	},
 	shadow: {
 		stand: {
@@ -49,7 +51,6 @@ GuardianUnit.images = {
 
 GuardianUnit.cost = 150;
 GuardianUnit.health_max = 100;
-GuardianUnit.speed = 1.371;
 GuardianUnit.weapon = LaserRifleWeapon;
 GuardianUnit.is_human = true;
 GuardianUnit.shield_type = 'PowerHumanWet';
