@@ -19,7 +19,7 @@ function HorizontalBridgeBuilding(pos_x, pos_y, player)
 				this._runStandartSell();
 				break;
 		}
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(HorizontalBridgeBuilding);

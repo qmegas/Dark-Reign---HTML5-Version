@@ -45,6 +45,7 @@ HeadquarterBuilding.build_time = 15;
 HeadquarterBuilding.energy = 100;
 HeadquarterBuilding.enabled = true;
 HeadquarterBuilding.can_build = true;
+HeadquarterBuilding.crater = 4;
 
 HeadquarterBuilding.cell_size = {x: 5, y: 4};
 HeadquarterBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];

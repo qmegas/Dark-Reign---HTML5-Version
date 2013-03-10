@@ -38,7 +38,9 @@ function AbstractBuilding()
 		
 		if (this.health <= 0)
 		{
-			//@todo Create crater
+			if (this._proto.crater > 0)
+				CraterEffect.create(this._proto.crater, this.position);
+			
 			this.onDestructed();
 			game.kill_objects.push(this.uid);
 		}
@@ -600,6 +602,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.count = 0;
 	obj.is_bridge = false;
 	obj.shield_type = 'BuildingArmour';
+	obj.crater = 0;
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare

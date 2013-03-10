@@ -486,7 +486,8 @@ function Game()
 		this.constructor.loadUnitResources();
 		this.constructor.loadBuildingResources();
 		
-		//Some additional loads
+		//Effects
+		CraterEffect.loadResources();
 		SparksExplosionEffect.loadResources();
 		SplatAEffect.loadResources();
 		SplatBEffect.loadResources();
