@@ -22,7 +22,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 				this._runStandartSell();
 				break;
 		}
-	}
+	};
 	
 	//Custom selection bar
 	this.drawSelection = function(is_onmouse)
@@ -44,7 +44,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 		
 		game.viewport_ctx.fillStyle = '#00a5ff';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 47 - water_h, 2, water_h);
-	}
+	};
 	
 	this.onConstructed = function() 
 	{
@@ -52,12 +52,12 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 		AbstractUnit
 			.createNew(FreighterUnit, cell.x + 3, cell.y + 1, this.player, true)
 			.orderHarvest(this);
-	}
+	};
 	
 	this.isHarvestPlatform = function()
 	{
 		return true;
-	}
+	};
 	
 	this.increaseRes = function(amount)
 	{
@@ -70,7 +70,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 			this.sellWater();
 		
 		return incr;
-	}
+	};
 	
 	this.sellWater = function()
 	{
@@ -92,7 +92,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 			if (this.player == PLAYER_HUMAN)
 				game.energyDraw.waterReset();
 		}
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(WaterLaunchPadBuilding);
@@ -106,6 +106,7 @@ WaterLaunchPadBuilding.build_time = 25;
 WaterLaunchPadBuilding.energy = 100;
 WaterLaunchPadBuilding.enabled = true;
 WaterLaunchPadBuilding.can_build = true;
+WaterLaunchPadBuilding.crater = 1;
 
 WaterLaunchPadBuilding.cell_size = {x: 5, y: 3};
 WaterLaunchPadBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0];

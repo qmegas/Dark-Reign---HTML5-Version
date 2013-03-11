@@ -20,7 +20,7 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 		else
 		{
 			this._playSound('move');
-			var pos = PathFinder.findNearestEmptyCell(x + build.cell_padding.x, y + build.cell_padding.y, !this.is_fly);
+			var pos = PathFinder.findNearestStandCell(x + build.cell_padding.x, y + build.cell_padding.y);
 			if (pos !== null)
 				this._move(pos.x, pos.y);
 		}
@@ -56,6 +56,7 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 			else
 			{
 				//Allow to stand near building site for bridges
+				//@todo Move it into _isBuldingCell function
 				if (this.action.object.is_bridge)
 				{
 					pos.x++; //Right

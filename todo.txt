@@ -1,16 +1,11 @@
 To do:
-	- Create craters when building destroyed
-	- Complete bridge mechanism
-		- Ground changing on bridge construction
-		- Ground changing on bridge destruction
-		- Mouse changing if unit moved on bridge
-	- Do not select bridge if moving units on it
-	- Add more buildings
+	- Change unit production mechanism
+	- Production cancellation
 
 - High priority bugs:
+	- Building destruction should recalculate unit availability
 
 - Medium priority bugs:
-	- When creating Camera Tower & bridges need not to destroy construction rig
 	- Increase building health on construction
 
 - Low priority bugs:

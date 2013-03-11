@@ -36,7 +36,7 @@ function AssemblyPlant2Building(pos_x, pos_y, player)
 				this._runStandartSell();
 				break;
 		}
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(AssemblyPlant2Building);
@@ -48,6 +48,7 @@ AssemblyPlant2Building.sell_cost = 1762;
 AssemblyPlant2Building.health_max = 2400;
 AssemblyPlant2Building.build_time = 50;
 AssemblyPlant2Building.energy = 100;
+AssemblyPlant2Building.crater = 4;
 
 AssemblyPlant2Building.cell_size = {x: 5, y: 5};
 AssemblyPlant2Building.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];

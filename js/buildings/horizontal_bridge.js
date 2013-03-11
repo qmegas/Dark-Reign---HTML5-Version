@@ -20,6 +20,17 @@ function HorizontalBridgeBuilding(pos_x, pos_y, player)
 				break;
 		}
 	};
+	
+	this.onConstructed = function()
+	{
+		BridgeTypeBuilding.changeLandType(this);
+	};
+	
+	this.onObjectDeletion = function() 
+	{
+		this.markCellsOnMap(-1);
+		BridgeTypeBuilding.restoreLandType(this);
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(HorizontalBridgeBuilding);
@@ -34,6 +45,7 @@ HorizontalBridgeBuilding.energy = 0;
 HorizontalBridgeBuilding.enabled = true;
 HorizontalBridgeBuilding.can_build = true;
 HorizontalBridgeBuilding.is_bridge = true;
+HorizontalBridgeBuilding.is_built_from_edge = true;
 
 HorizontalBridgeBuilding.cell_size = {x: 3, y: 4};
 HorizontalBridgeBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1];

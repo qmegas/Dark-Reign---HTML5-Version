@@ -22,7 +22,6 @@ function Game()
 	this.selected_info = {};
 	
 	//Drawers
-	this.mouse = new MousePointer(this);
 	this.fontDraw = new DKFont();
 	this.objDraw = new ObjectDraw();
 	this.notifications = new SoundQueue();
@@ -95,6 +94,7 @@ function Game()
 		for (var x=0; x<level.size.x; ++x)
 			for (var y=0; y<level.size.y; ++y)
 				this.level.map_cells[x][y] = {
+					original_type: this.level.map_cells[x][y], 
 					type: this.level.map_cells[x][y], 
 					ground_unit: -1,
 					fly_unit: -1,
@@ -254,7 +254,7 @@ function Game()
 				this.objects[unitid].drawSelection();
 		
 		//Round 4: On mouse selection
-		var mouse_pos = this.mouse.getCellPosition();
+		var mouse_pos = MousePointer.getCellPosition();
 		unitid = MapCell.getSingleUserId(this.level.map_cells[mouse_pos.x][mouse_pos.y]);
 		if (unitid != -1) // && !this.objects[unitid].is_selected)
 			this.objects[unitid].drawSelection(true);
@@ -340,7 +340,7 @@ function Game()
 		}
 
 		//Mouse
-		this.mouse.draw(cur_time);
+		MousePointer.draw(cur_time);
 		
 		//Once per second update shell info
 		if ((cur_time - this.shell_update_time) > 1000)
@@ -382,7 +382,7 @@ function Game()
 	
 	this.onClick = function(button)
 	{
-		var pos = this.mouse.getCellPosition();
+		var pos = MousePointer.getCellPosition();
 		
 		if (button == 'left')
 		{
@@ -392,8 +392,7 @@ function Game()
 			
 			//If not new selection move selected units
 			if (cunit==-1 && this.selected_objects.length>0 && !this.selected_info.is_building)
-				for (var i in this.selected_objects)
-					this.objects[this.selected_objects[i]].orderMove(pos.x, pos.y, (i==0));
+				this.moveSelectedUnits(pos);
 		}
 		else
 		{
@@ -411,6 +410,12 @@ function Game()
 					break;
 			}
 		}
+	};
+	
+	this.moveSelectedUnits = function(pos)
+	{
+		for (var i in this.selected_objects)
+			this.objects[this.selected_objects[i]].orderMove(pos.x, pos.y, (i==0));
 	};
 	
 	this.regionSelect = function (x1, y1, x2, y2)
@@ -466,6 +471,9 @@ function Game()
 	
 	this._loadGameResources = function()
 	{
+		//Mouse
+		MousePointer.loadResources();
+		
 		//Map objects
 		for (var i in this.level.map_object_proto)
 			this.resources.addImage('mapobj_'+i, this.level.map_object_proto[i].image);
@@ -800,18 +808,17 @@ $(function(){
 	});
 	$('#viewport').mousedown(function(event){
 		if (event.button == 0)
-			game.mouse.selectionStart();
+			MousePointer.selectionStart();
 	});
 	$('#viewport').mouseup(function(event){
 		if (event.button == 0)
-			game.mouse.selectionStop();
+			MousePointer.selectionStop();
 	});
 	$('#viewport').mouseout(function(){
-		game.mouse.show_cursor = false;
+		MousePointer.show_cursor = false;
 	});
 	$('#viewport').mousemove(function(event){
-		game.mouse.show_cursor = true;
-		game.mouse.position = {x: event.layerX, y: event.layerY};
+		MousePointer.setPosition(event);
 	});
 	
 	$(document).keydown(function(event) {

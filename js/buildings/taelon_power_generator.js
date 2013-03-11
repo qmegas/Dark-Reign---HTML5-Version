@@ -22,7 +22,7 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 				this._runStandartSell();
 				break;
 		}
-	}
+	};
 	
 	this.onConstructed = function() 
 	{
@@ -34,12 +34,12 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 		AbstractUnit
 			.createNew(FreighterUnit, cell.x + 1, cell.y + 2, this.player, true)
 			.orderHarvest(this);
-	}
+	};
 	
 	this.onDestructed = function()
 	{
 		game.players[this.player].energyAddMax(-1*this.res_now);
-	}
+	};
 	
 	//Custom selection bar
 	this.drawSelection = function(is_onmouse)
@@ -61,19 +61,19 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 		
 		game.viewport_ctx.fillStyle = '#ffff00';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 59 - taelon_h, 2, taelon_h);
-	}
+	};
 	
 	this.isHarvestPlatform = function()
 	{
 		return true;
-	}
+	};
 	
 	this.increaseRes = function(amount)
 	{
 		var incr = this._standardIncreaseRes(amount);
 		game.players[this.player].energyAddMax(incr);
 		return incr;
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(TaelonPowerBuilding);
@@ -86,6 +86,7 @@ TaelonPowerBuilding.health_max = 1450;
 TaelonPowerBuilding.build_time = 20;
 TaelonPowerBuilding.enabled = true;
 TaelonPowerBuilding.can_build = true;
+TaelonPowerBuilding.crater = 1;
 
 TaelonPowerBuilding.cell_size = {x: 4, y: 4};
 TaelonPowerBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1];

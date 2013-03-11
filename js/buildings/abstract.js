@@ -38,9 +38,10 @@ function AbstractBuilding()
 		
 		if (this.health <= 0)
 		{
-			if (this._proto.crater > 0)
-				CraterEffect.create(this._proto.crater, this.position);
+			if (this._proto.crater > -1)
+				CraterEffect.create(this);
 			
+			this._removingRecalc(this._proto);
 			this.onDestructed();
 			game.kill_objects.push(this.uid);
 		}
@@ -332,6 +333,12 @@ function AbstractBuilding()
 			game.players[this.player].energyAddCurrent(this._proto.energy);
 			this.state = 'NORMAL';
 			
+			if (this._proto.is_built_from_edge)
+			{
+				var cell = this.getCell(), pos = PathFinder.findNearestStandCell(cell.x, cell.y);
+				AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
+			}
+			
 			this.onConstructed();
 		}
 	};
@@ -342,11 +349,16 @@ function AbstractBuilding()
 		{
 			var cell = this.getCell();
 			
-			this._sellRecalc(this._proto);
+			this._removingRecalc(this._proto);
 			
 			game.players[this.player].addMoney(this._proto.sell_cost);
 			game.constructor.recalcUnitAvailability();
-			AbstractUnit.createNew(ConstructionRigUnit, cell.x + 2, cell.y + 2, this.player, true);
+			
+			if (!this._proto.is_built_from_edge)
+			{
+				var pos = PathFinder.findNearestStandCell(cell.x + 2, cell.y + 2);
+				AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
+			}
 			
 			this.onDestructed();
 			
@@ -354,13 +366,13 @@ function AbstractBuilding()
 		}
 	};
 	
-	this._sellRecalc = function(obj_proto)
+	this._removingRecalc = function(obj_proto)
 	{
 		obj_proto.count--;
 		game.players[this.player].energyAddCurrent(-1*obj_proto.energy);
 		
 		if (obj_proto.upgrade_from !== null)
-			this._sellRecalc(obj_proto.upgrade_from);
+			this._removingRecalc(obj_proto.upgrade_from);
 	};
 	
 	this._runStandartProducing = function()
@@ -454,9 +466,6 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 		
 	var i = -1;
 	
-	x -= obj.cell_padding.x;
-	y -= obj.cell_padding.y;
-	
 	game.viewport_ctx.drawImage(
 		game.resources.get(obj.res_key), 0, obj.image_size.y, 
 		obj.image_size.x, obj.image_size.y, 
@@ -522,16 +531,16 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 
 AbstractBuilding.canBuild = function(obj, x, y, unit)
 {
-	if (obj.is_bridge)
-		return BridgeTypeBuilding.canBuild(obj, x, y, unit);
-	
-	var i = -1;
-	
 	if (!game.players[PLAYER_HUMAN].haveEnoughMoney(obj.cost))
 		return false;
 	
 	if (!obj.enabled)
 		return false;
+	
+	if (obj.is_bridge)
+		return BridgeTypeBuilding.canBuild(obj, x, y, unit);
+	
+	var i = -1;
 	
 	for (var xx = 0; xx<obj.cell_size.x; ++xx)
 	{
@@ -602,7 +611,8 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.count = 0;
 	obj.is_bridge = false;
 	obj.shield_type = 'BuildingArmour';
-	obj.crater = 0;
+	obj.crater = -1;
+	obj.is_built_from_edge = false;
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare

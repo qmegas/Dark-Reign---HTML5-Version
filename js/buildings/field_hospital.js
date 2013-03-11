@@ -19,7 +19,7 @@ function FieldHospitalBuilding(pos_x, pos_y, player)
 				this._runStandartSell();
 				break;
 		}
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(FieldHospitalBuilding);
@@ -33,6 +33,7 @@ FieldHospitalBuilding.build_time = 10;
 FieldHospitalBuilding.energy = 100;
 FieldHospitalBuilding.enabled = false;
 FieldHospitalBuilding.can_build = true;
+FieldHospitalBuilding.crater = 2;
 
 FieldHospitalBuilding.cell_size = {x: 4, y: 3};
 FieldHospitalBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,0,1,1];

@@ -33,7 +33,7 @@ function TrainingFacility2Building(pos_x, pos_y, player)
 				this._runStandartSell();
 				break;
 		}
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(TrainingFacility2Building);
@@ -45,6 +45,7 @@ TrainingFacility2Building.sell_cost = 843;
 TrainingFacility2Building.health_max = 1800;
 TrainingFacility2Building.build_time = 15;
 TrainingFacility2Building.energy = 100;
+TrainingFacility2Building.crater = 2;
 
 TrainingFacility2Building.cell_size = {x: 5, y: 5};
 TrainingFacility2Building.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1];

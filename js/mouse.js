@@ -1,21 +1,23 @@
-function MousePointer(game)
-{
-	this.type = 0; //0 - simple
-	this.show_cursor = false;
-	this.position = {x: 0, y: 0};
+var MousePointer = {
+	type: 0, //0 - simple
+	show_cursor: false,
+	position: {x: 0, y: 0},
 	
-	this.draw_time = 0;
-	this.draw_frame = 0;
+	draw_time: 0,
+	draw_frame: 0,
 	
-	this.is_selection = false;
-	this.selection_start_pos = {};
+	is_selection: false,
+	selection_start_pos: {},
 	
-	this.panning_region_time = 0;
-	this.direction_to_cursor = [18, 20, 16, 0, 22, 0, 21, 0, 17, 19, 15];
+	panning_region_time: 0,
+	direction_to_cursor: [18, 20, 16, 0, 22, 0, 21, 0, 17, 19, 15],
 	
-	game.resources.addImage('cursors', 'images/cursors.png');
+	setPosition: function(event){
+		this.show_cursor = true;
+		this.position = {x: event.layerX, y: event.layerY};
+	},
 	
-	this.draw = function(current_time)
+	draw: function(current_time)
 	{
 		if (!this.show_cursor)
 		{
@@ -88,12 +90,10 @@ function MousePointer(game)
 							cur_icon = 12;
 						else
 							cur_icon = 11;
-						this._drawCursor(current_time, cur_icon, 4);
+						return this._drawCursor(current_time, cur_icon, 4);
 					}
-					else
-						this._drawCursor(current_time, this.direction_to_cursor[(move_x+1)*4 + (move_y+1)], 7);
 					
-					return;
+					return this._drawCursor(current_time, this.direction_to_cursor[(move_x+1)*4 + (move_y+1)], 7);
 				}
 			}
 			else
@@ -101,66 +101,68 @@ function MousePointer(game)
 		}
 		
 		var pos = this.getCellPosition(), ptype;
+		//Actions
 		if (game.action_state != ACTION_STATE_NONE)
 		{
 			switch (game.action_state)
 			{
 				case ACTION_STATE_SELL:
-					this._drawCursor(current_time, 6, 6);
-					break;
+					return this._drawCursor(current_time, 6, 6);
 				case ACTION_STATE_POWER:
-					this._drawCursor(current_time, 5, 8);
-					break;
+					return this._drawCursor(current_time, 5, 8);
 				case ACTION_STATE_BUILD:
+					pos.x -= game.action_state_options.object.cell_padding.x;
+					pos.y -= game.action_state_options.object.cell_padding.y;
 					AbstractBuilding.drawBuildMouse(game.action_state_options.object, pos.x, pos.y);
-					this._drawCursor(current_time, 7, 1);
-					break;
+					return this._drawCursor(current_time, 7, 1);
 				case ACTION_STATE_REPAIR:
-					this._drawCursor(current_time, 8, 9);
-					break;
+					return this._drawCursor(current_time, 8, 9);
 				case ACTION_STATE_ATTACK:
 					if (game.selected_info.can_attack_ground)
-						this._drawCursor(current_time, 3, 8);
+						return this._drawCursor(current_time, 3, 8);
 					else
-						this._drawCursor(current_time, 4, 2);
-					break;
+						return this._drawCursor(current_time, 4, 2);
 			}
 		}
-		else if (MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]) != -1)
+		
+		//On object
+		var objid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+		if (objid != -1)
 		{
-			var objid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]), draw_default = false;
 			if (game.objects[objid].is_building)
 			{
-				if (game.selected_info.harvesters && game.objects[objid].isHarvestPlatform())
-					this._drawCursor(current_time, 9, 8);
+				if (
+					game.objects[objid]._proto.is_bridge && 
+					game.selected_objects.length>0 && 
+					!game.selected_info.is_building && 
+					game.level.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY
+				)
+					return this._drawCursor(current_time, 2, 7);
+				else if (game.selected_info.harvesters && game.objects[objid].isHarvestPlatform())
+					return this._drawCursor(current_time, 9, 8);
 				else if (game.selected_info.humans && game.objects[objid]._proto === FieldHospitalBuilding)
-					this._drawCursor(current_time, 10, 5);
-				else 
-					draw_default = true;
+					return this._drawCursor(current_time, 10, 5);
 			}	
-			else
-				draw_default = true;
 			
-			if (draw_default)
-				this._drawCursor(current_time, 1, 8);
+			return this._drawCursor(current_time, 1, 8);
 		}
-		else if (game.selected_objects.length>0 && !game.selected_info.is_building)
+		
+		//Ground
+		if (game.selected_objects.length>0 && !game.selected_info.is_building)
 		{
-			ptype = game.level.map_cells[pos.x][pos.y].type
+			ptype = game.level.map_cells[pos.x][pos.y].type;
 			if (!game.selected_info.is_fly && (ptype==CELL_TYPE_WATER || ptype==CELL_TYPE_NOWALK))
-				this._drawCursor(current_time, 4, 2);
+				return this._drawCursor(current_time, 4, 2);
 			else
-				this._drawCursor(current_time, 2, 7);
+				return this._drawCursor(current_time, 2, 7);
 		}
-		else
-		{
-			//Normal cursor
-			this.draw_frame = 0;
-			game.viewport_ctx.drawImage(game.resources.get('cursors'), 0, 0, 17, 24, this.position.x, this.position.y, 17, 24);
-		}
-	}
-	
-	this._drawCursor = function(current_time, cursorid, frames)
+		
+		//Normal cursor
+		this.draw_frame = 0;
+		game.viewport_ctx.drawImage(game.resources.get('cursors'), 0, 0, 17, 24, this.position.x, this.position.y, 17, 24);
+	},
+		
+	_drawCursor: function(current_time, cursorid, frames)
 	{
 		if ((current_time - this.draw_time) > 100)
 		{
@@ -171,17 +173,19 @@ function MousePointer(game)
 			game.resources.get('cursors'), this.draw_frame*32, cursorid*32, 32, 32, 
 			this.position.x - 16, this.position.y - 16, 32, 32
 		);
-	}
+			
+		return true;
+	},	
 	
-	this.getCellPosition = function()
+	getCellPosition: function()
 	{
 		return {
 			x: Math.floor((this.position.x + game.viewport_x)/CELL_SIZE), 
 			y: Math.floor((this.position.y + game.viewport_y)/CELL_SIZE)
 		};
-	}
-	
-	this.selectionStart = function()
+	},
+		
+	selectionStart: function()
 	{
 		switch (game.action_state)
 		{
@@ -193,9 +197,9 @@ function MousePointer(game)
 				};
 				break;
 		}
-	}
-	
-	this.selectionStop = function()
+	},
+		
+	selectionStop: function()
 	{
 		var pos = this.getCellPosition(), unitid;
 		
@@ -209,19 +213,39 @@ function MousePointer(game)
 				if (Math.abs(sizes.width)<4 && Math.abs(sizes.height)<4)
 				{
 					unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
-					//Is harvesting?
-					if (unitid!=-1 && game.objects[unitid].is_building && game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
+					
+					if (unitid!=-1 && game.objects[unitid].is_building)
 					{
-						for (var i in game.selected_objects)
-							game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
+						//Is a bridge?
+						if (
+							game.objects[unitid]._proto.is_bridge && 
+							game.selected_objects.length>0 && 
+							!game.selected_info.is_building && 
+							game.level.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY)
+						{
+							game.moveSelectedUnits(pos);
+							return;
+						}
+						
+						//Is harvesting?
+						if (game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
+						{
+							for (var i in game.selected_objects)
+								game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
+							return;
+						}
 					}
-					else if (unitid!=-1 && game.selected_info.humans && game.objects[unitid]._proto === FieldHospitalBuilding) //Heal humans ?
+					
+					//Is healing humans?
+					if (unitid!=-1 && game.selected_info.humans && game.objects[unitid]._proto === FieldHospitalBuilding)
 					{
 						for (var i in game.selected_objects)
 							game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
+						return;
 					}
-					else
-						game.onClick('left');
+					
+					//Move or select unit
+					game.onClick('left');
 				}
 				else
 				{
@@ -263,13 +287,18 @@ function MousePointer(game)
 				game.toggleActionState(ACTION_STATE_ATTACK);
 				break;
 		}
-	}
-	
-	this._getSelectionSize = function()
+	},
+		
+	_getSelectionSize: function()
 	{
 		return {
 			width: game.viewport_x + this.position.x - this.selection_start_pos.x + 0.5,
 			height: game.viewport_y + this.position.y - this.selection_start_pos.y + 0.5
 		};
+	},
+		
+	loadResources: function()
+	{
+		game.resources.addImage('cursors', 'images/cursors.png');
 	}
-}
+};

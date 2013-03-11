@@ -31,7 +31,7 @@ function TrainingFacilityBuilding(pos_x, pos_y, player)
 				this._runStandartSell();
 				break;
 		}
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(TrainingFacilityBuilding);
@@ -44,6 +44,7 @@ TrainingFacilityBuilding.health_max = 900;
 TrainingFacilityBuilding.build_time = 15;
 TrainingFacilityBuilding.energy = 100;
 TrainingFacilityBuilding.can_build = true;
+TrainingFacilityBuilding.crater = 3;
 
 TrainingFacilityBuilding.cell_size = {x: 5, y: 5};
 TrainingFacilityBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1];

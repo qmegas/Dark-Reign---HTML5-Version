@@ -13,13 +13,13 @@ var GraphNodeType = {
 // Creates a Graph class used in the astar search algorithm.
 function Graph(grid, ground_unit, avoid_others) 
 {
-	var nodes = [], type;
+	var nodes = [], type, x, y, row;
 
-	for (var x = 0; x < grid.length; x++) 
+	for (x = 0; x < grid.length; x++) 
 	{
 		nodes[x] = [];
         
-		for (var y = 0, row = grid[x]; y < row.length; y++)
+		for (y = 0, row = grid[x]; y < row.length; y++)
 		{
 			type = 1;
 			if (ground_unit)
@@ -27,7 +27,7 @@ function Graph(grid, ground_unit, avoid_others)
 				if  (row[y].type==CELL_TYPE_WATER || row[y].type==CELL_TYPE_NOWALK || row[y].type==CELL_TYPE_BUILDING)
 					type = 0;
 				if (avoid_others && row[y].ground_unit != -1)
-					type = 0
+					type = 0;
 			}
 			else if (avoid_others && row[y].fly_unit != -1)
 				type = 0;
@@ -333,6 +333,8 @@ var astar = {
 
 
 var PathFinder = {
+	_current_empty_cell_func: null,
+		
 	findPath: function(from_x, from_y, to_x, to_y, ground_unit, avoid_others)
 	{	
 		var graph = new Graph(game.level.map_cells, ground_unit, avoid_others);
@@ -341,12 +343,24 @@ var PathFinder = {
 		
 		return astar.search(graph.nodes, start, end);
 	},
-	
+		
 	findNearestEmptyCell: function(x, y, ground_unit)
+	{
+		this._current_empty_cell_func = this._isAnyUnit;
+		return this._findNearestEmptyCell(x, y, ground_unit);
+	},
+		
+	findNearestStandCell: function(x, y)
+	{
+		this._current_empty_cell_func = this._isGroundOnly;
+		return this._findNearestEmptyCell(x, y, true);
+	},
+	
+	_findNearestEmptyCell: function(x, y, ground_unit)
 	{
 		var round, padding, cell = {x: x, y: y};
 		
-		if (this.checkCell(cell, ground_unit))
+		if (this._checkCell(cell, ground_unit))
 			return cell;
 		
 		for (round = 1; round < 20; ++round)
@@ -355,45 +369,45 @@ var PathFinder = {
 			{
 				//left
 				cell = {x: x - round, y: y - padding};
-				if (this.checkCell(cell, ground_unit))
+				if (this._checkCell(cell, ground_unit))
 					return cell;
 				if (padding>0 && padding<round)
 				{
 					cell = {x: x - round, y: y + padding};
-					if (this.checkCell(cell, ground_unit))
+					if (this._checkCell(cell, ground_unit))
 						return cell;
 				}
 				
 				//right
 				cell = {x: x + round, y: y - padding};
-				if (this.checkCell(cell, ground_unit))
+				if (this._checkCell(cell, ground_unit))
 					return cell;
 				if (padding>0 && padding<round)
 				{
 					cell = {x: x + round, y: y + padding};
-					if (this.checkCell(cell, ground_unit))
+					if (this._checkCell(cell, ground_unit))
 						return cell;
 				}
 				
 				//Top
 				cell = {x: x + padding, y: y - round};
-				if (this.checkCell(cell, ground_unit))
+				if (this._checkCell(cell, ground_unit))
 					return cell;
 				if (padding>0 && padding<round)
 				{
 					cell = {x: x - padding, y: y - round};
-					if (this.checkCell(cell, ground_unit))
+					if (this._checkCell(cell, ground_unit))
 						return cell;
 				}
 				
 				//Bottom
 				cell = {x: x + padding, y: y + round};
-				if (this.checkCell(cell, ground_unit))
+				if (this._checkCell(cell, ground_unit))
 					return cell;
 				if (padding>0 && padding<=round)
 				{
 					cell = {x: x - padding, y: y + round};
-					if (this.checkCell(cell, ground_unit))
+					if (this._checkCell(cell, ground_unit))
 						return cell;
 				}
 			}
@@ -402,7 +416,7 @@ var PathFinder = {
 		return null;
 	},
 	
-	checkCell: function(cell, ground_unit)
+	_checkCell: function(cell, ground_unit)
 	{
 		if (!MapCell.isCorrectCord(cell.x, cell.y))
 			return false;
@@ -410,12 +424,22 @@ var PathFinder = {
 		var m_cell = game.level.map_cells[cell.x][cell.y];
 		
 		if (ground_unit)
-			if ((m_cell.type == CELL_TYPE_WATER) || (m_cell.type == CELL_TYPE_NOWALK))
+			if ((m_cell.type == CELL_TYPE_WATER) || (m_cell.type == CELL_TYPE_NOWALK) || (m_cell.type == CELL_TYPE_BUILDING))
 				return false;
 		
-		if (MapCell.getSingleUserId(m_cell) != -1)
+		if (this._current_empty_cell_func(m_cell))
 			return false;
 		
 		return true;
+	},
+		
+	_isAnyUnit: function(m_cell)
+	{
+		return (MapCell.getSingleUserId(m_cell) != -1);
+	},
+		
+	_isGroundOnly: function(m_cell)
+	{
+		return (m_cell.ground_unit != -1);
 	}
 };

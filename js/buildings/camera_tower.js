@@ -19,7 +19,7 @@ function CameraTowerBuilding(pos_x, pos_y, player)
 				this._runStandartSell();
 				break;
 		}
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(CameraTowerBuilding);
@@ -32,6 +32,8 @@ CameraTowerBuilding.health_max = 150;
 CameraTowerBuilding.build_time = 4;
 CameraTowerBuilding.energy = 50;
 CameraTowerBuilding.can_build = true;
+CameraTowerBuilding.crater = 0;
+CameraTowerBuilding.is_built_from_edge = true;
 
 CameraTowerBuilding.cell_size = {x: 1, y: 2};
 CameraTowerBuilding.cell_matrix = [1,1];

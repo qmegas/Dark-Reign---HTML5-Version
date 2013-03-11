@@ -47,6 +47,7 @@ AssemblyPlantBuilding.health_max = 1200;
 AssemblyPlantBuilding.build_time = 44;
 AssemblyPlantBuilding.energy = 100;
 AssemblyPlantBuilding.can_build = true;
+AssemblyPlantBuilding.crater = 4;
 
 AssemblyPlantBuilding.cell_size = {x: 5, y: 5};
 AssemblyPlantBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];

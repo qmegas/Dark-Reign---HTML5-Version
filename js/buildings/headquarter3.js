@@ -45,6 +45,7 @@ Headquarter3Building.sell_cost = 1124;
 Headquarter3Building.health_max = 4330;
 Headquarter3Building.build_time = 25;
 Headquarter3Building.energy = 100;
+Headquarter3Building.crater = 4;
 
 Headquarter3Building.cell_size = {x: 5, y: 4};
 Headquarter3Building.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
