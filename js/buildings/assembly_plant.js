@@ -4,9 +4,6 @@ function AssemblyPlantBuilding(pos_x, pos_y, player)
 	this.player = player;
 	this.health = this._proto.health_max;
 	
-	this.producing_queue = [];
-	this.producing_start = 0;
-	
 	this.init(pos_x, pos_y);
 	this.setActionTime(this._proto.build_time);
 	
@@ -16,18 +13,6 @@ function AssemblyPlantBuilding(pos_x, pos_y, player)
 		{
 			case 'CONSTRUCTION':
 				this._runStandartConstruction();
-				break;
-				
-			case 'PRODUCING':
-				this._runStandartProducing();
-				break;
-				
-			case 'NORMAL':
-				if (this.producing_queue.length > 0)
-				{
-					this.producing_start = (new Date()).getTime();
-					this.state = 'PRODUCING';
-				}
 				break;
 				
 			case 'SELL':

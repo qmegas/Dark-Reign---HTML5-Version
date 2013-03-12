@@ -1,9 +1,7 @@
 To do:
-	- Change unit production mechanism
-	- Production cancellation
+	- Guard towers
 
 - High priority bugs:
-	- Building destruction should recalculate unit availability
 
 - Medium priority bugs:
 	- Increase building health on construction

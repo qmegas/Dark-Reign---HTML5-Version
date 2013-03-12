@@ -17,18 +17,6 @@ function Headquarter2Building(pos_x, pos_y, player)
 				this._runStandartConstruction();
 				break;
 				
-			case 'PRODUCING':
-				this._runStandartProducing();
-				break;
-				
-			case 'NORMAL':
-				if (this.producing_queue.length > 0)
-				{
-					this.producing_start = (new Date()).getTime();
-					this.state = 'PRODUCING';
-				}
-				break;
-				
 			case 'SELL':
 				this._runStandartSell();
 				break;

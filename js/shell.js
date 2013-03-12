@@ -185,7 +185,7 @@ function Game()
 		
 		//Move viewport
 		var move_x = this.viewport_move_x, move_y = this.viewport_move_y;
-		if (this.debug.mouse_panning && this.mouse.show_cursor)
+		if (this.debug.mouse_panning && MousePointer.show_cursor)
 		{
 			if (this.viewport_move_mouse_x != 0)
 				move_x = this.viewport_move_mouse_x;
@@ -753,7 +753,12 @@ $(function(){
 	
 	$('.unit-image').click(function(){
 		var cellid = $(this).parent('div').attr('data-cell');
-		game.constructor.cellClick(cellid);
+		game.constructor.cellClick(cellid, 'left');
+	});
+	$('.unit-image').bind('contextmenu', function(){
+		var cellid = $(this).parent('div').attr('data-cell');
+		game.constructor.cellClick(cellid, 'right');
+		return false;
 	});
 	$('.unit-image').mouseover(function(){
 		var cellid = $(this).parent('div').attr('data-cell'), position = $(this).offset();

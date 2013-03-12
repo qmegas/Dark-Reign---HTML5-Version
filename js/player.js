@@ -8,34 +8,34 @@ function Player(map_color)
 	this.getMapColor = function()
 	{
 		return this._map_color;
-	}
+	};
 	
 	this.addMoney = function(num)
 	{
-		this._money += num;
+		this._money += parseInt(num);
 		game.moneyDraw.setMoney(this._money);
-	}
+	};
 	
 	this.decMoney = function(num)
 	{
-		this._money -= num;
+		this._money -= parseInt(num);
 		game.moneyDraw.setMoney(this._money);
-	}
+	};
 	
 	this.haveEnoughMoney = function(num)
 	{
 		return (num <= this._money);
-	}
+	};
 	
 	this.energyAddMax = function(val)
 	{
 		game.energyDraw.energyAddToMax(val);
 		this._energy_max += val;
-	}
+	};
 	
 	this.energyAddCurrent = function(val)
 	{
 		game.energyDraw.energyAddToCurrent(val);
 		this._energy_current += val;
-	}
+	};
 }

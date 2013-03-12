@@ -27,7 +27,7 @@ function ConstructManager(units, buildings)
 		
 		if (units.is_changed || buildings.is_changed)
 			this._drawCells();
-	}
+	};
 	
 	this._checkUpgrade = function()
 	{
@@ -58,7 +58,7 @@ function ConstructManager(units, buildings)
 		
 		if (new_upgrade)
 			game.notifications.addSound('upgrade_available');
-	}
+	};
 	
 	this._checkArrayAvailability = function(arr)
 	{
@@ -87,7 +87,7 @@ function ConstructManager(units, buildings)
 		}
 		
 		return {is_changed: have_changes, is_new: have_new};
-	}
+	};
 	
 	this.loadUnitResources = function()
 	{
@@ -96,13 +96,13 @@ function ConstructManager(units, buildings)
 			var obj = this.available_units[i];
 			obj.loadResources();
 		}
-	}
+	};
 	
 	this.loadBuildingResources = function()
 	{
 		for (var i=0; i<this.all_buildings.length; ++i)
 			this.all_buildings[i].loadResources();
-	}
+	};
 	
 	this.drawUnits = function(start)
 	{
@@ -114,7 +114,7 @@ function ConstructManager(units, buildings)
 		//Check upgrade button state
 		if (game.selected_info.is_building && game.objects[game.selected_objects[0]]._proto.upgradable)
 			$('#upgrade_button').removeClass('disable');
-	}
+	};
 	
 	this.drawBuildings = function(start)
 	{
@@ -126,7 +126,7 @@ function ConstructManager(units, buildings)
 		//Make sure build tab is shown
 		if (!$('#tab_button_build').hasClass('active'))
 			$('#tab_button_build').click();
-	}
+	};
 	
 	this._drawCells = function()
 	{
@@ -146,9 +146,9 @@ function ConstructManager(units, buildings)
 							i-this.current_view_offset, 
 							'images/units/' + this.available_units[i].resource_key + '/box.png', 
 							this.available_units[i].enabled,
-							!this._canSelectedProduce(this.available_units[i])
+							!AbstractBuilding.canSelectedProduce(this.available_units[i])
 						);
-						if (this.available_units[i].construction_queue > 0)
+						if (this.available_units[i].producing_count > 0)
 							this._canvasRedraw(i-this.current_view_offset);
 					}
 					break;
@@ -165,20 +165,12 @@ function ConstructManager(units, buildings)
 					break;
 			}
 		}
-	}
-	
-	this._canSelectedProduce = function(obj)
-	{
-		if (game.selected_info.is_building)
-			return (obj.construction_building.indexOf(game.objects[game.selected_objects[0]]._proto) != -1);
-		
-		return true;
-	}
+	};
 	
 	this._drawCellEmpty = function(cell)
 	{
 		$('#unit_box'+cell).css('background-image', 'url(images/units/empty_unit_box.png)');
-	}
+	};
 	
 	this._drawCell = function(cell, path, enabled, is_blue)
 	{
@@ -193,16 +185,16 @@ function ConstructManager(units, buildings)
 			'background-image': 'url('+path+')',
 			'background-position': style
 		});
-	}
+	};
 	
 	this.removeCellSelection = function()
 	{
 		$('.unit-image.active').removeClass('active');
 		$('#upgrade_button').addClass('disable');
 		$('#cell_popup').hide();
-	}
+	};
 	
-	this.cellClick = function(cell_id)
+	this.cellClick = function(cell_id, button)
 	{
 		var i = this.current_view_offset + parseInt(cell_id), obj;
 		
@@ -234,36 +226,15 @@ function ConstructManager(units, buildings)
 		{
 			if (typeof this.available_units[i] == 'undefined')
 				return;
-			if (!this.available_units[i].enabled)
-			{
-				game.resources.play('cant_build');
-				return;
-			}
-			if (this.available_units[i].construction_queue >= 11)
-				return;
-			if (!game.players[PLAYER_HUMAN].haveEnoughMoney(this.available_units[i].cost))
-			{
-				game.resources.play('cant_build');
-				game.notifications.addIfEmpty('insufficient_credits');
-				return;
-			}
 			
-			if (game.selected_objects.length==1 && game.selected_info.is_building)
-			{
-				if (!this._canSelectedProduce(this.available_units[i]))
-					return;
-				obj = game.objects[game.selected_objects[0]];
-			}
+			if (button == 'left')
+				ProducingQueue.addProduction(this.available_units[i]);
 			else
-				obj = game.findCompatibleInstance(this.available_units[i].construction_building, PLAYER_HUMAN);
+				ProducingQueue.pauseProduction(this.available_units[i]);
 			
-			if (obj === null)
-				return;
-			
-			obj.produce(this.available_units[i]);
-			this.available_units[i].construction_queue++;
+			this._canvasRedraw(i);
 		}
-	}
+	};
 	
 	this.cellPopupPrepere = function(cell_id)
 	{
@@ -287,19 +258,19 @@ function ConstructManager(units, buildings)
 		}
 		
 		this._drawPopup(obj);
-	}
+	};
 	
 	this.upgradePopupPrepere = function()
 	{
 		this._clearPopup();
 		if (game.selected_info.is_building && game.objects[game.selected_objects[0]]._proto.upgradable)
 			this._drawPopup(game.objects[game.selected_objects[0]]._proto.upgrade_to);
-	}
+	};
 	
 	this._clearPopup = function()
 	{
 		this._popup_ctx.clearRect(0, 0, 400, 200);
-	}
+	};
 	
 	this._drawPopup = function(obj)
 	{
@@ -367,12 +338,14 @@ function ConstructManager(units, buildings)
 		
 		for (i=0; i<texts.length; ++i)
 			game.fontDraw.drawOnCanvas(texts[i], this._popup_ctx, left - 12.5 - max_text_size, i*15 + 2.5, 'red');
-	}
+	};
 	
 	
 	this.redrawProductionState = function()
 	{
 		var i, index;
+		
+		ProducingQueue.run();
 		
 		if (this.current_view_type == CONST_VIEW_BUILDINGS)
 			return;
@@ -383,40 +356,46 @@ function ConstructManager(units, buildings)
 			if (!this.available_units[index])
 				return;
 			
-			if (this.available_units[index].construction_queue > 0)
-				this._canvasRedraw(i);
+			this._canvasRedraw(i);
 		}
-	}
+	};
 	
 	this._canvasRedraw = function(index)
 	{
-		var ctx = $('#cell_canvas_' + index).get(0).getContext('2d'), obj = this.available_units[this.current_view_offset + index], to_point;
+		var ctx = $('#cell_canvas_' + index).get(0).getContext('2d'), obj = this.available_units[this.current_view_offset + index], to_point, txt, prog;
 		
 		ctx.clearRect(0, 0, 64, 50);
 		
-		if (obj.construction_queue == 0)
+		if (obj.producing_count == 0)
 			return;
 		
-		to_point = Math.PI*1.5 - (1-obj.construction_progress)*2*Math.PI;
-					
-		ctx.fillStyle = 'rgba(245, 255, 220, 0.55)';
-		ctx.beginPath();
-		ctx.moveTo(32, 25);
-		ctx.arc(32, 25, 50, Math.PI*1.5, to_point, true); 
-		ctx.moveTo(32, 25);
-		ctx.closePath();
-		ctx.fill();
+		prog = obj.producing_progress/obj.construction_time;
+		if (prog > 0 && prog < 1)
+		{
+			to_point = Math.PI*1.5 - (1-prog)*2*Math.PI;
 
-		ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-		ctx.beginPath();
-		ctx.moveTo(32, 25);
-		ctx.arc(32, 25, 50, to_point - 0.1, to_point + 0.1, false); 
-		ctx.moveTo(32, 25);
-		ctx.closePath();
-		ctx.fill();
+			ctx.fillStyle = 'rgba(245, 255, 220, 0.55)';
+			ctx.beginPath();
+			ctx.moveTo(32, 25);
+			ctx.arc(32, 25, 50, Math.PI*1.5, to_point, true); 
+			ctx.moveTo(32, 25);
+			ctx.closePath();
+			ctx.fill();
+
+			ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+			ctx.beginPath();
+			ctx.moveTo(32, 25);
+			ctx.arc(32, 25, 50, to_point - 0.1, to_point + 0.1, false); 
+			ctx.moveTo(32, 25);
+			ctx.closePath();
+			ctx.fill();
+		}
 		
-		game.fontDraw.drawOnCanvas(obj.construction_queue.toString(), ctx, 13, 2, 'yellow');
-	}
+		txt = obj.producing_count.toString();
+		if (obj.producing_paused)
+			txt += ' [P]';
+		game.fontDraw.drawOnCanvas(txt, ctx, 13, 2, 'yellow');
+	};
 	
 	this.clearProducingByObject = function(obj)
 	{
@@ -434,11 +413,11 @@ function ConstructManager(units, buildings)
 			if (this.available_units[index] == obj)
 				$('#cell_canvas_' + i).get(0).getContext('2d').clearRect(0, 0, 64, 50);
 		}
-	}
+	};
 	
 	this._clearAllCellCanvases = function()
 	{
 		for (var i = 0; i<15; ++i)
 			$('#cell_canvas_' + i).get(0).getContext('2d').clearRect(0, 0, 64, 50);
-	}
+	};
 }

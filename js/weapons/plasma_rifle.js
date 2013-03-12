@@ -10,5 +10,5 @@ PlasmaRifleWeapon.effect = PlasmaRifleEffect;
 PlasmaRifleWeapon.can_shoot_flyer = true;
 PlasmaRifleWeapon.offence = {
 	type: 'E3',
-	strength: 18
+	strength: 1800
 };

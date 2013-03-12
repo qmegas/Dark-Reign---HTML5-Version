@@ -14,9 +14,6 @@ function AbstractBuilding()
 	this.is_building = true;
 	this.is_selected = false;
 	
-	this.producing_queue = null;
-	this.producing_start = 0;
-	
 	this.position = {x: 0, y: 0};
 	
 	//Building animation
@@ -29,11 +26,13 @@ function AbstractBuilding()
 			x: (pos_x)*CELL_SIZE, 
 			y: (pos_y)*CELL_SIZE
 		};
-		this.producing_queue = [];
 	};
 	
 	this.applyDamage = function(damage)
 	{
+		if (this.health <= 0)
+			return; //Already destroyed
+		
 		this.health -= damage;
 		
 		if (this.health <= 0)
@@ -42,7 +41,9 @@ function AbstractBuilding()
 				CraterEffect.create(this);
 			
 			this._removingRecalc(this._proto);
+			game.constructor.recalcUnitAvailability();
 			this.onDestructed();
+			
 			game.kill_objects.push(this.uid);
 		}
 	};
@@ -130,8 +131,8 @@ function AbstractBuilding()
 
 			if (this.state == 'PRODUCING')
 			{
-				var obj = this.producing_queue[0];
-				this._drawProgressBar(obj.construction_progress, obj.obj_name);
+				var info = ProducingQueue.getProductionInfo(this.uid);
+				this._drawProgressBar(info.progress, info.name);
 				top_y -= 15;
 			}
 			
@@ -314,12 +315,6 @@ function AbstractBuilding()
 	
 	this.orderAttack = function(target) {};
 	
-	this.produce = function(obj)
-	{
-		this.producing_queue.push(obj);
-		game.players[this.player].decMoney(obj.cost);
-	};
-	
 	this._runStandartConstruction = function()
 	{
 		if ((new Date()).getTime() > this.action_ends)
@@ -350,9 +345,9 @@ function AbstractBuilding()
 			var cell = this.getCell();
 			
 			this._removingRecalc(this._proto);
+			game.constructor.recalcUnitAvailability();
 			
 			game.players[this.player].addMoney(this._proto.sell_cost);
-			game.constructor.recalcUnitAvailability();
 			
 			if (!this._proto.is_built_from_edge)
 			{
@@ -375,22 +370,11 @@ function AbstractBuilding()
 			this._removingRecalc(obj_proto.upgrade_from);
 	};
 	
-	this._runStandartProducing = function()
+	this.produce = function(obj)
 	{
-		this.producing_queue[0].construction_progress += 1 / (RUNS_PER_SECOND * this.producing_queue[0].construction_time);
-		if (this.producing_queue[0].construction_progress > 1)
-		{
-			var cell = this.getCell(), unit = AbstractUnit.createNew(this.producing_queue[0], cell.x + 2, cell.y + 2, this.player); //TODO: need change?
-			
-			cell = PathFinder.findNearestEmptyCell(cell.x, cell.y + 5, !unit.is_fly);
-			unit.orderMove(cell);
-
-			game.constructor.clearProducingByObject(this.producing_queue[0]);
-			this.producing_queue[0].construction_progress = 0;
-			this.producing_queue[0].construction_queue--;
-			this.producing_queue.shift();
-			this.state = 'NORMAL';
-		}
+		var cell = this.getCell(), unit = AbstractUnit.createNew(obj, cell.x + 2, cell.y + 2, this.player); //@todo: change position?
+		cell = PathFinder.findNearestEmptyCell(cell.x, cell.y + 5, !unit.is_fly);
+		unit.orderMove(cell);
 	};
 	
 	this.isUpgradePossible = function()
@@ -593,6 +577,14 @@ AbstractBuilding.getById = function(obj_id)
 AbstractBuilding.isExists = function(obj_id)
 {
 	return (AbstractBuilding.getById(obj_id) !== null);
+};
+
+AbstractBuilding.canSelectedProduce = function(obj)
+{
+	if (game.selected_info.is_building)
+		return (obj.construction_building.indexOf(game.objects[game.selected_objects[0]]._proto) != -1);
+
+	return true;
 };
 
 AbstractBuilding.setBuildingCommonOptions = function(obj)

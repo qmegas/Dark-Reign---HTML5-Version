@@ -6,9 +6,6 @@ function AssemblyPlant2Building(pos_x, pos_y, player)
 	
 	this.state = 'UPGRADING';
 	
-	this.producing_queue = [];
-	this.producing_start = 0;
-	
 	this.init(pos_x, pos_y);
 	this.setActionTime(this._proto.build_time);
 	
@@ -18,18 +15,6 @@ function AssemblyPlant2Building(pos_x, pos_y, player)
 		{
 			case 'UPGRADING':
 				this._runStandartConstruction();
-				break;
-				
-			case 'PRODUCING':
-				this._runStandartProducing();
-				break;
-				
-			case 'NORMAL':
-				if (this.producing_queue.length > 0)
-				{
-					this.producing_start = (new Date()).getTime();
-					this.state = 'PRODUCING';
-				}
 				break;
 				
 			case 'SELL':

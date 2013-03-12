@@ -1,10 +1,12 @@
-Buold 33 (?)
+Build 33 (09.03.2013)
 - Added Bion unit
 - Added Plasma Rifle for Bion unit
 - Fixed building upgrade bug
 - Destroyed building leaves crater on land
 - Building of Camera tower and bridges now not require Construction Rig destruction
 - All bridge problems are solved
+- Complete recreation of unit producing system
+- Different small bugs fixed
 
 Build 32 (06.03.2013)
 - Units now can die and buildings now can be destroyed

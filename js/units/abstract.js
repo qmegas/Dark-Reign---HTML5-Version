@@ -44,6 +44,9 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.applyDamage = function(damage)
 	{
+		if (this.health <= 0)
+			return; //Already killed
+		
 		this.health -= damage;
 		if (this.health <= 0)
 		{
@@ -631,8 +634,11 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 
 	obj.construction_building = [];
 	obj.construction_time = 0;
-	obj.construction_queue = 0;
-	obj.construction_progress = 0;
+	
+	obj.producing_progress = 0;
+	obj.producing_paused = false;
+	obj.producing_count = 0;
+	obj.producing_building_id = 0;
 
 	obj.loadResources = function() 
 	{
