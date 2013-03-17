@@ -347,6 +347,8 @@ function Game()
 		{
 			this.shell_update_time = cur_time;
 			
+			ActionsHeap.run();
+			
 			//Update producing canvases
 			this.constructor.redrawProductionState();
 			
@@ -557,10 +559,18 @@ function Game()
 				new_obj = new old_obj._proto.upgrade_to(pos.x, pos.y, old_obj.player);
 			
 				new_obj.uid = old_obj.uid;
+				new_obj.health = old_obj.health;
 				delete old_obj;
 				this.objects[new_obj.uid] = new_obj;
 				
-				this.players[PLAYER_HUMAN].decMoney(old_obj._proto.upgrade_to.cost);
+				var time = (this.debug.quick_build) ? 2 : new_obj._proto.build_time;
+				ActionsHeap.add(new_obj.uid, {
+					type: 'construct',
+					steps: time,
+					current: 0,
+					money: parseInt(new_obj._proto.cost / time),
+					health: Math.ceil(new_obj._proto.health_max / time)
+				});
 				
 				upgraded = true;
 			}

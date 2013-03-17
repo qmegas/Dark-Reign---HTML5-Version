@@ -44,6 +44,22 @@ function Debuger()
 			obj.increaseRes(100);
 	});
 	
+	$('#debug_build_fix').click(function(){
+		if (game.selected_objects.length == 0)
+			return false;
+		
+		var obj = game.objects[game.selected_objects[0]];
+		obj.health = obj._proto.health_max;
+	});
+	
+	$('#debug_build_des').click(function(){
+		if (game.selected_objects.length == 0)
+			return false;
+		
+		var obj = game.objects[game.selected_objects[0]];
+		obj.health = parseInt(obj._proto.health_max * 0.2);
+	});
+	
 	this.countRun = function()
 	{
 		this.run_counter++;

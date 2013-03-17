@@ -2,24 +2,8 @@ function CameraTowerBuilding(pos_x, pos_y, player)
 {
 	this._proto = CameraTowerBuilding;
 	this.player = player;
-	this.health = this._proto.health_max;
 	
 	this.init(pos_x, pos_y);
-	this.setActionTime(this._proto.build_time);
-	
-	this.run = function()
-	{
-		switch (this.state)
-		{
-			case 'CONSTRUCTION':
-				this._runStandartConstruction();
-				break;
-				
-			case 'SELL':
-				this._runStandartSell();
-				break;
-		}
-	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(CameraTowerBuilding);
@@ -27,9 +11,10 @@ AbstractBuilding.setBuildingCommonOptions(CameraTowerBuilding);
 CameraTowerBuilding.res_key = 'camera_tower';
 CameraTowerBuilding.obj_name = 'Camera Tower';
 CameraTowerBuilding.cost = 200;
-CameraTowerBuilding.sell_cost = 100;
-CameraTowerBuilding.health_max = 150;
 CameraTowerBuilding.build_time = 4;
+CameraTowerBuilding.sell_cost = 100;
+CameraTowerBuilding.sell_time = 2;
+CameraTowerBuilding.health_max = 150;
 CameraTowerBuilding.energy = 50;
 CameraTowerBuilding.can_build = true;
 CameraTowerBuilding.crater = 0;

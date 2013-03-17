@@ -2,29 +2,13 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 {
 	this._proto = TaelonPowerBuilding;
 	this.player = player;
-	this.health = this._proto.health_max;
 	
 	this.res_now = 0;
 	this.res_max = 1000;
 	
 	this.init(pos_x, pos_y);
-	this.setActionTime(this._proto.build_time);
 	
-	this.run = function()
-	{
-		switch (this.state)
-		{
-			case 'CONSTRUCTION':
-				this._runStandartConstruction();
-				break;
-				
-			case 'SELL':
-				this._runStandartSell();
-				break;
-		}
-	};
-	
-	this.onConstructed = function() 
+	this.onConstructedCustom = function() 
 	{
 		var cell = this.getCell();
 		
@@ -81,9 +65,10 @@ AbstractBuilding.setBuildingCommonOptions(TaelonPowerBuilding);
 TaelonPowerBuilding.res_key = 'taelon_power';
 TaelonPowerBuilding.obj_name = 'Taelon Power Generator';
 TaelonPowerBuilding.cost = 2000;
-TaelonPowerBuilding.sell_cost = 1000;
-TaelonPowerBuilding.health_max = 1450;
 TaelonPowerBuilding.build_time = 20;
+TaelonPowerBuilding.sell_cost = 1000;
+TaelonPowerBuilding.sell_time = 10;
+TaelonPowerBuilding.health_max = 1450;
 TaelonPowerBuilding.enabled = true;
 TaelonPowerBuilding.can_build = true;
 TaelonPowerBuilding.crater = 1;

@@ -11,20 +11,12 @@ function WaterWellBuilding(pos_x, pos_y, player)
 	this.run = function() 
 	{
 		this.increaseRes(0.026);
-	}
+	};
 	
 	this.draw = function()
 	{
-		game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
-			res_key: this._proto.res_key,
-			src_x: (this.health == 0) ? this._proto.image_size.x : 0,
-			src_y: 0,
-			src_width: this._proto.image_size.x,
-			src_height: this._proto.image_size.y,
-			x: this.position.x - this._proto.image_padding.x - game.viewport_x,
-			y: this.position.y - this._proto.image_padding.y - game.viewport_y
-		});
-	}
+		this._drawSprite(DRAW_LAYER_GBUILD, (this.health == 0) ? 1 : 0, 0);
+	};
 	
 	//Custom selection bar
 	this.drawSelection = function(is_onmouse)
@@ -46,12 +38,12 @@ function WaterWellBuilding(pos_x, pos_y, player)
 		
 		game.viewport_ctx.fillStyle = '#00a5ff';
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 35 - water_h, 2, water_h);
-	}
+	};
 	
 	this.isHarvestPlatform = function()
 	{
 		return true;
-	}
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(WaterWellBuilding);

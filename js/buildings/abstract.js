@@ -5,10 +5,8 @@ function AbstractBuilding()
 	this.health = 0;
 	this._proto = null;
 	this.state = 'CONSTRUCTION';
-	
-	this.action_start = 0;
-	this.action_ends = 0;
-	
+	this.progress_bar = 0;
+
 	this.is_effect = false;
 	this.is_fly = false;
 	this.is_building = true;
@@ -20,12 +18,20 @@ function AbstractBuilding()
 	this._draw_last_frame_change = 0;
 	this._draw_cur_frame = 0;
 	
+	
 	this.init = function(pos_x, pos_y)
 	{
 		this.position = {
 			x: (pos_x)*CELL_SIZE, 
 			y: (pos_y)*CELL_SIZE
 		};
+	};
+	
+	this.applyFix = function(fix)
+	{
+		this.health += fix;
+		if (this.health > this._proto.health_max)
+			this.health = this._proto.health_max;
 	};
 	
 	this.applyDamage = function(damage)
@@ -46,16 +52,6 @@ function AbstractBuilding()
 			
 			game.kill_objects.push(this.uid);
 		}
-	};
-	
-	this.setActionTime = function(time)
-	{
-		//DEBUG
-		if (game.debug.quick_build)
-			time = 2;
-		
-		this.action_start = (new Date()).getTime();
-		this.action_ends = this.action_start + time * 1000;
 	};
 	
 	this.getCell = function()
@@ -118,14 +114,14 @@ function AbstractBuilding()
 		{
 			if (this.state == 'CONSTRUCTION' || this.state == 'SELL' || this.state == 'UPGRADING')
 			{
-				var text = 'Under Construction', proc = ((new Date()).getTime() - this.action_start) / (this.action_ends - this.action_start);
+				var text = 'Under Construction';
 				
 				if (this.state == 'SELL')
 					text = 'Demolishing';
 				else if (this.state == 'UPGRADING')
 					text = 'Upgrading';
 					
-				this._drawProgressBar(proc, text);
+				this._drawProgressBar(this.progress_bar, text);
 				top_y -= 15;
 			}
 
@@ -200,7 +196,6 @@ function AbstractBuilding()
 			}
 	};
 	
-	//Must be implemented
 	this.run = function() {};
 	
 	this.sell = function()
@@ -208,8 +203,13 @@ function AbstractBuilding()
 		if (this.state != 'NORMAL')
 			return;
 		
-		this.setActionTime(this._proto.build_time / 2);
 		this.state = 'SELL';
+		var time = (game.debug.quick_build) ? 2 : this._proto.sell_time;
+		ActionsHeap.add(this.uid, {
+			type: 'sell',
+			steps: time,
+			current: 0
+		});
 	};
 	
 	this.draw = function(cur_time)
@@ -217,90 +217,66 @@ function AbstractBuilding()
 		if (this.state == 'CONSTRUCTION' || this.state == 'UPGRADING')
 		{
 			if (this._proto.shadow_image_size !== null)
-			{
-				game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
-					res_key: this._proto.res_key + '_shadow',
-					src_x: 0,
-					src_y: 0,
-					src_width: this._proto.shadow_image_size.x,
-					src_height: this._proto.shadow_image_size.y,
-					x: this.position.x - this._proto.shadow_image_padding.x - game.viewport_x,
-					y: this.position.y - this._proto.shadow_image_padding.y - game.viewport_y
-				});
-			}
-			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
-				res_key: this._proto.res_key,
-				src_x: 0,
-				src_y: 0,
-				src_width: this._proto.image_size.x,
-				src_height: this._proto.image_size.y,
-				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
-				y: this.position.y - this._proto.image_padding.y - game.viewport_y
-			});
-			game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
-				res_key: this._proto.res_key,
-				src_x: this._proto.image_size.x,
-				src_y: 0,
-				src_width: this._proto.image_size.x,
-				src_height: this._proto.image_size.y,
-				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
-				y: this.position.y - this._proto.image_padding.y - game.viewport_y
-			});
+				this._drawShadow(0, 0);
+			this._drawSprite(DRAW_LAYER_GBUILD, 0, 0);
+			this._drawSprite(DRAW_LAYER_TBUILD, 1, 0);
 		}
 		else
 		{
-			if (this._proto.shadow_image_size !== null)
+			if ((this.health / this._proto.health_max) < 0.33)
 			{
-				game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
-					res_key: this._proto.res_key + '_shadow',
-					src_x: 0,
-					src_y: this._proto.shadow_image_size.y,
-					src_width: this._proto.shadow_image_size.x,
-					src_height: this._proto.shadow_image_size.y,
-					x: this.position.x - this._proto.shadow_image_padding.x - game.viewport_x,
-					y: this.position.y - this._proto.shadow_image_padding.y - game.viewport_y
-				});
-			}
-			game.objDraw.addElement(DRAW_LAYER_GBUILD, this.position.x, {
-				res_key: this._proto.res_key,
-				src_x: 0,
-				src_y: this._proto.image_size.y,
-				src_width: this._proto.image_size.x,
-				src_height: this._proto.image_size.y,
-				x: this.position.x - this._proto.image_padding.x - game.viewport_x,
-				y: this.position.y - this._proto.image_padding.y - game.viewport_y
-			});
-			if (this._proto.image_animated)
-			{
-				game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
-					res_key: this._proto.res_key,
-					src_x: this._proto.image_animation_frames[this._draw_cur_frame]*this._proto.image_size.x,
-					src_y: this._proto.image_size.y,
-					src_width: this._proto.image_size.x,
-					src_height: this._proto.image_size.y,
-					x: this.position.x - this._proto.image_padding.x - game.viewport_x,
-					y: this.position.y - this._proto.image_padding.y - game.viewport_y
-				});
-				if ((cur_time - this._draw_last_frame_change)>200)
-				{
-					++this._draw_cur_frame;
-					this._draw_cur_frame %= this._proto.image_animation_frames.length;
-					this._draw_last_frame_change = cur_time;
-				}
+				if (this._proto.shadow_image_size !== null)
+					this._drawShadow(0, 2);
+				this._drawSprite(DRAW_LAYER_GBUILD, 0, 2);
+				this._drawSprite(DRAW_LAYER_TBUILD, 1, 2);
 			}
 			else
 			{
-				game.objDraw.addElement(DRAW_LAYER_TBUILD, this.position.x, {
-					res_key: this._proto.res_key,
-					src_x: this._proto.image_size.x,
-					src_y: this._proto.image_size.y,
-					src_width: this._proto.image_size.x,
-					src_height: this._proto.image_size.y,
-					x: this.position.x - this._proto.image_padding.x - game.viewport_x,
-					y: this.position.y - this._proto.image_padding.y - game.viewport_y
-				});
+				if (this._proto.shadow_image_size !== null)
+					this._drawShadow(0, 1);
+				this._drawSprite(DRAW_LAYER_GBUILD, 0, 1);
+
+				if (this._proto.image_animated)
+				{
+					this._drawSprite(DRAW_LAYER_TBUILD, this._proto.image_animation_frames[this._draw_cur_frame], 1);
+
+					if ((cur_time - this._draw_last_frame_change)>200)
+					{
+						++this._draw_cur_frame;
+						this._draw_cur_frame %= this._proto.image_animation_frames.length;
+						this._draw_last_frame_change = cur_time;
+					}
+				}
+				else
+					this._drawSprite(DRAW_LAYER_TBUILD, 1, 1);
 			}
 		}
+	};
+	
+	this._drawSprite = function(leyer, frame_x, frame_y)
+	{
+		game.objDraw.addElement(leyer, this.position.x, {
+			res_key: this._proto.res_key, 
+			src_x: this._proto.image_size.x * frame_x,
+			src_y: this._proto.image_size.y * frame_y,
+			src_width: this._proto.image_size.x,
+			src_height: this._proto.image_size.y,
+			x: this.position.x - this._proto.image_padding.x - game.viewport_x,
+			y: this.position.y - this._proto.image_padding.y - game.viewport_y
+		});
+	};
+	
+	this._drawShadow = function(frame_x, frame_y)
+	{
+		game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+			res_key: this._proto.res_key + '_shadow',
+			src_x: this._proto.shadow_image_size.x * frame_x,
+			src_y: this._proto.shadow_image_size.y * frame_y,
+			src_width: this._proto.shadow_image_size.x,
+			src_height: this._proto.shadow_image_size.y,
+			x: this.position.x - this._proto.shadow_image_padding.x - game.viewport_x,
+			y: this.position.y - this._proto.shadow_image_padding.y - game.viewport_y
+		});
 	};
 	
 	this.canAttackFly = function()
@@ -314,52 +290,6 @@ function AbstractBuilding()
 	};
 	
 	this.orderAttack = function(target) {};
-	
-	this._runStandartConstruction = function()
-	{
-		if ((new Date()).getTime() > this.action_ends)
-		{
-			this._proto.count++;
-			
-			if (this.state == 'CONSTRUCTION')
-				game.notifications.addSound('construction_complete');
-			game.constructor.recalcUnitAvailability();
-			
-			game.players[this.player].energyAddCurrent(this._proto.energy);
-			this.state = 'NORMAL';
-			
-			if (this._proto.is_built_from_edge)
-			{
-				var cell = this.getCell(), pos = PathFinder.findNearestStandCell(cell.x, cell.y);
-				AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
-			}
-			
-			this.onConstructed();
-		}
-	};
-	
-	this._runStandartSell = function()
-	{
-		if ((new Date()).getTime() > this.action_ends)
-		{
-			var cell = this.getCell();
-			
-			this._removingRecalc(this._proto);
-			game.constructor.recalcUnitAvailability();
-			
-			game.players[this.player].addMoney(this._proto.sell_cost);
-			
-			if (!this._proto.is_built_from_edge)
-			{
-				var pos = PathFinder.findNearestStandCell(cell.x + 2, cell.y + 2);
-				AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
-			}
-			
-			this.onDestructed();
-			
-			game.kill_objects.push(this.uid);
-		}
-	};
 	
 	this._removingRecalc = function(obj_proto)
 	{
@@ -435,8 +365,51 @@ function AbstractBuilding()
 		this.markCellsOnMap(-1);
 	};
 	
-	this.onConstructed = function() {};
+	this.onConstructed = function() 
+	{
+		this._proto.count++;
+			
+		if (this.state == 'CONSTRUCTION')
+			game.notifications.addSound('construction_complete');
+		if (this.state == 'UPGRADING')
+			this.health = this._proto.health_max;
+		
+		game.constructor.recalcUnitAvailability();
+
+		game.players[this.player].energyAddCurrent(this._proto.energy);
+		this.state = 'NORMAL';
+
+		if (this._proto.is_built_from_edge)
+		{
+			var cell = this.getCell(), pos = PathFinder.findNearestStandCell(cell.x, cell.y);
+			AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
+		}
+
+		this.onConstructedCustom();
+	};
+	
+	this.onSold = function() 
+	{
+		var cell = this.getCell();
+			
+		this._removingRecalc(this._proto);
+		game.constructor.recalcUnitAvailability();
+
+		game.players[this.player].addMoney(this._proto.sell_cost);
+
+		if (!this._proto.is_built_from_edge)
+		{
+			var pos = PathFinder.findNearestStandCell(cell.x + 2, cell.y + 2);
+			AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
+		}
+
+		this.onDestructed();
+
+		game.kill_objects.push(this.uid);
+	};
+	
 	this.onDestructed = function() {};
+	this.onConstructedCustom = function() {};
 }
 
 //Static methods
@@ -508,8 +481,15 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 	}
 	else
 	{
-		game.players[player].decMoney(obj.cost);
 		game.notifications.addSound('construction_under_way');
+		var time = (game.debug.quick_build) ? 2 : obj.build_time;
+		ActionsHeap.add(uid, {
+			type: 'construct',
+			steps: time,
+			current: 0,
+			money: parseInt(obj.cost / time),
+			health: Math.ceil(obj.health_max / time)
+		});
 	}
 };
 
@@ -594,9 +574,10 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.res_key = '';  //Must redeclare
 	obj.obj_name = ''; //Must redeclare
 	obj.cost = 0;
+	obj.build_time = 0; //config_speed / 1.5
 	obj.sell_cost = 0;
+	obj.sell_time = 0;  //config_speed / 1.5
 	obj.health_max = 100;
-	obj.build_time = 0;
 	obj.energy = 0;
 	obj.enabled = false;
 	obj.can_build = false;

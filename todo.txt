@@ -4,17 +4,16 @@ To do:
 - High priority bugs:
 
 - Medium priority bugs:
-	- Increase building health on construction
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
 	- Energy meter blinking incorrectly
 	- Need to add animation when energy state changed
-	- When construction building/unit, money should decrease gradually
 	- Unit production indicator on right panel looks not exactly as original one
 	- Add smooth animation on water indicator when selling water
 	- Add Light layer for PlasmaRifle blast animation
+	- When building upgraded we should calculate exact proportion on health for new building
 
 - Very low priority bugs:
 	- When mouseover building or unit, it's name should be shown after small delay

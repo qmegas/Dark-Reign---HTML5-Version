@@ -2,27 +2,11 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 {
 	this._proto = WaterLaunchPadBuilding;
 	this.player = player;
-	this.health = this._proto.health_max;
 	
 	this.res_now = 0;
 	this.res_max = 200;
 	
 	this.init(pos_x, pos_y);
-	this.setActionTime(this._proto.build_time);
-	
-	this.run = function()
-	{
-		switch (this.state)
-		{
-			case 'CONSTRUCTION':
-				this._runStandartConstruction();
-				break;
-				
-			case 'SELL':
-				this._runStandartSell();
-				break;
-		}
-	};
 	
 	//Custom selection bar
 	this.drawSelection = function(is_onmouse)
@@ -46,7 +30,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 		game.viewport_ctx.fillRect(top_x + 1, top_y + 47 - water_h, 2, water_h);
 	};
 	
-	this.onConstructed = function() 
+	this.onConstructedCustom = function() 
 	{
 		var cell = this.getCell();
 		AbstractUnit
@@ -100,9 +84,10 @@ AbstractBuilding.setBuildingCommonOptions(WaterLaunchPadBuilding);
 WaterLaunchPadBuilding.res_key = 'water_launch';
 WaterLaunchPadBuilding.obj_name = 'Water Launch Pad';
 WaterLaunchPadBuilding.cost = 2500;
+WaterLaunchPadBuilding.build_time = 30;
 WaterLaunchPadBuilding.sell_cost = 1250;
+WaterLaunchPadBuilding.sell_time = 15;
 WaterLaunchPadBuilding.health_max = 1300;
-WaterLaunchPadBuilding.build_time = 25;
 WaterLaunchPadBuilding.energy = 100;
 WaterLaunchPadBuilding.enabled = true;
 WaterLaunchPadBuilding.can_build = true;

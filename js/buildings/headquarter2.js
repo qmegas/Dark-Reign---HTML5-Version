@@ -2,26 +2,10 @@ function Headquarter2Building(pos_x, pos_y, player)
 {
 	this._proto = Headquarter2Building;
 	this.player = player;
-	this.health = this._proto.health_max;
 	
 	this.state = 'UPGRADING';
 	
 	this.init(pos_x, pos_y);
-	this.setActionTime(this._proto.build_time);
-	
-	this.run = function()
-	{
-		switch (this.state)
-		{
-			case 'UPGRADING':
-				this._runStandartConstruction();
-				break;
-				
-			case 'SELL':
-				this._runStandartSell();
-				break;
-		}
-	}
 }
 
 AbstractBuilding.setBuildingCommonOptions(Headquarter2Building);
@@ -29,9 +13,11 @@ AbstractBuilding.setBuildingCommonOptions(Headquarter2Building);
 Headquarter2Building.res_key = 'headquarter2';
 Headquarter2Building.obj_name = 'Headquarter 2';
 Headquarter2Building.cost = 1000;
-Headquarter2Building.sell_cost = 656;
-Headquarter2Building.health_max = 2880;
 Headquarter2Building.build_time = 20;
+Headquarter2Building.sell_cost = 656;
+Headquarter2Building.sell_time = 10;
+Headquarter2Building.health_max = 2880;
+
 Headquarter2Building.energy = 100;
 Headquarter2Building.crater = 4;
 
@@ -41,7 +27,7 @@ Headquarter2Building.move_matrix = [0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1];
 Headquarter2Building.cell_padding = {x: 2, y: 2};
 Headquarter2Building.image_size = {x: 120, y: 144};
 Headquarter2Building.image_padding = {x: 0, y: 48};
-Headquarter2Building.shadow_image_size = {x: 162, y: 107};
-Headquarter2Building.shadow_image_padding = {x: -5, y: 3};
+Headquarter2Building.shadow_image_size = {x: 162, y: 137};
+Headquarter2Building.shadow_image_padding = {x: -5, y: 29};
 
 Headquarter2Building.upgradable = true;

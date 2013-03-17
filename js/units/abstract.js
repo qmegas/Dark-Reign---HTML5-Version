@@ -42,6 +42,13 @@ function AbstractUnit(pos_x, pos_y, player)
 		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
 	};
 	
+	this.applyHeal = function(heal)
+	{
+		this.health += heal;
+		if (this.health > this._proto.health_max)
+			this.health = this._proto.health_max;
+	};
+	
 	this.applyDamage = function(damage)
 	{
 		if (this.health <= 0)
@@ -161,7 +168,8 @@ function AbstractUnit(pos_x, pos_y, player)
 				if ((new Date).getTime() > this.action.wait_till)
 					this.afterWaiting();
 				break;
-				
+			
+			case 'HEALING':
 			case 'STAND':
 				break;
 				
@@ -198,17 +206,6 @@ function AbstractUnit(pos_x, pos_y, player)
 				}
 				else
 					this.state = 'STAND';
-				break;
-				
-			case 'HEALING':
-				this.health += HEAL_SPEED;
-				if (this.health >= this._proto.health_max)
-				{
-					this.health = this._proto.health_max;
-					game.resources.playOnPosition('healing', false, this.position, true);
-					var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 5, this.action.target_position.y, !this.is_fly);
-					this.orderMove(pos.x, pos.y);
-				}
 				break;
 				
 			default:
@@ -532,7 +529,7 @@ function AbstractUnit(pos_x, pos_y, player)
 				if (cell.x==this.action.target_position.x && cell.y==this.action.target_position.y)
 				{
 					this.state = 'HEALING';
-					this.action.type = 'healing';
+					ActionsHeap.add(this.uid, {type: 'heal'});
 				}
 				else
 					this.orderWait(1000);
@@ -562,6 +559,13 @@ function AbstractUnit(pos_x, pos_y, player)
 				this.afterWaitingCustom();
 				break;
 		}
+	};
+	
+	this.onHealed = function()
+	{
+		game.resources.playOnPosition('healing', false, this.position, true);
+		var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 5, this.action.target_position.y, !this.is_fly);
+		this.orderMove(pos.x, pos.y);
 	};
 	
 	//Abstract functions

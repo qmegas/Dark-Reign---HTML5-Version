@@ -1,3 +1,6 @@
+Build 34 (?)
+- Changed the way building are constructed and sold. Now it's works exactly as in original game.
+
 Build 33 (09.03.2013)
 - Added Bion unit
 - Added Plasma Rifle for Bion unit
