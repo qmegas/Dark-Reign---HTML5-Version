@@ -1,5 +1,8 @@
 Build 34 (?)
-- Changed the way building are constructed and sold. Now it's works exactly as in original game.
+- Changed the way building are constructed and sold. Now it's works exactly as in original game
+- Added broken state for all buildings
+- Added ability to fix buildings
+- Unit heal speed corrected
 
 Build 33 (09.03.2013)
 - Added Bion unit

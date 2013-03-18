@@ -18,6 +18,9 @@ function AbstractBuilding()
 	this._draw_last_frame_change = 0;
 	this._draw_cur_frame = 0;
 	
+	//Repairing
+	this._is_repairing = false;
+	this._repairing_effect_id = 0;
 	
 	this.init = function(pos_x, pos_y)
 	{
@@ -29,9 +32,9 @@ function AbstractBuilding()
 	
 	this.applyFix = function(fix)
 	{
-		this.health += fix;
-		if (this.health > this._proto.health_max)
-			this.health = this._proto.health_max;
+		var aplly = Math.min(this._proto.health_max-this.health, fix);
+		this.health += aplly;
+		return aplly;
 	};
 	
 	this.applyDamage = function(damage)
@@ -205,11 +208,40 @@ function AbstractBuilding()
 		
 		this.state = 'SELL';
 		var time = (game.debug.quick_build) ? 2 : this._proto.sell_time;
-		ActionsHeap.add(this.uid, {
-			type: 'sell',
+		ActionsHeap.add(this.uid, 'sell', {
 			steps: time,
 			current: 0
 		});
+	};
+	
+	this.repair = function()
+	{
+		if (this._is_repairing)
+		{
+			this._is_repairing = false;
+			ActionsHeap.remove(this.uid, 'repair');
+			game.deleteEffect(this._repairing_effect_id);
+		}
+		else
+		{
+			if (this.state == 'CONSTRUCTION')
+				return;
+			
+			if (this.health >= this._proto.health_max)
+				return;
+			
+			this._is_repairing = true;
+			ActionsHeap.add(this.uid, 'repair', 0);
+			
+			effect = new RepriconEffect({
+				x: this.position.x + CELL_SIZE*this._proto.cell_padding.x,
+				y: this.position.y + CELL_SIZE*this._proto.cell_padding.y
+			});
+			var uid = game.addEffect(effect);
+			effect.uid = uid;
+			this._repairing_effect_id = uid;
+			console.log('Effect added: ' + uid);
+		}
 	};
 	
 	this.draw = function(cur_time)
@@ -483,8 +515,7 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 	{
 		game.notifications.addSound('construction_under_way');
 		var time = (game.debug.quick_build) ? 2 : obj.build_time;
-		ActionsHeap.add(uid, {
-			type: 'construct',
+		ActionsHeap.add(uid, 'construct', {
 			steps: time,
 			current: 0,
 			money: parseInt(obj.cost / time),

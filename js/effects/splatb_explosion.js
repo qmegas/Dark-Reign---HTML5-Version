@@ -2,15 +2,7 @@ function SplatBEffect(unit_pos_pixel)
 {
 	this._proto = SplatBEffect;
 	
-	this.initCustom = function() 
-	{
-		this._position_now = {
-			x: unit_pos_pixel.x - 20,
-			y: unit_pos_pixel.y - 20
-		};
-	};
-	
-	this.init();
+	this.init(unit_pos_pixel);
 }
 
 AbstractSimpleEffect.setCommonOptions(SplatBEffect);

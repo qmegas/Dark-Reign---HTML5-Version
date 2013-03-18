@@ -273,6 +273,11 @@ var MousePointer = {
 					game.objects[game.level.map_cells[pos.x][pos.y].building].sell();
 				break;
 				
+			case ACTION_STATE_REPAIR:
+				if (game.level.map_cells[pos.x][pos.y].building != -1)
+					game.objects[game.level.map_cells[pos.x][pos.y].building].repair();
+				break;
+				
 			case ACTION_STATE_ATTACK:
 				var target;
 				unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);

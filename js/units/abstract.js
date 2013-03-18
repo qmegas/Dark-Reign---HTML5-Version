@@ -529,7 +529,7 @@ function AbstractUnit(pos_x, pos_y, player)
 				if (cell.x==this.action.target_position.x && cell.y==this.action.target_position.y)
 				{
 					this.state = 'HEALING';
-					ActionsHeap.add(this.uid, {type: 'heal'});
+					ActionsHeap.add(this.uid, 'heal', 0);
 				}
 				else
 					this.orderWait(1000);

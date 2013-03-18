@@ -7,17 +7,24 @@ function AbstractSimpleEffect()
 	this._start_animation = 0;
 	this._stop_animation = 0;
 	
-	this.init = function()
+	this.init = function(pos)
 	{
 		this._start_animation = (new Date).getTime();
 		this._stop_animation = this._start_animation + this._proto.frames*this._proto.frame_speed;
-		this.initCustom();
+		this._position_now = {
+			x: pos.x - parseInt(this._proto.image_size.width / 2),
+			y: pos.y - parseInt(this._proto.image_size.height / 2)
+		};
+		this.initCustom(pos);
 	};
 	
 	this.run = function()
 	{
-		if ((new Date).getTime() > this._stop_animation)
-			game.deleteEffect(this.uid);
+		if (!this._proto.is_infine)
+		{
+			if ((new Date).getTime() > this._stop_animation)
+				game.deleteEffect(this.uid);
+		}
 	};
 	
 	this.draw = function(current_time)
@@ -26,8 +33,10 @@ function AbstractSimpleEffect()
 			return;
 		
 		var diff = parseInt((current_time - this._start_animation) / this._proto.frame_speed);
-		if (diff >= this._proto.frames)
+		if (!this._proto.is_infine && (diff >= this._proto.frames))
 			return;
+		
+		diff %= this._proto.frames;
 			
 		game.objDraw.addElement(DRAW_LAYER_EFFECTS, this._position_now.x, {
 			res_key: this._proto.resource_key,
@@ -68,6 +77,7 @@ AbstractSimpleEffect.setCommonOptions = function(obj)
 	obj.image_size = {};        //Must redeclare
 	obj.frames = 0;
 	obj.frame_speed = 100;
+	obj.is_infine = false;
 
 	obj.loadResources = function() 
 	{

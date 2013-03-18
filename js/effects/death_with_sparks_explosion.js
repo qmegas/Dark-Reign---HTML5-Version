@@ -2,15 +2,7 @@ function SparksExplosionEffect(unit_pos_pixel)
 {
 	this._proto = SparksExplosionEffect;
 	
-	this.initCustom = function() 
-	{
-		this._position_now = {
-			x: unit_pos_pixel.x - 50,
-			y: unit_pos_pixel.y - 50
-		};
-	};
-	
-	this.init();
+	this.init(unit_pos_pixel);
 }
 
 AbstractSimpleEffect.setCommonOptions(SparksExplosionEffect);

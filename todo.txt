@@ -2,8 +2,11 @@ To do:
 	- Guard towers
 
 - High priority bugs:
+	- Unit can attack himself
+	- Sometimes unit attack unknown target
 
 - Medium priority bugs:
+	- Allow unit to shoot not only to the center of the building
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units

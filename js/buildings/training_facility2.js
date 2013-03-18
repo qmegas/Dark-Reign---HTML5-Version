@@ -28,5 +28,5 @@ TrainingFacility2Building.image_size = {x: 119, y: 107};
 TrainingFacility2Building.image_padding = {x: 0, y: -4};
 TrainingFacility2Building.image_animated = true;
 TrainingFacility2Building.image_animation_frames = [1,2,3,2];
-TrainingFacility2Building.shadow_image_size = {x: 114, y: 85};
-TrainingFacility2Building.shadow_image_padding = {x: -10, y: -31};
+TrainingFacility2Building.shadow_image_size = {x: 129, y: 88};
+TrainingFacility2Building.shadow_image_padding = {x: 0, y: -30};

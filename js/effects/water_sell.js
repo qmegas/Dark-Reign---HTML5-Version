@@ -2,16 +2,16 @@ function WaterSellEffect(building_position)
 {
 	this._proto = WaterSellEffect;
 	
-	this.initCustom = function() 
+	this.initCustom = function(pos) 
 	{
 		this._position_now = {
-			x: building_position.x * CELL_SIZE + 31,
-			y: building_position.y * CELL_SIZE - 22
+			x: pos.x * CELL_SIZE + 31,
+			y: pos.y * CELL_SIZE - 22
 		};
 		game.resources.play(this._proto.resource_key + '_sound');
 	};
 	
-	this.init();
+	this.init(building_position);
 }
 
 AbstractSimpleEffect.setCommonOptions(WaterSellEffect);
