@@ -22,6 +22,9 @@ function AbstractBuilding()
 	this._is_repairing = false;
 	this._repairing_effect_id = 0;
 	
+	//Active part
+	this._weapon_state = 0;
+	
 	this.init = function(pos_x, pos_y)
 	{
 		this.position = {
@@ -282,12 +285,26 @@ function AbstractBuilding()
 				else
 					this._drawSprite(DRAW_LAYER_TBUILD, 1, 1);
 			}
+			
+			if (this._proto.weapon !== null)
+			{
+				this._weapon_state += 0.1; //@todo Remove later. Added just for animation testing
+				game.objDraw.addElement(DRAW_LAYER_ABUILD, this.position.x, {
+					res_key: this._proto.res_key + '_weapon', 
+					src_x: this._proto.weapon_image_size.x * (parseInt(this._weapon_state) % 16), //@todo Remove later. Added just for animation testing
+					src_y: 0,
+					src_width: this._proto.weapon_image_size.x,
+					src_height: this._proto.weapon_image_size.y,
+					x: this.position.x - this._proto.weapon_image_padding.x - game.viewport_x,
+					y: this.position.y - this._proto.weapon_image_padding.y - game.viewport_y
+				});
+			}
 		}
 	};
 	
-	this._drawSprite = function(leyer, frame_x, frame_y)
+	this._drawSprite = function(layer, frame_x, frame_y)
 	{
-		game.objDraw.addElement(leyer, this.position.x, {
+		game.objDraw.addElement(layer, this.position.x, {
 			res_key: this._proto.res_key, 
 			src_x: this._proto.image_size.x * frame_x,
 			src_y: this._proto.image_size.y * frame_y,
@@ -572,6 +589,9 @@ AbstractBuilding.loadResources = function(obj)
 	
 	if (obj.shadow_image_size !== null)
 		game.resources.addImage(obj.res_key + '_shadow', 'images/buildings/'+obj.res_key+'/shadow.png');
+	
+	if (obj.weapon !== null)
+		game.resources.addImage(obj.res_key + '_weapon', 'images/buildings/'+obj.res_key+'/weapon.png');
 };
 
 AbstractBuilding.getById = function(obj_id)
@@ -617,6 +637,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.shield_type = 'BuildingArmour';
 	obj.crater = -1;
 	obj.is_built_from_edge = false;
+	obj.weapon = null;
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare
@@ -628,6 +649,8 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.image_animation_frames = null;
 	obj.shadow_image_size = null;
 	obj.shadow_image_padding = null;
+	obj.weapon_image_size = null;
+	obj.weapon_image_padding = null;
 	obj.require_building = [];
 
 	obj.upgradable = false;

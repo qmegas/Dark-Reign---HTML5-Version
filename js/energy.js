@@ -20,17 +20,17 @@ function EnergyWaterDraw()
 			//Make sound every 15 sec
 			if ((time - this._last_sound_notification) > 15000)
 			{
-				//game.notifications.addSound((this._current-this._max > 250) ? 'power_critical' : 'low_power');
+				game.notifications.addSound((this._current-this._max > 250) ? 'power_critical' : 'low_power');
 				this._last_sound_notification = time;
 			}
 		}
-	}
+	};
 	
 	this.drawAll = function()
 	{
 		this.waterDraw();
 		this.energyDraw();
-	}
+	};
 	
 	this.waterDraw = function()
 	{
@@ -43,7 +43,7 @@ function EnergyWaterDraw()
 		//Water level
 		this._ctx.fillStyle = '#00a5ff';
 		this._ctx.fillRect(29, CANVAS_H - bar_size, 9, bar_size);
-	}
+	};
 	
 	this.waterSetLevel = function(level)
 	{
@@ -52,7 +52,7 @@ function EnergyWaterDraw()
 			this._water_current = level;
 			this.waterDraw();
 		}
-	}
+	};
 	
 	this.waterReset = function()
 	{
@@ -66,7 +66,7 @@ function EnergyWaterDraw()
 					this._water_current = game.objects[i].res_now;
 		
 		this.waterDraw();
-	}
+	};
 	
 	this.waterClick = function()
 	{
@@ -82,7 +82,7 @@ function EnergyWaterDraw()
 				
 		if (obj !== null)
 			obj.sellWater();
-	}
+	};
 	
 	this.energyDraw = function()
 	{
@@ -135,17 +135,17 @@ function EnergyWaterDraw()
 			}
 			this._ctx.stroke();
 		}
-	}
+	};
 	
 	this.energyAddToMax = function(val)
 	{
 		this._max += val;
 		this.energyDraw();
-	}
+	};
 	
 	this.energyAddToCurrent = function(val)
 	{
 		this._current += val;
 		this.energyDraw();
-	}
+	};
 }

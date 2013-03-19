@@ -26,6 +26,12 @@ TrainingFacilityBuilding.upgrade_to = TrainingFacility2Building;
 TrainingFacility2Building.require_building = [Headquarter2Building];
 TrainingFacility2Building.upgrade_from = TrainingFacilityBuilding;
 
+//IG - Plasma Turret
+PlasmaTurretBuilding.require_building = [HeadquarterBuilding];
+
+//IG - Neutron Accelerator
+NeutronAcceleratorBuilding.require_building = [Headquarter2Building];
+
 //IG - Camera Tower
 CameraTowerBuilding.require_building = [Headquarter2Building];
 

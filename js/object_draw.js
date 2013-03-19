@@ -2,8 +2,9 @@ var DRAW_LAYER_SHADOWS = 0;
 var DRAW_LAYER_GBUILD = 1;
 var DRAW_LAYER_GUNIT = 2;
 var DRAW_LAYER_TBUILD = 3;
-var DRAW_LAYER_FUNIT = 4;
-var DRAW_LAYER_EFFECTS = 5;
+var DRAW_LAYER_ABUILD = 4;
+var DRAW_LAYER_FUNIT = 5;
+var DRAW_LAYER_EFFECTS = 6;
 
 function ObjectDraw()
 {
@@ -11,15 +12,15 @@ function ObjectDraw()
 	
 	this.clear = function()
 	{
-		this._layers = [{}, {}, {}, {}, {}, {}];
-	}
+		this._layers = [{}, {}, {}, {}, {}, {}, {}];
+	};
 	
 	this.addElement = function(layerid, index, draw_object)
 	{
 		if (typeof this._layers[layerid][index] == 'undefined')
 			this._layers[layerid][index] = [];
 		this._layers[layerid][index].push(draw_object);
-	}
+	};
 	
 	this.draw = function()
 	{
@@ -33,7 +34,7 @@ function ObjectDraw()
 				for (k=0; k<this._layers[i][j].length; ++k)
 					this._drawElement(this._layers[i][j][k]);
 		}
-	}
+	};
 	
 	this._keySort = function(layerid)
 	{
@@ -48,7 +49,7 @@ function ObjectDraw()
 			new_obj[keys[i]] = this._layers[layerid][keys[i]];
 		
 		this._layers[layerid] = new_obj;
-	}
+	};
 	
 	this._drawElement = function(element)
 	{
@@ -57,5 +58,5 @@ function ObjectDraw()
 			element.src_x, element.src_y, element.src_width, element.src_height, 
 			element.x, element.y, element.src_width, element.src_height
 		);
-	}
+	};
 }

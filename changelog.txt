@@ -1,10 +1,12 @@
-Build 34 (?)
+Build 34 (19.03.)
 - Changed the way building are constructed and sold. Now it's works exactly as in original game
 - Added broken state for all buildings
 - Added ability to fix buildings
 - Unit heal speed corrected
+- Added Plasma Turret building (without weapon)
+- Added Neutron Accelerator building (without weapon)
 
-Build 33 (09.03.2013)
+Build 33 (12.03.2013)
 - Added Bion unit
 - Added Plasma Rifle for Bion unit
 - Fixed building upgrade bug
