@@ -2404,12 +2404,12 @@ function Level1()
 		
 		//Test unit
 		AbstractUnit.createNew(ConstructionRigUnit, 65, 110, PLAYER_COMPUTER1, true);
-	}
+	};
 	
 	this.getAvailableUnits = function()
 	{
 		return [ConstructionRigUnit, FreighterUnit, GuardianUnit, BionUnit];
-	}
+	};
 	
 	this.getAvailableBuildings = function()
 	{
@@ -2424,7 +2424,7 @@ function Level1()
 			//Civilian buildings
 			WaterWellBuilding, TaelonMineBuilding
 		];
-	}
+	};
 	
 	this.generateMap = function()
 	{
@@ -2457,5 +2457,5 @@ function Level1()
 				proto.size.x, proto.size.y
 			);
 		}
-	}
+	};
 }

@@ -327,14 +327,14 @@ function Game()
 			var start = 24 - (this.viewport_x - parseInt(this.viewport_x/24)*24) + 0.5; // - 11.5;
 			for (var i=0; i<20; ++i)
 			{
-				this.viewport_ctx.moveTo(start + i*24 - 12, 0);
-				this.viewport_ctx.lineTo(start + i*24 - 12, 448);
+				this.viewport_ctx.moveTo(start + i*24, 0);
+				this.viewport_ctx.lineTo(start + i*24, 448);
 			}
 			start = 24 - (this.viewport_y - parseInt(this.viewport_y/24)*24) + 0.5; // - 11.5;
 			for (i=0; i<20; ++i)
 			{
-				this.viewport_ctx.moveTo(0, start + i*24 - 12);
-				this.viewport_ctx.lineTo(448, start + i*24 - 12);
+				this.viewport_ctx.moveTo(0, start + i*24);
+				this.viewport_ctx.lineTo(448, start + i*24);
 			}
 			this.viewport_ctx.stroke();
 		}
@@ -644,7 +644,6 @@ function Game()
 	
 	this.deleteEffect = function(effectid)
 	{
-		console.log('Removing effect: ' + effectid);
 		//Remove user from effects array
 		var sindex = this.effects.indexOf(effectid);
 		if (sindex != -1)

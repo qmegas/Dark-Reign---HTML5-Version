@@ -39,7 +39,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.getCell = function()
 	{
-		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
+		return MapCell.pixelToCell(this.position);
 	};
 	
 	this.applyHeal = function(heal)
@@ -184,7 +184,7 @@ function AbstractUnit(pos_x, pos_y, player)
 					}
 					else
 					{
-						var pos = this.weapon.getTargetPosition();
+						var pos = MapCell.pixelToCell(this.weapon.getTargetPosition());
 						pos = PathFinder.findNearestEmptyCell(pos.x, pos.y, !this.is_fly);
 						if (pos !== null)
 							this._move(pos.x, pos.y);
@@ -252,7 +252,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this._moveToNextCell = function()
 	{
 		var curr_pos = this.getCell();
-
+		
 		//Check if next cell is not empty. If not empty then 
 		if (MapCell.getIdByType(game.level.map_cells[this.move_path[0].x][this.move_path[0].y], this.is_fly) != -1)
 		{
@@ -501,6 +501,9 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.beforeMoveNextCell = function()
 	{
+		if (this.weapon !== null)
+			this.weapon.updatePosition();
+		
 		switch (this.action.type)
 		{
 			case 'attack':

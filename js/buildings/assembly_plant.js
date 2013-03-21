@@ -23,9 +23,15 @@ AssemblyPlantBuilding.cell_size = {x: 5, y: 5};
 AssemblyPlantBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 AssemblyPlantBuilding.move_matrix = [0,0,1,1,0,0,1,1,0,1,0,1,0,1,1,0,1,1,1,0,0,1,1,1,0];
 AssemblyPlantBuilding.cell_padding = {x: 2, y: 2};
-AssemblyPlantBuilding.image_size = {x: 119, y: 117};
-AssemblyPlantBuilding.image_padding = {x: -1, y: -3};
-AssemblyPlantBuilding.shadow_image_size = {x: 117, y: 75};
-AssemblyPlantBuilding.shadow_image_padding = {x: -7, y: -62};
+AssemblyPlantBuilding.images = {
+	normal: {
+		size: {x: 119, y: 117},
+		padding: {x: -1, y: -3}
+	},
+	shadow: {
+		size: {x: 117, y: 75},
+		padding: {x: -7, y: -62}
+	}
+};
 
 AssemblyPlantBuilding.upgradable = true;

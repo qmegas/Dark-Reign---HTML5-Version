@@ -36,5 +36,10 @@ HorizontalBridgeBuilding.cell_size = {x: 3, y: 4};
 HorizontalBridgeBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1];
 HorizontalBridgeBuilding.move_matrix = [1,0,0,1,1,0,0,1,1,0,0,1];
 HorizontalBridgeBuilding.cell_padding = {x: 1, y: 1};
-HorizontalBridgeBuilding.image_size = {x: 72, y: 97};
-HorizontalBridgeBuilding.image_padding = {x: 0, y: 4};
+HorizontalBridgeBuilding.images = {
+	normal: {
+		size: {x: 72, y: 97},
+		padding: {x: 0, y: 4}
+	},
+	shadow: null
+};

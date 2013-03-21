@@ -6,6 +6,8 @@ function AbstractBuilding()
 	this._proto = null;
 	this.state = 'CONSTRUCTION';
 	this.progress_bar = 0;
+	this.weapon = null;
+	this.action = null;
 
 	this.is_effect = false;
 	this.is_fly = false;
@@ -23,7 +25,9 @@ function AbstractBuilding()
 	this._repairing_effect_id = 0;
 	
 	//Active part
-	this._weapon_state = 0;
+	this.weapon_direction = 0;
+	this.anim_attack_frame = 0;
+	this.start_animation = 0;
 	
 	this.init = function(pos_x, pos_y)
 	{
@@ -31,6 +35,12 @@ function AbstractBuilding()
 			x: (pos_x)*CELL_SIZE, 
 			y: (pos_y)*CELL_SIZE
 		};
+		
+		if (this._proto.weapon != null)
+		{
+			this.weapon = new this._proto.weapon();
+			this.weapon.init(this);
+		}
 	};
 	
 	this.applyFix = function(fix)
@@ -62,7 +72,7 @@ function AbstractBuilding()
 	
 	this.getCell = function()
 	{
-		return {x: Math.floor(this.position.x/CELL_SIZE), y: Math.floor(this.position.y/CELL_SIZE)};
+		return MapCell.pixelToCell(this.position);
 	};
 	
 	this.drawSelection = function(is_onmouse)
@@ -113,7 +123,7 @@ function AbstractBuilding()
 		game.viewport_ctx.fillRect(top_x + 1, top_y - 1, (health_width - 2)*health_proc, 2);
 		
 		//Draw name
-		top_y = this.position.y - this._proto.image_padding.y - 16.5 - game.viewport_y;
+		top_y = this.position.y - this._proto.images.normal.padding.y - 16.5 - game.viewport_y;
 		top_x = this.position.x - 0.5 + health_width/4 - game.viewport_x;
 		
 		if (this.player == PLAYER_HUMAN)
@@ -159,7 +169,7 @@ function AbstractBuilding()
 	{
 		var bar_width = Math.round(CELL_SIZE*this._proto.cell_size.x*0.66), 
 			top_x = this.position.x - game.viewport_x + Math.round(bar_width/4),
-			top_y = this.position.y - this._proto.image_padding.y - game.viewport_y;
+			top_y = this.position.y - this._proto.images.normal.padding.y - game.viewport_y;
 			
 		game.viewport_ctx.fillStyle = '#000000';
 		game.viewport_ctx.fillRect(top_x, top_y-2, bar_width, 4);
@@ -168,7 +178,7 @@ function AbstractBuilding()
 		game.viewport_ctx.fillStyle = '#FCFC00';
 		game.viewport_ctx.fillRect(top_x + 1, top_y - 1, (bar_width - 2)*proc, 2);
 		
-		top_y = this.position.y - this._proto.image_padding.y - 16.5 - game.viewport_y;
+		top_y = this.position.y - this._proto.images.normal.padding.y - 16.5 - game.viewport_y;
 		
 		game.fontDraw.drawOnCanvas(
 			title, game.viewport_ctx, top_x + 0.5, top_y, 
@@ -202,7 +212,45 @@ function AbstractBuilding()
 			}
 	};
 	
-	this.run = function() {};
+	this.run = function() 
+	{
+		switch (this.state)
+		{
+			case 'ATTACK':
+				if (this.weapon.canShoot() && this.weapon.isTargetAlive())
+				{
+					if (this.weapon.canReach())
+					{
+						this.state = 'ATTACKING';
+						this.anim_attack_frame = 0;
+						this.start_animation = 0;
+					}
+					else
+						this.state = 'NORMAL';
+				}
+				break;
+				
+			case 'ATTACKING':
+				if (this.weapon.isTargetAlive())
+				{
+					var can_shoot = true;
+					if (this._proto.images.weapon.animated)
+					{
+						this.anim_attack_frame++;
+						if (this.anim_attack_frame < this._proto.images.weapon.frames)
+							can_shoot = false;
+					}				
+					if (can_shoot)
+					{
+						this.weapon.shoot();
+						this.state = 'ATTACK';
+					}
+				}
+				else
+					this.state = 'NORMAL';
+				break;
+		}
+	};
 	
 	this.sell = function()
 	{
@@ -243,7 +291,6 @@ function AbstractBuilding()
 			var uid = game.addEffect(effect);
 			effect.uid = uid;
 			this._repairing_effect_id = uid;
-			console.log('Effect added: ' + uid);
 		}
 	};
 	
@@ -251,7 +298,7 @@ function AbstractBuilding()
 	{
 		if (this.state == 'CONSTRUCTION' || this.state == 'UPGRADING')
 		{
-			if (this._proto.shadow_image_size !== null)
+			if (this._proto.images.shadow !== null)
 				this._drawShadow(0, 0);
 			this._drawSprite(DRAW_LAYER_GBUILD, 0, 0);
 			this._drawSprite(DRAW_LAYER_TBUILD, 1, 0);
@@ -260,25 +307,25 @@ function AbstractBuilding()
 		{
 			if ((this.health / this._proto.health_max) < 0.33)
 			{
-				if (this._proto.shadow_image_size !== null)
+				if (this._proto.images.shadow !== null)
 					this._drawShadow(0, 2);
 				this._drawSprite(DRAW_LAYER_GBUILD, 0, 2);
 				this._drawSprite(DRAW_LAYER_TBUILD, 1, 2);
 			}
 			else
 			{
-				if (this._proto.shadow_image_size !== null)
+				if (this._proto.images.shadow !== null)
 					this._drawShadow(0, 1);
 				this._drawSprite(DRAW_LAYER_GBUILD, 0, 1);
 
-				if (this._proto.image_animated)
+				if (this._proto.images.normal.animated)
 				{
-					this._drawSprite(DRAW_LAYER_TBUILD, this._proto.image_animation_frames[this._draw_cur_frame], 1);
+					this._drawSprite(DRAW_LAYER_TBUILD, this._proto.images.normal.frames[this._draw_cur_frame], 1);
 
 					if ((cur_time - this._draw_last_frame_change)>200)
 					{
 						++this._draw_cur_frame;
-						this._draw_cur_frame %= this._proto.image_animation_frames.length;
+						this._draw_cur_frame %= this._proto.images.normal.frames.length;
 						this._draw_last_frame_change = cur_time;
 					}
 				}
@@ -288,30 +335,37 @@ function AbstractBuilding()
 			
 			if (this._proto.weapon !== null)
 			{
-				this._weapon_state += 0.1; //@todo Remove later. Added just for animation testing
-				game.objDraw.addElement(DRAW_LAYER_ABUILD, this.position.x, {
-					res_key: this._proto.res_key + '_weapon', 
-					src_x: this._proto.weapon_image_size.x * (parseInt(this._weapon_state) % 16), //@todo Remove later. Added just for animation testing
-					src_y: 0,
-					src_width: this._proto.weapon_image_size.x,
-					src_height: this._proto.weapon_image_size.y,
-					x: this.position.x - this._proto.weapon_image_padding.x - game.viewport_x,
-					y: this.position.y - this._proto.weapon_image_padding.y - game.viewport_y
-				});
+				if (this.state == 'ATTACKING' && this._proto.images.weapon.animated)
+					this._drawWeapon('attack', parseInt((cur_time - this.start_animation) / ANIMATION_SPEED) % this._proto.images.weapon.frames);
+				else
+					this._drawWeapon('weapon', 0);
 			}
 		}
+	};
+	
+	this._drawWeapon = function(key, frame)
+	{
+		game.objDraw.addElement(DRAW_LAYER_ABUILD, this.position.x, {
+			res_key: this._proto.res_key + '_' + key, 
+			src_x: this._proto.images.weapon.size.x * this.weapon_direction,
+			src_y: this._proto.images.weapon.size.y * frame,
+			src_width: this._proto.images.weapon.size.x,
+			src_height: this._proto.images.weapon.size.y,
+			x: this.position.x - this._proto.images.weapon.padding.x - game.viewport_x,
+			y: this.position.y - this._proto.images.weapon.padding.y - game.viewport_y
+		});
 	};
 	
 	this._drawSprite = function(layer, frame_x, frame_y)
 	{
 		game.objDraw.addElement(layer, this.position.x, {
 			res_key: this._proto.res_key, 
-			src_x: this._proto.image_size.x * frame_x,
-			src_y: this._proto.image_size.y * frame_y,
-			src_width: this._proto.image_size.x,
-			src_height: this._proto.image_size.y,
-			x: this.position.x - this._proto.image_padding.x - game.viewport_x,
-			y: this.position.y - this._proto.image_padding.y - game.viewport_y
+			src_x: this._proto.images.normal.size.x * frame_x,
+			src_y: this._proto.images.normal.size.y * frame_y,
+			src_width: this._proto.images.normal.size.x,
+			src_height: this._proto.images.normal.size.y,
+			x: this.position.x - this._proto.images.normal.padding.x - game.viewport_x,
+			y: this.position.y - this._proto.images.normal.padding.y - game.viewport_y
 		});
 	};
 	
@@ -319,26 +373,54 @@ function AbstractBuilding()
 	{
 		game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
 			res_key: this._proto.res_key + '_shadow',
-			src_x: this._proto.shadow_image_size.x * frame_x,
-			src_y: this._proto.shadow_image_size.y * frame_y,
-			src_width: this._proto.shadow_image_size.x,
-			src_height: this._proto.shadow_image_size.y,
-			x: this.position.x - this._proto.shadow_image_padding.x - game.viewport_x,
-			y: this.position.y - this._proto.shadow_image_padding.y - game.viewport_y
+			src_x: this._proto.images.shadow.size.x * frame_x,
+			src_y: this._proto.images.shadow.size.y * frame_y,
+			src_width: this._proto.images.shadow.size.x,
+			src_height: this._proto.images.shadow.size.y,
+			x: this.position.x - this._proto.images.shadow.padding.x - game.viewport_x,
+			y: this.position.y - this._proto.images.shadow.padding.y - game.viewport_y
 		});
-	};
-	
-	this.canAttackFly = function()
-	{
-		return false; //Change it later because Guard Towers can attack
 	};
 	
 	this.canAttackGround = function()
 	{
-		return false; //Change it later because Guard Towers can attack
+		if (this._proto.weapon === null)
+			return false;
+		return this._proto.weapon.can_shoot_ground;
 	};
 	
-	this.orderAttack = function(target) {};
+	this.canAttackFly = function()
+	{
+		if (this._proto.weapon === null)
+			return false;
+		return this._proto.weapon.can_shoot_flyer;
+	};
+	
+	this.orderAttack = function(target)
+	{
+		if (this.weapon === null)
+			return;
+		
+		if (this.state != 'NORMAL' && this.state != 'ATTACK')
+			return;
+		
+		if (this.weapon.canAttackTarget(target))
+			this.weapon.setTarget(target);
+		
+		this.state = 'ATTACK';
+		this.action = {
+			type: 'attack',
+			target: target
+		};
+	};
+	
+	this.orderStop = function()
+	{
+		this.action = {type: ''};
+		
+		if (this.state == 'ATTACK' || this.state == 'ATTACKING')
+			this.state = 'NORMAL';
+	};
 	
 	this._removingRecalc = function(obj_proto)
 	{
@@ -473,18 +555,18 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 	var i = -1;
 	
 	game.viewport_ctx.drawImage(
-		game.resources.get(obj.res_key), 0, obj.image_size.y, 
-		obj.image_size.x, obj.image_size.y, 
-		x*CELL_SIZE - game.viewport_x - obj.image_padding.x, 
-		y*CELL_SIZE - game.viewport_y - obj.image_padding.y, 
-		obj.image_size.x, obj.image_size.y
+		game.resources.get(obj.res_key), 0, obj.images.normal.size.y, 
+		obj.images.normal.size.x, obj.images.normal.size.y, 
+		x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x, 
+		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y, 
+		obj.images.normal.size.x, obj.images.normal.size.y
 	);
 	game.viewport_ctx.drawImage(
-		game.resources.get(obj.res_key), obj.image_size.x, obj.image_size.y, 
-		obj.image_size.x, obj.image_size.y, 
-		x*CELL_SIZE - game.viewport_x - obj.image_padding.x, 
-		y*CELL_SIZE - game.viewport_y - obj.image_padding.y, 
-		obj.image_size.x, obj.image_size.y
+		game.resources.get(obj.res_key), obj.images.normal.size.x, obj.images.normal.size.y, 
+		obj.images.normal.size.x, obj.images.normal.size.y, 
+		x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x, 
+		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y, 
+		obj.images.normal.size.x, obj.images.normal.size.y
 	);
 		
 	for (var xx = 0; xx<obj.cell_size.x; ++xx)
@@ -587,11 +669,17 @@ AbstractBuilding.loadResources = function(obj)
 	if (typeof obj.require_building == 'undefined')
 		game.resources.addImage(obj.res_key + '_box', 'images/buildings/'+obj.res_key+'/box.png');
 	
-	if (obj.shadow_image_size !== null)
+	if (obj.images.shadow !== null)
 		game.resources.addImage(obj.res_key + '_shadow', 'images/buildings/'+obj.res_key+'/shadow.png');
 	
 	if (obj.weapon !== null)
+	{
 		game.resources.addImage(obj.res_key + '_weapon', 'images/buildings/'+obj.res_key+'/weapon.png');
+		obj.weapon.loadResources();
+		
+		if (obj.images.weapon.animated)
+			game.resources.addImage(obj.res_key + '_attack', 'images/buildings/'+obj.res_key+'/attack.png');
+	}
 };
 
 AbstractBuilding.getById = function(obj_id)
@@ -643,14 +731,8 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.cell_matrix = null;     //Must redeclare
 	obj.move_matrix = null;     //Must redeclare
 	obj.cell_padding = null;    //Must redeclare
-	obj.image_size = null;      //Must redeclare
-	obj.image_padding = null;
-	obj.image_animated = false;
-	obj.image_animation_frames = null;
-	obj.shadow_image_size = null;
-	obj.shadow_image_padding = null;
-	obj.weapon_image_size = null;
-	obj.weapon_image_padding = null;
+	obj.images = null;          //Must redeclare
+	
 	obj.require_building = [];
 
 	obj.upgradable = false;

@@ -25,9 +25,14 @@ HeadquarterBuilding.cell_size = {x: 5, y: 4};
 HeadquarterBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 HeadquarterBuilding.move_matrix = [0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1];
 HeadquarterBuilding.cell_padding = {x: 2, y: 2};
-HeadquarterBuilding.image_size = {x: 105, y: 138};
-HeadquarterBuilding.image_padding = {x: -11, y: 42};
-HeadquarterBuilding.shadow_image_size = {x: 122, y: 88};
-HeadquarterBuilding.shadow_image_padding = {x: -19, y: -6};
-
+HeadquarterBuilding.images = {
+	normal: {
+		size: {x: 105, y: 138},
+		padding: {x: -11, y: 42}
+	},
+	shadow: {
+		size: {x: 122, y: 88},
+		padding: {x: -19, y: -6}
+	}
+};
 HeadquarterBuilding.upgradable = true;

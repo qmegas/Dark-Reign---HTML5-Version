@@ -24,9 +24,15 @@ TrainingFacility2Building.cell_size = {x: 5, y: 5};
 TrainingFacility2Building.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1];
 TrainingFacility2Building.move_matrix = [0,0,1,1,0,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1,1,0,0];
 TrainingFacility2Building.cell_padding = {x: 2, y: 2};
-TrainingFacility2Building.image_size = {x: 119, y: 107};
-TrainingFacility2Building.image_padding = {x: 0, y: -4};
-TrainingFacility2Building.image_animated = true;
-TrainingFacility2Building.image_animation_frames = [1,2,3,2];
-TrainingFacility2Building.shadow_image_size = {x: 129, y: 88};
-TrainingFacility2Building.shadow_image_padding = {x: 0, y: -30};
+TrainingFacility2Building.images = {
+	normal: {
+		size: {x: 119, y: 107},
+		padding: {x: 0, y: -4},
+		animated: true,
+		frames: [1,2,3,2]
+	},
+	shadow: {
+		size: {x: 129, y: 88},
+		padding: {x: 0, y: -30}
+	}
+};

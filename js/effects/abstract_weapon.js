@@ -16,16 +16,16 @@ function AbstractWeaponEffect()
 	
 	this._offence = null;
 	
-	this.init = function(from_x, from_y, to_x, to_y, offence)
+	this.init = function(from, to, offence)
 	{
 		var len, parts;
 		
 		//Set positions & steps
 		this._offence = offence;
-		this._position_now = {x: from_x*CELL_SIZE + 12, y: from_y*CELL_SIZE + 12};
-		this._position_to = {x: to_x*CELL_SIZE + 12, y: to_y*CELL_SIZE + 12};
-		this._position_to_cells = {x: to_x, y: to_y};
-		len = MapCell.getPixelDistance(from_x, from_y, to_x, to_y);
+		this._position_now = {x: from.x, y: from.y};
+		this._position_to = {x: to.x, y: to.y};
+		this._position_to_cells = {x: parseInt(to.x/CELL_SIZE), y: parseInt(to.y/CELL_SIZE)};
+		len = MapCell.getPixelDistance(from.x, from.y, to.x, to.y);
 		parts = (len / this._proto.speed) * RUNS_PER_SECOND;
 		this._move_steps = {
 			x: (this._position_to.x - this._position_now.x) / parts,
@@ -37,7 +37,7 @@ function AbstractWeaponEffect()
 		//Calc angle
 		//There is an image for each 15 degrees. Images are from 0 to 23
 		//0 = W, 6 = S, 12 = E, 18 = N
-		this._angle_frame = 12 - parseInt(Math.atan2(from_y - to_y, from_x - to_x)*(180/Math.PI)/15);
+		this._angle_frame = 12 - parseInt(Math.atan2(from.y - to.y, from.x - to.x)*(180/Math.PI)/15);
 		
 		//Play shoot sound
 		game.resources.playOnPosition(this._proto.resource_key + '_shoot_snd', true, this._position_now, true);

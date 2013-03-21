@@ -23,7 +23,12 @@ TrainingFacilityBuilding.cell_size = {x: 5, y: 5};
 TrainingFacilityBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1];
 TrainingFacilityBuilding.move_matrix = [0,0,1,1,0,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1,1,0,0];
 TrainingFacilityBuilding.cell_padding = {x: 2, y: 2};
-TrainingFacilityBuilding.image_size = {x: 117, y: 101};
-TrainingFacilityBuilding.image_padding = {x: 0, y: 0};
+TrainingFacilityBuilding.images = {
+	normal: {
+		size: {x: 117, y: 101},
+		padding: {x: 0, y: 0}
+	},
+	shadow: null
+};
 
 TrainingFacilityBuilding.upgradable = true;

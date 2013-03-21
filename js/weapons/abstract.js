@@ -4,10 +4,30 @@ function AbstractWeapon()
 	this._last_shoot = 0;
 	this._target = null;
 	this._unit = null;
+	this._position = null;
 	
 	this.init = function(unit)
 	{
 		this._unit = unit;
+		this.updatePosition();
+	};
+	
+	this.updatePosition = function()
+	{
+		if (this._unit.is_building)
+		{
+			this._position = {
+				x: parseInt(this._unit.position.x - this._unit._proto.images.weapon.padding.x + this._unit._proto.images.weapon.size.x/2),
+				y: parseInt(this._unit.position.y - this._unit._proto.images.weapon.padding.y + this._unit._proto.images.weapon.size.y/2)
+			};
+		}
+		else
+		{
+			this._position = {
+				x: this._unit.position.x + 12,
+				y: this._unit.position.y + 12
+			};
+		}
 	};
 	
 	this.isTargetAlive = function()
@@ -15,7 +35,10 @@ function AbstractWeapon()
 		if (this._target.type == 'object')
 			if (game.objects[this._target.objid] === undefined)
 			{
-				this._unit.state = 'STAND';
+				if (this._unit.is_building)
+					this._unit.state = 'NORMAL';
+				else
+					this._unit.state = 'STAND';
 				this._target = null;
 				return false;
 			}
@@ -29,14 +52,18 @@ function AbstractWeapon()
 		if (this._target.type == 'object')
 		{
 			obj = game.objects[this._target.objid];
-			pos = obj.getCell();
+			pos = {x: obj.position.x, y: obj.position.y};
 			if (obj.is_building)
 			{
-				pos.x += obj._proto.cell_padding.x;
-				pos.y += obj._proto.cell_padding.y;
+				pos.x += obj._proto.cell_padding.x * CELL_SIZE;
+				pos.y += obj._proto.cell_padding.y * CELL_SIZE;
 			}
 		}
-		return pos;
+		
+		return {
+			x: pos.x + 12,
+			y: pos.y + 12
+		};
 	};
 	
 	this.canAttackTarget = function(target)
@@ -71,25 +98,32 @@ function AbstractWeapon()
 	
 	this.canReach = function()
 	{
-		var unit_pos = this._unit.getCell(), target_pos = this.getTargetPosition(), 
-			distance = MapCell.getCellDistance(unit_pos.x, unit_pos.y, target_pos.x, target_pos.y);
-		
+		var distance = this._getDistance();
 		return ((distance >= this._proto.minimum_range) && (distance <= this._proto.maximum_range));
 	};
 	
 	this.shoot = function()
 	{
-		var pos = this._unit.getCell(), uid, effect, to = this.getTargetPosition();
+		var uid, effect, to = this.getTargetPosition();
 		
 		this._last_shoot = (new Date()).getTime();
 		
 		//Rotate unit
-		this._unit.move_direction = 4 - parseInt(Math.atan2(pos.y - to.y, pos.x - to.x)*(180/Math.PI)/45);
+		if (this._unit.is_building)
+			this._unit.weapon_direction = 8 - parseInt(Math.atan2(this._position.y - to.y, this._position.x - to.x)*(180/Math.PI)/23.5);
+		else
+			this._unit.move_direction = 4 - parseInt(Math.atan2(this._position.y - to.y, this._position.x - to.x)*(180/Math.PI)/45);
 		
 		effect = new this._proto.effect();
-		effect.init(pos.x, pos.y, to.x, to.y, this._proto.offence);
+		effect.init(this._position, to, this._proto.offence);
 		uid = game.addEffect(effect);
 		effect.uid = uid;
+	};
+	
+	this._getDistance = function()
+	{
+		var target_pos = this.getTargetPosition();
+		return Math.sqrt(Math.pow((this._position.x - target_pos.x)/CELL_SIZE, 2) + Math.pow((this._position.y - target_pos.y)/CELL_SIZE, 2))
 	};
 }
 
@@ -99,12 +133,12 @@ AbstractWeapon.setCommonOptions = function(obj)
 
 	obj.effect = null;      //Must redeclare
 	
-	obj.minimum_range = 0;
+	obj.minimum_range = 0;  //SetAttributes(minimum_range, maximum_range, ?maxammo?, firedelay, energypershot)
 	obj.maximum_range = 4;
-	obj.firedelay = 270; //shoot per msec. Calculation: 33.75*cfg_firedelay
+	obj.firedelay = 270;    //shoot per msec. Calculation: 33.75*cfg_firedelay
 	obj.can_shoot_ground = true;
 	obj.can_shoot_flyer = false;
-	obj.offence = {
+	obj.offence = {         //SetOffense(type strength ?area_effect?)
 		type: 'E2',
 		strength: 11
 	};

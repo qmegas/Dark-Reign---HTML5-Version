@@ -77,9 +77,15 @@ TaelonPowerBuilding.cell_size = {x: 4, y: 4};
 TaelonPowerBuilding.cell_matrix = [0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1];
 TaelonPowerBuilding.move_matrix = [0,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0];
 TaelonPowerBuilding.cell_padding = {x: 2, y: 1};
-TaelonPowerBuilding.image_size = {x: 90, y: 123};
-TaelonPowerBuilding.image_padding = {x: -4, y: 33};
-TaelonPowerBuilding.image_animated = true;
-TaelonPowerBuilding.image_animation_frames = [1,2,3,2];
-TaelonPowerBuilding.shadow_image_size = {x: 69, y: 62};
-TaelonPowerBuilding.shadow_image_padding = {x: -49, y: 2};
+TaelonPowerBuilding.images = {
+	normal: {
+		size: {x: 90, y: 123},
+		padding: {x: -4, y: 33},
+		animated: true,
+		frames: [1,2,3,2]
+	},
+	shadow: {
+		size: {x: 69, y: 62},
+		padding: {x: -49, y: 2}
+	}
+};

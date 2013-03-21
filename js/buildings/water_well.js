@@ -56,5 +56,10 @@ WaterWellBuilding.cell_size = {x: 3, y: 3};
 WaterWellBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];
 WaterWellBuilding.move_matrix = [0,0,0,0,0,0,0,0,0];
 WaterWellBuilding.cell_padding = {x: 0, y: 0};
-WaterWellBuilding.image_size = {x: 72, y: 68};
-WaterWellBuilding.image_padding = {x: 0, y: -6};
+WaterWellBuilding.images = {
+	normal: {
+		size: {x: 72, y: 68},
+		padding: {x: 0, y: -6}
+	},
+	shadow: null
+};

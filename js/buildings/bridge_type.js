@@ -4,18 +4,18 @@ var BridgeTypeBuilding = {
 		var i = -1, xx, yy, xxx, yyy;
 
 		game.viewport_ctx.drawImage(
-			game.resources.get(obj.res_key), 0, obj.image_size.y, 
-			obj.image_size.x, obj.image_size.y, 
-			x*CELL_SIZE - game.viewport_x - obj.image_padding.x, 
-			y*CELL_SIZE - game.viewport_y - obj.image_padding.y, 
-			obj.image_size.x, obj.image_size.y
+			game.resources.get(obj.res_key), 0, obj.images.normal.size.y, 
+			obj.images.normal.size.x, obj.images.normal.size.y, 
+			x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x, 
+			y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y, 
+			obj.images.normal.size.x, obj.images.normal.size.y
 		);
 		game.viewport_ctx.drawImage(
-			game.resources.get(obj.res_key), obj.image_size.x, obj.image_size.y, 
-			obj.image_size.x, obj.image_size.y, 
-			x*CELL_SIZE - game.viewport_x - obj.image_padding.x, 
-			y*CELL_SIZE - game.viewport_y - obj.image_padding.y, 
-			obj.image_size.x, obj.image_size.y
+			game.resources.get(obj.res_key), obj.images.normal.size.x, obj.images.normal.size.y, 
+			obj.images.normal.size.x, obj.images.normal.size.y, 
+			x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x, 
+			y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y, 
+			obj.images.normal.size.x, obj.images.normal.size.y
 		);
 
 		if (BridgeTypeBuilding.isCorrectLandForBuild(x, y, obj.cell_size.x, obj.cell_size.y))

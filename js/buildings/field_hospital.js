@@ -24,7 +24,13 @@ FieldHospitalBuilding.cell_size = {x: 4, y: 3};
 FieldHospitalBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,0,1,1];
 FieldHospitalBuilding.move_matrix = [1,1,0,1,0,1,1,1,1,0,1,1];
 FieldHospitalBuilding.cell_padding = {x: 2, y: 1};
-FieldHospitalBuilding.image_size = {x: 96, y: 69};
-FieldHospitalBuilding.image_padding = {x: -2, y: -2};
-FieldHospitalBuilding.shadow_image_size = {x: 97, y: 72};
-FieldHospitalBuilding.shadow_image_padding = {x: -2, y: 0};
+FieldHospitalBuilding.images = {
+	normal: {
+		size: {x: 96, y: 69},
+		padding: {x: -2, y: -2}
+	},
+	shadow: {
+		size: {x: 97, y: 72},
+		padding: {x: -2, y: 0}
+	}
+};

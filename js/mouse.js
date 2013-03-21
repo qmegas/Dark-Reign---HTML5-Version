@@ -283,7 +283,7 @@ var MousePointer = {
 				unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
 				
 				if (unitid == -1)
-					target = {type: 'ground', x: pos.x, y: pos.y};
+					target = {type: 'ground', x: pos.x*CELL_SIZE, y: pos.y*CELL_SIZE};
 				else
 					target = {type: 'object', objid: unitid};
 				

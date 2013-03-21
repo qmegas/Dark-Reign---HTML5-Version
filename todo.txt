@@ -1,5 +1,5 @@
 To do:
-	- Guard towers
+	- Correct bullet animation
 
 - High priority bugs:
 	- Unit can attack himself
@@ -15,8 +15,11 @@ To do:
 	- Need to add animation when energy state changed
 	- Unit production indicator on right panel looks not exactly as original one
 	- Add smooth animation on water indicator when selling water
-	- Add Light layer for PlasmaRifle blast animation
 	- When building upgraded we should calculate exact proportion on health for new building
+	- Add "Light" layer for:
+		- PlasmaRifle blast animation
+		- GatPlasma blast animation
+		- NeutronAss blast animation
 
 - Very low priority bugs:
 	- When mouseover building or unit, it's name should be shown after small delay

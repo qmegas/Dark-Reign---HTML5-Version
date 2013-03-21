@@ -56,5 +56,10 @@ TaelonMineBuilding.cell_size = {x: 3, y: 3};
 TaelonMineBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];
 TaelonMineBuilding.move_matrix = [0,0,0,0,0,0,0,0,0];
 TaelonMineBuilding.cell_padding = {x: 0, y: 0};
-TaelonMineBuilding.image_size = {x: 68, y: 57};
-TaelonMineBuilding.image_padding = {x: 0, y: -13};
+TaelonMineBuilding.images = {
+	normal: {
+		size: {x: 68, y: 57},
+		padding: {x: 0, y: -13}
+	},
+	shadow: null
+};
