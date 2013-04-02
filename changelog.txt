@@ -1,3 +1,8 @@
+Build 35
+- Minimap not available if player have low energy
+- Added Exterminator unit
+- Unit sound system now have much flexible structure 
+
 Build 34 (21.03.2013)
 - Changed the way building are constructed and sold. Now it's works exactly as in original game
 - Added broken state for all buildings

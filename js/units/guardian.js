@@ -48,6 +48,8 @@ GuardianUnit.images = {
 		}
 	}
 };
+GuardianUnit.select_sounds = ['gvig1sl0', 'gvig1sl1', 'gvig1sl2', 'gvig1sl3'];
+GuardianUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl6'];
 
 GuardianUnit.cost = 150;
 GuardianUnit.health_max = 100;

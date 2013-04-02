@@ -1,9 +1,10 @@
 <?php
 
 /* Config */
-$file = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\eoplsex0_00.png';
-$rows = 1;
-$cols = 16;
+$file = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\Untitled-1.png';
+$output = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\stand.png';
+$rows = 2;
+$cols = 8;
 $shadow_mode = false;
 /* Config */
 
@@ -130,8 +131,7 @@ for ($row = 0; $row < $rows; $row++)
 $padding['right'] = $col_size - $padding['right'] - 1;
 $padding['bottom'] = $row_size - $padding['bottom'] - 1;
 
-var_dump($padding);
-exit;
+print_r($padding);
 
 //Create new sprite image
 $new_col_size = $col_size - $padding['left'] - $padding['right'];
@@ -178,8 +178,8 @@ for ($row = 0; $row < $rows; $row++)
 	}
 }
 
-header('Content-Type: image/png');
+//header('Content-Type: image/png');
 
-imagepng($new_img);
+imagepng($new_img, $output);
 imagedestroy($new_img);
 imagedestroy($img);
