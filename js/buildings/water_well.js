@@ -1,12 +1,11 @@
 function WaterWellBuilding(pos_x, pos_y, player)
 {
 	this._proto = WaterWellBuilding;
-	this.player = player;
 	
 	this.res_now = 667;
 	this.res_max = 667;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 	
 	this.run = function() 
 	{

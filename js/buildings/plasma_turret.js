@@ -1,9 +1,8 @@
 function PlasmaTurretBuilding(pos_x, pos_y, player)
 {
 	this._proto = PlasmaTurretBuilding;
-	this.player = player;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 }
 
 AbstractBuilding.setBuildingCommonOptions(PlasmaTurretBuilding);
@@ -16,7 +15,7 @@ PlasmaTurretBuilding.sell_cost = 250;
 PlasmaTurretBuilding.sell_time = 6;
 PlasmaTurretBuilding.health_max = 400;
 PlasmaTurretBuilding.energy = 50;
-PlasmaTurretBuilding.enabled = true;
+PlasmaTurretBuilding.enabled = false;
 PlasmaTurretBuilding.can_build = true;
 PlasmaTurretBuilding.crater = 0;
 PlasmaTurretBuilding.weapon = GatPlasmaWeapon;

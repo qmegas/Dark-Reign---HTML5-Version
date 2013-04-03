@@ -29,8 +29,10 @@ function AbstractBuilding()
 	this.anim_attack_frame = 0;
 	this.start_animation = 0;
 	
-	this.init = function(pos_x, pos_y)
+	this.init = function(pos_x, pos_y, player)
 	{
+		this.player = player;
+		
 		this.position = {
 			x: (pos_x)*CELL_SIZE, 
 			y: (pos_y)*CELL_SIZE

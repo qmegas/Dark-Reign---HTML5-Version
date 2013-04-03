@@ -1,9 +1,8 @@
 function HeadquarterBuilding(pos_x, pos_y, player)
 {
 	this._proto = HeadquarterBuilding;
-	this.player = player;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 }
 
 AbstractBuilding.setBuildingCommonOptions(HeadquarterBuilding);

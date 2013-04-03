@@ -1,9 +1,8 @@
 function AssemblyPlantBuilding(pos_x, pos_y, player)
 {
 	this._proto = AssemblyPlantBuilding;
-	this.player = player;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 }
 
 AbstractBuilding.setBuildingCommonOptions(AssemblyPlantBuilding);

@@ -1,11 +1,9 @@
 function AssemblyPlant2Building(pos_x, pos_y, player)
 {
 	this._proto = AssemblyPlant2Building;
-	this.player = player;
-	
 	this.state = 'UPGRADING';
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 }
 
 AbstractBuilding.setBuildingCommonOptions(AssemblyPlant2Building);

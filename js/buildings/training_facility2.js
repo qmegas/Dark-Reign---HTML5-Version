@@ -1,11 +1,9 @@
 function TrainingFacility2Building(pos_x, pos_y, player)
 {
 	this._proto = TrainingFacility2Building;
-	this.player = player;
-	
 	this.state = 'UPGRADING';
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 }
 
 AbstractBuilding.setBuildingCommonOptions(TrainingFacility2Building);

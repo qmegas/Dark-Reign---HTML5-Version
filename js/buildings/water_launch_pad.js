@@ -1,12 +1,11 @@
 function WaterLaunchPadBuilding(pos_x, pos_y, player)
 {
 	this._proto = WaterLaunchPadBuilding;
-	this.player = player;
 	
 	this.res_now = 0;
 	this.res_max = 200;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 	
 	//Custom selection bar
 	this.drawSelection = function(is_onmouse)

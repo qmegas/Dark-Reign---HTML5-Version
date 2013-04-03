@@ -1,9 +1,8 @@
 function NeutronAcceleratorBuilding(pos_x, pos_y, player)
 {
 	this._proto = NeutronAcceleratorBuilding;
-	this.player = player;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 }
 
 AbstractBuilding.setBuildingCommonOptions(NeutronAcceleratorBuilding);
@@ -16,7 +15,7 @@ NeutronAcceleratorBuilding.sell_cost = 850;
 NeutronAcceleratorBuilding.sell_time = 17;
 NeutronAcceleratorBuilding.health_max = 550;
 NeutronAcceleratorBuilding.energy = 100;
-NeutronAcceleratorBuilding.enabled = true;
+NeutronAcceleratorBuilding.enabled = false;
 NeutronAcceleratorBuilding.can_build = true;
 NeutronAcceleratorBuilding.crater = 1;
 NeutronAcceleratorBuilding.weapon = NeutronAssWeapon;

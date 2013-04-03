@@ -1,12 +1,11 @@
 function TaelonPowerBuilding(pos_x, pos_y, player)
 {
 	this._proto = TaelonPowerBuilding;
-	this.player = player;
 	
 	this.res_now = 0;
 	this.res_max = 1000;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 	
 	this.onConstructedCustom = function() 
 	{

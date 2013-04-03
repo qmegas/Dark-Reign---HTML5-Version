@@ -1,9 +1,8 @@
 function FieldHospitalBuilding(pos_x, pos_y, player)
 {
 	this._proto = FieldHospitalBuilding;
-	this.player = player;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 }
 
 AbstractBuilding.setBuildingCommonOptions(FieldHospitalBuilding);

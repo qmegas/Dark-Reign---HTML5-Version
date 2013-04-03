@@ -1,9 +1,8 @@
 function HorizontalBridgeBuilding(pos_x, pos_y, player)
 {
 	this._proto = HorizontalBridgeBuilding;
-	this.player = player;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 	
 	this.onConstructedCustom = function()
 	{

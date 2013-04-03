@@ -1,12 +1,11 @@
 function TaelonMineBuilding(pos_x, pos_y, player)
 {
 	this._proto = TaelonMineBuilding;
-	this.player = player;
 	
 	this.res_now = 40;
 	this.res_max = 500;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 	
 	this.run = function() 
 	{
