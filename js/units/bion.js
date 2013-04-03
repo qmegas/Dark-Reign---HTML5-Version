@@ -48,7 +48,8 @@ BionUnit.images = {
 		}
 	}
 };
-BionUnit.sound_count = 2;
+BionUnit.select_sounds = ['gxbonsc0', 'gxbonsc1'];
+BionUnit.response_sounds = ['gxbonrc0', 'gxbonrc1'];
 
 BionUnit.cost = 350;
 BionUnit.health_max = 150;

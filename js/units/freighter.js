@@ -140,7 +140,7 @@ function FreighterUnit(pos_x, pos_y, player)
 		var cell = this.getCell(), tmp;
 		
 		if (play_sound)
-			this._playSound('move');
+			this._playSound(this._proto.response_sounds);
 		
 		if (obj instanceof TaelonPowerBuilding)
 		{
@@ -317,6 +317,8 @@ FreighterUnit.images = {
 		padding: {x: 8, y: 8}
 	}
 };
+FreighterUnit.select_sounds = ['gvig1sl0', 'gvig1sl1', 'gvig1sl2', 'gvig1sl5'];
+FreighterUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl3'];
 
 FreighterUnit.cost = 1000;
 FreighterUnit.health_max = 750;
@@ -330,13 +332,13 @@ FreighterUnit.construction_time = 4;
 
 FreighterUnit.loadResources = function() 
 {
+	var i;
+	
 	game.resources.addImage(this.resource_key + '_move',  'images/units/' + this.resource_key + '/move.png');
 	game.resources.addImage(this.resource_key + '_load', 'images/units/' + this.resource_key + '/load.png');
 	
-	//Use same sounds as guardian
-	for (var i=1; i<=this.sound_count; ++i)
-	{
-		game.resources.addSound(this.resource_key + '_move' + i,   'sounds/units/guardian/move' + i + '.' + AUDIO_TYPE);
-		game.resources.addSound(this.resource_key + '_select' + i, 'sounds/units/guardian/select' + i + '.' + AUDIO_TYPE);
-	}
+	for (i in FreighterUnit.select_sounds)
+		game.resources.addSound('sound_' + FreighterUnit.select_sounds[i],   'sounds/units/' + FreighterUnit.select_sounds[i] + '.' + AUDIO_TYPE);
+	for (i in FreighterUnit.response_sounds)
+		game.resources.addSound('sound_' + FreighterUnit.response_sounds[i],   'sounds/units/' + FreighterUnit.response_sounds[i] + '.' + AUDIO_TYPE);
 };

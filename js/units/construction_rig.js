@@ -19,7 +19,7 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 			this._startBuild();
 		else
 		{
-			this._playSound('move');
+			this._playSound(this._proto.response_sounds);
 			var pos = PathFinder.findNearestStandCell(x + build.cell_padding.x, y + build.cell_padding.y);
 			if (pos !== null)
 				this._move(pos.x, pos.y);
@@ -117,7 +117,8 @@ ConstructionRigUnit.images = {
 		}
 	}
 };
-ConstructionRigUnit.sound_count = 3;
+ConstructionRigUnit.select_sounds = ['gvicnsl0', 'gvicnsl1', 'gvicnsl2'];
+ConstructionRigUnit.response_sounds = ['gvicnrl0', 'gvicnrl1', 'gvicnrl2'];
 
 ConstructionRigUnit.cost = 300;
 ConstructionRigUnit.speed = 0.87;

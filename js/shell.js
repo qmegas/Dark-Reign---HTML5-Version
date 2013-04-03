@@ -140,6 +140,7 @@ function Game()
 			game.level.generateMap();
 			game._resetSelectionInfo();
 			game.energyDraw.drawAll();
+			game.minimap.switchState();
 			
 			$('.load-screen').hide();
 			$('.game').show();

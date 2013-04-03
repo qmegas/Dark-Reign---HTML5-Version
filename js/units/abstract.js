@@ -69,7 +69,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		this._move(x, y);
 		
 		if (this.move_path.length>0 && play_sound)
-			this._playSound('move');
+			this._playSound(this._proto.response_sounds);
 	};
 	
 	this.orderStop = function()
@@ -104,7 +104,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.orderHeal = function(hospital, play_sound)
 	{
 		if (play_sound)
-			this._playSound('move');
+			this._playSound(this._proto.response_sounds);
 		
 		if (this.health >= this._proto.health_max)
 			return;
@@ -434,17 +434,15 @@ function AbstractUnit(pos_x, pos_y, player)
 		this.is_selected = is_select;
 		if (this.is_selected)
 		{
-			//Play select sound
 			if (play_sound)
-				this._playSound('select');
-
+				this._playSound(this._proto.select_sounds);
 		}
 	};
 	
-	this._playSound = function(type)
+	this._playSound = function(snd_array)
 	{
-		var i = Math.floor((Math.random()*this._proto.sound_count)+1);
-		game.resources.play(this._proto.resource_key + '_' + type + i);
+		var cnt = snd_array.length, i = Math.floor(Math.random()*cnt);
+		game.resources.play('sound_' + snd_array[i]);
 	};
 	
 	this.markCellsOnMap = function(unitid)
@@ -593,6 +591,8 @@ AbstractUnit.createNew = function(obj, x, y, player, instant_build)
 
 AbstractUnit.loadResources = function(obj) 
 {
+	var i;
+	
 	game.resources.addImage(obj.resource_key + '_stand', 'images/units/' + obj.resource_key + '/stand.png');
 	game.resources.addImage(obj.resource_key + '_move',  'images/units/' + obj.resource_key + '/move.png');
 	game.resources.addImage(obj.resource_key + '_box',  'images/units/' + obj.resource_key + '/box.png');
@@ -603,11 +603,10 @@ AbstractUnit.loadResources = function(obj)
 		game.resources.addImage(obj.resource_key + '_move_shadow', 'images/units/' + obj.resource_key + '/move_shadow.png');
 	}
 	
-	for (var i=1; i<=obj.sound_count; ++i)
-	{
-		game.resources.addSound(obj.resource_key + '_move' + i,   'sounds/units/' + obj.resource_key + '/move' + i + '.' + AUDIO_TYPE);
-		game.resources.addSound(obj.resource_key + '_select' + i, 'sounds/units/' + obj.resource_key + '/select' + i + '.' + AUDIO_TYPE);
-	}
+	for (i in obj.select_sounds)
+		game.resources.addSound('sound_' + obj.select_sounds[i],   'sounds/units/' + obj.select_sounds[i] + '.' + AUDIO_TYPE);
+	for (i in obj.response_sounds)
+		game.resources.addSound('sound_' + obj.response_sounds[i],   'sounds/units/' + obj.response_sounds[i] + '.' + AUDIO_TYPE);
 	
 	if (obj.weapon !== null)
 	{
@@ -626,12 +625,13 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.obj_name = '';      //Must redeclare
 	obj.resource_key = '';  //Must redeclare
 	obj.images = {};        //Must redeclare
-	obj.sound_count = 4;
+	obj.select_sounds = [];
+	obj.response_sounds = [];
 	obj.die_effect = 'splatd_explosion';
 
 	obj.cost = 0;
 	obj.health_max = 100;
-	obj.speed = 0.87;      // 0.87 = 6 config speed
+	obj.speed = 0.87;      // 0.87 = 6 config speed [SetPhysics(mass speed)]
 	obj.weapon = null;
 	obj.enabled = false;
 	obj.is_human = false;
@@ -640,7 +640,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.require_building = [];
 
 	obj.construction_building = [];
-	obj.construction_time = 0;
+	obj.construction_time = 0; //construction_time/1.5 [SetCost(cost construction_time)]
 	
 	obj.producing_progress = 0;
 	obj.producing_paused = false;

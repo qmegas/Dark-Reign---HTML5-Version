@@ -1,5 +1,7 @@
 function MiniMap()
 {
+	this.state_is_red = false;
+	
 	this.viewport_ctx = $('#minimap_viewport').get(0).getContext('2d');
 	this.objects_ctx = $('#minimap_objects').get(0).getContext('2d');
 	
@@ -14,11 +16,14 @@ function MiniMap()
 			game.level.minimap.rect_x, 
 			game.level.minimap.rect_y
 		);
-	}
+	};
 	
 	this.drawObjects = function()
 	{
 		var i, pos, x, y, cell_on_mini = game.level.minimap.x / game.level.size.x;
+		
+		if (this.state_is_red)
+			return;
 		
 		this.objects_ctx.drawImage(game.resources.get('minimap'), 0, 0);
 		
@@ -41,5 +46,28 @@ function MiniMap()
 			else
 				this.objects_ctx.fillRect(x, y, 1, 1); 
 		}
-	}
+	};
+	
+	this.switchState = function()
+	{
+		if (game.players[PLAYER_HUMAN].energyLow())
+		{
+			if (!this.state_is_red)
+			{
+				this._drawRedMap();
+				this.state_is_red = true;
+			}
+		}
+		else
+			this.state_is_red = false;
+	};
+	
+	this._drawRedMap = function()
+	{
+		this.objects_ctx.drawImage(
+			game.resources.get('minimap'), 
+			game.level.minimap.x, 0, game.level.minimap.x, game.level.minimap.y,
+			0, 0, game.level.minimap.x, game.level.minimap.y
+		);
+	};
 }

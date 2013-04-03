@@ -1,5 +1,7 @@
 To do:
 	- Correct bullet animation
+	- Add weapon for Exterminator
+	- Add "Hover" move style
 
 - High priority bugs:
 	- Unit can attack himself
