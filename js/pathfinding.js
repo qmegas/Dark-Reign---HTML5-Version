@@ -11,7 +11,7 @@ var GraphNodeType = {
 };
 
 // Creates a Graph class used in the astar search algorithm.
-function Graph(grid, ground_unit, avoid_others) 
+function Graph(grid, move_mode, avoid_others) 
 {
 	var nodes = [], type, x, y, row;
 
@@ -22,15 +22,17 @@ function Graph(grid, ground_unit, avoid_others)
 		for (y = 0, row = grid[x]; y < row.length; y++)
 		{
 			type = 1;
-			if (ground_unit)
-			{
-				if  (row[y].type==CELL_TYPE_WATER || row[y].type==CELL_TYPE_NOWALK || row[y].type==CELL_TYPE_BUILDING)
-					type = 0;
-				if (avoid_others && row[y].ground_unit != -1)
-					type = 0;
-			}
-			else if (avoid_others && row[y].fly_unit != -1)
+			if (row[y].type==CELL_TYPE_WATER && move_mode==MOVE_MODE_GROUND)
 				type = 0;
+			if ((row[y].type==CELL_TYPE_NOWALK || row[y].type==CELL_TYPE_BUILDING) && move_mode!=MOVE_MODE_FLY)
+				type = 0;
+			if (type==1 && avoid_others)
+			{
+				if (move_mode == MOVE_MODE_FLY)
+					type = (row[y].fly_unit != -1) ? 0 : type;
+				else
+					type = (row[y].ground_unit != -1) ? 0 : type;
+			}
 			nodes[x][y] = new GraphNode(x, y, type);
 		}
 	}
@@ -344,23 +346,23 @@ var PathFinder = {
 		return astar.search(graph.nodes, start, end);
 	},
 		
-	findNearestEmptyCell: function(x, y, ground_unit)
+	findNearestEmptyCell: function(x, y, move_mode)
 	{
 		this._current_empty_cell_func = this._isAnyUnit;
-		return this._findNearestEmptyCell(x, y, ground_unit);
+		return this._findNearestEmptyCell(x, y, move_mode);
 	},
 		
 	findNearestStandCell: function(x, y)
 	{
 		this._current_empty_cell_func = this._isGroundOnly;
-		return this._findNearestEmptyCell(x, y, true);
+		return this._findNearestEmptyCell(x, y, MOVE_MODE_GROUND);
 	},
 	
-	_findNearestEmptyCell: function(x, y, ground_unit)
+	_findNearestEmptyCell: function(x, y, move_mode)
 	{
 		var round, padding, cell = {x: x, y: y};
 		
-		if (this._checkCell(cell, ground_unit))
+		if (this._checkCell(cell, move_mode))
 			return cell;
 		
 		for (round = 1; round < 20; ++round)
@@ -369,45 +371,45 @@ var PathFinder = {
 			{
 				//left
 				cell = {x: x - round, y: y - padding};
-				if (this._checkCell(cell, ground_unit))
+				if (this._checkCell(cell, move_mode))
 					return cell;
 				if (padding>0 && padding<round)
 				{
 					cell = {x: x - round, y: y + padding};
-					if (this._checkCell(cell, ground_unit))
+					if (this._checkCell(cell, move_mode))
 						return cell;
 				}
 				
 				//right
 				cell = {x: x + round, y: y - padding};
-				if (this._checkCell(cell, ground_unit))
+				if (this._checkCell(cell, move_mode))
 					return cell;
 				if (padding>0 && padding<round)
 				{
 					cell = {x: x + round, y: y + padding};
-					if (this._checkCell(cell, ground_unit))
+					if (this._checkCell(cell, move_mode))
 						return cell;
 				}
 				
 				//Top
 				cell = {x: x + padding, y: y - round};
-				if (this._checkCell(cell, ground_unit))
+				if (this._checkCell(cell, move_mode))
 					return cell;
 				if (padding>0 && padding<round)
 				{
 					cell = {x: x - padding, y: y - round};
-					if (this._checkCell(cell, ground_unit))
+					if (this._checkCell(cell, move_mode))
 						return cell;
 				}
 				
 				//Bottom
 				cell = {x: x + padding, y: y + round};
-				if (this._checkCell(cell, ground_unit))
+				if (this._checkCell(cell, move_mode))
 					return cell;
 				if (padding>0 && padding<=round)
 				{
 					cell = {x: x - padding, y: y + round};
-					if (this._checkCell(cell, ground_unit))
+					if (this._checkCell(cell, move_mode))
 						return cell;
 				}
 			}
@@ -416,16 +418,18 @@ var PathFinder = {
 		return null;
 	},
 	
-	_checkCell: function(cell, ground_unit)
+	_checkCell: function(cell, move_mode)
 	{
 		if (!MapCell.isCorrectCord(cell.x, cell.y))
 			return false;
 		
 		var m_cell = game.level.map_cells[cell.x][cell.y];
 		
-		if (ground_unit)
-			if ((m_cell.type == CELL_TYPE_WATER) || (m_cell.type == CELL_TYPE_NOWALK) || (m_cell.type == CELL_TYPE_BUILDING))
-				return false;
+		if (m_cell.type==CELL_TYPE_WATER && move_mode==MOVE_MODE_GROUND)
+			return false;
+		
+		if ((m_cell.type==CELL_TYPE_NOWALK || m_cell.type==CELL_TYPE_BUILDING) && move_mode!=MOVE_MODE_FLY)
+			return false;
 		
 		if (this._current_empty_cell_func(m_cell))
 			return false;

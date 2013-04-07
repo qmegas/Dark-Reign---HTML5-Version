@@ -73,7 +73,7 @@ function AbstractWeapon()
 			if (this._unit.uid == target.objid)
 				return false;
 			
-			if (game.objects[target.objid].is_fly)
+			if (game.objects[target.objid]._proto.move_mode == MOVE_MODE_FLY)
 				return this._proto.can_shoot_flyer;
 			else
 				return this._proto.can_shoot_ground;

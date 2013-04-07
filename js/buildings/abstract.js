@@ -10,7 +10,6 @@ function AbstractBuilding()
 	this.action = null;
 
 	this.is_effect = false;
-	this.is_fly = false;
 	this.is_building = true;
 	this.is_selected = false;
 	
@@ -434,7 +433,7 @@ function AbstractBuilding()
 	this.produce = function(obj)
 	{
 		var cell = this.getCell(), unit = AbstractUnit.createNew(obj, cell.x + 2, cell.y + 2, this.player); //@todo: change position?
-		cell = PathFinder.findNearestEmptyCell(cell.x, cell.y + 5, !unit.is_fly);
+		cell = PathFinder.findNearestEmptyCell(cell.x, cell.y + 5, unit._proto.move_mode);
 		unit.orderMove(cell);
 	};
 	

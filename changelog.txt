@@ -1,7 +1,8 @@
 Build 35
 - Minimap not available if player have low energy
-- Added Exterminator unit
+- Added Exterminator unit and PolyAcid weapon
 - Unit sound system now have much flexible structure 
+- Added "Hover" movement mode
 
 Build 34 (21.03.2013)
 - Changed the way building are constructed and sold. Now it's works exactly as in original game

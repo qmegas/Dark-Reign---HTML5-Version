@@ -34,6 +34,10 @@ var PLAYER_COMPUTER1 = 2;
 var RESOURCE_TAELON = 1;
 var RESOURCE_WATER = 2;
 
+var MOVE_MODE_GROUND = 0;
+var MOVE_MODE_HOVER = 1;
+var MOVE_MODE_FLY = 2;
+
 var AUDIO_TYPE = 'ogg';
 
 var game;
