@@ -337,9 +337,9 @@ var astar = {
 var PathFinder = {
 	_current_empty_cell_func: null,
 		
-	findPath: function(from_x, from_y, to_x, to_y, ground_unit, avoid_others)
+	findPath: function(from_x, from_y, to_x, to_y, move_mode, avoid_others)
 	{	
-		var graph = new Graph(game.level.map_cells, ground_unit, avoid_others);
+		var graph = new Graph(game.level.map_cells, move_mode, avoid_others);
 		var start = graph.nodes[from_x][from_y];
 		var end = graph.nodes[to_x][to_y];
 		

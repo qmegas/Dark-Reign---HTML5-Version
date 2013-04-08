@@ -677,7 +677,7 @@ function Game()
 				if (cell.x==x && cell.y==y)
 					return this.objects[i];
 				
-				tmp_path = PathFinder.findPath(x, y, cell.x, cell.y, true, false);
+				tmp_path = PathFinder.findPath(x, y, cell.x, cell.y, MOVE_MODE_FLY, false);
 				if ((tmp_path.length > 0) && (len > tmp_path.length))
 				{
 					len = tmp_path.length;

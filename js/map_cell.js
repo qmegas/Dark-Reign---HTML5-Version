@@ -28,11 +28,25 @@ MapCell.getAllUserIds = function(cell)
 	return ids;
 };
 
-MapCell.getIdByType = function(cell, is_fly)
+MapCell.getIdByType = function(x, y, is_fly)
 {
+	var cell = game.level.map_cells[x][y];
+	
 	if (is_fly)
 		return cell.fly_unit;
 	return cell.ground_unit;
+};
+
+MapCell.canStepInto = function(x, y, move_mode)
+{
+	var cell = game.level.map_cells[x][y];
+	
+	if (cell.type==CELL_TYPE_WATER && move_mode==MOVE_MODE_GROUND)
+		return false;
+	if ((cell.type==CELL_TYPE_NOWALK || cell.type==CELL_TYPE_BUILDING) && move_mode!=MOVE_MODE_FLY)
+		return false;
+	
+	return true;
 };
 
 MapCell.isCorrectX = function(x)

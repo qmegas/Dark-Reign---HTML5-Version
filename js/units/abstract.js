@@ -252,8 +252,9 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		var curr_pos = this.getCell();
 		
-		//Check if next cell is not empty. If not empty then 
-		if (MapCell.getIdByType(game.level.map_cells[this.move_path[0].x][this.move_path[0].y], (this._proto.move_mode == MOVE_MODE_FLY)) != -1)
+		//Check if next cell is not empty or wrong ground type. If not empty then 
+		if (!MapCell.canStepInto(this.move_path[0].x, this.move_path[0].y, this._proto.move_mode) || 
+			(MapCell.getIdByType(this.move_path[0].x, this.move_path[0].y, (this._proto.move_mode == MOVE_MODE_FLY)) != -1))
 		{
 			//Stop
 			if (this.move_path.length == 1)
@@ -263,7 +264,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			}
 			//recalculate route
 			var last_point = this.move_path.pop();
-			this.move_path = PathFinder.findPath(curr_pos.x, curr_pos.y, last_point.x, last_point.y, true, true);
+			this.move_path = PathFinder.findPath(curr_pos.x, curr_pos.y, last_point.x, last_point.y, this._proto.move_mode, true);
 		}
 
 		//Move user to next cell + Remove from current
