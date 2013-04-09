@@ -505,6 +505,9 @@ function Game()
 		SplatBEffect.loadResources();
 		SplatDEffect.loadResources();
 		WaterSellEffect.loadResources();
+		
+		//Effects v2.0
+		Animator.loadResources();
 	};
 	
 	this._checkBrowserSupport = function()
@@ -638,6 +641,7 @@ function Game()
 	this.addEffect = function(effect)
 	{
 		var uid = this.objects.length;
+		effect.uid = uid;
 		this.objects.push(effect);
 		this.effects.push(uid);
 		return uid;

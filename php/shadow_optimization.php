@@ -1,10 +1,10 @@
 <?php
 
 /* Config */
-$file = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\eorfgpr0_00.png';
-$output = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\bulet.png';
-$rows = 1;
-$cols = 24;
+$file = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\eoblamd0.png';
+$output = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\eoblamd0_opt.png';
+$rows = 8;
+$cols = 1;
 $shadow_mode = false;
 /* Config */
 

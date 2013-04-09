@@ -42,13 +42,28 @@ var AUDIO_TYPE = 'ogg';
 
 var game;
 
-window.requestAnimFrame = (function(){
-	return  window.requestAnimationFrame       || 
-		window.webkitRequestAnimationFrame || 
-		window.mozRequestAnimationFrame    || 
-		window.oRequestAnimationFrame      || 
-		window.msRequestAnimationFrame     || 
-		function(callback, element){
+window.requestAnimFrame = (function() {
+	return  window.requestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		function(callback, element) {
 			window.setTimeout(callback, 1000 / 60);
 		};
 })();
+
+function cloneObj(obj)
+{
+	var clone = {};
+
+	for (var i in obj) {
+		if (obj[i] && typeof obj[i] == 'object') {
+			clone[i] = cloneObj(obj[i]);
+		} else {
+			clone[i] = obj[i];
+		}
+	}
+
+	return clone;
+}

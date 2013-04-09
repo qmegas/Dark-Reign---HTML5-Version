@@ -104,7 +104,7 @@ function AbstractWeapon()
 	
 	this.shoot = function()
 	{
-		var uid, effect, to = this.getTargetPosition();
+		var effect, to = this.getTargetPosition();
 		
 		this._last_shoot = (new Date()).getTime();
 		
@@ -116,8 +116,7 @@ function AbstractWeapon()
 		
 		effect = new this._proto.effect();
 		effect.init(this._position, to, this._proto.offence);
-		uid = game.addEffect(effect);
-		effect.uid = uid;
+		game.addEffect(effect);
 	};
 	
 	this._getDistance = function()

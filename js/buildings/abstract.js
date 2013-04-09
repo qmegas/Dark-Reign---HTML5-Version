@@ -287,9 +287,7 @@ function AbstractBuilding()
 				x: this.position.x + CELL_SIZE*this._proto.cell_padding.x,
 				y: this.position.y + CELL_SIZE*this._proto.cell_padding.y
 			});
-			var uid = game.addEffect(effect);
-			effect.uid = uid;
-			this._repairing_effect_id = uid;
+			this._repairing_effect_id = game.addEffect(effect);
 		}
 	};
 	
@@ -486,6 +484,17 @@ function AbstractBuilding()
 		
 		this.res_now += amount;
 		return amount;
+	};
+	
+	this.getHotpointPosition = function(point)
+	{
+		if (!this._proto.hotpoints[point])
+			return cloneObj(this.position);
+		
+		return {
+			x: this.position.x + this._proto.hotpoints[point].x,
+			y: this.position.y + this._proto.hotpoints[point].y
+		};
 	};
 	
 	//Event functions
@@ -731,6 +740,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.move_matrix = null;     //Must redeclare
 	obj.cell_padding = null;    //Must redeclare
 	obj.images = null;          //Must redeclare
+	obj.hotpoints = [];
 	
 	obj.require_building = [];
 
