@@ -500,10 +500,6 @@ function Game()
 		//Effects
 		CraterEffect.loadResources();
 		RepriconEffect.loadResources();
-		SparksExplosionEffect.loadResources();
-		SplatAEffect.loadResources();
-		SplatBEffect.loadResources();
-		SplatDEffect.loadResources();
 		WaterSellEffect.loadResources();
 		
 		//Effects v2.0

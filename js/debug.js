@@ -42,7 +42,17 @@ function Debuger()
 		var obj = game.findNearestInstance(HeadquarterBuilding, PLAYER_HUMAN, 1, 1);
 		var animator = new Animator();
 		animator.setObject(obj.uid);
-		animator.animate('headquarter_60_explosion', Animator.MODE_FIXED);
+		animator.animate('headquarter_33_explosion', Animator.MODE_FIXED);
+	});
+	
+	$('#debug_kill').click(function(){
+		var unit;
+		for (var i in game.selected_objects)
+		{
+			unit = game.objects[game.selected_objects[i]];
+			if (!unit.is_building)
+				unit.applyDamage(unit._proto.health_max);
+		}
 	});
 	
 	this.countRun = function()

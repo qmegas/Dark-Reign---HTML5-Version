@@ -10,7 +10,7 @@ AbstractUnit.setUnitCommonOptions(ExterminatorUnit);
 
 ExterminatorUnit.obj_name = 'Exterminator';
 ExterminatorUnit.resource_key = 'exterminator';
-ExterminatorUnit.die_effect = 'splatb_explosion';
+ExterminatorUnit.die_effect = 'splatb_animation';
 ExterminatorUnit.images = {
 	selection: {
 		size: {x: 27, y: 27},

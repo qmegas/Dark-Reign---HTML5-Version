@@ -84,31 +84,3 @@ AbstractSimpleEffect.setCommonOptions = function(obj)
 		AbstractSimpleEffect.loadResources(this);
 	};
 };
-
-AbstractSimpleEffect.createUnitKillEffect = function(unit_proto, pos_pixel)
-{
-	var effect, ucenter = {
-		x: pos_pixel.x + parseInt(unit_proto.images.stand.size.x / 2),
-		y: pos_pixel.y + parseInt(unit_proto.images.stand.size.y / 2)
-	};
-	
-	switch(unit_proto.die_effect)
-	{
-		case 'death_with_sparks_explosion':
-			effect = new SparksExplosionEffect(ucenter);
-			break;
-		case 'splata_explosion':
-			effect = new SplatAEffect(ucenter);
-			break;
-		case 'splatb_explosion':
-			effect = new SplatBEffect(ucenter);
-			break;
-		case 'splatd_explosion':
-			effect = new SplatDEffect(ucenter);
-			break;
-		default:
-			return;
-	}
-	
-	game.addEffect(effect);
-};

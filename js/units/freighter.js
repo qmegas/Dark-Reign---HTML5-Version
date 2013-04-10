@@ -297,7 +297,7 @@ AbstractUnit.setUnitCommonOptions(FreighterUnit);
 
 FreighterUnit.obj_name = 'Freighter';
 FreighterUnit.resource_key = 'freighter';
-FreighterUnit.die_effect = 'death_with_sparks_explosion';
+FreighterUnit.die_effect = 'death_with_sparks_animation';
 FreighterUnit.images = {
 	selection: {
 		size: {x: 40, y: 40},

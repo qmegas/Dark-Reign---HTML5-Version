@@ -10,7 +10,7 @@ AbstractUnit.setUnitCommonOptions(GuardianUnit);
 
 GuardianUnit.obj_name = 'Guardian';
 GuardianUnit.resource_key = 'guardian';
-GuardianUnit.die_effect = 'splata_explosion';
+GuardianUnit.die_effect = 'splata_animation';
 GuardianUnit.images = {
 	selection: {
 		size: {x: 26, y: 26},

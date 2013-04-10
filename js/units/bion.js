@@ -10,7 +10,7 @@ AbstractUnit.setUnitCommonOptions(BionUnit);
 
 BionUnit.obj_name = 'Bion';
 BionUnit.resource_key = 'bion';
-BionUnit.die_effect = 'splatb_explosion';
+BionUnit.die_effect = 'splatb_animation';
 BionUnit.images = {
 	selection: {
 		size: {x: 38, y: 38},

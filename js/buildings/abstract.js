@@ -28,6 +28,8 @@ function AbstractBuilding()
 	this.anim_attack_frame = 0;
 	this.start_animation = 0;
 	
+	this.damage_animator = null;
+	
 	this.init = function(pos_x, pos_y, player)
 	{
 		this.player = player;
@@ -46,8 +48,18 @@ function AbstractBuilding()
 	
 	this.applyFix = function(fix)
 	{
-		var aplly = Math.min(this._proto.health_max-this.health, fix);
-		this.health += aplly;
+		var aplly = Math.min(this._proto.health_max-this.health, fix),
+			new_health = this.health + aplly, 
+			animation_index;
+		
+		if (this.damage_animator !== null)
+		{
+			animation_index = this._findDamageAnimation(this.health, new_health);
+			if (animation_index !== -1)
+				this.damage_animator.stop();
+		}
+			
+		this.health = new_health;
 		return aplly;
 	};
 	
@@ -56,7 +68,11 @@ function AbstractBuilding()
 		if (this.health <= 0)
 			return; //Already destroyed
 		
-		this.health -= damage;
+		var new_health = this.health - damage, animation_index = this._findDamageAnimation(new_health, this.health);
+		
+		this.health = new_health;
+		if (animation_index !== -1)
+			this._animateDamage(animation_index);
 		
 		if (this.health <= 0)
 		{
@@ -69,6 +85,23 @@ function AbstractBuilding()
 			
 			game.kill_objects.push(this.uid);
 		}
+	};
+	
+	this._findDamageAnimation = function(min_health, max_health)
+	{
+		if (this._proto.health_explosions.length == 0)
+			return -1;
+		
+		var j, i, proc_min = Math.ceil(min_health/this._proto.health_max * 100),
+			proc_max = Math.ceil(max_health/this._proto.health_max * 100);
+		
+		for (i in this._proto.health_explosions)
+		{
+			j = parseInt(i);
+			if ((j >= proc_min) && (j < proc_max))
+				return j;
+		}
+		return -1;
 	};
 	
 	this.getCell = function()
@@ -185,6 +218,16 @@ function AbstractBuilding()
 			title, game.viewport_ctx, top_x + 0.5, top_y, 
 			'yellow', 'center', bar_width
 		);
+	};
+	
+	this._animateDamage = function(state)
+	{
+		if (this.damage_animator !== null)
+			this.damage_animator.stop();
+		
+		this.damage_animator = new Animator();
+		this.damage_animator.setObject(this.uid);
+		this.damage_animator.animate(this._proto.health_explosions[state], Animator.MODE_FIXED);
 	};
 	
 	this.canBeSelected = function()
@@ -490,8 +533,11 @@ function AbstractBuilding()
 	
 	this.getHotpointPosition = function(point)
 	{
-		if (!this._proto.hotpoints[point])
+		if (this._proto.hotpoints.length == 0)
 			return cloneObj(this.position);
+		
+		if (point >= this._proto.hotpoints.length)
+			point = this._proto.hotpoints.length - 1;
 		
 		return {
 			x: this.position.x + this._proto.hotpoints[point].x,
@@ -743,6 +789,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.cell_padding = null;    //Must redeclare
 	obj.images = null;          //Must redeclare
 	obj.hotpoints = [];
+	obj.health_explosions = {};
 	
 	obj.require_building = [];
 

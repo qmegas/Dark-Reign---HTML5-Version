@@ -1,8 +1,3 @@
-//var AnimatorMode = {
-//	ATTACHED: 0,
-//	FIXED: 1
-//};
-
 function Animator()
 {
 	var effect_ids = [], object_id = -1;
@@ -36,18 +31,17 @@ function Animator()
 		if (!game.objects[object_id])
 			return;
 		
-		var effect_data, effect, pos, point;
+		var id, pos, point;
 		
 		point = parseInt(Math.random() * (info.max_point - info.min_point + 1)) + info.min_point;
 		pos = game.objects[object_id].getHotpointPosition(point);
 		
-		effect_data = cloneObj(EffectList[info.effect]);
-		effect_data.looped = (info.looped) ? true : false;
-		effect_data.delay = info.start;
-		
-		effect = new SimpleEffect(effect_data);
-		effect.setPosition(pos);
-		effect_ids.push(game.addEffect(effect));
+		id = SimpleEffect.quickCreate(info.effect, {
+			looped: info.looped,
+			start: info.start,
+			pos: pos
+		});
+		effect_ids.push(id);
 	};
 }
 

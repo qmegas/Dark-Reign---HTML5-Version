@@ -56,7 +56,11 @@ function AbstractUnit(pos_x, pos_y, player)
 		this.health -= damage;
 		if (this.health <= 0)
 		{
-			AbstractSimpleEffect.createUnitKillEffect(this._proto, this.position);
+			var ucenter = {
+				x: (this.position.x - this._proto.images.stand.padding.x) + parseInt(this._proto.images.stand.size.x / 2),
+				y: (this.position.y - this._proto.images.stand.padding.y) + parseInt(this._proto.images.stand.size.y / 2)
+			};
+			SimpleEffect.quickCreate(this._proto.die_effect, {pos: ucenter});
 			game.kill_objects.push(this.uid);
 		}
 	};
@@ -627,7 +631,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.images = {};        //Must redeclare
 	obj.select_sounds = [];
 	obj.response_sounds = [];
-	obj.die_effect = 'splatd_explosion';
+	obj.die_effect = 'splatd_animation';
 
 	obj.cost = 0;
 	obj.health_max = 100;

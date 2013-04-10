@@ -9,7 +9,7 @@
  */
 function SimpleEffect(info)
 {
-	var frame_speed = 100, position = null;
+	var frame_speed = 50, position = null;
 	
 	this.uid = -1;
 	this.is_effect = true;
@@ -77,3 +77,14 @@ function SimpleEffect(info)
 	
 	this.onObjectDeletion = function() {};
 }
+
+SimpleEffect.quickCreate = function(name, options)
+{
+	var effect, effect_data = cloneObj(EffectList[name]);
+	effect_data.looped = (options.looped) ? true : false;
+	effect_data.delay = (options.start) ? options.start : 0;
+	
+	effect = new SimpleEffect(effect_data);
+	effect.setPosition(options.pos);
+	return game.addEffect(effect);
+};

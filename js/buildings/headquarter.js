@@ -40,4 +40,11 @@ HeadquarterBuilding.hotpoints = [
 	{x: 88, y: 31},
 	{x: 40, y: 8}
 ];
+HeadquarterBuilding.health_explosions = {
+	0: 'headquarter_0_explosion',
+	33: 'headquarter_33_explosion',
+	60: 'headquarter_60_explosion',
+	80: 'headquarter_80_explosion'
+};
+
 HeadquarterBuilding.upgradable = true;
