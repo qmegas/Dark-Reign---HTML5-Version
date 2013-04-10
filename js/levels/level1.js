@@ -2389,7 +2389,7 @@ function Level1()
 		game.players[PLAYER_HUMAN] = new Player('#ffffbb');
 		game.players[PLAYER_COMPUTER1] = new Player('#fc3c58');
 		
-		AbstractUnit.createNew(ExterminatorUnit, 12, 8, PLAYER_HUMAN, true);
+		AbstractUnit.createNew(ConstructionRigUnit, 12, 8, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 5, 6, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 7, 6, PLAYER_HUMAN, true);
 		
@@ -2417,7 +2417,7 @@ function Level1()
 			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
 			TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
 			NeutronAcceleratorBuilding, CameraTowerBuilding, FieldHospitalBuilding, 
-			HorizontalBridgeBuilding, 
+			HorizontalBridgeBuilding, VerticalBridgeBuilding, 
 			//Upgrades
 			Headquarter2Building, Headquarter3Building, 
 			TrainingFacility2Building, AssemblyPlant2Building,

@@ -73,7 +73,7 @@ function AbstractWeapon()
 			if (this._unit.uid == target.objid)
 				return false;
 			
-			if (game.objects[target.objid].is_fly)
+			if (game.objects[target.objid]._proto.move_mode == MOVE_MODE_FLY)
 				return this._proto.can_shoot_flyer;
 			else
 				return this._proto.can_shoot_ground;
@@ -104,7 +104,7 @@ function AbstractWeapon()
 	
 	this.shoot = function()
 	{
-		var uid, effect, to = this.getTargetPosition();
+		var effect, to = this.getTargetPosition();
 		
 		this._last_shoot = (new Date()).getTime();
 		
@@ -116,8 +116,7 @@ function AbstractWeapon()
 		
 		effect = new this._proto.effect();
 		effect.init(this._position, to, this._proto.offence);
-		uid = game.addEffect(effect);
-		effect.uid = uid;
+		game.addEffect(effect);
 	};
 	
 	this._getDistance = function()

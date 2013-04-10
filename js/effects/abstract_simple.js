@@ -87,7 +87,7 @@ AbstractSimpleEffect.setCommonOptions = function(obj)
 
 AbstractSimpleEffect.createUnitKillEffect = function(unit_proto, pos_pixel)
 {
-	var effect, eid, ucenter = {
+	var effect, ucenter = {
 		x: pos_pixel.x + parseInt(unit_proto.images.stand.size.x / 2),
 		y: pos_pixel.y + parseInt(unit_proto.images.stand.size.y / 2)
 	};
@@ -110,6 +110,5 @@ AbstractSimpleEffect.createUnitKillEffect = function(unit_proto, pos_pixel)
 			return;
 	}
 	
-	eid = game.addEffect(effect);
-	effect.uid = eid;
+	game.addEffect(effect);
 };

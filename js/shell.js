@@ -444,7 +444,7 @@ function Game()
 					if (this.objects[cur_unit].is_building)
 						this.selected_info.is_building = true;
 					this.selected_objects.push(cur_unit);
-					this.selected_info.is_fly = this.selected_info.is_fly || this.objects[cur_unit].is_fly;
+					this.selected_info.move_mode = Math.max(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
 					this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
 					this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
 					harvesters = harvesters && this.objects[cur_unit].canHarvest();
@@ -505,6 +505,9 @@ function Game()
 		SplatBEffect.loadResources();
 		SplatDEffect.loadResources();
 		WaterSellEffect.loadResources();
+		
+		//Effects v2.0
+		Animator.loadResources();
 	};
 	
 	this._checkBrowserSupport = function()
@@ -538,7 +541,7 @@ function Game()
 	{
 		this.selected_info = {
 			is_building: false,
-			is_fly: false,
+			move_mode: 0,
 			is_produce: false,
 			can_attack_ground: false,
 			can_attack_fly: false,
@@ -638,6 +641,7 @@ function Game()
 	this.addEffect = function(effect)
 	{
 		var uid = this.objects.length;
+		effect.uid = uid;
 		this.objects.push(effect);
 		this.effects.push(uid);
 		return uid;
@@ -677,7 +681,7 @@ function Game()
 				if (cell.x==x && cell.y==y)
 					return this.objects[i];
 				
-				tmp_path = PathFinder.findPath(x, y, cell.x, cell.y, true, false);
+				tmp_path = PathFinder.findPath(x, y, cell.x, cell.y, MOVE_MODE_FLY, false);
 				if ((tmp_path.length > 0) && (len > tmp_path.length))
 				{
 					len = tmp_path.length;

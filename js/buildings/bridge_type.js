@@ -184,7 +184,7 @@ var BridgeTypeBuilding = {
 						unitid = game.level.map_cells[cell.x+x][cell.y+y].ground_unit;
 						if (unitid != -1)
 						{
-							if (!game.objects[unitid].is_fly)
+							if (game.objects[unitid]._proto.move_mode == MOVE_MODE_GROUND)
 								game.objects[unitid].applyDamage(game.objects[unitid].health);
 						}
 					}

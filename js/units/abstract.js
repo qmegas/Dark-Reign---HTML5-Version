@@ -7,7 +7,6 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.health = 100;
 	this.is_selected = false;
-	this.is_fly = false;
 	this.is_building = false;
 	this.is_effect = false;
 	this.position = null;
@@ -147,7 +146,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			need_move = true;
 		}
 		
-		tmp_path = PathFinder.findPath(pos.x, pos.y, x, y, !this.is_fly, false);
+		tmp_path = PathFinder.findPath(pos.x, pos.y, x, y, this._proto.move_mode, false);
 		
 		this.move_path = this.move_path.concat(tmp_path);
 		this.state = 'MOVE';
@@ -185,7 +184,7 @@ function AbstractUnit(pos_x, pos_y, player)
 					else
 					{
 						var pos = MapCell.pixelToCell(this.weapon.getTargetPosition());
-						pos = PathFinder.findNearestEmptyCell(pos.x, pos.y, !this.is_fly);
+						pos = PathFinder.findNearestEmptyCell(pos.x, pos.y, this._proto.move_mode);
 						if (pos !== null)
 							this._move(pos.x, pos.y);
 						else
@@ -253,8 +252,9 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		var curr_pos = this.getCell();
 		
-		//Check if next cell is not empty. If not empty then 
-		if (MapCell.getIdByType(game.level.map_cells[this.move_path[0].x][this.move_path[0].y], this.is_fly) != -1)
+		//Check if next cell is not empty or wrong ground type. If not empty then 
+		if (!MapCell.canStepInto(this.move_path[0].x, this.move_path[0].y, this._proto.move_mode) || 
+			(MapCell.getIdByType(this.move_path[0].x, this.move_path[0].y, (this._proto.move_mode == MOVE_MODE_FLY)) != -1))
 		{
 			//Stop
 			if (this.move_path.length == 1)
@@ -264,13 +264,13 @@ function AbstractUnit(pos_x, pos_y, player)
 			}
 			//recalculate route
 			var last_point = this.move_path.pop();
-			this.move_path = PathFinder.findPath(curr_pos.x, curr_pos.y, last_point.x, last_point.y, true, true);
+			this.move_path = PathFinder.findPath(curr_pos.x, curr_pos.y, last_point.x, last_point.y, this._proto.move_mode, true);
 		}
 
 		//Move user to next cell + Remove from current
 		if (this.move_path.length > 0)
 		{
-			if (this.is_fly)
+			if (this._proto.move_mode == MOVE_MODE_FLY)
 			{
 				game.level.map_cells[this.move_path[0].x][this.move_path[0].y].fly_unit = this.uid;
 				game.level.map_cells[curr_pos.x][curr_pos.y].fly_unit = -1;
@@ -286,7 +286,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.draw = function(current_time) 
 	{
 		var diff, top_x = this.position.x - game.viewport_x, top_y = this.position.y - game.viewport_y,
-			layer = (this.is_fly) ? DRAW_LAYER_FUNIT : DRAW_LAYER_GUNIT;
+			layer = (this._proto.move_mode == MOVE_MODE_FLY) ? DRAW_LAYER_FUNIT : DRAW_LAYER_GUNIT;
 		
 		//Draw unit
 		switch (this.state)
@@ -451,7 +451,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		if (unitid == -1)
 		{
-			if (this.is_fly)
+			if (this._proto.move_mode == MOVE_MODE_FLY)
 			{
 				if (game.level.map_cells[cell.x][cell.y].fly_unit == this.uid)
 					game.level.map_cells[cell.x][cell.y].fly_unit = -1;
@@ -464,7 +464,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		}
 		else
 		{
-			if (this.is_fly)
+			if (this._proto.move_mode == MOVE_MODE_FLY)
 				game.level.map_cells[cell.x][cell.y].fly_unit = unitid;
 			else
 				game.level.map_cells[cell.x][cell.y].ground_unit = unitid;
@@ -565,7 +565,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.onHealed = function()
 	{
 		game.resources.playOnPosition('healing', false, this.position, true);
-		var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 5, this.action.target_position.y, !this.is_fly);
+		var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 5, this.action.target_position.y, this._proto.move_mode);
 		this.orderMove(pos.x, pos.y);
 	};
 	
@@ -636,6 +636,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.enabled = false;
 	obj.is_human = false;
 	obj.shield_type = 'ToughHumanWet';
+	obj.move_mode = MOVE_MODE_GROUND;
 
 	obj.require_building = [];
 

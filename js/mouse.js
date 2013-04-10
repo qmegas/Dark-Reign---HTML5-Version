@@ -151,7 +151,7 @@ var MousePointer = {
 		if (game.selected_objects.length>0 && !game.selected_info.is_building)
 		{
 			ptype = game.level.map_cells[pos.x][pos.y].type;
-			if (!game.selected_info.is_fly && (ptype==CELL_TYPE_WATER || ptype==CELL_TYPE_NOWALK))
+			if ((ptype==CELL_TYPE_WATER && game.selected_info.move_mode==MOVE_MODE_GROUND) || (ptype==CELL_TYPE_NOWALK && game.selected_info.move_mode!=MOVE_MODE_FLY))
 				return this._drawCursor(current_time, 4, 2);
 			else
 				return this._drawCursor(current_time, 2, 7);

@@ -10,7 +10,6 @@ function AbstractBuilding()
 	this.action = null;
 
 	this.is_effect = false;
-	this.is_fly = false;
 	this.is_building = true;
 	this.is_selected = false;
 	
@@ -290,9 +289,7 @@ function AbstractBuilding()
 				x: this.position.x + CELL_SIZE*this._proto.cell_padding.x,
 				y: this.position.y + CELL_SIZE*this._proto.cell_padding.y
 			});
-			var uid = game.addEffect(effect);
-			effect.uid = uid;
-			this._repairing_effect_id = uid;
+			this._repairing_effect_id = game.addEffect(effect);
 		}
 	};
 	
@@ -436,7 +433,7 @@ function AbstractBuilding()
 	this.produce = function(obj)
 	{
 		var cell = this.getCell(), unit = AbstractUnit.createNew(obj, cell.x + 2, cell.y + 2, this.player); //@todo: change position?
-		cell = PathFinder.findNearestEmptyCell(cell.x, cell.y + 5, !unit.is_fly);
+		cell = PathFinder.findNearestEmptyCell(cell.x, cell.y + 5, unit._proto.move_mode);
 		unit.orderMove(cell);
 	};
 	
@@ -489,6 +486,17 @@ function AbstractBuilding()
 		
 		this.res_now += amount;
 		return amount;
+	};
+	
+	this.getHotpointPosition = function(point)
+	{
+		if (!this._proto.hotpoints[point])
+			return cloneObj(this.position);
+		
+		return {
+			x: this.position.x + this._proto.hotpoints[point].x,
+			y: this.position.y + this._proto.hotpoints[point].y
+		};
 	};
 	
 	//Event functions
@@ -734,6 +742,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.move_matrix = null;     //Must redeclare
 	obj.cell_padding = null;    //Must redeclare
 	obj.images = null;          //Must redeclare
+	obj.hotpoints = [];
 	
 	obj.require_building = [];
 

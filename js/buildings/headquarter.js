@@ -34,4 +34,10 @@ HeadquarterBuilding.images = {
 		padding: {x: -19, y: -6}
 	}
 };
+HeadquarterBuilding.hotpoints = [
+	{x: 24, y: -36},
+	{x: 92, y: 52},
+	{x: 88, y: 31},
+	{x: 40, y: 8}
+];
 HeadquarterBuilding.upgradable = true;

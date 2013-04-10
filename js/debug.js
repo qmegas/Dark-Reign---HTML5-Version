@@ -38,26 +38,11 @@ function Debuger()
 		game.players[PLAYER_HUMAN].addMoney(15000);
 	});
 	
-	$('#debug_add_water').click(function(){
-		var obj = game.findCompatibleInstance([WaterLaunchPadBuilding], PLAYER_HUMAN);
-		if (obj)
-			obj.increaseRes(100);
-	});
-	
-	$('#debug_build_fix').click(function(){
-		if (game.selected_objects.length == 0)
-			return false;
-		
-		var obj = game.objects[game.selected_objects[0]];
-		obj.health = obj._proto.health_max;
-	});
-	
-	$('#debug_build_des').click(function(){
-		if (game.selected_objects.length == 0)
-			return false;
-		
-		var obj = game.objects[game.selected_objects[0]];
-		obj.health = parseInt(obj._proto.health_max * 0.2);
+	$('#debug_test').click(function(){
+		var obj = game.findNearestInstance(HeadquarterBuilding, PLAYER_HUMAN, 1, 1);
+		var animator = new Animator();
+		animator.setObject(obj.uid);
+		animator.animate('headquarter_60_explosion', Animator.MODE_FIXED);
 	});
 	
 	this.countRun = function()
