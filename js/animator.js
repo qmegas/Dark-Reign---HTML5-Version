@@ -31,15 +31,10 @@ function Animator()
 		if (!game.objects[object_id])
 			return;
 		
-		var id, pos, point;
-		
-		point = parseInt(Math.random() * (info.max_point - info.min_point + 1)) + info.min_point;
-		pos = game.objects[object_id].getHotpointPosition(point);
-		
-		id = SimpleEffect.quickCreate(info.effect, {
+		var id = SimpleEffect.quickCreate(info.effect, {
 			looped: info.looped,
 			start: info.start,
-			pos: pos
+			pos: game.objects[object_id].getHotpointPosition(info.min_point, info.max_point)
 		});
 		effect_ids.push(id);
 	};

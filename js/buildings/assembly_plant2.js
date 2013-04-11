@@ -32,3 +32,9 @@ AssemblyPlant2Building.images = {
 		padding: {x: -1, y: -45}
 	}
 };
+AssemblyPlant2Building.hotpoints = [
+	{x: 12, y: 14},
+	{x: 45, y: 115},
+	{x: 111, y: 67},
+	{x: 82, y: 26}
+];

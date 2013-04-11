@@ -29,5 +29,11 @@ TrainingFacilityBuilding.images = {
 	},
 	shadow: null
 };
+TrainingFacilityBuilding.hotpoints = [
+	{x: 11, y: 11},
+	{x: 58, y: 36},
+	{x: 87, y: 75},
+	{x: 60, y: 60}
+];
 
 TrainingFacilityBuilding.upgradable = true;

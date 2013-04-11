@@ -499,7 +499,6 @@ function Game()
 		
 		//Effects
 		CraterEffect.loadResources();
-		RepriconEffect.loadResources();
 		WaterSellEffect.loadResources();
 		
 		//Effects v2.0

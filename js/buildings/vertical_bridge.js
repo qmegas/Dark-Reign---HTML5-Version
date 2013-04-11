@@ -1,9 +1,8 @@
 function VerticalBridgeBuilding(pos_x, pos_y, player)
 {
 	this._proto = VerticalBridgeBuilding;
-	this.player = player;
 	
-	this.init(pos_x, pos_y);
+	this.init(pos_x, pos_y, player);
 	
 	this.onConstructedCustom = function()
 	{
@@ -44,3 +43,10 @@ VerticalBridgeBuilding.images = {
 	},
 	shadow: null
 };
+VerticalBridgeBuilding.hotpoints = [
+	{x: 11, y: 11}
+];
+VerticalBridgeBuilding.health_explosions = {
+	0: 'bridge_explosion'
+};
+VerticalBridgeBuilding.death_sound = '';

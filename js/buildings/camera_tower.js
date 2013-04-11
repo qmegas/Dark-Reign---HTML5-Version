@@ -33,3 +33,13 @@ CameraTowerBuilding.images = {
 		padding: {x: -11, y: -34}
 	}
 };
+CameraTowerBuilding.hotpoints = [
+	{x: 12, y: 12},
+	{x: 13, y: 22}
+];
+CameraTowerBuilding.health_explosions = {
+	0: 'building_0_explosion',
+	60: 'building_60_explosion',
+	80: 'building_80_explosion'
+};
+CameraTowerBuilding.death_sound = 'gxexpoc2';

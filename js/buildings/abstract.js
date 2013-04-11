@@ -79,6 +79,9 @@ function AbstractBuilding()
 			if (this._proto.crater > -1)
 				CraterEffect.create(this);
 			
+			if (this._proto.death_sound != '')
+				game.resources.playOnPosition(this._proto.death_sound, false, this.position, true);
+			
 			this._removingRecalc(this._proto);
 			game.constructor.recalcUnitAvailability();
 			this.onDestructed();
@@ -328,11 +331,13 @@ function AbstractBuilding()
 			this._is_repairing = true;
 			ActionsHeap.add(this.uid, 'repair', 0);
 			
-			effect = new RepriconEffect({
-				x: this.position.x + CELL_SIZE*this._proto.cell_padding.x,
-				y: this.position.y + CELL_SIZE*this._proto.cell_padding.y
+			this._repairing_effect_id = SimpleEffect.quickCreate('repricon_animation', {
+				looped: true,
+				pos: {
+					x: this.position.x + CELL_SIZE*this._proto.cell_padding.x,
+					y: this.position.y + CELL_SIZE*this._proto.cell_padding.y
+				}
 			});
-			this._repairing_effect_id = game.addEffect(effect);
 		}
 	};
 	
@@ -531,13 +536,18 @@ function AbstractBuilding()
 		return amount;
 	};
 	
-	this.getHotpointPosition = function(point)
+	this.getHotpointPosition = function(min_point, max_point)
 	{
 		if (this._proto.hotpoints.length == 0)
 			return cloneObj(this.position);
 		
-		if (point >= this._proto.hotpoints.length)
-			point = this._proto.hotpoints.length - 1;
+		if (max_point >= this._proto.hotpoints.length)
+			max_point = this._proto.hotpoints.length - 1;
+		
+		if (min_point >= this._proto.hotpoints.length)
+			min_point = this._proto.hotpoints.length - 1;
+		
+		var point = parseInt(Math.random() * (max_point - min_point + 1)) + min_point;
 		
 		return {
 			x: this.position.x + this._proto.hotpoints[point].x,
@@ -728,6 +738,9 @@ AbstractBuilding.loadResources = function(obj)
 	if (obj.images.shadow !== null)
 		game.resources.addImage(obj.res_key + '_shadow', 'images/buildings/'+obj.res_key+'/shadow.png');
 	
+	if (obj.death_sound != '')
+		game.resources.addSound(obj.death_sound,   'sounds/' + obj.death_sound + '.' + AUDIO_TYPE);
+	
 	if (obj.weapon !== null)
 	{
 		game.resources.addImage(obj.res_key + '_weapon', 'images/buildings/'+obj.res_key+'/weapon.png');
@@ -789,7 +802,13 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.cell_padding = null;    //Must redeclare
 	obj.images = null;          //Must redeclare
 	obj.hotpoints = [];
-	obj.health_explosions = {};
+	obj.health_explosions = {
+		0: 'building_0_explosion',
+		33: 'building_33_explosion',
+		60: 'building_60_explosion',
+		80: 'building_80_explosion'
+	};
+	obj.death_sound = 'gxexpoc1';
 	
 	obj.require_building = [];
 

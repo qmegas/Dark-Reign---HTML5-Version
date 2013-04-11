@@ -38,3 +38,11 @@ PlasmaTurretBuilding.images = {
 		padding: {x: -7, y: -10}
 	}
 };
+PlasmaTurretBuilding.hotpoints = [
+	{x: 12, y: 12}
+];
+PlasmaTurretBuilding.health_explosions = {
+	0: 'building_0_explosion',
+	60: 'building_60_explosion',
+	80: 'building_80_explosion'
+};

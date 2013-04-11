@@ -34,3 +34,9 @@ TrainingFacility2Building.images = {
 		padding: {x: 0, y: -30}
 	}
 };
+TrainingFacility2Building.hotpoints = [
+	{x: 11, y: 13},
+	{x: 58, y: 38},
+	{x: 87, y: 77},
+	{x: 60, y: 62}
+];

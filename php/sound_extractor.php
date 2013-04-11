@@ -1,7 +1,7 @@
 <?php
 
-$source_file = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\DR html\\Helpers\\Dark Reign 1.7\\DARK\\sndfx\\SOUNDS.FTG';
-$output_dir = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\DR html\\Helpers\\sounds\\';
+$source_file = 'F:\\My Docs\\DR Helpers\\Dark Reign 1.7\\DARK\\sndfx\\SOUNDS.FTG';
+$output_dir = 'F:\\My Docs\\DR Helpers\\Sounds\\';
 
 $fh = fopen($source_file, 'rb');
 if (!$fh)

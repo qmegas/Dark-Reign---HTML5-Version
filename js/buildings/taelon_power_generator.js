@@ -88,3 +88,8 @@ TaelonPowerBuilding.images = {
 		padding: {x: -49, y: 2}
 	}
 };
+TaelonPowerBuilding.hotpoints = [
+	{x: 11, y: -13},
+	{x: 41, y: 54},
+	{x: 72, y: 10}
+];

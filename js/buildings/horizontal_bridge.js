@@ -43,3 +43,10 @@ HorizontalBridgeBuilding.images = {
 	},
 	shadow: null
 };
+HorizontalBridgeBuilding.hotpoints = [
+	{x: 11, y: 9}
+];
+HorizontalBridgeBuilding.health_explosions = {
+	0: 'bridge_explosion'
+};
+HorizontalBridgeBuilding.death_sound = '';

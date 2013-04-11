@@ -33,3 +33,8 @@ FieldHospitalBuilding.images = {
 		padding: {x: -2, y: 0}
 	}
 };
+FieldHospitalBuilding.hotpoints = [
+	{x: 13, y: 12},
+	{x: 11, y: 31},
+	{x: 66, y: 28}
+];

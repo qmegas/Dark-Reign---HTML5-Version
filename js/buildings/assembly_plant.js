@@ -32,5 +32,12 @@ AssemblyPlantBuilding.images = {
 		padding: {x: -7, y: -62}
 	}
 };
+AssemblyPlantBuilding.hotpoints = [
+	{x: 12, y: 12},
+	{x: 69, y: 91},
+	{x: 88, y: 79},
+	{x: 15, y: 60},
+	{x: 70, y: 42}
+];
 
 AssemblyPlantBuilding.upgradable = true;

@@ -1,11 +1,12 @@
-Build 35 (10.04.2013)
+Build 35 (11.04.2013)
 - Minimap not available if player have low energy
 - Added Exterminator unit and PolyAcid weapon
 - Unit sound system now have much flexible structure 
 - Added "Hover" movement mode
 - Added Vertical Bridge
 - Completely recreated animation system
-- Added damage explosions for Headquarter 1
+- Added damage explosions for all buildings
+- Added sound for building explosion
 
 Build 34 (21.03.2013)
 - Changed the way building are constructed and sold. Now it's works exactly as in original game

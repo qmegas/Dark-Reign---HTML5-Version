@@ -33,4 +33,17 @@ Headquarter2Building.images = {
 		padding: {x: -5, y: 29}
 	}
 };
+Headquarter2Building.hotpoints = [
+	{x: 12, y: -36},
+	{x: 7, y: 52},
+	{x: 101, y: 85},
+	{x: 33, y: 21}
+];
+Headquarter2Building.health_explosions = {
+	0: 'headquarter_0_explosion',
+	33: 'headquarter_33_explosion',
+	60: 'headquarter_60_explosion',
+	80: 'headquarter_80_explosion'
+};
+
 Headquarter2Building.upgradable = true;

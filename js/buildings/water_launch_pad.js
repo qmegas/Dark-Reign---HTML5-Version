@@ -102,3 +102,9 @@ WaterLaunchPadBuilding.images = {
 	},
 	shadow: null
 };
+WaterLaunchPadBuilding.hotpoints = [
+	{x: 15, y: -11},
+	{x: 38, y: 25},
+	{x: 77, y: 4},
+	{x: 61, y: 47}
+];

@@ -40,3 +40,6 @@ NeutronAcceleratorBuilding.images = {
 		frames: 2
 	}
 };
+NeutronAcceleratorBuilding.hotpoints = [
+	{x: 12, y: 12}
+];
