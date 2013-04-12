@@ -29,9 +29,9 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		this.health = this._proto.health_max;
 		
-		if (this._proto.weapon != null)
+		if (this._proto.weapon != '')
 		{
-			this.weapon = new this._proto.weapon();
+			this.weapon = new WeaponHolder(this._proto.weapon);
 			this.weapon.init(this);
 		}
 	};
@@ -477,16 +477,16 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.canAttackGround = function()
 	{
-		if (this._proto.weapon === null)
+		if (this.weapon === null)
 			return false;
-		return this._proto.weapon.can_shoot_ground;
+		return this.weapon.canAttackGround();
 	};
 	
 	this.canAttackFly = function()
 	{
-		if (this._proto.weapon === null)
+		if (this.weapon === null)
 			return false;
-		return this._proto.weapon.can_shoot_flyer;
+		return this.weapon.canAttackFly();
 	};
 	
 	this.canHarvest = function()
@@ -612,11 +612,9 @@ AbstractUnit.loadResources = function(obj)
 	for (i in obj.response_sounds)
 		game.resources.addSound('sound_' + obj.response_sounds[i],   'sounds/units/' + obj.response_sounds[i] + '.' + AUDIO_TYPE);
 	
-	if (obj.weapon !== null)
+	if (obj.weapon != '')
 	{
 		game.resources.addImage(obj.resource_key + '_attack',  'images/units/' + obj.resource_key + '/attack.png');
-		obj.weapon.loadResources();
-		
 		if (obj.images.shadow)
 			game.resources.addImage(obj.resource_key + '_attack_shadow', 'images/units/' + obj.resource_key + '/attack_shadow.png');
 	}
@@ -636,7 +634,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.cost = 0;
 	obj.health_max = 100;
 	obj.speed = 0.87;      // 0.87 = 6 config speed [SetPhysics(mass speed)]
-	obj.weapon = null;
+	obj.weapon = '';
 	obj.enabled = false;
 	obj.is_human = false;
 	obj.shield_type = 'ToughHumanWet';

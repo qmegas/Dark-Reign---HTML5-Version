@@ -53,7 +53,7 @@ BionUnit.response_sounds = ['gxbonrc0', 'gxbonrc1'];
 
 BionUnit.cost = 350;
 BionUnit.health_max = 150;
-BionUnit.weapon = PlasmaRifleWeapon;
+BionUnit.weapon = 'PlasmaRifle';
 BionUnit.is_human = true;
 BionUnit.shield_type = 'PowerHumanWet';
 

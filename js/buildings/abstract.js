@@ -39,9 +39,9 @@ function AbstractBuilding()
 			y: (pos_y)*CELL_SIZE
 		};
 		
-		if (this._proto.weapon != null)
+		if (this._proto.weapon != '')
 		{
-			this.weapon = new this._proto.weapon();
+			this.weapon = new WeaponHolder(this._proto.weapon);
 			this.weapon.init(this);
 		}
 	};
@@ -314,6 +314,9 @@ function AbstractBuilding()
 	
 	this.repair = function()
 	{
+		if (this._proto.is_bridge)
+			return;
+		
 		if (this._is_repairing)
 		{
 			this._is_repairing = false;
@@ -431,16 +434,16 @@ function AbstractBuilding()
 	
 	this.canAttackGround = function()
 	{
-		if (this._proto.weapon === null)
+		if (this.weapon === null)
 			return false;
-		return this._proto.weapon.can_shoot_ground;
+		return this.weapon.canAttackGround();
 	};
 	
 	this.canAttackFly = function()
 	{
-		if (this._proto.weapon === null)
+		if (this.weapon === null)
 			return false;
-		return this._proto.weapon.can_shoot_flyer;
+		return this.weapon.canAttackFly();
 	};
 	
 	this.orderAttack = function(target)
@@ -741,11 +744,9 @@ AbstractBuilding.loadResources = function(obj)
 	if (obj.death_sound != '')
 		game.resources.addSound(obj.death_sound,   'sounds/' + obj.death_sound + '.' + AUDIO_TYPE);
 	
-	if (obj.weapon !== null)
+	if (obj.weapon != '')
 	{
 		game.resources.addImage(obj.res_key + '_weapon', 'images/buildings/'+obj.res_key+'/weapon.png');
-		obj.weapon.loadResources();
-		
 		if (obj.images.weapon.animated)
 			game.resources.addImage(obj.res_key + '_attack', 'images/buildings/'+obj.res_key+'/attack.png');
 	}
@@ -794,7 +795,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.shield_type = 'BuildingArmour';
 	obj.crater = -1;
 	obj.is_built_from_edge = false;
-	obj.weapon = null;
+	obj.weapon = '';
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare

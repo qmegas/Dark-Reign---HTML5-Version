@@ -492,6 +492,7 @@ function Game()
 		this.resources.addSound('insufficient_credits', 'sounds/insufficient_credits.' + AUDIO_TYPE);
 		this.resources.addSound('upgrade_available', 'sounds/upgrade_available.' + AUDIO_TYPE);
 		this.resources.addSound('healing', 'sounds/healing.' + AUDIO_TYPE);
+		this.resources.addSound('water_sell', 'sounds/gxcrdoc0.' + AUDIO_TYPE);
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();
@@ -499,10 +500,9 @@ function Game()
 		
 		//Effects
 		CraterEffect.loadResources();
-		WaterSellEffect.loadResources();
 		
-		//Effects v2.0
 		Animator.loadResources();
+		WeaponHolder.loadResources();
 	};
 	
 	this._checkBrowserSupport = function()

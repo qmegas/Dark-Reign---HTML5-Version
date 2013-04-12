@@ -38,21 +38,9 @@ function Debuger()
 		game.players[PLAYER_HUMAN].addMoney(15000);
 	});
 	
-	$('#debug_test').click(function(){
+	$('#debug_water').click(function(){
 		var obj = game.findNearestInstance(WaterLaunchPadBuilding, PLAYER_HUMAN, 1, 1);
-		var animator = new Animator();
-		animator.setObject(obj.uid);
-		animator.animate('building_33_explosion', Animator.MODE_FIXED);
-	});
-	
-	$('#debug_kill').click(function(){
-		var unit;
-		for (var i in game.selected_objects)
-		{
-			unit = game.objects[game.selected_objects[i]];
-			if (!unit.is_building)
-				unit.applyDamage(unit._proto.health_max);
-		}
+		obj.increaseRes(200);
 	});
 	
 	this.countRun = function()

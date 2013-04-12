@@ -50,6 +50,23 @@ var AnimationList = {
 		{start: 4, min_point: 1, max_point: 1, effect: 'lite2_animation'},
 		{start: 2, min_point: 1, max_point: 3, effect: 'eobpfsm2_animation'}
 	],
+	eoncnex0_explosion: [
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoncnex0_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'lite2_animation'}
+	],
+	eoplsex0_explosion: [
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoplsex0_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'lite1_animation'}
+	],
+	eoplsex2_explosion: [
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoplsex2_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'lite1_animation'}
+	],
+	eorfgex0_explosion: [
+		{start: 0, min_point: 3, max_point: 3, effect: 'eorfgex0_animation'},
+		{start: 22, min_point: 3, max_point: 3, effect: 'eorfgex1_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'lite1_animation'}
+	],
 	headquarter_80_explosion: [
 		{start: 0, min_point: 0, max_point: 0, effect: 'eoblamd0_animation'},
 		{start: 0, min_point: 0, max_point: 0, effect: 'lite2_animation'},
@@ -86,5 +103,9 @@ var AnimationList = {
 		{start: 2, min_point: 3, max_point: 3, effect: 'lite2_animation'},
 		{start: 4, min_point: 1, max_point: 1, effect: 'eoblamd0_animation'},
 		{start: 4, min_point: 1, max_point: 1, effect: 'lite2_animation'}
+	],
+	smalllaser_hitpuff_explosion: [
+		{start: 0, min_point: 0, max_point: 0, effect: 'eolasex0_animation'},
+		{start: 0, min_point: 0, max_point: 0, effect: 'eolasex3_animation'}
 	]
 };

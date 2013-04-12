@@ -48,3 +48,15 @@ Animator.loadResources = function()
 	for (var i in EffectList)
 		game.resources.addImage(EffectList[i].res_key, 'images/effects/' + EffectList[i].res_key + '.png');
 };
+
+Animator.quickAnimation = function(animation, pos)
+{
+	for (var i in AnimationList[animation])
+	{
+		SimpleEffect.quickCreate(AnimationList[animation][i].effect, {
+			looped: false,
+			start: AnimationList[animation][i].start,
+			pos: pos
+		});
+	}
+};

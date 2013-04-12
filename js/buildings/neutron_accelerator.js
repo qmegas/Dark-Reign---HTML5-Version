@@ -18,7 +18,7 @@ NeutronAcceleratorBuilding.energy = 100;
 NeutronAcceleratorBuilding.enabled = false;
 NeutronAcceleratorBuilding.can_build = true;
 NeutronAcceleratorBuilding.crater = 1;
-NeutronAcceleratorBuilding.weapon = NeutronAssWeapon;
+NeutronAcceleratorBuilding.weapon = 'NeutronAss';
 
 NeutronAcceleratorBuilding.cell_size = {x: 3, y: 3};
 NeutronAcceleratorBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];
@@ -41,5 +41,5 @@ NeutronAcceleratorBuilding.images = {
 	}
 };
 NeutronAcceleratorBuilding.hotpoints = [
-	{x: 12, y: 12}
+	{x: 36, y: 40}
 ];

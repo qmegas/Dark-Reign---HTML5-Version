@@ -69,8 +69,9 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 			this.res_now = 0;
 			game.players[this.player].addMoney(money);
 			
-			var effect = new WaterSellEffect(this.getCell());
-			game.addEffect(effect);
+			SimpleEffect.quickCreate('water_sell', {pos: cloneObj(this.position)});
+			game.resources.play('water_sell');
+			
 			if (this.player == PLAYER_HUMAN)
 				game.energyDraw.waterReset();
 		}

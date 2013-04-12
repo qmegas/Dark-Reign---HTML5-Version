@@ -9,7 +9,7 @@
  */
 function SimpleEffect(info)
 {
-	var frame_speed = 50, position = null;
+	var frame_speed = 50, position = null, direction = 0;
 	
 	this.uid = -1;
 	this.is_effect = true;
@@ -24,6 +24,11 @@ function SimpleEffect(info)
 			x: pos.x - this.info.hotpoint.x,
 			y: pos.y - this.info.hotpoint.y
 		};
+	};
+	
+	this.setDirection = function(val)
+	{
+		direction = val;
 	};
 	
 	this.run = function()
@@ -55,7 +60,7 @@ function SimpleEffect(info)
 			
 		game.objDraw.addElement(DRAW_LAYER_EFFECTS, position.x, {
 			res_key: this.info.res_key,
-			src_x: 0,
+			src_x: direction * this.info.size.x,
 			src_y: diff * this.info.size.y,
 			src_width: this.info.size.x,
 			src_height: this.info.size.y,
@@ -86,5 +91,8 @@ SimpleEffect.quickCreate = function(name, options)
 	
 	effect = new SimpleEffect(effect_data);
 	effect.setPosition(options.pos);
+	if (options.direction)
+		effect.setDirection(options.direction);
+	
 	return game.addEffect(effect);
 };

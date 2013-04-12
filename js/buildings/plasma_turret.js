@@ -18,7 +18,7 @@ PlasmaTurretBuilding.energy = 50;
 PlasmaTurretBuilding.enabled = false;
 PlasmaTurretBuilding.can_build = true;
 PlasmaTurretBuilding.crater = 0;
-PlasmaTurretBuilding.weapon = GatPlasmaWeapon;
+PlasmaTurretBuilding.weapon = 'GatPlasma';
 
 PlasmaTurretBuilding.cell_size = {x: 2, y: 2};
 PlasmaTurretBuilding.cell_matrix = [1,1,1,1];
@@ -39,7 +39,7 @@ PlasmaTurretBuilding.images = {
 	}
 };
 PlasmaTurretBuilding.hotpoints = [
-	{x: 12, y: 12}
+	{x: 24, y: 26}
 ];
 PlasmaTurretBuilding.health_explosions = {
 	0: 'building_0_explosion',

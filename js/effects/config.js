@@ -53,6 +53,24 @@ var EffectList = {
 		hotpoint: {x: 20, y: 89},
 		frames: 20
 	},
+	eolasex0_animation: {
+		res_key: 'eolasex0',
+		size: {x: 25, y: 25},
+		hotpoint: {x: 13, y: 13},
+		frames: 7
+	},
+	eolasex3_animation: {
+		res_key: 'eolasex3',
+		size: {x: 25, y: 25},
+		hotpoint: {x: 4, y: 18},
+		frames: 13
+	},
+	eolaspr2_animation: { //Bulet
+		res_key: 'eolaspr2',
+		size: {x: 8, y: 8},
+		hotpoint: {x: 4, y: 4},
+		frames: 3
+	},
 	eomedfl0_animation: { //Looped
 		res_key: 'eomedfl0',
 		size: {x: 70, y: 70},
@@ -70,6 +88,60 @@ var EffectList = {
 		size: {x: 50, y: 75},
 		hotpoint: {x: 10, y: 62},
 		frames: 21
+	},
+	eoncnex0_animation: {
+		res_key: 'eoncnex0',
+		size: {x: 55, y: 55},
+		hotpoint: {x: 27, y: 30},
+		frames: 22
+	},
+	eoncnpr0_animation: {
+		res_key: 'eoncnpr0',
+		size: {x: 12, y: 12},
+		hotpoint: {x: 6, y: 6},
+		frames: 4
+	},
+	eoplsex0_animation: {
+		res_key: 'eoplsex0',
+		size: {x: 40, y: 40},
+		hotpoint: {x: 16, y: 22},
+		frames: 16
+	},
+	eoplsex2_animation: {
+		res_key: 'eoplsex2',
+		size: {x: 50, y: 42},
+		hotpoint: {x: 23, y: 22},
+		frames: 16
+	},
+	eoplspr0_animation: { //Bulet
+		res_key: 'eoplspr0',
+		size: {x: 12, y: 10},
+		hotpoint: {x: 6, y: 5},
+		frames: 4
+	},
+	eoplspr1_animation: { //Bulet
+		res_key: 'eoplspr1',
+		size: {x: 20, y: 18},
+		hotpoint: {x: 10, y: 9},
+		frames: 4
+	},
+	eorfgex0_animation: {
+		res_key: 'eorfgex0',
+		size: {x: 60, y: 60},
+		hotpoint: {x: 25, y: 34},
+		frames: 22
+	},
+	eorfgex1_animation: {
+		res_key: 'eorfgex1',
+		size: {x: 60, y: 60},
+		hotpoint: {x: 27, y: 34},
+		frames: 27
+	},
+	eorfgpr0_animation: { //Bulet
+		res_key: 'eorfgpr0',
+		size: {x: 4, y: 3},
+		hotpoint: {x: 2, y: 1},
+		frames: 1
 	},
 	eosmlfl0_animation: { //Looped
 		res_key: 'eosmlfl0',
@@ -119,6 +191,12 @@ var EffectList = {
 		hotpoint: {x: 5, y: 39},
 		frames: 21
 	},
+	lite1_animation: {
+		res_key: 'lite1',
+		size: {x: 48, y: 48},
+		hotpoint: {x: 24, y: 24},
+		frames: 5
+	},
 	lite2_animation: { //lite3_animation
 		res_key: 'lite2',
 		size: {x: 96, y: 96},
@@ -154,5 +232,11 @@ var EffectList = {
 		size: {x: 50, y: 50},
 		hotpoint: {x: 25, y: 25},
 		frames: 12
+	},
+	water_sell: {
+		res_key: 'nclnc1l0',
+		size: {x: 43, y: 96},
+		hotpoint: {x: -31, y: 22},
+		frames: 7
 	}
 };
