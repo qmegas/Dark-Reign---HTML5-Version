@@ -383,7 +383,7 @@ function AbstractBuilding()
 					this._drawSprite(DRAW_LAYER_TBUILD, 1, 1);
 			}
 			
-			if (this._proto.weapon !== null)
+			if (this.weapon !== null)
 			{
 				if (this.state == 'ATTACKING' && this._proto.images.weapon.animated)
 					this._drawWeapon('attack', parseInt((cur_time - this.start_animation) / ANIMATION_SPEED) % this._proto.images.weapon.frames);

@@ -3,6 +3,7 @@ function Bulet(config_name)
 	var config, position_now, position_to, position_to_cells, move_steps, animation_id;
 	
 	this.uid = -1;
+	this.is_effect = true;
 	
 	this.init = function(from, to)
 	{
