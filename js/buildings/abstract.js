@@ -393,6 +393,13 @@ function AbstractBuilding()
 		}
 	};
 	
+	this.setWeaponDirection = function(val)
+	{
+		if (this._proto.images.weapon.no_direction)
+			return;
+		this.weapon_direction = val;
+	};
+	
 	this._drawWeapon = function(key, frame)
 	{
 		game.objDraw.addElement(DRAW_LAYER_ABUILD, this.position.x, {

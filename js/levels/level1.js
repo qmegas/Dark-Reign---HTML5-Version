@@ -2416,8 +2416,9 @@ function Level1()
 		return [//Main buildings
 			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
 			TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
-			NeutronAcceleratorBuilding, CameraTowerBuilding, FieldHospitalBuilding, 
-			HorizontalBridgeBuilding, VerticalBridgeBuilding, 
+			NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
+			FieldHospitalBuilding, RepairStationBuilding, HorizontalBridgeBuilding, 
+			VerticalBridgeBuilding, 
 			//Upgrades
 			Headquarter2Building, Headquarter3Building, 
 			TrainingFacility2Building, AssemblyPlant2Building,

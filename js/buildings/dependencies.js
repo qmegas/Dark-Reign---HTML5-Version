@@ -32,6 +32,9 @@ PlasmaTurretBuilding.require_building = [HeadquarterBuilding];
 //IG - Neutron Accelerator
 NeutronAcceleratorBuilding.require_building = [Headquarter2Building];
 
+//IG - Air Defense Site
+AirDefenceSiteBuilding.require_building = [Headquarter2Building];
+
 //IG - Camera Tower
 CameraTowerBuilding.require_building = [Headquarter2Building];
 

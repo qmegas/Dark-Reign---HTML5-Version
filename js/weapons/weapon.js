@@ -113,7 +113,7 @@ function WeaponHolder(config_name)
 		
 		//Rotate unit
 		if (unit.is_building)
-			unit.weapon_direction = 8 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/23.5);
+			unit.setWeaponDirection(8 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/23.5));
 		else
 			unit.move_direction = 4 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/45);
 		
@@ -140,6 +140,6 @@ WeaponHolder.loadResources = function()
 	for (var i in WeaponConfig)
 	{
 		if (WeaponConfig[i].fire_sound)
-			game.resources.addSound(WeaponConfig[i].fire_sound, 'sounds/' + WeaponConfig[i].fire_sound + '.' + AUDIO_TYPE);
+			game.resources.addSound(WeaponConfig[i].fire_sound, 'sounds/weapon/' + WeaponConfig[i].fire_sound + '.' + AUDIO_TYPE);
 	}
 };

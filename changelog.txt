@@ -1,3 +1,7 @@
+Build 36
+- Added Air Defense Site building & weapon
+- Added Repair Station, it still can't repair
+
 Build 35 (11.04.2013)
 - Minimap not available if player have low energy
 - Added Exterminator unit and PolyAcid weapon

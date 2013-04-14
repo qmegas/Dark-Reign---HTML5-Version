@@ -1,21 +1,23 @@
 To do:
-	- Correct bullet animation
+	- Fix Repair Station broken images
+	- Add animation for repair station
+	- Enable repairing for Repair Station
 
 - High priority bugs:
 	- Sometimes unit attack unknown target
+	- Correct bullet animation
 
 - Medium priority bugs:
 	- Allow unit to shoot not only to the center of the building
+	- Air Defense Site should have 3 weapons instead one
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
 	- Energy meter blinking incorrectly
 	- Need to add animation when energy state changed
-	- Unit production indicator on right panel looks not exactly as original one
 	- Add smooth animation on water indicator when selling water
 	- When building upgraded we should calculate exact proportion on health for new building
-	- Light layer on blast for: PlasmaRifle, GatPlasma, NeutronAss, PolyAcid
 
 - Very low priority bugs:
 	- When mouseover building or unit, it's name should be shown after small delay

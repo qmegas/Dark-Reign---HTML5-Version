@@ -35,6 +35,12 @@ var EffectList = {
 		hotpoint: {x: 24, y: 30},
 		frames: 11
 	},
+	eoblatr0_animation: {
+		res_key: 'eoblatr0',
+		size: {x: 40, y: 40},
+		hotpoint: {x: 19, y: 23},
+		frames: 10
+	},
 	eobpfsm0_animation: {
 		res_key: 'eobpfsm0',
 		size: {x: 47, y: 85},
@@ -99,6 +105,12 @@ var EffectList = {
 		res_key: 'eoncnpr0',
 		size: {x: 12, y: 12},
 		hotpoint: {x: 6, y: 6},
+		frames: 4
+	},
+	eoorbpr0_animation: { //Bulet
+		res_key: 'eoorbpr0',
+		size: {x: 17, y: 12},
+		hotpoint: {x: 8, y: 6},
 		frames: 4
 	},
 	eoplsex0_animation: {
@@ -202,6 +214,12 @@ var EffectList = {
 		size: {x: 96, y: 96},
 		hotpoint: {x: 48, y: 48},
 		frames: 5
+	},
+	repair_animation: { //Looped
+		res_key: 'tirep1l0_03',
+		size: {x: 47, y: 33},
+		hotpoint: {x: 0, y: 0},
+		frames: 3
 	},
 	repricon_animation: { //Looped
 		res_key: 'repricon',

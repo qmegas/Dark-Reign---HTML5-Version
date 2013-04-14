@@ -1,11 +1,11 @@
 <?php
 
 /* Config */
-//$file = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\eoblamd0.png';
-$file = 'F:\\My Docs\\DR Helpers\\Dark Reign 1.7\\utilities\\readsprites\\eoblalg0_00.png';
-//$output = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\eoblamd0_opt.png';
-$output = 'F:\\My Docs\\DR Helpers\\Dark Reign 1.7\\utilities\\readsprites\\eoblalg0_opt.png';
-$rows = 13;
+$file = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\tirep1l0_03.png';
+//$file = 'F:\\My Docs\\DR Helpers\\Dark Reign 1.7\\utilities\\readsprites\\eoblalg0_00.png';
+$output = 'C:\\Documents and Settings\\LENOVO User\\My Documents\\opt.png';
+//$output = 'F:\\My Docs\\DR Helpers\\Dark Reign 1.7\\utilities\\readsprites\\eoblalg0_opt.png';
+$rows = 3;
 $cols = 1;
 $shadow_mode = false;
 /* Config */

@@ -8,7 +8,7 @@
  * offence <= SetOffense(type strength ?area_effect?)
  * fire_sound <= SetFireSound()
  * hit_explosion <= SetHitExplosion()
- * bulet_speed <= SetSpeed(? ? ? ?)
+ * bulet_speed <= SetSpeed(?InitialSpeed?, ?acceleration?, ?maxspeed?, ?rotationalspeed?)
  */
 var WeaponConfig = {
 	GatPlasma: {
@@ -26,6 +26,21 @@ var WeaponConfig = {
 		hit_explosion: 'eoplsex2_explosion',
 		bulet_speed: 700
 	},
+	IMPFixedGroundToAirLaser: {
+		bulet_animation: 'eoorbpr0_animation',
+		minimum_range: 0,
+		maximum_range: 10,
+		firedelay: 473,
+		can_shoot_ground: false,
+		can_shoot_flyer: true,
+		offence: {
+			type: 'A1',
+			strength: 14
+		},
+		fire_sound: 'gxiaawc0',
+		hit_explosion: 'eoblatr0_explosion',
+		bulet_speed: 2000 //SetSpeed(40.0 0.0 40.0 1)
+	},
 	LaserRifle: {
 		bulet_animation: 'eolaspr2_animation',
 		minimum_range: 0,
@@ -39,7 +54,7 @@ var WeaponConfig = {
 		},
 		fire_sound: 'gxlgnwc0',
 		hit_explosion: 'smalllaser_hitpuff_explosion',
-		bulet_speed: 700
+		bulet_speed: 700 //SetSpeed(20.0 0.0 1000.0 1)
 	},
 	NeutronAss: {
 		bulet_animation: 'eoncnpr0_animation',
@@ -54,7 +69,7 @@ var WeaponConfig = {
 		},
 		fire_sound: 'gxneuwc0',
 		hit_explosion: 'eoncnex0_explosion',
-		bulet_speed: 2000
+		bulet_speed: 2000 //SetSpeed(35.0  0.0  1000.0 1)
 	},
 	PlasmaRifle: {
 		bulet_animation: 'eoplspr0_animation',
