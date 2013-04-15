@@ -6,15 +6,15 @@ var BridgeTypeBuilding = {
 		game.viewport_ctx.drawImage(
 			game.resources.get(obj.res_key), 0, obj.images.normal.size.y, 
 			obj.images.normal.size.x, obj.images.normal.size.y, 
-			x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x, 
-			y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y, 
+			x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x + 12, 
+			y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y + 12, 
 			obj.images.normal.size.x, obj.images.normal.size.y
 		);
 		game.viewport_ctx.drawImage(
 			game.resources.get(obj.res_key), obj.images.normal.size.x, obj.images.normal.size.y, 
 			obj.images.normal.size.x, obj.images.normal.size.y, 
-			x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x, 
-			y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y, 
+			x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x + 12, 
+			y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y + 12, 
 			obj.images.normal.size.x, obj.images.normal.size.y
 		);
 
@@ -41,7 +41,7 @@ var BridgeTypeBuilding = {
 					{
 						game.viewport_ctx.drawImage(
 							game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
-							xxx*CELL_SIZE - game.viewport_x, yyy*CELL_SIZE - game.viewport_y, CELL_SIZE, CELL_SIZE
+							xxx*CELL_SIZE - game.viewport_x + 12, yyy*CELL_SIZE - game.viewport_y + 12, CELL_SIZE, CELL_SIZE
 						);
 					}
 				}
@@ -62,7 +62,7 @@ var BridgeTypeBuilding = {
 					yyy = yy+y;
 					game.viewport_ctx.drawImage(
 						game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
-						xxx*CELL_SIZE - game.viewport_x, yyy*CELL_SIZE - game.viewport_y, CELL_SIZE, CELL_SIZE
+						xxx*CELL_SIZE - game.viewport_x + 12, yyy*CELL_SIZE - game.viewport_y + 12, CELL_SIZE, CELL_SIZE
 					);
 				}
 			}
@@ -89,7 +89,7 @@ var BridgeTypeBuilding = {
 					continue;
 
 				var yyy = yy+y;
-				if (!MapCell.isCorrectX(yyy))
+				if (!MapCell.isCorrectY(yyy))
 					return false;
 
 				var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);

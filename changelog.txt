@@ -1,6 +1,7 @@
 Build 36
 - Added Air Defense Site building & weapon
-- Added Repair Station, it still can't repair
+- Added Repair Station & added ability to fix non human units
+- Game grid changed, now it's works as in original game
 
 Build 35 (11.04.2013)
 - Minimap not available if player have low energy

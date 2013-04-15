@@ -25,7 +25,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.init = function(pos_x, pos_y)
 	{
-		this.position = {x: pos_x*CELL_SIZE, y: pos_y*CELL_SIZE};
+		this.position = {x: pos_x*CELL_SIZE + 12, y: pos_y*CELL_SIZE + 12};
 		
 		this.health = this._proto.health_max;
 		
@@ -119,6 +119,29 @@ function AbstractUnit(pos_x, pos_y, player)
 			type: 'go_heal',
 			target_position: pos,
 			target_id: hospital.uid
+		};
+		this._move(pos.x, pos.y, false);
+	};
+	
+	this.orderFix = function(fixer, play_sound)
+	{
+		if (play_sound)
+			this._playSound(this._proto.response_sounds);
+		
+		if (this._proto.is_human)
+			return;
+		
+		if (this.health >= this._proto.health_max)
+			return;
+		
+		var pos = fixer.getCell();
+		pos.x += 1;
+		pos.y += 2;
+		
+		this.action = {
+			type: 'go_heal',
+			target_position: pos,
+			target_id: fixer.uid
 		};
 		this._move(pos.x, pos.y, false);
 	};
@@ -223,8 +246,8 @@ function AbstractUnit(pos_x, pos_y, player)
 			this.onStopMoving();
 			return;
 		}
-		var next_cell = this.move_path[0], x_movement = 0, y_movement = 0, next_x = next_cell.x * CELL_SIZE, 
-			next_y = next_cell.y * CELL_SIZE, change;
+		var next_cell = this.move_path[0], x_movement = 0, y_movement = 0, next_x = next_cell.x * CELL_SIZE + 12, 
+			next_y = next_cell.y * CELL_SIZE + 12, change;
 
 		if (next_x != this.position.x)
 		{
@@ -499,6 +522,16 @@ function AbstractUnit(pos_x, pos_y, player)
 		return this._proto.is_human;
 	};
 	
+	this.isHealer = function()
+	{
+		return false;
+	};
+	
+	this.isFixer = function()
+	{
+		return false;
+	};
+	
 	//Events
 	
 	this.beforeMoveNextCell = function()
@@ -568,7 +601,8 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.onHealed = function()
 	{
-		game.resources.playOnPosition('healing', false, this.position, true);
+		var sound_key = (this.isHuman()) ? 'healing' : 'fixed';
+		game.resources.playOnPosition(sound_key, false, this.position, true);
 		var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 5, this.action.target_position.y, this._proto.move_mode);
 		this.orderMove(pos.x, pos.y);
 	};

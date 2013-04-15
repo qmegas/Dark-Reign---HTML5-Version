@@ -40,3 +40,6 @@ CameraTowerBuilding.require_building = [Headquarter2Building];
 
 //IG - Field Hospital
 FieldHospitalBuilding.require_building = [TrainingFacilityBuilding];
+
+//IG - Repair Station
+RepairStationBuilding.require_building = [AssemblyPlantBuilding];

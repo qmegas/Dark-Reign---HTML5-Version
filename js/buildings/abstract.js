@@ -34,10 +34,7 @@ function AbstractBuilding()
 	{
 		this.player = player;
 		
-		this.position = {
-			x: (pos_x)*CELL_SIZE, 
-			y: (pos_y)*CELL_SIZE
-		};
+		this.position = {x: pos_x*CELL_SIZE + 12, y: pos_y*CELL_SIZE + 12};
 		
 		if (this._proto.weapon != '')
 		{
@@ -505,6 +502,16 @@ function AbstractBuilding()
 		return false;
 	};
 	
+	this.isHealer = function()
+	{
+		return this._proto.is_healer;
+	};
+	
+	this.isFixer = function()
+	{
+		return this._proto.is_fixer;
+	};
+	
 	this.canHarvest = function()
 	{
 		return false;
@@ -633,15 +640,15 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 	game.viewport_ctx.drawImage(
 		game.resources.get(obj.res_key), 0, obj.images.normal.size.y, 
 		obj.images.normal.size.x, obj.images.normal.size.y, 
-		x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x, 
-		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y, 
+		x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x + 12, 
+		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y + 12, 
 		obj.images.normal.size.x, obj.images.normal.size.y
 	);
 	game.viewport_ctx.drawImage(
 		game.resources.get(obj.res_key), obj.images.normal.size.x, obj.images.normal.size.y, 
 		obj.images.normal.size.x, obj.images.normal.size.y, 
-		x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x, 
-		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y, 
+		x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x + 12, 
+		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y + 12, 
 		obj.images.normal.size.x, obj.images.normal.size.y
 	);
 		
@@ -666,7 +673,7 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 			{
 				game.viewport_ctx.drawImage(
 					game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
-					xxx*CELL_SIZE - game.viewport_x, yyy*CELL_SIZE - game.viewport_y, CELL_SIZE, CELL_SIZE
+					xxx*CELL_SIZE - game.viewport_x + 12, yyy*CELL_SIZE - game.viewport_y + 12, CELL_SIZE, CELL_SIZE
 				);
 			}
 		}
@@ -726,7 +733,7 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 				continue;
 			
 			var yyy = yy+y;
-			if (!MapCell.isCorrectX(yyy))
+			if (!MapCell.isCorrectY(yyy))
 				return false;
 			
 			var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
@@ -803,6 +810,8 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.crater = -1;
 	obj.is_built_from_edge = false;
 	obj.weapon = '';
+	obj.is_healer = false;
+	obj.is_fixer = false;
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare

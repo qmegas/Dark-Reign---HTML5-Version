@@ -3,6 +3,13 @@ function RepairStationBuilding(pos_x, pos_y, player)
 	this._proto = RepairStationBuilding;
 	
 	this.init(pos_x, pos_y, player);
+	
+	this.onHealed = function()
+	{
+		game.resources.playOnPosition('fixed', false, this.position, true);
+		var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 5, this.action.target_position.y, this._proto.move_mode);
+		this.orderMove(pos.x, pos.y);
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(RepairStationBuilding);
@@ -15,9 +22,10 @@ RepairStationBuilding.sell_cost = 400;
 RepairStationBuilding.sell_time = 8;
 RepairStationBuilding.health_max = 720;
 RepairStationBuilding.energy = 100;
-RepairStationBuilding.enabled = true;
+RepairStationBuilding.enabled = false;
 RepairStationBuilding.can_build = true;
 RepairStationBuilding.crater = 3;
+RepairStationBuilding.is_fixer = true;
 
 RepairStationBuilding.cell_size = {x: 4, y: 4};
 RepairStationBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];

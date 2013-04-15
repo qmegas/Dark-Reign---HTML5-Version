@@ -14,7 +14,7 @@ function Bulet(config_name)
 		//Set positions & steps
 		position_now = {x: from.x, y: from.y};
 		position_to = {x: to.x, y: to.y};
-		position_to_cells = {x: parseInt(to.x/CELL_SIZE), y: parseInt(to.y/CELL_SIZE)};
+		position_to_cells = MapCell.pixelToCell(to);
 		len = MapCell.getPixelDistance(from.x, from.y, to.x, to.y);
 		parts = (len / config.bulet_speed) * RUNS_PER_SECOND;
 		move_steps = {

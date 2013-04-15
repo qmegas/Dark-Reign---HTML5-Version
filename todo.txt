@@ -1,7 +1,6 @@
 To do:
-	- Fix Repair Station broken images
 	- Add animation for repair station
-	- Enable repairing for Repair Station
+	- Add civilian bridge
 
 - High priority bugs:
 	- Sometimes unit attack unknown target

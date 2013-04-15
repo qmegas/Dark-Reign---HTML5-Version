@@ -18,6 +18,7 @@ FieldHospitalBuilding.energy = 100;
 FieldHospitalBuilding.enabled = false;
 FieldHospitalBuilding.can_build = true;
 FieldHospitalBuilding.crater = 2;
+FieldHospitalBuilding.is_healer = true;
 
 FieldHospitalBuilding.cell_size = {x: 4, y: 3};
 FieldHospitalBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,0,1,1];

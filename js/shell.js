@@ -256,7 +256,9 @@ function Game()
 		
 		//Round 4: On mouse selection
 		var mouse_pos = MousePointer.getCellPosition();
-		unitid = MapCell.getSingleUserId(this.level.map_cells[mouse_pos.x][mouse_pos.y]);
+		unitid = -1;
+		if (MapCell.isCorrectCord(mouse_pos.x, mouse_pos.y))
+			unitid = MapCell.getSingleUserId(this.level.map_cells[mouse_pos.x][mouse_pos.y]);
 		if (unitid != -1) // && !this.objects[unitid].is_selected)
 			this.objects[unitid].drawSelection(true);
 		
@@ -276,7 +278,7 @@ function Game()
 						continue;
 					
 					if (MapCell.getSingleUserId(this.level.map_cells[start_x+x][start_y+y]) != -1)
-						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
+						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x + 12, (start_y+y)*24-this.viewport_y + 12, 24, 24);
 				}
 			}
 		}
@@ -284,7 +286,7 @@ function Game()
 		//DEBUG: Ground type
 		if (this.debug.show_type)
 		{
-			var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24), skip;
+			var start_x = parseInt((this.viewport_x-12)/24), start_y = parseInt((this.viewport_y-12)/24), skip;
 			for (var x=0; x<20; ++x)
 			{
 				if (this.level.map_cells[start_x+x] === undefined)
@@ -315,7 +317,7 @@ function Game()
 							break;
 					}
 					if (!skip)
-						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x, (start_y+y)*24-this.viewport_y, 24, 24);
+						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x + 12, (start_y+y)*24-this.viewport_y + 12, 24, 24);
 				}
 			}
 		}
@@ -325,13 +327,13 @@ function Game()
 		{
 			this.viewport_ctx.strokeStyle = '#ffffff';
 			this.viewport_ctx.beginPath();
-			var start = 24 - (this.viewport_x - parseInt(this.viewport_x/24)*24) + 0.5; // - 11.5;
+			var start = 24 - (this.viewport_x - parseInt(this.viewport_x/24)*24) - 11.5; 
 			for (var i=0; i<20; ++i)
 			{
 				this.viewport_ctx.moveTo(start + i*24, 0);
 				this.viewport_ctx.lineTo(start + i*24, 448);
 			}
-			start = 24 - (this.viewport_y - parseInt(this.viewport_y/24)*24) + 0.5; // - 11.5;
+			start = 24 - (this.viewport_y - parseInt(this.viewport_y/24)*24) - 11.5; 
 			for (i=0; i<20; ++i)
 			{
 				this.viewport_ctx.moveTo(0, start + i*24);
@@ -492,6 +494,7 @@ function Game()
 		this.resources.addSound('insufficient_credits', 'sounds/insufficient_credits.' + AUDIO_TYPE);
 		this.resources.addSound('upgrade_available', 'sounds/upgrade_available.' + AUDIO_TYPE);
 		this.resources.addSound('healing', 'sounds/healing.' + AUDIO_TYPE);
+		this.resources.addSound('fixed', 'sounds/gxrepoc0.' + AUDIO_TYPE);
 		this.resources.addSound('water_sell', 'sounds/gxcrdoc0.' + AUDIO_TYPE);
 		
 		//Units & Buildings

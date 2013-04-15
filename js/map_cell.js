@@ -51,12 +51,12 @@ MapCell.canStepInto = function(x, y, move_mode)
 
 MapCell.isCorrectX = function(x)
 {
-	return !(x<0 || x>game.level.size.x-1);
+	return !(x<0 || x>=game.level.size.x-1);
 };
 
 MapCell.isCorrectY = function(y)
 {
-	return !(y<0 || y>game.level.size.y-1);
+	return !(y<0 || y>=game.level.size.y-1);
 };
 
 MapCell.isCorrectCord = function(x, y)
@@ -72,7 +72,7 @@ MapCell.getPixelDistance = function(x1, y1, x2, y2)
 MapCell.pixelToCell = function(pixel_pos)
 {
 	return {
-		x: Math.floor(pixel_pos.x / CELL_SIZE),
-		y: Math.floor(pixel_pos.y / CELL_SIZE)
+		x: Math.floor((pixel_pos.x - 12) / CELL_SIZE),
+		y: Math.floor((pixel_pos.y - 12) / CELL_SIZE)
 	};
 };

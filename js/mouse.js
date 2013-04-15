@@ -12,7 +12,8 @@ var MousePointer = {
 	panning_region_time: 0,
 	direction_to_cursor: [18, 20, 16, 0, 22, 0, 21, 0, 17, 19, 15],
 	
-	setPosition: function(event){
+	setPosition: function(event)
+	{
 		this.show_cursor = true;
 		this.position = {x: event.layerX, y: event.layerY};
 	},
@@ -101,6 +102,9 @@ var MousePointer = {
 		}
 		
 		var pos = this.getCellPosition(), ptype;
+		if (!MapCell.isCorrectCord(pos.x, pos.y))
+			return this._drawNormalCursor();
+		
 		//Actions
 		if (game.action_state != ACTION_STATE_NONE)
 		{
@@ -140,8 +144,15 @@ var MousePointer = {
 					return this._drawCursor(current_time, 2, 7);
 				else if (game.selected_info.harvesters && game.objects[objid].isHarvestPlatform())
 					return this._drawCursor(current_time, 9, 8);
-				else if (game.selected_info.humans && game.objects[objid]._proto === FieldHospitalBuilding)
+				else if (game.selected_info.humans && game.objects[objid].isHealer())
 					return this._drawCursor(current_time, 10, 5);
+				else if (
+					game.selected_objects.length>0 &&
+					!game.selected_info.humans && 
+					!game.selected_info.is_building && 
+					game.objects[objid].isFixer()
+				)
+					return this._drawCursor(current_time, 23, 5);
 			}	
 			
 			return this._drawCursor(current_time, 1, 8);
@@ -159,6 +170,11 @@ var MousePointer = {
 		
 		//Normal cursor
 		this.draw_frame = 0;
+		this._drawNormalCursor();
+	},
+		
+	_drawNormalCursor: function()
+	{
 		game.viewport_ctx.drawImage(game.resources.get('cursors'), 0, 0, 17, 24, this.position.x, this.position.y, 17, 24);
 	},
 		
@@ -180,8 +196,8 @@ var MousePointer = {
 	getCellPosition: function()
 	{
 		return {
-			x: Math.floor((this.position.x + game.viewport_x)/CELL_SIZE), 
-			y: Math.floor((this.position.y + game.viewport_y)/CELL_SIZE)
+			x: Math.floor((this.position.x + game.viewport_x - 12)/CELL_SIZE), 
+			y: Math.floor((this.position.y + game.viewport_y - 12)/CELL_SIZE)
 		};
 	},
 		
@@ -204,6 +220,9 @@ var MousePointer = {
 		var pos = this.getCellPosition(), unitid;
 		
 		this.is_selection = false;
+		
+		if (!MapCell.isCorrectCord(pos.x, pos.y))
+			return;
 		
 		switch (game.action_state)
 		{
@@ -236,11 +255,24 @@ var MousePointer = {
 						}
 					}
 					
-					//Is healing humans?
-					if (unitid!=-1 && game.selected_info.humans && game.objects[unitid]._proto === FieldHospitalBuilding)
+					//Is healing humans
+					if (unitid!=-1 && game.selected_info.humans && game.objects[unitid].isHealer())
 					{
 						for (var i in game.selected_objects)
 							game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
+						return;
+					}
+					
+					//Is fixing vehical
+					if (
+						unitid!=-1 && 
+						game.selected_objects.length>0 &&
+						!game.selected_info.humans && 
+						!game.selected_info.is_building && 
+						game.objects[unitid].isFixer())
+					{
+						for (var i in game.selected_objects)
+							game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
 						return;
 					}
 					
