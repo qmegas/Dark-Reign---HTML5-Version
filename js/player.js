@@ -1,4 +1,4 @@
-function Player(map_color)
+function Player(map_color, start_position)
 {
 	this._money = 0;
 	this._map_color = map_color;

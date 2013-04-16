@@ -1,6 +1,5 @@
 To do:
-	- Add animation for repair station
-	- Add civilian bridge
+	- Add map start position
 
 - High priority bugs:
 	- Sometimes unit attack unknown target
@@ -9,6 +8,7 @@ To do:
 - Medium priority bugs:
 	- Allow unit to shoot not only to the center of the building
 	- Air Defense Site should have 3 weapons instead one
+	- Add animation for repair station
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units

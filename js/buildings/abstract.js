@@ -427,8 +427,8 @@ function AbstractBuilding()
 	{
 		game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
 			res_key: this._proto.res_key + '_shadow',
-			src_x: this._proto.images.shadow.size.x * frame_x,
-			src_y: this._proto.images.shadow.size.y * frame_y,
+			src_x: (this._proto.images.shadow.static_img) ? 0 : this._proto.images.shadow.size.x * frame_x,
+			src_y: (this._proto.images.shadow.static_img) ? 0 : this._proto.images.shadow.size.y * frame_y,
 			src_width: this._proto.images.shadow.size.x,
 			src_height: this._proto.images.shadow.size.y,
 			x: this.position.x - this._proto.images.shadow.padding.x - game.viewport_x,
@@ -692,6 +692,7 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 	{
 		new_obj.state = 'NORMAL';
 		new_obj.health = obj.health_max;
+		new_obj.onConstructedCustom();
 	}
 	else
 	{

@@ -134,7 +134,7 @@ function Game()
 			$('#progress-bar').css({width: progress+'px'});
 		};
 		this.resources.onComplete = function(){
-			game.moveViewport(0, 0, false);
+			game.moveViewport(game.level.start_positions[0].x - 10, game.level.start_positions[0].y - 10, false);
 			game.players[PLAYER_HUMAN].addMoney(15000); //Should add money to all players
 			game.constructor.drawUnits();
 			game.level.generateMap();
