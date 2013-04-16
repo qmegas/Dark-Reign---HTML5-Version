@@ -43,3 +43,6 @@ FieldHospitalBuilding.require_building = [TrainingFacilityBuilding];
 
 //IG - Repair Station
 RepairStationBuilding.require_building = [AssemblyPlantBuilding];
+
+//IG - Temporal Gate
+TemporalGateBuilding.require_building = [Headquarter2Building];

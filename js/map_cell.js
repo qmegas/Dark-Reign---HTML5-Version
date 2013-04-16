@@ -76,3 +76,8 @@ MapCell.pixelToCell = function(pixel_pos)
 		y: Math.floor((pixel_pos.y - 12) / CELL_SIZE)
 	};
 };
+
+MapCell.cellToPixel = function(cell_pos)
+{
+	return {x: cell_pos.x*CELL_SIZE + 12, y: cell_pos.y*CELL_SIZE + 12};
+};

@@ -89,7 +89,7 @@ var ProducingQueue = {
 				if (obj.producing_paused)
 					continue;
 				
-				if (game.objects[i].state == 'PRODUCING')
+				if (game.objects[i].state == BUILDING_STATE_PRODUCING)
 				{
 					if (game.debug.quick_build || (obj.producing_progress >= obj.construction_time))
 					{
@@ -100,7 +100,7 @@ var ProducingQueue = {
 						game.objects[i].produce(obj);
 						
 						if (this._queue[i].length == 0)
-							game.objects[i].state = 'NORMAL';
+							game.objects[i].state = BUILDING_STATE_NORMAL;
 						
 						continue;
 					}
@@ -116,8 +116,8 @@ var ProducingQueue = {
 				}
 				else
 				{
-					if (game.objects[i].state == 'NORMAL')
-						game.objects[i].state = 'PRODUCING';
+					if (game.objects[i].state == BUILDING_STATE_NORMAL)
+						game.objects[i].state = BUILDING_STATE_PRODUCING;
 				}
 			}
 		}
@@ -163,8 +163,8 @@ var ProducingQueue = {
 		
 		if (this._queue[building.uid][0] == obj)
 		{
-			if (building.state == 'PRODUCING')
-				building.state = 'NORMAL';
+			if (building.state == BUILDING_STATE_PRODUCING)
+				building.state = BUILDING_STATE_NORMAL;
 		}
 		
 		for (var i in this._queue[building.uid])

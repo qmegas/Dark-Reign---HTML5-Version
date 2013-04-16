@@ -25,7 +25,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.init = function(pos_x, pos_y)
 	{
-		this.position = {x: pos_x*CELL_SIZE + 12, y: pos_y*CELL_SIZE + 12};
+		this.position = MapCell.cellToPixel({x: pos_x, y: pos_y});
 		
 		this.health = this._proto.health_max;
 		
@@ -142,6 +142,26 @@ function AbstractUnit(pos_x, pos_y, player)
 			type: 'go_heal',
 			target_position: pos,
 			target_id: fixer.uid
+		};
+		this._move(pos.x, pos.y, false);
+	};
+	
+	this.orderToTeleport = function(teleport, play_sound)
+	{
+		if (play_sound)
+			this._playSound(this._proto.response_sounds);
+		
+		if (this._proto.move_mode == MOVE_MODE_FLY)
+			return;
+		
+		var pos = teleport.getCell();
+		pos.x += 1;
+		pos.y += 1;
+		
+		this.action = {
+			type: 'go_teleport',
+			target_position: pos,
+			target_id: teleport.uid
 		};
 		this._move(pos.x, pos.y, false);
 	};
@@ -532,6 +552,11 @@ function AbstractUnit(pos_x, pos_y, player)
 		return false;
 	};
 	
+	this.isTeleport = function()
+	{
+		return false;
+	};
+	
 	//Events
 	
 	this.beforeMoveNextCell = function()
@@ -573,6 +598,28 @@ function AbstractUnit(pos_x, pos_y, player)
 					this.orderWait(1000);
 				break;
 				
+			case 'go_teleport':
+				if (!AbstractBuilding.isExists(this.action.target_id))
+				{
+					this.orderStop();
+					return;
+				}
+				
+				var cell = this.getCell();
+				if (cell.x==this.action.target_position.x && cell.y==this.action.target_position.y)
+				{
+					game.objects[this.action.target_id].input(this);
+					this.orderStop();
+				}
+				else
+				{
+					if (!game.objects[this.action.target_id].haveFreeSpace())
+						this.orderStop();
+					else
+						this.orderWait(1000);
+				}
+				break;
+				
 			default:
 				this.onStopMovingCustom();
 		}
@@ -593,6 +640,14 @@ function AbstractUnit(pos_x, pos_y, player)
 				else
 					this.orderStop();
 				break;
+				
+			case 'go_teleport':
+				if (!AbstractBuilding.isExists(this.action.target_id) || !game.objects[this.action.target_id].haveFreeSpace())
+					this.orderStop();
+				else
+					this._move(this.action.target_position.x, this.action.target_position.y, false);
+				break;
+				
 			default:
 				this.afterWaitingCustom();
 				break;

@@ -336,6 +336,7 @@ var astar = {
 
 var PathFinder = {
 	_current_empty_cell_func: null,
+	_searchRadius: 20,
 		
 	findPath: function(from_x, from_y, to_x, to_y, move_mode, avoid_others)
 	{	
@@ -344,6 +345,16 @@ var PathFinder = {
 		var end = graph.nodes[to_x][to_y];
 		
 		return astar.search(graph.nodes, start, end);
+	},
+		
+	setSearchRadius: function(val)
+	{
+		this._searchRadius = val;
+	},
+		
+	restoreSearchRadius: function()
+	{
+		this._searchRadius = 20;
 	},
 		
 	findNearestEmptyCell: function(x, y, move_mode)
@@ -365,7 +376,7 @@ var PathFinder = {
 		if (this._checkCell(cell, move_mode))
 			return cell;
 		
-		for (round = 1; round < 20; ++round)
+		for (round = 1; round < this._searchRadius; ++round)
 		{
 			for (padding = 0; padding <= round; ++padding)
 			{

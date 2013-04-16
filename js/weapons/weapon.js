@@ -63,7 +63,7 @@ function WeaponHolder(config_name)
 			if (game.objects[target.objid] === undefined)
 			{
 				if (unit.is_building)
-					unit.state = 'NORMAL';
+					unit.state = BUILDING_STATE_NORMAL;
 				else
 					unit.state = 'STAND';
 				target = null;

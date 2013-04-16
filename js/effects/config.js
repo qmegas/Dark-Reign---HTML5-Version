@@ -5,6 +5,12 @@ var EffectList = {
 		hotpoint: {x: 50, y: 50},
 		frames: 13
 	},
+	electric_blue_animation: {
+		res_key: 'ecexplg1',
+		size: {x: 75, y: 75},
+		hotpoint: {x: 37, y: 37},
+		frames: 13
+	},
 	eoblalg0_animation: {
 		res_key: 'eoblalg0',
 		size: {x: 94, y: 100},

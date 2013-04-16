@@ -496,6 +496,7 @@ function Game()
 		this.resources.addSound('healing', 'sounds/healing.' + AUDIO_TYPE);
 		this.resources.addSound('fixed', 'sounds/gxrepoc0.' + AUDIO_TYPE);
 		this.resources.addSound('water_sell', 'sounds/gxcrdoc0.' + AUDIO_TYPE);
+		this.resources.addSound('teleport', 'sounds/gxtgtoc0.' + AUDIO_TYPE);
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();
@@ -533,6 +534,16 @@ function Game()
 	{
 		for (var i in this.selected_objects)
 			this.objects[this.selected_objects[i]].orderStop();
+	};
+	
+	this.unselectUnit = function(uid)
+	{
+		var index = this.selected_objects.indexOf(uid);
+		if (index != -1)
+		{
+			this.objects[uid].select(false);
+			this.selected_objects.splice(index, 1);
+		}
 	};
 	
 	this._resetSelectionInfo = function()

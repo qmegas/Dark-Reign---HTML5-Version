@@ -153,19 +153,35 @@ var MousePointer = {
 					game.objects[objid].isFixer()
 				)
 					return this._drawCursor(current_time, 23, 5);
+				else if (game.objects[objid].isTeleport())
+				{
+					if (game.selected_info.is_building && game.selected_objects[0]==objid && game.objects[objid].haveInsideUnits())
+						return this._drawCursor(current_time, 24, 10);
+					if (game.selected_objects.length>0 && !game.selected_info.is_building && game.objects[objid].haveFreeSpace())
+						return this._drawCursor(current_time, 25, 12);
+				}
 			}	
 			
 			return this._drawCursor(current_time, 1, 8);
 		}
 		
 		//Ground
-		if (game.selected_objects.length>0 && !game.selected_info.is_building)
+		if (game.selected_objects.length>0)
 		{
-			ptype = game.level.map_cells[pos.x][pos.y].type;
-			if ((ptype==CELL_TYPE_WATER && game.selected_info.move_mode==MOVE_MODE_GROUND) || (ptype==CELL_TYPE_NOWALK && game.selected_info.move_mode!=MOVE_MODE_FLY))
-				return this._drawCursor(current_time, 4, 2);
+			if (!game.selected_info.is_building)
+			{
+				ptype = game.level.map_cells[pos.x][pos.y].type;
+				if ((ptype==CELL_TYPE_WATER && game.selected_info.move_mode==MOVE_MODE_GROUND) || (ptype==CELL_TYPE_NOWALK && game.selected_info.move_mode!=MOVE_MODE_FLY))
+					return this._drawCursor(current_time, 4, 2);
+				else
+					return this._drawCursor(current_time, 2, 7);
+			}
 			else
-				return this._drawCursor(current_time, 2, 7);
+			{
+				var obj = game.objects[game.selected_objects[0]];
+				if (obj.isTeleport() && obj.canTeleport())
+					return this._drawCursor(current_time, 26, 11);
+			}
 		}
 		
 		//Normal cursor
@@ -253,27 +269,52 @@ var MousePointer = {
 								game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
 							return;
 						}
+						
+						//Is teleport?
+						if (game.objects[unitid].isTeleport())
+						{
+							if (game.selected_info.is_building && game.selected_objects[0]==unitid)
+							{
+								game.objects[unitid].extract();
+								return;
+							}
+							if (game.selected_objects.length>0 && !game.selected_info.is_building)
+							{
+								for (var i in game.selected_objects)
+									game.objects[game.selected_objects[i]].orderToTeleport(game.objects[unitid], (i==0));
+								return;
+							}
+						}
+						
+						//Is healing humans
+						if (game.selected_info.humans && game.objects[unitid].isHealer())
+						{
+							for (var i in game.selected_objects)
+								game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
+							return;
+						}
+						
+						//Is fixing vehical
+						if (
+							game.selected_objects.length>0 &&
+							!game.selected_info.humans && 
+							!game.selected_info.is_building && 
+							game.objects[unitid].isFixer())
+						{
+							for (var i in game.selected_objects)
+								game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
+							return;
+						}
 					}
 					
-					//Is healing humans
-					if (unitid!=-1 && game.selected_info.humans && game.objects[unitid].isHealer())
+					//Teleport
+					if (unitid==-1 && game.selected_info.is_building && game.objects[game.selected_objects[0]].isTeleport())
 					{
-						for (var i in game.selected_objects)
-							game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
-						return;
-					}
-					
-					//Is fixing vehical
-					if (
-						unitid!=-1 && 
-						game.selected_objects.length>0 &&
-						!game.selected_info.humans && 
-						!game.selected_info.is_building && 
-						game.objects[unitid].isFixer())
-					{
-						for (var i in game.selected_objects)
-							game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
-						return;
+						if (game.objects[game.selected_objects[0]].canTeleport())
+						{
+							game.objects[game.selected_objects[0]].teleport(pos);
+							return;
+						}
 					}
 					
 					//Move or select unit

@@ -1,5 +1,4 @@
 To do:
-	- Add map start position
 
 - High priority bugs:
 	- Sometimes unit attack unknown target
@@ -23,5 +22,4 @@ To do:
 
 
 - Known browser-related bugs
-	- Chrome: on unit selection there is an empty pixel on top-right corner
 	- Chrome 25: glitch while playing sound of cloned audio element

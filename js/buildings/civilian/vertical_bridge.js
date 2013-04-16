@@ -25,10 +25,7 @@ CivilianVerticalBridge.build_time = 2;
 CivilianVerticalBridge.sell_cost = 50;
 CivilianVerticalBridge.sell_time = 1;
 CivilianVerticalBridge.health_max = 4000;
-CivilianVerticalBridge.energy = 0;
 CivilianVerticalBridge.crater = 6;
-CivilianVerticalBridge.enabled = false;
-CivilianVerticalBridge.can_build = false;
 CivilianVerticalBridge.is_bridge = true;
 CivilianVerticalBridge.is_built_from_edge = true;
 

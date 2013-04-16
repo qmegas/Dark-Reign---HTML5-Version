@@ -2417,8 +2417,8 @@ function Level1()
 			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
 			TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
 			NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
-			FieldHospitalBuilding, RepairStationBuilding, HorizontalBridgeBuilding, 
-			VerticalBridgeBuilding, 
+			FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
+			HorizontalBridgeBuilding, VerticalBridgeBuilding, 
 			//Upgrades
 			Headquarter2Building, Headquarter3Building, 
 			TrainingFacility2Building, AssemblyPlant2Building,

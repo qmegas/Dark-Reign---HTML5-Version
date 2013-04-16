@@ -1,10 +1,19 @@
+var BUILDING_STATE_NORMAL = 1;
+var BUILDING_STATE_CONSTRUCTION = 2;
+var BUILDING_STATE_SELL = 3;
+var BUILDING_STATE_ATTACK = 4;
+var BUILDING_STATE_ATTACKING = 5;
+var BUILDING_STATE_CHARGING = 6;
+var BUILDING_STATE_PRODUCING = 7;
+var BUILDING_STATE_UPGRADING = 8;
+
 function AbstractBuilding()
 {
 	this.uid = -1;
 	this.player = 0;
 	this.health = 0;
 	this._proto = null;
-	this.state = 'CONSTRUCTION';
+	this.state = BUILDING_STATE_CONSTRUCTION;
 	this.progress_bar = 0;
 	this.weapon = null;
 	this.action = null;
@@ -34,7 +43,7 @@ function AbstractBuilding()
 	{
 		this.player = player;
 		
-		this.position = {x: pos_x*CELL_SIZE + 12, y: pos_y*CELL_SIZE + 12};
+		this.position = MapCell.cellToPixel({x: pos_x, y: pos_y});
 		
 		if (this._proto.weapon != '')
 		{
@@ -162,20 +171,26 @@ function AbstractBuilding()
 		
 		if (this.player == PLAYER_HUMAN)
 		{
-			if (this.state == 'CONSTRUCTION' || this.state == 'SELL' || this.state == 'UPGRADING')
+			if (this.state == BUILDING_STATE_CONSTRUCTION || this.state == BUILDING_STATE_SELL || this.state == BUILDING_STATE_UPGRADING)
 			{
 				var text = 'Under Construction';
 				
-				if (this.state == 'SELL')
+				if (this.state == BUILDING_STATE_SELL)
 					text = 'Demolishing';
-				else if (this.state == 'UPGRADING')
+				else if (this.state == BUILDING_STATE_UPGRADING)
 					text = 'Upgrading';
 					
 				this._drawProgressBar(this.progress_bar, text);
 				top_y -= 15;
 			}
+			
+			if (this.state == BUILDING_STATE_CHARGING)
+			{
+				this._drawProgressBar(this.progress_bar, 'Charging');
+				top_y -= 15;
+			}
 
-			if (this.state == 'PRODUCING')
+			if (this.state == BUILDING_STATE_PRODUCING)
 			{
 				var info = ProducingQueue.getProductionInfo(this.uid);
 				this._drawProgressBar(info.progress, info.name);
@@ -260,21 +275,21 @@ function AbstractBuilding()
 	{
 		switch (this.state)
 		{
-			case 'ATTACK':
+			case BUILDING_STATE_ATTACK:
 				if (this.weapon.canShoot() && this.weapon.isTargetAlive())
 				{
 					if (this.weapon.canReach())
 					{
-						this.state = 'ATTACKING';
+						this.state = BUILDING_STATE_ATTACKING;
 						this.anim_attack_frame = 0;
 						this.start_animation = 0;
 					}
 					else
-						this.state = 'NORMAL';
+						this.state = BUILDING_STATE_NORMAL;
 				}
 				break;
 				
-			case 'ATTACKING':
+			case BUILDING_STATE_ATTACKING:
 				if (this.weapon.isTargetAlive())
 				{
 					var can_shoot = true;
@@ -287,21 +302,21 @@ function AbstractBuilding()
 					if (can_shoot)
 					{
 						this.weapon.shoot();
-						this.state = 'ATTACK';
+						this.state = BUILDING_STATE_ATTACK;
 					}
 				}
 				else
-					this.state = 'NORMAL';
+					this.state = BUILDING_STATE_NORMAL;
 				break;
 		}
 	};
 	
 	this.sell = function()
 	{
-		if (this.state != 'NORMAL')
+		if (this.state != BUILDING_STATE_NORMAL)
 			return;
 		
-		this.state = 'SELL';
+		this.state = BUILDING_STATE_SELL;
 		var time = (game.debug.quick_build) ? 2 : this._proto.sell_time;
 		ActionsHeap.add(this.uid, 'sell', {
 			steps: time,
@@ -322,7 +337,7 @@ function AbstractBuilding()
 		}
 		else
 		{
-			if (this.state == 'CONSTRUCTION')
+			if (this.state == BUILDING_STATE_CONSTRUCTION)
 				return;
 			
 			if (this.health >= this._proto.health_max)
@@ -343,7 +358,7 @@ function AbstractBuilding()
 	
 	this.draw = function(cur_time)
 	{
-		if (this.state == 'CONSTRUCTION' || this.state == 'UPGRADING')
+		if (this.state == BUILDING_STATE_CONSTRUCTION || this.state == BUILDING_STATE_UPGRADING)
 		{
 			if (this._proto.images.shadow !== null)
 				this._drawShadow(0, 0);
@@ -382,7 +397,7 @@ function AbstractBuilding()
 			
 			if (this.weapon !== null)
 			{
-				if (this.state == 'ATTACKING' && this._proto.images.weapon.animated)
+				if (this.state == BUILDING_STATE_ATTACKING && this._proto.images.weapon.animated)
 					this._drawWeapon('attack', parseInt((cur_time - this.start_animation) / ANIMATION_SPEED) % this._proto.images.weapon.frames);
 				else
 					this._drawWeapon('weapon', 0);
@@ -455,13 +470,13 @@ function AbstractBuilding()
 		if (this.weapon === null)
 			return;
 		
-		if (this.state != 'NORMAL' && this.state != 'ATTACK')
+		if (this.state != BUILDING_STATE_NORMAL && this.state != BUILDING_STATE_ATTACK)
 			return;
 		
 		if (this.weapon.canAttackTarget(target))
 			this.weapon.setTarget(target);
 		
-		this.state = 'ATTACK';
+		this.state = BUILDING_STATE_ATTACK;
 		this.action = {
 			type: 'attack',
 			target: target
@@ -472,8 +487,8 @@ function AbstractBuilding()
 	{
 		this.action = {type: ''};
 		
-		if (this.state == 'ATTACK' || this.state == 'ATTACKING')
-			this.state = 'NORMAL';
+		if (this.state == BUILDING_STATE_ATTACK || this.state == BUILDING_STATE_ATTACKING)
+			this.state = BUILDING_STATE_NORMAL;
 	};
 	
 	this._removingRecalc = function(obj_proto)
@@ -494,7 +509,7 @@ function AbstractBuilding()
 	
 	this.isUpgradePossible = function()
 	{
-		return (this._proto.upgradable && this._proto.can_upgrade_now && this.state=='NORMAL');
+		return (this._proto.upgradable && this._proto.can_upgrade_now && this.state==BUILDING_STATE_NORMAL);
 	};
 	
 	this.isHuman = function()
@@ -510,6 +525,11 @@ function AbstractBuilding()
 	this.isFixer = function()
 	{
 		return this._proto.is_fixer;
+	};
+	
+	this.isTeleport = function()
+	{
+		return this._proto.is_teleport;
 	};
 	
 	this.canHarvest = function()
@@ -583,15 +603,15 @@ function AbstractBuilding()
 	{
 		this._proto.count++;
 			
-		if (this.state == 'CONSTRUCTION')
+		if (this.state == BUILDING_STATE_CONSTRUCTION)
 			game.notifications.addSound('construction_complete');
-		if (this.state == 'UPGRADING')
+		if (this.state == BUILDING_STATE_UPGRADING)
 			this.health = this._proto.health_max;
 		
 		game.constructor.recalcUnitAvailability();
 
 		game.players[this.player].energyAddCurrent(this._proto.energy);
-		this.state = 'NORMAL';
+		this.state = BUILDING_STATE_NORMAL;
 
 		if (this._proto.is_built_from_edge)
 		{
@@ -690,7 +710,7 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 	
 	if (instant_build)
 	{
-		new_obj.state = 'NORMAL';
+		new_obj.state = BUILDING_STATE_NORMAL;
 		new_obj.health = obj.health_max;
 		new_obj.onConstructedCustom();
 	}
@@ -813,6 +833,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.weapon = '';
 	obj.is_healer = false;
 	obj.is_fixer = false;
+	obj.is_teleport = false;
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare

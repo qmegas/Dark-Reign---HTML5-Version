@@ -34,6 +34,10 @@ var ActionsHeap = {
 			{
 				switch (type)
 				{
+					case 'charge':
+						this._runCharge(object_id, type);
+						break;
+						
 					case 'construct':
 						this._runConstruct(object_id, type);
 						break;
@@ -54,11 +58,16 @@ var ActionsHeap = {
 		}
 	},
 		
+	_runCharge: function(object_id, type)
+	{
+		game.objects[object_id].charge();
+	},
+		
 	_runRepair: function(object_id, type)
 	{
 		var obj = game.objects[object_id];
 		
-		if (obj.state == 'SELL')
+		if (obj.state == BUILDING_STATE_SELL)
 		{
 			obj.repair();
 			return;
@@ -116,7 +125,7 @@ var ActionsHeap = {
 			return;
 		
 		game.players[obj.player].decMoney(this._heap[object_id][type].money);
-		if (obj.state == 'CONSTRUCTION')
+		if (obj.state == BUILDING_STATE_CONSTRUCTION)
 			obj.applyFix(this._heap[object_id][type].health);
 		this._heap[object_id][type].current++;
 		

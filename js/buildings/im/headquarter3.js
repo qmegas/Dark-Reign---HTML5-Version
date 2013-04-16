@@ -1,7 +1,7 @@
 function Headquarter3Building(pos_x, pos_y, player)
 {
 	this._proto = Headquarter3Building;
-	this.state = 'UPGRADING';
+	this.state = BUILDING_STATE_UPGRADING;
 	
 	this.init(pos_x, pos_y, player);
 }
