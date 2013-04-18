@@ -1,3 +1,7 @@
+var MOVE_MODE_GROUND = 0;
+var MOVE_MODE_HOVER = 1;
+var MOVE_MODE_FLY = 2;
+
 function AbstractUnit(pos_x, pos_y, player)
 {
 	this.uid = -1;
@@ -90,8 +94,10 @@ function AbstractUnit(pos_x, pos_y, player)
 		if (this.weapon === null)
 			return;
 		
-		if (this.weapon.canAttackTarget(target))
-			this.weapon.setTarget(target);
+		if (!this.weapon.canAttackTarget(target))
+			return;
+		
+		this.weapon.setTarget(target);
 		
 		if (this.state == 'MOVE')
 			this.orderStop();

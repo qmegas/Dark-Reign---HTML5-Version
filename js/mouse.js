@@ -278,7 +278,7 @@ var MousePointer = {
 								game.objects[unitid].extract();
 								return;
 							}
-							if (game.selected_objects.length>0 && !game.selected_info.is_building)
+							if (game.selected_objects.length>0 && !game.selected_info.is_building && game.objects[unitid].haveFreeSpace())
 							{
 								for (var i in game.selected_objects)
 									game.objects[game.selected_objects[i]].orderToTeleport(game.objects[unitid], (i==0));

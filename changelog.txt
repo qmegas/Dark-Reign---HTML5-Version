@@ -6,6 +6,7 @@ Build 36
 - Added Temporal Gate building and all related mouse cursors
 - Added ability to teleport units through Temporal Gate
 - Game grid changed, now it's works as in original game
+- Different bugfixes
 
 Build 35 (11.04.2013)
 - Minimap not available if player have low energy

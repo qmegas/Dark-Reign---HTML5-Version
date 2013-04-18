@@ -261,6 +261,7 @@ body {
 .game .right-frame .panel .unit-boxes .box .unit-image:hover {
 	background-position: -64px 0;
 }
+.game .right-frame .panel .unit-boxes .box .unit-image:active,
 .game .right-frame .panel .unit-boxes .box .unit-image.active {
 	background-position: -128px 0;
 }

@@ -779,6 +779,9 @@ AbstractBuilding.loadResources = function(obj)
 	if (obj.death_sound != '')
 		game.resources.addSound(obj.death_sound,   'sounds/' + obj.death_sound + '.' + AUDIO_TYPE);
 	
+	if (obj.can_build && obj.upgrade_from===null)
+		game.resources.addImage(obj.res_key + '_box', 'images/buildings/'+obj.res_key+'/box.png');
+	
 	if (obj.weapon != '')
 	{
 		game.resources.addImage(obj.res_key + '_weapon', 'images/buildings/'+obj.res_key+'/weapon.png');

@@ -126,6 +126,12 @@ function TemporalGateBuilding(pos_x, pos_y, player)
 			ActionsHeap.remove(this.uid, 'charge');
 		}
 	};
+	
+	this.onDestructed = function() 
+	{
+		if (this.haveInsideUnits())
+			this.extract();
+	};
 }
 
 AbstractBuilding.setBuildingCommonOptions(TemporalGateBuilding);

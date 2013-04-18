@@ -15,11 +15,11 @@ function Graph(grid, move_mode, avoid_others)
 {
 	var nodes = [], type, x, y, row;
 
-	for (x = 0; x < grid.length; x++) 
+	for (x = 0; x < (grid.length - 1); ++x) 
 	{
 		nodes[x] = [];
         
-		for (y = 0, row = grid[x]; y < row.length; y++)
+		for (y = 0, row = grid[x]; y < (row.length - 1); ++y)
 		{
 			type = 1;
 			if (row[y].type==CELL_TYPE_WATER && move_mode==MOVE_MODE_GROUND)

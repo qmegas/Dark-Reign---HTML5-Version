@@ -1,15 +1,17 @@
 To do:
+	- Allow unit to shoot not only to the center of the building
+	- Add tactical groups
 
 - High priority bugs:
-	- Sometimes unit attack unknown target
-	- Correct bullet animation
 
 - Medium priority bugs:
-	- Allow unit to shoot not only to the center of the building
 	- Air Defense Site should have 3 weapons instead one
 	- Add animation for repair station
+	- Move static elements to dynamic map
+	- Fog of war
 
 - Low priority bugs:
+	- Correct bullet animation
 	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
 	- Energy meter blinking incorrectly
