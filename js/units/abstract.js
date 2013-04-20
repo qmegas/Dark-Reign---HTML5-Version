@@ -15,6 +15,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.is_effect = false;
 	this.position = null;
 	this.weapon = null;
+	this.tactic_group = -1;
 	
 	this.move_direction = 0; //[E, NE, N,    NW,     W,    SW, S, SE]
 	this.direction_matrix =    [3,  4, 5, -1, 2, -1, 6, -1, 1, 0,  7];
@@ -471,6 +472,9 @@ function AbstractUnit(pos_x, pos_y, player)
 		else
 			game.viewport_ctx.fillStyle = '#FC0000';
 		game.viewport_ctx.fillRect(health_top_x + 1, top_y-0.5, (health_width - 2)*health_proc, 2);
+		
+		if (this.tactic_group != -1)
+			game.fontDraw.drawOnCanvas(this.tactic_group.toString(), game.viewport_ctx, top_x + sel_width + 3, top_y  + sel_width - 7, 'yellow');
 		
 		//Draw name
 		if (is_onmouse)

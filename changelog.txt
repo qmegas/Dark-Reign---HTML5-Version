@@ -1,4 +1,4 @@
-Build 36
+Build 36 (20.04.2013)
 - Added Air Defense Site building & weapon
 - Added Repair Station & added ability to fix non human units
 - Added Civilian Vertical Bridge
@@ -6,6 +6,7 @@ Build 36
 - Added Temporal Gate building and all related mouse cursors
 - Added ability to teleport units through Temporal Gate
 - Game grid changed, now it's works as in original game
+- Added ability to create tactical groups (hold Ctrl button and press 0-9 button)
 - Different bugfixes
 
 Build 35 (11.04.2013)

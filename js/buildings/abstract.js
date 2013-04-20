@@ -17,6 +17,7 @@ function AbstractBuilding()
 	this.progress_bar = 0;
 	this.weapon = null;
 	this.action = null;
+	this.tactic_group = -1;
 
 	this.is_effect = false;
 	this.is_building = true;

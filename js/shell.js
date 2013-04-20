@@ -20,6 +20,7 @@ function Game()
 	this.kill_objects = [];
 	this.selected_objects = [];
 	this.selected_info = {};
+	this.tactical_groups = {};
 	
 	//Drawers
 	this.fontDraw = new DKFont();
@@ -425,7 +426,7 @@ function Game()
 	
 	this.regionSelect = function (x1, y1, x2, y2)
 	{
-		var x, y, cur_unit, play_sound = true, harvesters = true, humans_only = true;
+		var x, y, cur_unit, play_sound = true;
 		
 		this._deselectUnits();
 		
@@ -443,16 +444,30 @@ function Game()
 					this.objects[cur_unit].select(true, play_sound);
 					play_sound = false;
 					
-					if (this.objects[cur_unit].is_building)
-						this.selected_info.is_building = true;
 					this.selected_objects.push(cur_unit);
-					this.selected_info.move_mode = Math.max(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
-					this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
-					this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
-					harvesters = harvesters && this.objects[cur_unit].canHarvest();
-					humans_only = humans_only && this.objects[cur_unit].isHuman();
 				}
 			}
+		
+		this.rebuildSelectionInfo();
+	};
+	
+	this.rebuildSelectionInfo = function()
+	{
+		var i, cur_unit, harvesters = true, humans_only = true;
+		
+		for (i in this.selected_objects)
+		{
+			cur_unit = this.selected_objects[i];
+			
+			if (this.objects[cur_unit].is_building)
+				this.selected_info.is_building = true;
+			
+			this.selected_info.move_mode = Math.max(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
+			this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
+			this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
+			harvesters = harvesters && this.objects[cur_unit].canHarvest();
+			humans_only = humans_only && this.objects[cur_unit].isHuman();
+		}
 		
 		if (this.selected_objects.length > 0)
 		{
@@ -470,8 +485,9 @@ function Game()
 	this._deselectUnits = function()
 	{
 		this._resetSelectionInfo();
-		while (this.selected_objects.length > 0)
-			this.objects[this.selected_objects.pop()].select(false);
+		for (var i in this.selected_objects)
+			this.objects[this.selected_objects[i]].select(false);
+		this.selected_objects = [];
 	};
 	
 	this._loadGameResources = function()
@@ -497,6 +513,8 @@ function Game()
 		this.resources.addSound('fixed', 'sounds/gxrepoc0.' + AUDIO_TYPE);
 		this.resources.addSound('water_sell', 'sounds/gxcrdoc0.' + AUDIO_TYPE);
 		this.resources.addSound('teleport', 'sounds/gxtgtoc0.' + AUDIO_TYPE);
+		for (i=0; i<10; ++i)
+			this.resources.addSound('tactical_group' + ((i+1)%10), 'sounds/gvselcl' + i + '.' + AUDIO_TYPE);
 		
 		//Units & Buildings
 		this.constructor.loadUnitResources();
@@ -543,6 +561,9 @@ function Game()
 		{
 			this.objects[uid].select(false);
 			this.selected_objects.splice(index, 1);
+			
+			this._resetSelectionInfo();
+			this.rebuildSelectionInfo();
 		}
 	};
 	
@@ -724,6 +745,68 @@ function Game()
 			this.dialog.hide();
 		}
 	};
+	
+	this.createTacticalGroup = function(id)
+	{
+		if (this.selected_objects.length == 0)
+			return;
+		
+		var i, obj_id, fnd_indx;
+		
+		if ((this.tactical_groups[id] !== undefined) && (this.tactical_groups[id].length > 0))
+		{
+			for (i in this.tactical_groups[id])
+			{
+				obj_id = this.tactical_groups[id][i];
+				if (this.objects[obj_id] === undefined)
+					continue;
+				this.objects[obj_id].tactic_group = -1;
+			}
+		}
+		
+		this.tactical_groups[id] = this.selected_objects;
+		for (i in this.tactical_groups[id])
+		{
+			obj_id = this.tactical_groups[id][i];
+			if (this.objects[obj_id].tactic_group != -1)
+			{
+				fnd_indx = this.tactical_groups[this.objects[obj_id].tactic_group].indexOf(obj_id);
+				if (fnd_indx != -1)
+					this.tactical_groups[this.objects[obj_id].tactic_group].splice(fnd_indx, 1);
+			}
+			this.objects[obj_id].tactic_group = id;
+		}
+	};
+	
+	this.selectTacticalGroup = function(id)
+	{
+		if (this.tactical_groups[id] === undefined)
+			return;
+		
+		var i, obj_id, toselect = [];
+		
+		for (i in this.tactical_groups[id])
+		{
+			obj_id = this.tactical_groups[id][i];
+			if (this.objects[obj_id] === undefined)
+				continue;
+			toselect.push(obj_id);
+		}
+		this.tactical_groups[id] = toselect;
+		
+		if (toselect.length > 0)
+		{
+			this._deselectUnits();
+			for (i in toselect)
+			{
+				this.objects[toselect[i]].select(true, false);
+				this.objects[toselect[i]].tactic_group = id;
+				this.selected_objects.push(toselect[i]);
+			}
+			this.rebuildSelectionInfo();
+			this.resources.play('tactical_group' + id);
+		}
+	};
 }
 
 $(function(){
@@ -866,6 +949,22 @@ $(function(){
 			case 40: //Down
 				game.viewport_move_y = 1;
 				break;
+			case 48: //0
+			case 49: //1
+			case 50: //2
+			case 51: //3
+			case 52: //4
+			case 53: //5
+			case 54: //6
+			case 55: //7
+			case 56: //8
+			case 57: //9
+				if (event.ctrlKey)
+					game.createTacticalGroup(event.which - 48);
+				else
+					game.selectTacticalGroup(event.which - 48);
+				break;
+			
 			case 65: //a - attack
 				game.toggleActionState(ACTION_STATE_ATTACK);
 				break;
