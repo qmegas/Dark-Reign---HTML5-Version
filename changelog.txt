@@ -1,3 +1,6 @@
+Build 37
+- Added Rearming Deck building
+
 Build 36 (20.04.2013)
 - Added Air Defense Site building & weapon
 - Added Repair Station & added ability to fix non human units
