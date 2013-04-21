@@ -15,7 +15,6 @@ NeutronAcceleratorBuilding.sell_cost = 850;
 NeutronAcceleratorBuilding.sell_time = 17;
 NeutronAcceleratorBuilding.health_max = 550;
 NeutronAcceleratorBuilding.energy = 100;
-NeutronAcceleratorBuilding.enabled = false;
 NeutronAcceleratorBuilding.can_build = true;
 NeutronAcceleratorBuilding.crater = 1;
 NeutronAcceleratorBuilding.weapon = 'NeutronAss';

@@ -1,5 +1,6 @@
 Build 37
 - Added Rearming Deck building
+- Added Rift Creator building (without weapon)
 
 Build 36 (20.04.2013)
 - Added Air Defense Site building & weapon

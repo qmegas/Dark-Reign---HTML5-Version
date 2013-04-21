@@ -11,13 +11,13 @@ function SoundQueue()
 			if (!this.now_playing)
 				this.playNext();
 		}
-	}
+	};
 	
 	this.addIfEmpty = function(key)
 	{
 		if (this._queue.length == 0)
 			this.addSound(key);
-	}
+	};
 	
 	this.playNext = function()
 	{
@@ -36,5 +36,5 @@ function SoundQueue()
 			queue._queue.shift();
 			queue.playNext();
 		});
-	}
+	};
 }

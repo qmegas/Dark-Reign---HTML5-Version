@@ -804,7 +804,7 @@ function Game()
 				this.selected_objects.push(toselect[i]);
 			}
 			this.rebuildSelectionInfo();
-			this.resources.play('tactical_group' + id);
+			this.notifications.addIfEmpty('tactical_group' + id);
 		}
 	};
 }
