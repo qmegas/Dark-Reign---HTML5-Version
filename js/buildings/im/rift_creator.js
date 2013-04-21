@@ -15,7 +15,6 @@ RiftCreatorBuilding.sell_cost = 4000;
 RiftCreatorBuilding.sell_time = 80;
 RiftCreatorBuilding.health_max = 1000;
 RiftCreatorBuilding.energy = 200;
-RiftCreatorBuilding.enabled = true;
 RiftCreatorBuilding.can_build = true;
 RiftCreatorBuilding.crater = 4;
 //RiftCreatorBuilding.weapon = 'IMPriftCreator';

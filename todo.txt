@@ -1,6 +1,7 @@
 To do:
 	- Allow unit to shoot not only to the center of the building
 	- Add unit generation in progress sound
+	- Add more units
 
 - High priority bugs:
 
