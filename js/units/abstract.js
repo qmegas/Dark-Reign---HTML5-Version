@@ -26,7 +26,6 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.action = {type: ''};
 	this.state = 'STAND';
-	this.substate = '';
 	
 	this.init = function(pos_x, pos_y)
 	{
