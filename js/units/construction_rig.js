@@ -74,7 +74,7 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 				}
 			}
 			
-			this.state = 'STAND';
+			this.state = UNIT_STATE_STAND;
 		}
 	};
 	
@@ -92,29 +92,32 @@ AbstractUnit.setUnitCommonOptions(ConstructionRigUnit);
 
 ConstructionRigUnit.obj_name = 'Construction Rig';
 ConstructionRigUnit.resource_key = 'construction_rig';
-ConstructionRigUnit.images = {
-	selection: {
-		size: {x: 35, y: 35},
-		padding: {x: 7, y: 7}
-	},
+ConstructionRigUnit.parts = [
+	{
+		rotations: 8,
+		image_size: {x: 35, y: 35},
+		stand: {frames: 1},
+		move: {frames: 6},
+		hotspots: [
+			[{x: 7, y: 7}],
+			[{x: 7, y: 7}],
+			[{x: 7, y: 7}],
+			[{x: 7, y: 7}],
+			[{x: 7, y: 7}],
+			[{x: 7, y: 7}],
+			[{x: 7, y: 7}],
+			[{x: 7, y: 7}]
+		]
+	}
+];
+ConstructionRigUnit.shadow = {
 	stand: {
-		size: {x: 35, y: 35},
-		padding: {x: 7, y: 7}
+		size: {x: 37, y: 24},
+		padding: {x: 4, y: -11}
 	},
 	move: {
-		size: {x: 35, y: 35},
-		padding: {x: 7, y: 7},
-		frames: 6
-	},
-	shadow: {
-		stand: {
-			size: {x: 37, y: 24},
-			padding: {x: 4, y: -11}
-		},
-		move: {
-			size: {x: 39, y: 24},
-			padding: {x: 5, y: -10}
-		}
+		size: {x: 39, y: 24},
+		padding: {x: 5, y: -10}
 	}
 };
 ConstructionRigUnit.select_sounds = ['gvicnsl0', 'gvicnsl1', 'gvicnsl2'];

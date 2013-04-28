@@ -1,10 +1,11 @@
 function WeaponHolder(config_name)
 {
-	var config, position, unit, target = null, last_shoot = 0;
+	var config, position, unit, target = null, last_shoot = 0, partid = 0;
 	
-	this.init = function(obj)
+	this.init = function(obj, obj_partid)
 	{
 		unit = obj;
+		partid = obj_partid;
 		config = WeaponConfig[config_name];
 		this.updatePosition();
 	};
@@ -107,7 +108,7 @@ function WeaponHolder(config_name)
 	
 	this.shoot = function()
 	{
-		var to = this.getTargetPosition();
+		var position_from = position, to = this.getTargetPosition();
 		
 		last_shoot = (new Date()).getTime();
 		
@@ -115,13 +116,19 @@ function WeaponHolder(config_name)
 		if (unit.is_building)
 			unit.setWeaponDirection(8 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/23.5));
 		else
-			unit.move_direction = 4 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/45);
+		{
+			unit.setDirection(4 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/45));
+			position_from = {
+				x: unit.position.x + unit._proto.parts[partid].hotspots[unit.parts[partid].direction][2].x,
+				y: unit.position.y + unit._proto.parts[partid].hotspots[unit.parts[partid].direction][2].y
+			};
+		}
 		
 		//Create bulet
 		var uid = game.objects.length, bulet = new Bulet(config_name);
 		bulet.uid = uid;
 		game.objects.push(bulet);
-		bulet.init(position, to);
+		bulet.init(position_from, to);
 	};
 	
 	this.canAttackGround = function()

@@ -43,6 +43,11 @@ function Debuger()
 		obj.increaseRes(200);
 	});
 	
+	$('#debug_kill').click(function(){
+		for (var i in game.selected_objects)
+			game.objects[game.selected_objects[i]].applyDamage(9999);
+	});
+	
 	this.countRun = function()
 	{
 		this.run_counter++;

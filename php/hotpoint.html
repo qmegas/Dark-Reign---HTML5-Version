@@ -125,20 +125,27 @@
 				});
 				
 				$('#export').click(function(){
-					var i, txt = 'hotspots = [\n';
+					var i, j, x, y, txt = 'hotspots: [\n';
 					
 					for (i=0; i<cols; ++i)
 					{
 						txt += '	[';
 						for (j=1; j<=points_num; ++j)
 						{
-							txt += '{x: '+points[j][i].x+', y: ' + points[j][i].y + '}';
+							x = points[j][i].x;
+							y = points[j][i].y;
+							if (j > 1)
+							{
+								x -= points[1][i].x;
+								y -= points[1][i].y;
+							}
+							txt += '{x: '+x+', y: '+y+'}';
 							if (j<points_num)
 								txt += ', ';
 						}
 						txt += '],\n';
 					}
-					txt += '];';
+					txt += ']';
 					
 					$('#export_wnd').val(txt).show();
 				});
@@ -146,7 +153,7 @@
 		</script>
 	</head>
 	<body>
-		Image path: <input type="text" size="60" id="file" value="../images/units/bion/move.png" /> 
+		Image path: <input type="text" size="60" id="file" value="../images/units/construction_rig/move.png" /> 
 		<input type="button" id="load_img" value="Load image" /><br/>
 		Cols: <input type="text" size="4" id="cols" /> Rows: <input type="text" size="4" id="rows" /> <input type="button" id="row_cols" value="Set" /><br>
 		Points: 

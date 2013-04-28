@@ -2,6 +2,14 @@ var MOVE_MODE_GROUND = 0;
 var MOVE_MODE_HOVER = 1;
 var MOVE_MODE_FLY = 2;
 
+var UNIT_STATE_STAND = 0;
+var UNIT_STATE_MOVE = 1;
+var UNIT_STATE_ATTACKING = 2;
+var UNIT_STATE_ATTACK = 3;
+var UNIT_STATE_HEALING = 4;
+var UNIT_STATE_WAITING = 5;
+var UNIT_STATE_LOADING = 6; //Freighter
+
 function AbstractUnit(pos_x, pos_y, player)
 {
 	this.uid = -1;
@@ -25,18 +33,27 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.anim_attack_frame = 0;
 	
 	this.action = {type: ''};
-	this.state = 'STAND';
+	this.state = UNIT_STATE_STAND;
+	this.parts = [];
+	this._is_have_weapon = false;
 	
 	this.init = function(pos_x, pos_y)
 	{
 		this.position = MapCell.cellToPixel({x: pos_x, y: pos_y});
 		
 		this.health = this._proto.health_max;
+		this.parts = [];
 		
-		if (this._proto.weapon != '')
+		for (var i=0; i<this._proto.parts.length; ++i)
 		{
-			this.weapon = new WeaponHolder(this._proto.weapon);
-			this.weapon.init(this);
+			this.parts[i] = {weapon: null, direction: 0};
+			
+			if (this._proto.parts[i].weapon)
+			{
+				this.parts[i].weapon = new WeaponHolder(this._proto.parts[i].weapon);
+				this.parts[i].weapon.init(this, i);
+				this._is_have_weapon = true;
+			}
 		}
 	};
 	
@@ -60,9 +77,10 @@ function AbstractUnit(pos_x, pos_y, player)
 		this.health -= damage;
 		if (this.health <= 0)
 		{
+			this.health = 0;
 			var ucenter = {
-				x: (this.position.x - this._proto.images.stand.padding.x) + parseInt(this._proto.images.stand.size.x / 2),
-				y: (this.position.y - this._proto.images.stand.padding.y) + parseInt(this._proto.images.stand.size.y / 2)
+				x: (this.position.x - this._proto.parts[0].hotspots[this.parts[0].direction][0].x) + parseInt(this._proto.parts[0].image_size.x / 2),
+				y: (this.position.y - this._proto.parts[0].hotspots[this.parts[0].direction][0].y) + parseInt(this._proto.parts[0].image_size.y / 2)
 			};
 			SimpleEffect.quickCreate(this._proto.die_effect, {pos: ucenter});
 			game.kill_objects.push(this.uid);
@@ -83,26 +101,35 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		this.action = {type: ''};
 		
-		if (this.state == 'MOVE')
+		if (this.state == UNIT_STATE_MOVE)
 			this.move_path = this.move_path.slice(0, 1);
 		else
-			this.state = 'STAND';
+			this.state = UNIT_STATE_STAND;
 	};
 	
 	this.orderAttack = function(target)
 	{
-		if (this.weapon === null)
+		if (!this._is_have_weapon)
 			return;
 		
-		if (!this.weapon.canAttackTarget(target))
+		var i, set_target = false;
+		
+		for (var i in this.parts)
+		{
+			if (this.parts[i].weapon.canAttackTarget(target))
+			{
+				this.parts[i].weapon.setTarget(target);
+				set_target = true;
+			}
+		}
+		
+		if (!set_target)
 			return;
 		
-		this.weapon.setTarget(target);
-		
-		if (this.state == 'MOVE')
+		if (this.state == UNIT_STATE_MOVE)
 			this.orderStop();
 		else
-			this.state = 'ATTACK';
+			this.state = UNIT_STATE_ATTACK;
 		
 		this.action = {
 			type: 'attack',
@@ -174,7 +201,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.orderWait = function(time)
 	{
-		this.state = 'WAITING';
+		this.state = UNIT_STATE_WAITING;
 		this.action.wait_till = (new Date).getTime() + time;
 	};
 	
@@ -202,7 +229,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		tmp_path = PathFinder.findPath(pos.x, pos.y, x, y, this._proto.move_mode, false);
 		
 		this.move_path = this.move_path.concat(tmp_path);
-		this.state = 'MOVE';
+		this.state = UNIT_STATE_MOVE;
 		
 		if (need_move && this.move_path.length>0)
 			this._moveToNextCell();
@@ -212,52 +239,58 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		switch (this.state)
 		{
-			case 'MOVE':
+			case UNIT_STATE_MOVE:
 				this._runStandartMoving();
 				break;
 				
-			case 'WAITING':
+			case UNIT_STATE_WAITING:
 				if ((new Date).getTime() > this.action.wait_till)
 					this.afterWaiting();
 				break;
 			
-			case 'HEALING':
-			case 'STAND':
+			case UNIT_STATE_HEALING:
+			case UNIT_STATE_STAND:
 				break;
 				
-			case 'ATTACK':
-				if (this.weapon.canShoot() && this.weapon.isTargetAlive())
+			case UNIT_STATE_ATTACK:
+				for (var i in this.parts)
 				{
-					if (this.weapon.canReach())
+					if (this.parts[i].weapon.canShoot() && this.parts[i].weapon.isTargetAlive())
 					{
-						this.state = 'ATTACKING';
-						this.anim_attack_frame = 0;
-						this.startAnimation = 0;
+						if (this.parts[i].weapon.canReach())
+						{
+							this.state = UNIT_STATE_ATTACKING;
+							this.anim_attack_frame = 0;
+							this.startAnimation = 0;
+						}
+						else
+						{
+							var pos = MapCell.pixelToCell(this.parts[i].weapon.getTargetPosition());
+							pos = PathFinder.findNearestEmptyCell(pos.x, pos.y, this._proto.move_mode);
+							if (pos !== null)
+								this._move(pos.x, pos.y);
+							else
+								this.state = UNIT_STATE_STAND;
+						}
+					}
+				}
+				break;
+				
+			case UNIT_STATE_ATTACKING:
+				for (var i in this.parts)
+				{
+					if (this.parts[i].weapon.isTargetAlive())
+					{
+						this.anim_attack_frame++;
+						if (this.anim_attack_frame == this._proto.parts[i].attack.frames)
+						{
+							this.parts[i].weapon.shoot();
+							this.state = UNIT_STATE_ATTACK;
+						}
 					}
 					else
-					{
-						var pos = MapCell.pixelToCell(this.weapon.getTargetPosition());
-						pos = PathFinder.findNearestEmptyCell(pos.x, pos.y, this._proto.move_mode);
-						if (pos !== null)
-							this._move(pos.x, pos.y);
-						else
-							this.state = 'STAND';
-					}
+						this.state = UNIT_STATE_STAND;
 				}
-				break;
-				
-			case 'ATTACKING':
-				if (this.weapon.isTargetAlive())
-				{
-					this.anim_attack_frame++;
-					if (this.anim_attack_frame == this._proto.images.attack.frames)
-					{
-						this.weapon.shoot();
-						this.state = 'ATTACK';
-					}
-				}
-				else
-					this.state = 'STAND';
 				break;
 				
 			default:
@@ -288,7 +321,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			this.position.y += y_movement * change;
 		}
 
-		this.move_direction = this.direction_matrix[(x_movement+1)*4 + y_movement + 1];
+		this.setDirection(this.direction_matrix[(x_movement+1)*4 + y_movement + 1]);
 
 		if (next_x==this.position.x && next_y==this.position.y)
 		{
@@ -298,6 +331,27 @@ function AbstractUnit(pos_x, pos_y, player)
 
 			if (this.move_path.length != 0)
 				this._moveToNextCell();
+		}
+	};
+	
+	this.setDirection = function(direction)
+	{
+		this.move_direction = direction;
+		
+		for (var i in this.parts)
+		{
+			switch (this._proto.parts[i].rotations)
+			{
+				case 1:
+					this.parts[i].direction = 0;
+					break;
+				case 8:
+					this.parts[i].direction = this.move_direction;
+					break;
+				case 16:
+					this.parts[i].direction = this.move_direction*2;
+					break;
+			}
 		}
 	};
 	
@@ -336,87 +390,122 @@ function AbstractUnit(pos_x, pos_y, player)
 		}
 	};
 	
+	this._drawPartImage = function(layer, key_prefix, part, frame, x, y)
+	{
+		game.objDraw.addElement(layer, this.position.x, {
+			res_key: this._proto.resource_key + key_prefix + part,
+			src_x: this.parts[part].direction * this._proto.parts[part].image_size.x,
+			src_y: frame * this._proto.parts[part].image_size.y,
+			src_width: this._proto.parts[part].image_size.x,
+			src_height: this._proto.parts[part].image_size.y,
+			x: x,
+			y: y
+		});
+	};
+	
+	this._drawShadow = function(key_prefix, item, frame, top_x, top_y)
+	{
+		game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+			res_key: this._proto.resource_key + key_prefix,
+			src_x: (item.static_img) ? 0 : this.parts[0].direction * item.size.x,
+			src_y: (item.static_img) ? 0 : frame * item.size.y,
+			src_width: item.size.x,
+			src_height: item.size.y,
+			x: top_x - item.padding.x,
+			y: top_y - item.padding.y
+		});
+	};
+	
 	this.draw = function(current_time) 
 	{
-		var diff, top_x = this.position.x - game.viewport_x, top_y = this.position.y - game.viewport_y,
-			layer = (this._proto.move_mode == MOVE_MODE_FLY) ? DRAW_LAYER_FUNIT : DRAW_LAYER_GUNIT;
+		var i, state, diff, top_x = this.position.x - game.viewport_x, top_y = this.position.y - game.viewport_y,
+			layer = (this._proto.move_mode == MOVE_MODE_FLY) ? DRAW_LAYER_FUNIT : DRAW_LAYER_GUNIT, x, y;
 		
-		//Draw unit
-		switch (this.state)
+		//Draw parts
+		for (i in this.parts)
 		{
-			case 'MOVE':
-				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.images.move.frames);
-				if (this._proto.images.shadow)
-				{
-					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
-						res_key: this._proto.resource_key + '_move_shadow',
-						src_x: (this._proto.images.shadow.move.static_img) ? 0 : this.move_direction * this._proto.images.shadow.move.size.x,
-						src_y: (this._proto.images.shadow.move.static_img) ? 0 : diff * this._proto.images.shadow.move.size.y,
-						src_width: this._proto.images.shadow.move.size.x,
-						src_height: this._proto.images.shadow.move.size.y,
-						x: top_x - this._proto.images.shadow.move.padding.x,
-						y: top_y - this._proto.images.shadow.move.padding.y
-					});
-				}
-				game.objDraw.addElement(layer, this.position.x, {
-					res_key: this._proto.resource_key + '_move',
-					src_x: this.move_direction * this._proto.images.move.size.x,
-					src_y: diff * this._proto.images.move.size.y,
-					src_width: this._proto.images.move.size.x,
-					src_height: this._proto.images.move.size.y,
-					x: top_x - this._proto.images.move.padding.x,
-					y: top_y - this._proto.images.move.padding.y
-				});
-				break;
-				
-			case 'ATTACKING':
-				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.images.attack.frames);
-				if (this._proto.images.shadow)
-				{
-					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
-						res_key: this._proto.resource_key + '_attack_shadow',
-						src_x: (this._proto.images.shadow.attack.static_img) ? 0 : this.move_direction * this._proto.images.shadow.attack.size.x,
-						src_y: (this._proto.images.shadow.attack.static_img) ? 0 : diff * this._proto.images.shadow.attack.size.y,
-						src_width: this._proto.images.shadow.attack.size.x,
-						src_height: this._proto.images.shadow.attack.size.y,
-						x: top_x - this._proto.images.shadow.attack.padding.x,
-						y: top_y - this._proto.images.shadow.attack.padding.y
-					});
-				}
-				game.objDraw.addElement(layer, this.position.x, {
-					res_key: this._proto.resource_key + '_attack',
-					src_x: this.move_direction * this._proto.images.attack.size.x,
-					src_y: diff * this._proto.images.attack.size.y,
-					src_width: this._proto.images.attack.size.x,
-					src_height: this._proto.images.attack.size.y,
-					x: top_x - this._proto.images.attack.padding.x,
-					y: top_y - this._proto.images.attack.padding.y
-				});
-				break;
-				
-			default:
-				if (this._proto.images.shadow)
-				{
-					game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
-						res_key: this._proto.resource_key + '_stand_shadow',
-						src_x: (this._proto.images.shadow.stand.static_img) ? 0 : this.move_direction * this._proto.images.shadow.stand.size.x,
-						src_y: 0,
-						src_width: this._proto.images.shadow.stand.size.x,
-						src_height: this._proto.images.shadow.stand.size.y,
-						x: top_x - this._proto.images.shadow.stand.padding.x,
-						y: top_y - this._proto.images.shadow.stand.padding.y
-					});
-				}
-				game.objDraw.addElement(layer, this.position.x, {
-					res_key: this._proto.resource_key + '_stand',
-					src_x: this.move_direction * this._proto.images.stand.size.x,
-					src_y: 0,
-					src_width: this._proto.images.stand.size.x,
-					src_height: this._proto.images.stand.size.y,
-					x: top_x - this._proto.images.stand.padding.x,
-					y: top_y - this._proto.images.stand.padding.y
-				});
-				break;
+			state = this.state;
+			if ((state == UNIT_STATE_MOVE) && !this._proto.parts[i].move)
+				state = UNIT_STATE_STAND;
+			if ((state == UNIT_STATE_ATTACKING) && !this._proto.parts[i].attack)
+				state = UNIT_STATE_STAND;
+			if ((state == UNIT_STATE_LOADING) && !this._proto.parts[i].load)
+				state = UNIT_STATE_STAND;
+			
+			if (this.state == UNIT_STATE_MOVE)
+			{
+				console.log('i = ' + i);
+				console.log('state = ' + state);
+				console.log(this.parts[i]);
+				console.log(this._proto.parts[i]);
+			}
+			
+			x = top_x - this._proto.parts[i].hotspots[this.parts[i].direction][0].x;
+			y = top_y - this._proto.parts[i].hotspots[this.parts[i].direction][0].y;
+			
+			if (i != 0)
+			{
+				x += this._proto.parts[0].hotspots[this.parts[0].direction][1].x;
+				y += this._proto.parts[0].hotspots[this.parts[0].direction][1].y;
+			}
+		
+			switch (state)
+			{
+				case UNIT_STATE_MOVE:
+					diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.parts[i].move.frames);
+					this._drawPartImage(layer, 'move', i, diff, x, y);
+					break;
+					
+				case UNIT_STATE_ATTACKING:
+					diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.parts[i].attack.frames);
+					this._drawPartImage(layer, 'attack', i, diff, x, y);
+					break;
+					
+				case UNIT_STATE_LOADING:
+					diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.parts[i].load.frames);
+					this._drawPartImage(layer, 'load', i, diff, x, y);
+					break;
+					
+				default:
+					diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.parts[i].stand.frames);
+					this._drawPartImage(layer, 'stand', i, diff, x, y);
+					break;
+			}
+		}
+		
+		if (this._proto.shadow)
+		{
+			state = this.state;
+			if ((state == UNIT_STATE_MOVE) && !this._proto.shadow.move)
+				state = UNIT_STATE_STAND;
+			if ((state == UNIT_STATE_ATTACKING) && !this._proto.shadow.attack)
+				state = UNIT_STATE_STAND;
+			if ((state == UNIT_STATE_LOADING) && !this._proto.shadow.load)
+				state = UNIT_STATE_STAND;
+			
+			switch (state)
+			{
+				case UNIT_STATE_MOVE:
+					diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.parts[0].move.frames);
+					if (this._proto.shadow.move.static_img)
+						diff = 0;
+					this._drawShadow('move_shadow', this._proto.shadow.move, diff, top_x, top_y);
+					break;
+					
+				case UNIT_STATE_ATTACKING:
+					diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.parts[0].attack.frames);
+					if (this._proto.shadow.attack.static_img)
+						diff = 0;
+					this._drawShadow('attack_shadow', this._proto.shadow.attack, diff, top_x, top_y);
+					break;
+					
+				default:
+					diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.parts[0].stand.frames);
+					if (this._proto.shadow.stand.static_img)
+						diff = 0;
+					this._drawShadow('stand_shadow', this._proto.shadow.stand, diff, top_x, top_y);
+					break;
+			}
 		}
 	};
 	
@@ -428,9 +517,9 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this._drawStandardSelection = function(is_onmouse)
 	{
-		var top_x = this.position.x - game.viewport_x + 0.5 - this._proto.images.selection.padding.x, 
-			top_y = this.position.y - game.viewport_y - 2.5  - this._proto.images.selection.padding.y,
-			sel_width = this._proto.images.selection.size.x, health_width = parseInt(sel_width*0.63);
+		var top_x = this.position.x - game.viewport_x + 0.5 - this._proto.parts[0].hotspots[this.parts[0].direction][0].x, 
+			top_y = this.position.y - game.viewport_y - 2.5  - this._proto.parts[0].hotspots[this.parts[0].direction][0].y,
+			sel_width = this._proto.parts[0].image_size.x, health_width = parseInt(sel_width*0.63);
 			
 		if (this.player == PLAYER_NEUTRAL)
 			game.viewport_ctx.strokeStyle = '#ffff00';
@@ -446,14 +535,14 @@ function AbstractUnit(pos_x, pos_y, player)
 		game.viewport_ctx.lineTo(top_x, top_y);
 		game.viewport_ctx.lineTo(top_x + sel_width, top_y);
 		game.viewport_ctx.lineTo(top_x + sel_width, top_y + 8);
-		game.viewport_ctx.moveTo(top_x + sel_width, top_y + sel_width - 3);
-		game.viewport_ctx.lineTo(top_x + sel_width, top_y + sel_width + 5);
-		game.viewport_ctx.lineTo(top_x, top_y + sel_width + 5);
-		game.viewport_ctx.lineTo(top_x, top_y + sel_width - 3);
+		game.viewport_ctx.moveTo(top_x + sel_width, top_y + sel_width - 2);
+		game.viewport_ctx.lineTo(top_x + sel_width, top_y + sel_width + 6);
+		game.viewport_ctx.lineTo(top_x, top_y + sel_width + 6);
+		game.viewport_ctx.lineTo(top_x, top_y + sel_width - 2);
 		game.viewport_ctx.stroke();
 		
 		//Health
-		var health_top_x = top_x + parseInt((sel_width - health_width)/2) - 0.5;
+		var health_top_x = top_x + parseInt((sel_width - health_width)/2) + 0.5;
 		game.viewport_ctx.fillStyle = '#000000';
 		game.viewport_ctx.fillRect(health_top_x, top_y-1.5, health_width, 4);
 
@@ -529,16 +618,26 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.canAttackGround = function()
 	{
-		if (this.weapon === null)
+		if (!this._is_have_weapon)
 			return false;
-		return this.weapon.canAttackGround();
+		
+		for (var i in this.parts)
+			if (this.parts[i].weapon.canAttackGround())
+				return true;
+		
+		return false;
 	};
 	
 	this.canAttackFly = function()
 	{
-		if (this.weapon === null)
+		if (!this._is_have_weapon)
 			return false;
-		return this.weapon.canAttackFly();
+		
+		for (var i in this.parts)
+			if (this.parts[i].weapon.canAttackFly())
+				return true;
+		
+		return false;
 	};
 	
 	this.canHarvest = function()
@@ -570,14 +669,22 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.beforeMoveNextCell = function()
 	{
-		if (this.weapon !== null)
-			this.weapon.updatePosition();
+		if (this._is_have_weapon)
+		{
+			for (var i in this.parts)
+				if (this.parts[i].weapon)
+					this.parts[i].weapon.updatePosition();
+		}
 		
 		switch (this.action.type)
 		{
 			case 'attack':
-				if (!this.weapon.isTargetAlive() || this.weapon.canReach())
-					this.move_path = [];
+				for (var i in this.parts)
+					if (this.parts[i].weapon)
+					{
+						if (!this.parts[i].weapon.isTargetAlive() || this.parts[i].weapon.canReach())
+							this.move_path = [];
+					}
 				break;
 			default:
 				this.beforeMoveNextCellCustom();
@@ -589,18 +696,18 @@ function AbstractUnit(pos_x, pos_y, player)
 		switch (this.action.type)
 		{
 			case '':
-				this.state = 'STAND';
+				this.state = UNIT_STATE_STAND;
 				break;
 				
 			case 'attack':
-				this.state = 'ATTACK';
+				this.state = UNIT_STATE_ATTACK;
 				break;
 				
 			case 'go_heal':
 				var cell = this.getCell();
 				if (cell.x==this.action.target_position.x && cell.y==this.action.target_position.y)
 				{
-					this.state = 'HEALING';
+					this.state = UNIT_STATE_HEALING;
 					ActionsHeap.add(this.uid, 'heal', 0);
 				}
 				else
@@ -693,29 +800,28 @@ AbstractUnit.createNew = function(obj, x, y, player, instant_build)
 
 AbstractUnit.loadResources = function(obj) 
 {
-	var i;
+	var i, j, key, types = ['stand', 'move', 'attack', 'load'];
 	
-	game.resources.addImage(obj.resource_key + '_stand', 'images/units/' + obj.resource_key + '/stand.png');
-	game.resources.addImage(obj.resource_key + '_move',  'images/units/' + obj.resource_key + '/move.png');
 	game.resources.addImage(obj.resource_key + '_box',  'images/units/' + obj.resource_key + '/box.png');
 	
-	if (obj.images.shadow)
+	for (i in obj.parts)
 	{
-		game.resources.addImage(obj.resource_key + '_stand_shadow', 'images/units/' + obj.resource_key + '/stand_shadow.png');
-		game.resources.addImage(obj.resource_key + '_move_shadow', 'images/units/' + obj.resource_key + '/move_shadow.png');
+		for (j in types)
+		{
+			key = types[j];
+			if (obj.parts[i][key])
+			{
+				game.resources.addImage(obj.resource_key + key + i, 'images/units/' + obj.resource_key + '/' + i + key + '.png');
+				if (obj.shadow && obj.shadow[key])
+					game.resources.addImage(obj.resource_key + key + '_shadow', 'images/units/' + obj.resource_key + '/' + key + '_shadow.png');
+			}
+		}
 	}
 	
 	for (i in obj.select_sounds)
 		game.resources.addSound('sound_' + obj.select_sounds[i],   'sounds/units/' + obj.select_sounds[i] + '.' + AUDIO_TYPE);
 	for (i in obj.response_sounds)
 		game.resources.addSound('sound_' + obj.response_sounds[i],   'sounds/units/' + obj.response_sounds[i] + '.' + AUDIO_TYPE);
-	
-	if (obj.weapon != '')
-	{
-		game.resources.addImage(obj.resource_key + '_attack',  'images/units/' + obj.resource_key + '/attack.png');
-		if (obj.images.shadow)
-			game.resources.addImage(obj.resource_key + '_attack_shadow', 'images/units/' + obj.resource_key + '/attack_shadow.png');
-	}
 };
 
 AbstractUnit.setUnitCommonOptions = function(obj)
@@ -724,7 +830,8 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 
 	obj.obj_name = '';      //Must redeclare
 	obj.resource_key = '';  //Must redeclare
-	obj.images = {};        //Must redeclare
+	obj.parts = [];        //Must redeclare
+	obj.shadow = null;
 	obj.select_sounds = [];
 	obj.response_sounds = [];
 	obj.die_effect = 'splatd_animation';
@@ -732,7 +839,6 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.cost = 0;
 	obj.health_max = 100;
 	obj.speed = 0.87;      // 0.87 = 6 config speed [SetPhysics(mass speed)]
-	obj.weapon = '';
 	obj.enabled = false;
 	obj.is_human = false;
 	obj.shield_type = 'ToughHumanWet';

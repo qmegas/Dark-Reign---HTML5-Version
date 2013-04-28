@@ -24,7 +24,7 @@ function FreighterUnit(pos_x, pos_y, player)
 		
 		switch (this.state)
 		{
-			case 'LOADING':
+			case UNIT_STATE_LOADING:
 				if (this.action.type == 'loading')
 				{
 					obj = AbstractBuilding.getById(this.action.well);
@@ -62,58 +62,12 @@ function FreighterUnit(pos_x, pos_y, player)
 		}
 	};
 	
-	this.draw = function(current_time) 
-	{
-		var top_x = this.position.x - game.viewport_x, top_y = this.position.y - game.viewport_y, diff;
-		
-		switch (this.state)
-		{
-			case 'MOVE':
-				diff = (parseInt((current_time - this.startAnimation) / ANIMATION_SPEED) % this._proto.images.move.frames);
-				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
-					res_key: this._proto.resource_key + '_move',
-					src_x: this.move_direction * this._proto.images.move.size.x,
-					src_y: diff * this._proto.images.move.size.y,
-					src_width: this._proto.images.move.size.x,
-					src_height: this._proto.images.move.size.y,
-					x: top_x - this._proto.images.move.padding.x,
-					y: top_y - this._proto.images.move.padding.y
-				});
-				break;
-				
-			case 'LOADING':
-				diff = (parseInt((current_time - this.startAnimation) / (ANIMATION_SPEED*2)) % 15);
-				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
-					res_key: this._proto.resource_key + '_load',
-					src_x: 0,
-					src_y: diff * this._proto.images.load.size.y,
-					src_width: this._proto.images.load.size.x,
-					src_height: this._proto.images.load.size.y,
-					x: top_x - this._proto.images.load.padding.x,
-					y: top_y - this._proto.images.load.padding.y
-				});
-				break;
-				
-			default:
-				game.objDraw.addElement(DRAW_LAYER_GUNIT, this.position.x, {
-					res_key: this._proto.resource_key + '_move',
-					src_x: this.move_direction * this._proto.images.move.size.x,
-					src_y: 0,
-					src_width: this._proto.images.move.size.x,
-					src_height: this._proto.images.move.size.y,
-					x: top_x - this._proto.images.move.padding.x,
-					y: top_y - this._proto.images.move.padding.y
-				});
-				break;
-		}
-	};
-	
 	this.drawSelection = function(is_onmouse)
 	{
 		this._drawStandardSelection(is_onmouse);
 		
-		var top_x = this.position.x - game.viewport_x - 1 - this._proto.images.selection.padding.x, 
-			top_y = this.position.y - game.viewport_y + 5 - this._proto.images.selection.padding.y,
+		var top_x = this.position.x - game.viewport_x - 1 - this._proto.parts[0].hotspots[this.parts[0].direction][0].x, 
+			top_y = this.position.y - game.viewport_y + 5 - this._proto.parts[0].hotspots[this.parts[0].direction][0].y,
 			bar_size = Math.floor((this._res_now/this._res_max)*28);
 			
 			
@@ -213,7 +167,7 @@ function FreighterUnit(pos_x, pos_y, player)
 		
 		if (obj === null)
 		{
-			this.state = 'STAND';
+			this.state = UNIT_STATE_STAND;
 			return;
 		}
 		
@@ -260,10 +214,10 @@ function FreighterUnit(pos_x, pos_y, player)
 			else
 				this.action.type = 'unloading';
 			
-			this.state = 'LOADING';
+			this.state = UNIT_STATE_LOADING;
 			this._setLoadSpeed();
 			this.startAnimation = (new Date).getTime();
-			this.move_direction = 4;
+			this.setDirection(4); //NW
 		}
 		else
 			this.orderWait(1000); //Wait 1 second
@@ -298,25 +252,34 @@ AbstractUnit.setUnitCommonOptions(FreighterUnit);
 FreighterUnit.obj_name = 'Freighter';
 FreighterUnit.resource_key = 'freighter';
 FreighterUnit.die_effect = 'death_with_sparks_animation';
-FreighterUnit.images = {
-	selection: {
-		size: {x: 40, y: 40},
-		padding: {x: 8, y: 8}
-	},
-	stand: {
-		size: {x: 40, y: 40},
-		padding: {x: 8, y: 8}
-	},
-	move: {
-		size: {x: 40, y: 40},
-		padding: {x: 8, y: 8},
-		frames: 3
-	},
-	load: {
-		size: {x: 40, y: 40},
-		padding: {x: 8, y: 8}
+FreighterUnit.parts = [
+	{
+		rotations: 16,
+		image_size: {x: 40, y: 40},
+		stand: {frames: 1},
+		move: {frames: 3},
+		load: {frames: 15},
+		hotspots: [
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 31, y: 26}, {x: 5, y: 14}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 30, y: 22}, {x: 6, y: 17}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 31, y: 19}, {x: 6, y: 22}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 31, y: 14}, {x: 10, y: 23}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 28, y: 11}, {x: 14, y: 25}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 23, y: 10}, {x: 19, y: 28}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 13, y: 9}, {x: 26, y: 25}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 10, y: 12}, {x: 30, y: 23}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 8, y: 14}, {x: 34, y: 20}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 8, y: 18}, {x: 36, y: 17}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 7, y: 20}, {x: 34, y: 13}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 10, y: 25}, {x: 33, y: 9}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 13, y: 24}, {x: 26, y: 6}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 19, y: 26}, {x: 20, y: 5}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 24, y: 26}, {x: 11, y: 5}],
+			[{x: 8, y: 8}, {x: 18, y: 22}, {x: 27, y: 26}, {x: 7, y: 8}]
+		]
 	}
-};
+];
+
 FreighterUnit.select_sounds = ['gvig1sl0', 'gvig1sl1', 'gvig1sl2', 'gvig1sl5'];
 FreighterUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl3'];
 
@@ -329,16 +292,3 @@ FreighterUnit.require_building = [AssemblyPlantBuilding];
 
 FreighterUnit.construction_building = [AssemblyPlantBuilding, AssemblyPlant2Building];
 FreighterUnit.construction_time = 4;
-
-FreighterUnit.loadResources = function() 
-{
-	var i;
-	
-	game.resources.addImage(this.resource_key + '_move',  'images/units/' + this.resource_key + '/move.png');
-	game.resources.addImage(this.resource_key + '_load', 'images/units/' + this.resource_key + '/load.png');
-	
-	for (i in FreighterUnit.select_sounds)
-		game.resources.addSound('sound_' + FreighterUnit.select_sounds[i],   'sounds/units/' + FreighterUnit.select_sounds[i] + '.' + AUDIO_TYPE);
-	for (i in FreighterUnit.response_sounds)
-		game.resources.addSound('sound_' + FreighterUnit.response_sounds[i],   'sounds/units/' + FreighterUnit.response_sounds[i] + '.' + AUDIO_TYPE);
-};

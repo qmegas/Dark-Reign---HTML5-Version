@@ -12,7 +12,6 @@ To do:
 	- Fog of war
 
 - Low priority bugs:
-	- Correct bullet animation
 	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
 	- Energy meter blinking incorrectly
