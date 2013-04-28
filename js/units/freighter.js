@@ -68,20 +68,21 @@ function FreighterUnit(pos_x, pos_y, player)
 		
 		var top_x = this.position.x - game.viewport_x - 1 - this._proto.parts[0].hotspots[this.parts[0].direction][0].x, 
 			top_y = this.position.y - game.viewport_y + 5 - this._proto.parts[0].hotspots[this.parts[0].direction][0].y,
-			bar_size = Math.floor((this._res_now/this._res_max)*28);
+			bar_height = this._proto.parts[0].image_size.y - 12,
+			bar_size = Math.floor((this._res_now/this._res_max)*bar_height);
 			
 			
 		game.viewport_ctx.fillStyle = '#000000';
-		game.viewport_ctx.fillRect(top_x, top_y, 4, 30);
+		game.viewport_ctx.fillRect(top_x, top_y, 4, bar_height + 2);
 		
 		if (this._res_now < this._res_max)
 		{
 			game.viewport_ctx.fillStyle = '#bbbbbb';
-			game.viewport_ctx.fillRect(top_x + 1, top_y + 1, 2, 28);
+			game.viewport_ctx.fillRect(top_x + 1, top_y + 1, 2, bar_height);
 		}
 		
 		game.viewport_ctx.fillStyle = (this._res_type == RESOURCE_WATER) ? '#00a5ff' : '#ffff00';
-		game.viewport_ctx.fillRect(top_x + 1, top_y + 29 - bar_size, 2, bar_size);
+		game.viewport_ctx.fillRect(top_x + 1, top_y + bar_height - bar_size + 1, 2, bar_size);
 	};
 	
 	this.canHarvest = function()
@@ -291,4 +292,4 @@ FreighterUnit.shield_type = 'TankPlatingWet';
 FreighterUnit.require_building = [AssemblyPlantBuilding];
 
 FreighterUnit.construction_building = [AssemblyPlantBuilding, AssemblyPlant2Building];
-FreighterUnit.construction_time = 4;
+FreighterUnit.construction_time = 10;

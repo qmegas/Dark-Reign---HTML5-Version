@@ -3,6 +3,7 @@ Build 37
 - Added Rift Creator building (without weapon)
 - Unit class changed to support multiple parts
 - Bullet animation fixed
+- Added first multipart unit: Hover Freighter
 
 Build 36 (20.04.2013)
 - Added Air Defense Site building & weapon

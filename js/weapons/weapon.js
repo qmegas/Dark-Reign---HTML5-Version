@@ -117,10 +117,17 @@ function WeaponHolder(config_name)
 			unit.setWeaponDirection(8 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/23.5));
 		else
 		{
+			var x = unit.position.x, y = unit.position.y;
 			unit.setDirection(4 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/45));
+			if (partid > 0)
+			{
+				x += unit._proto.parts[0].hotspots[unit.parts[0].direction][1].x;
+				y += unit._proto.parts[0].hotspots[unit.parts[0].direction][1].y;
+			}
+			
 			position_from = {
-				x: unit.position.x + unit._proto.parts[partid].hotspots[unit.parts[partid].direction][2].x,
-				y: unit.position.y + unit._proto.parts[partid].hotspots[unit.parts[partid].direction][2].y
+				x: x + unit._proto.parts[partid].hotspots[unit.parts[partid].direction][2].x, 
+				y: y + unit._proto.parts[partid].hotspots[unit.parts[partid].direction][2].y
 			};
 		}
 		

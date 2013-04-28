@@ -116,7 +116,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		for (var i in this.parts)
 		{
-			if (this.parts[i].weapon.canAttackTarget(target))
+			if (this.parts[i].weapon && this.parts[i].weapon.canAttackTarget(target))
 			{
 				this.parts[i].weapon.setTarget(target);
 				set_target = true;
@@ -255,6 +255,9 @@ function AbstractUnit(pos_x, pos_y, player)
 			case UNIT_STATE_ATTACK:
 				for (var i in this.parts)
 				{
+					if (!this.parts[i].weapon)
+						continue;
+					
 					if (this.parts[i].weapon.canShoot() && this.parts[i].weapon.isTargetAlive())
 					{
 						if (this.parts[i].weapon.canReach())
@@ -279,6 +282,9 @@ function AbstractUnit(pos_x, pos_y, player)
 			case UNIT_STATE_ATTACKING:
 				for (var i in this.parts)
 				{
+					if (!this.parts[i].weapon)
+						continue;
+					
 					if (this.parts[i].weapon.isTargetAlive())
 					{
 						this.anim_attack_frame++;
@@ -431,14 +437,6 @@ function AbstractUnit(pos_x, pos_y, player)
 				state = UNIT_STATE_STAND;
 			if ((state == UNIT_STATE_LOADING) && !this._proto.parts[i].load)
 				state = UNIT_STATE_STAND;
-			
-			if (this.state == UNIT_STATE_MOVE)
-			{
-				console.log('i = ' + i);
-				console.log('state = ' + state);
-				console.log(this.parts[i]);
-				console.log(this._proto.parts[i]);
-			}
 			
 			x = top_x - this._proto.parts[i].hotspots[this.parts[i].direction][0].x;
 			y = top_y - this._proto.parts[i].hotspots[this.parts[i].direction][0].y;
@@ -622,7 +620,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			return false;
 		
 		for (var i in this.parts)
-			if (this.parts[i].weapon.canAttackGround())
+			if (this.parts[i].weapon && this.parts[i].weapon.canAttackGround())
 				return true;
 		
 		return false;
@@ -634,7 +632,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			return false;
 		
 		for (var i in this.parts)
-			if (this.parts[i].weapon.canAttackFly())
+			if (this.parts[i].weapon && this.parts[i].weapon.canAttackFly())
 				return true;
 		
 		return false;
