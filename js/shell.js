@@ -932,6 +932,12 @@ $(function(){
 	$('#viewport').mousemove(function(event){
 		MousePointer.setPosition(event);
 	});
+	$('#cm_page_up').click(function(){
+		game.constructor.pageUp();
+	});
+	$('#cm_page_down').click(function(){
+		game.constructor.pageDown();
+	});
 	
 	$(document).keydown(function(event) {
 		var prevent = true;

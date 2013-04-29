@@ -1,11 +1,18 @@
+var CM_ITEMS_COUNT = 15;
+
+var CM_VIEW_UNITS = 1;
+var CM_VIEW_BUILDINGS = 2;
+
 function ConstructManager(units, buildings)
 {
 	this.available_units = units;
 	this.available_buildings = [];
 	this.all_buildings = buildings;
 	
-	this.current_view_type = CONST_VIEW_DEFAULT;
+	this.current_view_type = CM_VIEW_UNITS;
 	this.current_view_offset = 0;
+	this.unit_offset = 0;
+	this.building_offset = 0;
 	
 	this._popup_ctx = $('#cell_popup').get(0).getContext('2d');
 	
@@ -14,6 +21,47 @@ function ConstructManager(units, buildings)
 		if (buildings[i].can_build)
 			this.available_buildings.push(buildings[i]);
 	//Constructor end
+	
+	this.pageUp = function()
+	{
+		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset;
+		
+		offset -= CM_ITEMS_COUNT;
+		if (offset < 0)
+			offset = 0;
+		
+		if (this.current_view_type == CM_VIEW_UNITS)
+		{
+			this.unit_offset = offset;
+			this.drawUnits();
+		}
+		else
+		{
+			this.building_offset = offset;
+			this.drawBuildings();
+		}
+	};
+	
+	this.pageDown = function()
+	{
+		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
+			total = (this.current_view_type == CM_VIEW_UNITS) ? this.available_units.length : this.available_buildings.length;
+		
+		offset += CM_ITEMS_COUNT;
+		if ((offset + CM_ITEMS_COUNT - total) > 2)
+			offset = Math.ceil((total - CM_ITEMS_COUNT) / 3)*3;
+		
+		if (this.current_view_type == CM_VIEW_UNITS)
+		{
+			this.unit_offset = offset;
+			this.drawUnits();
+		}
+		else
+		{
+			this.building_offset = offset;
+			this.drawBuildings();
+		}
+	};
 	
 	this.recalcUnitAvailability = function()
 	{
@@ -104,11 +152,10 @@ function ConstructManager(units, buildings)
 			this.all_buildings[i].loadResources();
 	};
 	
-	this.drawUnits = function(start)
+	this.drawUnits = function()
 	{
 		this.removeCellSelection();
-		this.current_view_offset = (!start) ? 0 : start;
-		this.current_view_type = CONST_VIEW_DEFAULT;
+		this.current_view_type = CM_VIEW_UNITS;
 		this._drawCells();
 		
 		//Check upgrade button state
@@ -116,11 +163,10 @@ function ConstructManager(units, buildings)
 			$('#upgrade_button').removeClass('disable');
 	};
 	
-	this.drawBuildings = function(start)
+	this.drawBuildings = function()
 	{
 		this.removeCellSelection();
-		this.current_view_offset = (!start) ? 0 : start;
-		this.current_view_type = CONST_VIEW_BUILDINGS;
+		this.current_view_type = CM_VIEW_BUILDINGS;
 		this._drawCells();
 		
 		//Make sure build tab is shown
@@ -130,34 +176,41 @@ function ConstructManager(units, buildings)
 	
 	this._drawCells = function()
 	{
-		if (this.current_view_type == CONST_VIEW_BUILDINGS)
-			this._clearAllCellCanvases();
+		var offset = 0;
 		
-		for (var i = this.current_view_offset; i<this.current_view_offset+15; ++i)
+		if (this.current_view_type == CM_VIEW_BUILDINGS)
+		{
+			this._clearAllCellCanvases();
+			offset = this.building_offset;
+		}
+		else
+			offset = this.unit_offset;
+		
+		for (var i = offset; i<offset+CM_ITEMS_COUNT; ++i)
 		{
 			switch (this.current_view_type)
 			{
-				case CONST_VIEW_DEFAULT:
+				case CM_VIEW_UNITS:
 					if (!this.available_units[i])
-						this._drawCellEmpty(i-this.current_view_offset);
+						this._drawCellEmpty(i-offset);
 					else
 					{
 						this._drawCell(
-							i-this.current_view_offset, 
+							i-offset, 
 							'images/units/' + this.available_units[i].resource_key + '/box.png', 
 							this.available_units[i].enabled,
 							!AbstractBuilding.canSelectedProduce(this.available_units[i])
 						);
 						if (this.available_units[i].producing_count > 0)
-							this._canvasRedraw(i-this.current_view_offset);
+							this._canvasRedraw(i-offset);
 					}
 					break;
-				case CONST_VIEW_BUILDINGS:
+				case CM_VIEW_BUILDINGS:
 					if (!this.available_buildings[i])
-						this._drawCellEmpty(i-this.current_view_offset);
+						this._drawCellEmpty(i-offset);
 					else
 						this._drawCell(
-							i-this.current_view_offset, 
+							i-offset, 
 							'images/buildings/' + this.available_buildings[i].res_key + '/box.png', 
 							this.available_buildings[i].enabled,
 							false
@@ -196,9 +249,10 @@ function ConstructManager(units, buildings)
 	
 	this.cellClick = function(cell_id, button)
 	{
-		var i = this.current_view_offset + parseInt(cell_id), obj;
+		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
+			i = offset + parseInt(cell_id);
 		
-		if (this.current_view_type == CONST_VIEW_BUILDINGS)
+		if (this.current_view_type == CM_VIEW_BUILDINGS)
 		{
 			if (typeof this.available_buildings[i] == 'undefined')
 				return;
@@ -238,11 +292,12 @@ function ConstructManager(units, buildings)
 	
 	this.cellPopupPrepere = function(cell_id)
 	{
-		var i = this.current_view_offset + parseInt(cell_id), obj;
+		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
+			i = offset + parseInt(cell_id), obj;
 		
 		this._clearPopup();
 		
-		if (this.current_view_type == CONST_VIEW_BUILDINGS)
+		if (this.current_view_type == CM_VIEW_BUILDINGS)
 		{
 			if (typeof this.available_buildings[i] == 'undefined')
 				return;
@@ -347,12 +402,12 @@ function ConstructManager(units, buildings)
 		
 		ProducingQueue.run();
 		
-		if (this.current_view_type == CONST_VIEW_BUILDINGS)
+		if (this.current_view_type == CM_VIEW_BUILDINGS)
 			return;
 		
-		for (i = 0; i<15; ++i)
+		for (i = 0; i<CM_ITEMS_COUNT; ++i)
 		{
-			index = this.current_view_offset + i;
+			index = this.unit_offset + i;
 			if (!this.available_units[index])
 				return;
 			
@@ -362,7 +417,10 @@ function ConstructManager(units, buildings)
 	
 	this._canvasRedraw = function(index)
 	{
-		var ctx = $('#cell_canvas_' + index).get(0).getContext('2d'), obj = this.available_units[this.current_view_offset + index], to_point, txt, prog;
+		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
+			ctx = $('#cell_canvas_' + index).get(0).getContext('2d'), 
+			obj = this.available_units[offset + index], 
+			to_point, txt, prog;
 		
 		ctx.clearRect(0, 0, 64, 50);
 		
@@ -401,12 +459,12 @@ function ConstructManager(units, buildings)
 	{
 		var i, index;
 		
-		if (this.current_view_type == CONST_VIEW_BUILDINGS)
+		if (this.current_view_type == CM_VIEW_BUILDINGS)
 			return;
 		
-		for (i = 0; i<15; ++i)
+		for (i = 0; i<CM_ITEMS_COUNT; ++i)
 		{
-			index = this.current_view_offset + i;
+			index = this.unit_offset + i;
 			if (!this.available_units[index])
 				return;
 			
@@ -417,7 +475,7 @@ function ConstructManager(units, buildings)
 	
 	this._clearAllCellCanvases = function()
 	{
-		for (var i = 0; i<15; ++i)
+		for (var i = 0; i<CM_ITEMS_COUNT; ++i)
 			$('#cell_canvas_' + i).get(0).getContext('2d').clearRect(0, 0, 64, 50);
 	};
 }

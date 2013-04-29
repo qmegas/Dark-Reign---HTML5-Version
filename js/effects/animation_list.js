@@ -54,6 +54,10 @@ var AnimationList = {
 		{start: 0, min_point: 0, max_point: 0, effect: 'eoblatr0_animation'},
 		{start: 0, min_point: 0, max_point: 0, effect: 'lite2_animation'}
 	],
+	eolasex1_explosion: [
+		{start: 0, min_point: 3, max_point: 3, effect: 'eolasex1_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'lite1_animation'}
+	],
 	eoncnex0_explosion: [
 		{start: 0, min_point: 3, max_point: 3, effect: 'eoncnex0_animation'},
 		{start: 0, min_point: 3, max_point: 3, effect: 'lite2_animation'}

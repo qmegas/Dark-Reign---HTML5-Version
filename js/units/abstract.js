@@ -288,7 +288,7 @@ function AbstractUnit(pos_x, pos_y, player)
 					if (this.parts[i].weapon.isTargetAlive())
 					{
 						this.anim_attack_frame++;
-						if (this.anim_attack_frame == this._proto.parts[i].attack.frames)
+						if (!this._proto.parts[i].attack || (this.anim_attack_frame == this._proto.parts[i].attack.frames))
 						{
 							this.parts[i].weapon.shoot();
 							this.state = UNIT_STATE_ATTACK;

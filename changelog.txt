@@ -2,8 +2,11 @@ Build 37
 - Added Rearming Deck building
 - Added Rift Creator building (without weapon)
 - Unit class changed to support multiple parts
-- Bullet animation fixed
+- Bullet animation fixed for all units
 - Added first multipart unit: Hover Freighter
+- Added Scout Runner unit & Laser Cannon weapon
+- Added ability to scroll construction menu on right panel
+- Small level corrections
 
 Build 36 (20.04.2013)
 - Added Air Defense Site building & weapon

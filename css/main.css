@@ -278,6 +278,9 @@ body {
 .game .right-frame .panel .ext-buttons .up:hover {
 	background-position: -22px 0;
 }
+.game .right-frame .panel .ext-buttons .up:active {
+	background-position: -44px 0;
+}
 .game .right-frame .panel .ext-buttons .down {
 	width: 22px;
 	height: 22px;
@@ -290,6 +293,9 @@ body {
 }
 .game .right-frame .panel .ext-buttons .down:hover {
 	background-position: -88px 0;
+}
+.game .right-frame .panel .ext-buttons .down:active {
+	background-position: -110px 0;
 }
 .game .right-frame .bottom-right {
 	height: 138px;

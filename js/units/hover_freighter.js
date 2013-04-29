@@ -76,4 +76,4 @@ HoverFreighterUnit.move_mode = MOVE_MODE_HOVER;
 HoverFreighterUnit.require_building = [AssemblyPlant2Building];
 
 HoverFreighterUnit.construction_building = [AssemblyPlant2Building];
-HoverFreighterUnit.construction_time = 15;
+HoverFreighterUnit.construction_time = 30;

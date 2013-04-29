@@ -71,6 +71,12 @@ var EffectList = {
 		hotpoint: {x: 13, y: 13},
 		frames: 7
 	},
+	eolasex1_animation: {
+		res_key: 'eolasex1',
+		size: {x: 40, y: 40},
+		hotpoint: {x: 6, y: 30},
+		frames: 16
+	},
 	eolasex3_animation: {
 		res_key: 'eolasex3',
 		size: {x: 25, y: 25},
@@ -81,6 +87,12 @@ var EffectList = {
 		res_key: 'eolaspr2',
 		size: {x: 8, y: 8},
 		hotpoint: {x: 4, y: 4},
+		frames: 3
+	},
+	eolaspr3_animation: { //Bulet
+		res_key: 'eolaspr3',
+		size: {x: 12, y: 12},
+		hotpoint: {x: 6, y: 6},
 		frames: 3
 	},
 	eomedfl0_animation: { //Looped

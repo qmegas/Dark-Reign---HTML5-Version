@@ -292,4 +292,4 @@ FreighterUnit.shield_type = 'TankPlatingWet';
 FreighterUnit.require_building = [AssemblyPlantBuilding];
 
 FreighterUnit.construction_building = [AssemblyPlantBuilding, AssemblyPlant2Building];
-FreighterUnit.construction_time = 10;
+FreighterUnit.construction_time = 20;

@@ -41,6 +41,21 @@ var WeaponConfig = {
 		hit_explosion: 'eoblatr0_explosion',
 		bulet_speed: 2000 //SetSpeed(40.0 0.0 40.0 1)
 	},
+	LaserCannon: {
+		bulet_animation: 'eolaspr3_animation',
+		minimum_range: 0,
+		maximum_range: 6,
+		firedelay: 438,
+		can_shoot_ground: true,
+		can_shoot_flyer: false,
+		offence: {
+			type: 'E2',
+			strength: 10
+		},
+		fire_sound: 'gxsttwc0',
+		hit_explosion: 'eolasex1_explosion',
+		bulet_speed: 700 //SetSpeed(20.0 0.0 20.0 1)
+	},
 	LaserRifle: {
 		bulet_animation: 'eolaspr2_animation',
 		minimum_range: 0,
