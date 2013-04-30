@@ -1,9 +1,10 @@
-function Player(map_color, start_position)
+function Player(map_color, is_human)
 {
 	this._money = 0;
 	this._map_color = map_color;
 	this._energy_max = 0;
 	this._energy_current = 0;
+	this._is_human = is_human;
 	
 	this.getMapColor = function()
 	{
@@ -13,15 +14,15 @@ function Player(map_color, start_position)
 	this.addMoney = function(num)
 	{
 		this._money += parseInt(num);
-		//@todo Update interface only if human player
-		InterfaceMoneyDraw.setMoney(this._money);
+		if (this._is_human)
+			InterfaceMoneyDraw.setMoney(this._money);
 	};
 	
 	this.decMoney = function(num)
 	{
 		this._money -= parseInt(num);
-		//@todo Update interface only if human player
-		InterfaceMoneyDraw.setMoney(this._money);
+		if (this._is_human)
+			InterfaceMoneyDraw.setMoney(this._money);
 	};
 	
 	this.haveEnoughMoney = function(num)
@@ -32,17 +33,21 @@ function Player(map_color, start_position)
 	this.energyAddMax = function(val)
 	{
 		this._energy_max += val;
-		//@todo Update interface only if human player
-		InterfaceEnergyWaterDraw.energyAddToMax(val);
-		InterfaceMinimap.switchState();
+		if (this._is_human)
+		{
+			InterfaceEnergyWaterDraw.energyAddToMax(val);
+			InterfaceMinimap.switchState();
+		}
 	};
 	
 	this.energyAddCurrent = function(val)
 	{
 		this._energy_current += val;
-		//@todo Update interface only if human player
-		InterfaceEnergyWaterDraw.energyAddToCurrent(val);
-		InterfaceMinimap.switchState();
+		if (this._is_human)
+		{
+			InterfaceEnergyWaterDraw.energyAddToCurrent(val);
+			InterfaceMinimap.switchState();
+		}
 	};
 	
 	this.energyLow = function()

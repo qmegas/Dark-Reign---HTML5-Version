@@ -1,4 +1,31 @@
 var InterfaceGUI = {
+	preloadImages: function()
+	{
+		//-- CSS --
+		game.resources.addImage('css1', 'images/shell/load-screen.png');
+		game.resources.addImage('css2', 'images/shell/load-bar.png');
+		game.resources.addImage('css3', 'images/shell/money.png');
+		game.resources.addImage('css4', 'images/shell/topbuttons.png');
+		game.resources.addImage('css5', 'images/shell/money_numbers.png');
+		game.resources.addImage('css6', 'images/shell/menutabs.png');
+		game.resources.addImage('css7', 'images/shell/panel.png');
+		game.resources.addImage('css8', 'images/shell/unit_box.png');
+		game.resources.addImage('css9', 'images/shell/b_buttons.png');
+		game.resources.addImage('css10', 'images/shell/minimap.png');
+		game.resources.addImage('css11', 'images/shell/switches.png');
+		game.resources.addImage('css12', 'images/shell/metrics.png');
+		game.resources.addImage('css13', 'images/shell/buttons.png');
+		game.resources.addImage('css14', 'images/shell/menu_icons.png');
+		game.resources.addImage('css15', 'images/shell/slider_box.png');
+		game.resources.addImage('css16', 'images/shell/slide_scale.png');
+		game.resources.addImage('css17', 'images/shell/title.png');
+		//---------
+		game.resources.addImage('map-tiles', 'images/levels/'+game.level.tiles);
+		game.resources.addImage('minimap', 'images/levels/'+game.level.minimap.image);
+		game.resources.addImage('clr', 'images/buildings/clr.png');
+		game.resources.addImage('font', 'images/font.png');
+	},
+	
 	setHandlers: function()
 	{
 		//Interface stop button

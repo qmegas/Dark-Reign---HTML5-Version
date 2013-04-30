@@ -1,6 +1,5 @@
 To do:
 	- Complete code refactoring
-		- complete all TODOs
 		- Move construction manager to interface folder
 		- Move game viewport position to InterfaceGUI
 	- Allow unit to shoot not only to the center of the building

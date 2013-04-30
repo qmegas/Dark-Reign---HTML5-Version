@@ -110,25 +110,7 @@ function Game()
 		InterfaceMinimap.init();
 		
 		//Preloading images
-		//-- CSS --
-		this.resources.addImage('css1', 'images/shell/load-screen.png');
-		this.resources.addImage('css2', 'images/shell/load-bar.png');
-		this.resources.addImage('css3', 'images/shell/money.png');
-		this.resources.addImage('css4', 'images/shell/topbuttons.png');
-		this.resources.addImage('css5', 'images/shell/money_numbers.png');
-		this.resources.addImage('css6', 'images/shell/menutabs.png');
-		this.resources.addImage('css7', 'images/shell/panel.png');
-		this.resources.addImage('css8', 'images/shell/unit_box.png');
-		this.resources.addImage('css9', 'images/shell/b_buttons.png');
-		this.resources.addImage('css10', 'images/shell/minimap.png');
-		this.resources.addImage('css11', 'images/shell/switches.png');
-		this.resources.addImage('css12', 'images/shell/metrics.png');
-		this.resources.addImage('css13', 'images/shell/buttons.png');
-		//---------
-		this.resources.addImage('map-tiles', 'images/levels/'+this.level.tiles);
-		this.resources.addImage('minimap', 'images/levels/'+this.level.minimap.image);
-		this.resources.addImage('clr', 'images/buildings/clr.png');
-		this.resources.addImage('font', 'images/font.png');
+		InterfaceGUI.preloadImages();
 		this._loadGameResources();
 		this.resources.onLoaded = function(loaded, total){
 			var progress = parseInt(500/total*loaded);
