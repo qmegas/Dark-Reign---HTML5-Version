@@ -21,7 +21,7 @@ var ProducingQueue = {
 		if (!game.players[PLAYER_HUMAN].haveEnoughMoney(obj.cost))
 		{
 			game.resources.play('cant_build');
-			game.notifications.addIfEmpty('insufficient_credits');
+			InterfaceSoundQueue.addIfEmpty('insufficient_credits');
 			return;
 		}
 		

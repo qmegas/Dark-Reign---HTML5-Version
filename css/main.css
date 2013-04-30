@@ -297,6 +297,43 @@ body {
 .game .right-frame .panel .ext-buttons .down:active {
 	background-position: -110px 0;
 }
+.game .right-frame .panel .title {
+	background: url("../images/shell/title.png") no-repeat right bottom;
+	width: 166px;
+	height: 15px;
+	padding: 0 0 3px 5px;
+	margin-left: 20px;
+}
+.game .right-frame .panel#panel_menu .spacer1 {
+	height: 12px;
+}
+.game .right-frame .panel .scrolls {
+	margin-top: 10px;
+	padding-left: 26px;
+}
+.game .right-frame .panel .scrolls .icons {
+	float: left;
+	width: 50px;
+	height: 91px;
+	background: url("../images/shell/menu_icons.png") no-repeat right bottom;;
+}
+.game .right-frame .panel .scrolls .conteiner {
+	float: left;
+	width: 105px;
+	height: 91px;
+	padding-left: 3px;
+}
+.game .right-frame .panel .scrolls .conteiner .scroll-box {
+	width: 103px;
+	height: 15px;
+	background: url("../images/shell/slider_box.png");
+	margin-bottom: 7px;
+	padding: 1px;
+}
+.game .right-frame .panel .scrolls .conteiner .scroll-box .scale {
+	background: url("../images/shell/slide_scale.png");
+	height: 15px;
+}
 .game .right-frame .bottom-right {
 	height: 138px;
 }

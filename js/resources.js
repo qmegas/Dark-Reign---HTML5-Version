@@ -1,11 +1,17 @@
 function ResourseLoader()
 {
+	this.soundVolume = 1;
 	this.total = 0;
 	this.loaded = 0;
 	this.items = {};
 	
 	this.onLoaded = function(){};
 	this.onComplete = function(){};
+	
+	this.setSoundVolume = function(vol)
+	{
+		this.soundVolume = vol;
+	};
 	
 	this.addImage = function(key, image_path)
 	{
@@ -67,8 +73,12 @@ function ResourseLoader()
 		
 		if (multiple)
 			item = item.cloneNode(true);
+		
 		if (volume)
-			item.volume = volume;
+			item.volume = volume * this.soundVolume;
+		else
+			item.volume = this.soundVolume;
+		
 		item.play();
 	};
 	

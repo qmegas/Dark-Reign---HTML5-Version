@@ -201,7 +201,7 @@ function AbstractBuilding()
 			if (this._proto.upgradable && this._proto.can_upgrade_now)
 			{
 				var up_top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 8.5 - game.viewport_y;;
-				game.fontDraw.drawOnCanvas(
+				InterfaceFontDraw.drawOnCanvas(
 					'Upgrade ' + this._proto.upgrade_to.cost + 'c', game.viewport_ctx, top_x, up_top_y, 
 					'yellow', 'center', health_width
 				);
@@ -209,7 +209,7 @@ function AbstractBuilding()
 		}
 		
 		if (is_onmouse)
-			game.fontDraw.drawOnCanvas(
+			InterfaceFontDraw.drawOnCanvas(
 				this._proto.obj_name, game.viewport_ctx, top_x, top_y, 
 				'yellow', 'center', health_width
 			);
@@ -230,7 +230,7 @@ function AbstractBuilding()
 		
 		top_y = this.position.y - this._proto.images.normal.padding.y - 16.5 - game.viewport_y;
 		
-		game.fontDraw.drawOnCanvas(
+		InterfaceFontDraw.drawOnCanvas(
 			title, game.viewport_ctx, top_x + 0.5, top_y, 
 			'yellow', 'center', bar_width
 		);
@@ -605,7 +605,7 @@ function AbstractBuilding()
 		this._proto.count++;
 			
 		if (this.state == BUILDING_STATE_CONSTRUCTION)
-			game.notifications.addSound('construction_complete');
+			InterfaceSoundQueue.addSound('construction_complete');
 		if (this.state == BUILDING_STATE_UPGRADING)
 			this.health = this._proto.health_max;
 		
@@ -717,7 +717,7 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 	}
 	else
 	{
-		game.notifications.addSound('construction_under_way');
+		InterfaceSoundQueue.addSound('construction_under_way');
 		var time = (game.debug.quick_build) ? 2 : obj.build_time;
 		ActionsHeap.add(uid, 'construct', {
 			steps: time,

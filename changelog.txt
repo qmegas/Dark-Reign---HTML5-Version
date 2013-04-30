@@ -6,7 +6,11 @@ Build 37
 - Added first multipart unit: Hover Freighter
 - Added Scout Runner unit & Laser Cannon weapon
 - Added ability to scroll construction menu on right panel
+- Added Bridge Junction, last building for Imperium side
 - Small level corrections
+- Added "Menu" tab on right panel
+- Added ability to change game sounds volume (other settings still have no effect)
+- Some code refactoring
 
 Build 36 (20.04.2013)
 - Added Air Defense Site building & weapon

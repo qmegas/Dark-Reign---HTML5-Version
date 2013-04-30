@@ -1,8 +1,7 @@
-function DKFont()
-{
-	this._size = 14;
-	this._space_size = 4;
-	this._table = [
+var InterfaceFontDraw = {
+	_size: 14,
+	_space_size: 4,
+	_table: [
 		 //  0        1        2        3        4        5        6        7        8        9        A        B        C        D        E        F 
 		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //0
 		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //1
@@ -20,14 +19,18 @@ function DKFont()
 		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //D
 		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //E
 		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7]  //F
-	];
+	],
 	
-	this._buffer = $('#text_buffer').get(0).getContext('2d');
+	_buffer: null,
+	_cache_table: {},
+	_cache_offset: 0,
 	
-	this._cache_table = {};
-	this._cache_offset = 0;
+	init: function()
+	{
+		this._buffer = $('#text_buffer').get(0).getContext('2d');
+	},
 	
-	this.drawOnCanvas = function(text, ctx, x, y, color, align, align_width)
+	drawOnCanvas: function(text, ctx, x, y, color, align, align_width)
 	{
 		var key = 'chached_text_'+text+color;
 		
@@ -54,18 +57,18 @@ function DKFont()
 			$('#text_buffer').get(0), 0, this._cache_table[key].top, this._cache_table[key].width, this._size,
 			x+0.5, y+0.5, this._cache_table[key].width, this._size
 		);
-	}
+	},
 	
-	this.getSize = function(text)
+	getSize: function(text)
 	{
 		var summ = 0;
 		for (var i=0; i<text.length; ++i)
 			summ += this._table[text.charCodeAt(i)][1];
 		
 		return summ;
-	}
+	},
 	
-	this._bufferDraw = function(text, color)
+	_bufferDraw: function(text, color)
 	{
 		var current_position = 0, ascii, letter, color_offset = this._getColorOffset(color), font = game.resources.get('font');
 		
@@ -86,9 +89,9 @@ function DKFont()
 		}
 		
 		return current_position;
-	}
+	},
 	
-	this._getColorOffset = function(color)
+	_getColorOffset: function(color)
 	{
 		switch (color)
 		{
@@ -100,4 +103,4 @@ function DKFont()
 				return 0;
 		}
 	}
-}
+};

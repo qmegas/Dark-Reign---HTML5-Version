@@ -6,12 +6,14 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		<script type="text/javascript" src="js/constants.js"></script>
 		<script type="text/javascript" src="js/debug.js"></script>
-		<script type="text/javascript" src="js/money.js"></script>
-		<script type="text/javascript" src="js/mouse.js"></script>
-		<script type="text/javascript" src="js/sound_queue.js"></script>
-		<script type="text/javascript" src="js/energy.js"></script>
+		<script type="text/javascript" src="js/interface/money.js"></script>
+		<script type="text/javascript" src="js/interface/sound_queue.js"></script>
+		<script type="text/javascript" src="js/interface/font.js"></script>
+		<script type="text/javascript" src="js/interface/dialog.js"></script>
+		<script type="text/javascript" src="js/interface/energy.js"></script>
+		<script type="text/javascript" src="js/interface/minimap.js"></script>
+		<script type="text/javascript" src="js/interface/interface.js"></script>
 		<script type="text/javascript" src="js/resources.js"></script>
-		<script type="text/javascript" src="js/minimap.js"></script>
 		<script type="text/javascript" src="js/player.js"></script>
 		<script type="text/javascript" src="js/map_cell.js"></script>
 		
@@ -50,6 +52,7 @@
 		<script type="text/javascript" src="js/buildings/im/temporal_gate.js"></script>
 		<script type="text/javascript" src="js/buildings/im/rearming_deck.js"></script>
 		<script type="text/javascript" src="js/buildings/im/rift_creator.js"></script>
+		<script type="text/javascript" src="js/buildings/im/center_bridge.js"></script>
 		<script type="text/javascript" src="js/buildings/dependencies.js"></script>
 		
 		<script type="text/javascript" src="js/units/abstract.js"></script>
@@ -65,12 +68,11 @@
 		<script type="text/javascript" src="js/construct_queue.js"></script>
 		<script type="text/javascript" src="js/construct_manager.js"></script>
 		<script type="text/javascript" src="js/pathfinding.js"></script>
+		<script type="text/javascript" src="js/mouse.js"></script>
 		<script type="text/javascript" src="js/levels/level1.js"></script>
-		<script type="text/javascript" src="js/font.js"></script>
 		<script type="text/javascript" src="js/object_draw.js"></script>
-		<script type="text/javascript" src="js/dialog.js"></script>
 		<script type="text/javascript" src="js/damage_table.js"></script>
-		<script type="text/javascript" src="js/shell.js"></script>
+		<script type="text/javascript" src="js/game.js"></script>
 	</head>
 	<body>
 		<div class="load-screen">
@@ -108,7 +110,7 @@
 				<div class="tab-buttons">
 					<div class="tab build active" data-panel="panel_build" id="tab_button_build"></div>
 					<div class="tab comms"></div>
-					<div class="tab menu"></div>
+					<div class="tab menu" data-panel="panel_menu"></div>
 					<div class="tab orders"></div>
 					<div class="tab paths"></div>
 					<div class="tab special" data-panel="panel_special"></div>
@@ -184,6 +186,21 @@
 						</div>
 						<div class="dk-button-small btn">
 							<img src="images/shell/texts/decoy.png" />
+						</div>
+					</div>
+				</div>
+				<div class="panel hidden" id="panel_menu">
+					<div class="spacer1"></div>
+					<div class="title">
+						<img src="images/shell/texts/options.png" />
+					</div>
+					<div class="scrolls">
+						<div class="icons"></div>
+						<div class="conteiner">
+							<div class="scroll-box" data-param="sound_volume"><div class="scale"></div></div>
+							<div class="scroll-box" data-param="music_volume"><div class="scale"></div></div>
+							<div class="scroll-box" data-param="game_speed"><div class="scale"></div></div>
+							<div class="scroll-box" data-param="panning_speed"><div class="scale"></div></div>
 						</div>
 					</div>
 				</div>

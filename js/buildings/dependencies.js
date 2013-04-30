@@ -49,3 +49,6 @@ TemporalGateBuilding.require_building = [Headquarter2Building];
 
 //Imp - Rearming Deck
 RearmingDeckBuilding.require_building = [Headquarter3Building];
+
+//Imp - Rift Creator
+RiftCreatorBuilding.require_building = [Headquarter3Building, TemporalGateBuilding];

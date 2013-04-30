@@ -47,7 +47,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 		var incr = this._standardIncreaseRes(amount);
 		
 		if (this.player == PLAYER_HUMAN)
-			game.energyDraw.waterSetLevel(this.res_now);
+			InterfaceEnergyWaterDraw.waterSetLevel(this.res_now);
 		
 		if (this.isResFull())
 			this.sellWater();
@@ -73,7 +73,7 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 			game.resources.play('water_sell');
 			
 			if (this.player == PLAYER_HUMAN)
-				game.energyDraw.waterReset();
+				InterfaceEnergyWaterDraw.waterReset();
 		}
 	};
 }

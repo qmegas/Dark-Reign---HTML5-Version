@@ -560,11 +560,11 @@ function AbstractUnit(pos_x, pos_y, player)
 		game.viewport_ctx.fillRect(health_top_x + 1, top_y-0.5, (health_width - 2)*health_proc, 2);
 		
 		if (this.tactic_group != -1)
-			game.fontDraw.drawOnCanvas(this.tactic_group.toString(), game.viewport_ctx, top_x + sel_width + 3, top_y  + sel_width - 7, 'yellow');
+			InterfaceFontDraw.drawOnCanvas(this.tactic_group.toString(), game.viewport_ctx, top_x + sel_width + 3, top_y  + sel_width - 7, 'yellow');
 		
 		//Draw name
 		if (is_onmouse)
-			game.fontDraw.drawOnCanvas(this._proto.obj_name, game.viewport_ctx, top_x, top_y - 16, 'yellow', 'center', sel_width);
+			InterfaceFontDraw.drawOnCanvas(this._proto.obj_name, game.viewport_ctx, top_x, top_y - 16, 'yellow', 'center', sel_width);
 	};
 	
 	this.canBeSelected = function()
@@ -791,7 +791,7 @@ AbstractUnit.createNew = function(obj, x, y, player, instant_build)
 	game.objects[uid].markCellsOnMap(uid);
 	
 	if (!instant_build)
-		game.notifications.addSound('unit_completed');
+		InterfaceSoundQueue.addSound('unit_completed');
 	
 	return game.objects[uid];
 };

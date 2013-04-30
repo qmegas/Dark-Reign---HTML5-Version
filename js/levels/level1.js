@@ -2423,7 +2423,7 @@ function Level1()
 			NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
 			FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
 			RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 
-			VerticalBridgeBuilding, 
+			VerticalBridgeBuilding, CenterBridgeBuilding,
 			//Upgrades
 			Headquarter2Building, Headquarter3Building, 
 			TrainingFacility2Building, AssemblyPlant2Building,

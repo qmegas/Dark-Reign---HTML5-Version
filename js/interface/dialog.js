@@ -1,4 +1,4 @@
-function Dialog()
+function InterfaceDialog()
 {
 	this._options = {};
 	

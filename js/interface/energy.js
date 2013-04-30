@@ -1,38 +1,42 @@
-function EnergyWaterDraw()
-{
-	this._max = 0;
-	this._current = 0;
-	this._water_current = 0;
+var InterfaceEnergyWaterDraw = {
+	_max: 0,
+	_current: 0,
+	_water_current: 0,
 	
-	this._last_sound_notification = (new Date()).getTime() + 15000;
-	this._last_blink = this._last_sound_notification;
-	this._ctx = $('#energy_scale').get(0).getContext('2d');
+	_last_sound_notification: (new Date()).getTime() + 15000,
+	_last_blink: this._last_sound_notification,
+	_ctx: null,
 	
-	$('#energy_scale').click(function(event){
-		if (event.offsetX >= 29)
-			game.energyDraw.waterClick();
-	});
+	init: function()
+	{
+		this._ctx = $('#energy_scale').get(0).getContext('2d');
+		
+		$('#energy_scale').click(function(event){
+			if (event.offsetX >= 29)
+				InterfaceEnergyWaterDraw.waterClick();
+		});
+	},
 	
-	this.enrgyNotification = function(time)
+	enrgyNotification: function(time)
 	{
 		if (this._max <= this._current)
 		{
 			//Make sound every 15 sec
 			if ((time - this._last_sound_notification) > 15000)
 			{
-				//game.notifications.addSound((this._current-this._max > 250) ? 'power_critical' : 'low_power');
+				InterfaceSoundQueue.addSound((this._current-this._max > 250) ? 'power_critical' : 'low_power');
 				this._last_sound_notification = time;
 			}
 		}
-	};
+	},
 	
-	this.drawAll = function()
+	drawAll: function()
 	{
 		this.waterDraw();
 		this.energyDraw();
-	};
+	},
 	
-	this.waterDraw = function()
+	waterDraw: function()
 	{
 		var CANVAS_H = 81, bar_size = parseInt(this._water_current/200*CANVAS_H);
 		
@@ -43,18 +47,18 @@ function EnergyWaterDraw()
 		//Water level
 		this._ctx.fillStyle = '#00a5ff';
 		this._ctx.fillRect(29, CANVAS_H - bar_size, 9, bar_size);
-	};
+	},
 	
-	this.waterSetLevel = function(level)
+	waterSetLevel: function(level)
 	{
 		if (level > this._water_current)
 		{
 			this._water_current = level;
 			this.waterDraw();
 		}
-	};
+	},
 	
-	this.waterReset = function()
+	waterReset: function()
 	{
 		var i;
 		
@@ -66,9 +70,9 @@ function EnergyWaterDraw()
 					this._water_current = game.objects[i].res_now;
 		
 		this.waterDraw();
-	};
+	},
 	
-	this.waterClick = function()
+	waterClick: function()
 	{
 		var i, obj = null, max = 0;
 		
@@ -82,9 +86,9 @@ function EnergyWaterDraw()
 				
 		if (obj !== null)
 			obj.sellWater();
-	};
+	},
 	
-	this.energyDraw = function()
+	energyDraw: function()
 	{
 		var SECTION_STEP = 2500, CANVAS_H = 81;
 		var bar_color = '#ff0000', max_val = Math.max(2500, Math.ceil(Math.max(this._max, this._current) / SECTION_STEP)*SECTION_STEP), 
@@ -135,17 +139,17 @@ function EnergyWaterDraw()
 			}
 			this._ctx.stroke();
 		}
-	};
+	},
 	
-	this.energyAddToMax = function(val)
+	energyAddToMax: function(val)
 	{
 		this._max += val;
 		this.energyDraw();
-	};
+	},
 	
-	this.energyAddToCurrent = function(val)
+	energyAddToCurrent: function(val)
 	{
 		this._current += val;
 		this.energyDraw();
-	};
-}
+	}
+};

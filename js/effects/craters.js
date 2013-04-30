@@ -18,6 +18,9 @@ var CraterEffect = {
 		crater6: {
 			padding: {x: 36, y: 72}
 		},
+		crater7: {
+			padding: {x: 48, y: 48}
+		},
 		crater8: {
 			padding: {x: 24, y: 14}
 		},

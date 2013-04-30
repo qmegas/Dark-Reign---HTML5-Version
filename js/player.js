@@ -13,13 +13,15 @@ function Player(map_color, start_position)
 	this.addMoney = function(num)
 	{
 		this._money += parseInt(num);
-		game.moneyDraw.setMoney(this._money);
+		//@todo Update interface only if human player
+		InterfaceMoneyDraw.setMoney(this._money);
 	};
 	
 	this.decMoney = function(num)
 	{
 		this._money -= parseInt(num);
-		game.moneyDraw.setMoney(this._money);
+		//@todo Update interface only if human player
+		InterfaceMoneyDraw.setMoney(this._money);
 	};
 	
 	this.haveEnoughMoney = function(num)
@@ -29,16 +31,18 @@ function Player(map_color, start_position)
 	
 	this.energyAddMax = function(val)
 	{
-		game.energyDraw.energyAddToMax(val);
 		this._energy_max += val;
-		game.minimap.switchState();
+		//@todo Update interface only if human player
+		InterfaceEnergyWaterDraw.energyAddToMax(val);
+		InterfaceMinimap.switchState();
 	};
 	
 	this.energyAddCurrent = function(val)
 	{
-		game.energyDraw.energyAddToCurrent(val);
 		this._energy_current += val;
-		game.minimap.switchState();
+		//@todo Update interface only if human player
+		InterfaceEnergyWaterDraw.energyAddToCurrent(val);
+		InterfaceMinimap.switchState();
 	};
 	
 	this.energyLow = function()

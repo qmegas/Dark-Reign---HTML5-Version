@@ -69,7 +69,7 @@ function ConstructManager(units, buildings)
 		var buildings = this._checkArrayAvailability(this.available_buildings);
 		
 		if (units.is_new)
-			game.notifications.addSound('new_units_available');
+			InterfaceSoundQueue.addSound('new_units_available');
 		
 		this._checkUpgrade();
 		
@@ -105,7 +105,7 @@ function ConstructManager(units, buildings)
 		}
 		
 		if (new_upgrade)
-			game.notifications.addSound('upgrade_available');
+			InterfaceSoundQueue.addSound('upgrade_available');
 	};
 	
 	this._checkArrayAvailability = function(arr)
@@ -264,7 +264,7 @@ function ConstructManager(units, buildings)
 			if (!game.players[PLAYER_HUMAN].haveEnoughMoney(this.available_buildings[i].cost))
 			{
 				game.resources.play('cant_build');
-				game.notifications.addIfEmpty('insufficient_credits');
+				InterfaceSoundQueue.addIfEmpty('insufficient_credits');
 				return;
 			}
 			
@@ -335,7 +335,7 @@ function ConstructManager(units, buildings)
 		text = obj.obj_name + ' ' + obj.cost + 'c';
 		
 		//Draw name
-		var text_size = game.fontDraw.getSize(text) + 4, left = MAX_X - text_size - 13;
+		var text_size = InterfaceFontDraw.getSize(text) + 4, left = MAX_X - text_size - 13;
 		
 		this._popup_ctx.fillStyle = '#07f4ff';
 		this._popup_ctx.fillRect(MAX_X - 15 - text_size, 0, text_size + 2, 18);
@@ -353,7 +353,7 @@ function ConstructManager(units, buildings)
 		this._popup_ctx.lineTo(MAX_X, 10.5);
 		this._popup_ctx.stroke();
 		
-		game.fontDraw.drawOnCanvas(text, this._popup_ctx, MAX_X - 12.5 - text_size, 2.5, 'green');
+		InterfaceFontDraw.drawOnCanvas(text, this._popup_ctx, MAX_X - 12.5 - text_size, 2.5, 'green');
 		
 		//Draw required
 		var texts = [], max_text_size = 0;
@@ -369,7 +369,7 @@ function ConstructManager(units, buildings)
 		
 		for (i=0; i<texts.length; ++i)
 		{
-			text_size = game.fontDraw.getSize(texts[i]);
+			text_size = InterfaceFontDraw.getSize(texts[i]);
 			if (text_size > max_text_size)
 				max_text_size = text_size;
 		}
@@ -392,7 +392,7 @@ function ConstructManager(units, buildings)
 		this._popup_ctx.stroke();
 		
 		for (i=0; i<texts.length; ++i)
-			game.fontDraw.drawOnCanvas(texts[i], this._popup_ctx, left - 12.5 - max_text_size, i*15 + 2.5, 'red');
+			InterfaceFontDraw.drawOnCanvas(texts[i], this._popup_ctx, left - 12.5 - max_text_size, i*15 + 2.5, 'red');
 	};
 	
 	
@@ -452,7 +452,7 @@ function ConstructManager(units, buildings)
 		txt = obj.producing_count.toString();
 		if (obj.producing_paused)
 			txt += ' [P]';
-		game.fontDraw.drawOnCanvas(txt, ctx, 13, 2, 'yellow');
+		InterfaceFontDraw.drawOnCanvas(txt, ctx, 13, 2, 'yellow');
 	};
 	
 	this.clearProducingByObject = function(obj)
