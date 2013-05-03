@@ -27,6 +27,7 @@ var InterfaceSoundQueue = {
 		}
 		
 		var sound = game.resources.get(this._queue[0]), queue = this;
+		sound.volume = game.resources.soundVolume;
 		sound.play();
 		this._now_playing = true;
 		

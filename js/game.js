@@ -124,6 +124,7 @@ function Game()
 			game._resetSelectionInfo();
 			InterfaceEnergyWaterDraw.drawAll();
 			InterfaceMinimap.switchState();
+			InterfaceMusicPlayer.start();
 			
 			$('.load-screen').hide();
 			$('.game').show();
@@ -796,6 +797,9 @@ function Game()
 		{
 			case 'sound_volume':
 				this.resources.setSoundVolume(value/100);
+				break;
+			case 'music_volume':
+				InterfaceMusicPlayer.setVolume(value/100);
 				break;
 		}
 	};

@@ -1,4 +1,8 @@
-Build 37
+Build 38
+- Added music player (tracks will be not available on GitHub)
+- Added ability to change music volume on right panel (at Menu tab)
+
+Build 37 (01.05.2013)
 - Added Rearming Deck building
 - Added Rift Creator building (without weapon)
 - Unit class changed to support multiple parts
@@ -7,7 +11,7 @@ Build 37
 - Added Scout Runner unit & Laser Cannon weapon
 - Added ability to scroll construction menu on right panel
 - Added Bridge Junction, last building for Imperium side
-- Small level corrections
+- Small map corrections
 - Added "Menu" tab on right panel
 - Added ability to change game sounds volume (other settings still have no effect)
 - Some code refactoring

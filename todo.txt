@@ -1,7 +1,6 @@
 To do:
 	- Complete code refactoring
 		- Move construction manager to interface folder
-		- Move game viewport position to InterfaceGUI
 	- Allow unit to shoot not only to the center of the building
 	- Add unit generation in progress sound
 	- Add ingame music support
