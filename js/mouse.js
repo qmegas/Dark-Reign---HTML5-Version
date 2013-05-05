@@ -153,14 +153,15 @@ var MousePointer = {
 					game.objects[objid].isFixer()
 				)
 					return this._drawCursor(current_time, 23, 5);
-				else if (game.objects[objid].isTeleport())
-				{
-					if (game.selected_info.is_building && game.selected_objects[0]==objid && game.objects[objid].haveInsideUnits())
-						return this._drawCursor(current_time, 24, 10);
-					if (game.selected_objects.length>0 && !game.selected_info.is_building && game.objects[objid].haveFreeSpace())
-						return this._drawCursor(current_time, 25, 12);
-				}
-			}	
+			}
+			
+			if (game.objects[objid].canCarry())
+			{
+				if (game.objects[objid].is_selected && game.objects[objid].haveInsideUnits())
+					return this._drawCursor(current_time, 24, 10);
+				if (game.selected_info.move_mode_min<=MOVE_MODE_HOVER && game.objects[objid].haveFreeSpace(game.selected_info.min_mass))
+					return this._drawCursor(current_time, 25, 12);
+			}
 			
 			return this._drawCursor(current_time, 1, 8);
 		}
@@ -270,22 +271,6 @@ var MousePointer = {
 							return;
 						}
 						
-						//Is teleport?
-						if (game.objects[unitid].isTeleport())
-						{
-							if (game.selected_info.is_building && game.selected_objects[0]==unitid)
-							{
-								game.objects[unitid].extract();
-								return;
-							}
-							if (game.selected_objects.length>0 && !game.selected_info.is_building && game.objects[unitid].haveFreeSpace())
-							{
-								for (var i in game.selected_objects)
-									game.objects[game.selected_objects[i]].orderToTeleport(game.objects[unitid], (i==0));
-								return;
-							}
-						}
-						
 						//Is healing humans
 						if (game.selected_info.humans && game.objects[unitid].isHealer())
 						{
@@ -303,6 +288,22 @@ var MousePointer = {
 						{
 							for (var i in game.selected_objects)
 								game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
+							return;
+						}
+					}
+					
+					//Carry unit/building
+					if (unitid!=-1 && game.objects[unitid].canCarry())
+					{
+						if (game.objects[unitid].is_selected && game.objects[unitid].haveInsideUnits())
+						{
+							game.objects[unitid].extractCarry();
+							return;
+						}
+						if (game.selected_info.move_mode_min<=MOVE_MODE_HOVER && game.objects[unitid].haveFreeSpace(game.selected_info.min_mass))
+						{
+							for (var i in game.selected_objects)
+								game.objects[game.selected_objects[i]].orderToCarry(game.objects[unitid], (i==0));
 							return;
 						}
 					}

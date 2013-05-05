@@ -444,8 +444,11 @@ function Game()
 			
 			if (this.objects[cur_unit].is_building)
 				this.selected_info.is_building = true;
+			else
+				this.selected_info.min_mass = Math.min(this.selected_info.min_mass, this.objects[cur_unit]._proto.mass);
 			
 			this.selected_info.move_mode = Math.max(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
+			this.selected_info.move_mode_min = Math.min(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
 			this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
 			this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
 			harvesters = harvesters && this.objects[cur_unit].canHarvest();
@@ -555,11 +558,13 @@ function Game()
 		this.selected_info = {
 			is_building: false,
 			move_mode: 0,
+			move_mode_min: MOVE_MODE_FLY,
 			is_produce: false,
 			can_attack_ground: false,
 			can_attack_fly: false,
 			harvesters: false,
-			humans: false
+			humans: false,
+			min_mass: 999
 		};
 	};
 	

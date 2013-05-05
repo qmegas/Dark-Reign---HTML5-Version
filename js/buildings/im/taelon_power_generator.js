@@ -19,7 +19,7 @@ function TaelonPowerBuilding(pos_x, pos_y, player)
 			.orderHarvest(this);
 	};
 	
-	this.onDestructed = function()
+	this.onObjectDeletionCustom = function()
 	{
 		game.players[this.player].energyAddMax(-1*this.res_now);
 	};

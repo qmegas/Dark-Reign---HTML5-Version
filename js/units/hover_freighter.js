@@ -72,6 +72,7 @@ HoverFreighterUnit.health_max = 500;
 HoverFreighterUnit.speed = 2.4;
 HoverFreighterUnit.shield_type = 'TankPlating';
 HoverFreighterUnit.move_mode = MOVE_MODE_HOVER;
+HoverFreighterUnit.mass = 10;
 
 HoverFreighterUnit.require_building = [AssemblyPlant2Building];
 

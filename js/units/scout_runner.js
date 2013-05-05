@@ -46,6 +46,7 @@ ScoutRunnerUnit.health_max = 150;
 ScoutRunnerUnit.speed = 2.9;
 ScoutRunnerUnit.shield_type = 'TankPlating';
 ScoutRunnerUnit.move_mode = MOVE_MODE_HOVER;
+ScoutRunnerUnit.mass = 10;
 
 ScoutRunnerUnit.require_building = [AssemblyPlantBuilding];
 

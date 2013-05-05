@@ -25,6 +25,10 @@ function AbstractBuilding()
 	
 	this.position = {x: 0, y: 0};
 	
+	//For carry units
+	this._carry_units = [];
+	this._carry_spaces = 0;
+	
 	//Building animation
 	this._draw_last_frame_change = 0;
 	this._draw_cur_frame = 0;
@@ -91,7 +95,6 @@ function AbstractBuilding()
 			
 			this._removingRecalc(this._proto);
 			game.constructor.recalcUnitAvailability();
-			this.onDestructed();
 			
 			game.kill_objects.push(this.uid);
 		}
@@ -543,6 +546,56 @@ function AbstractBuilding()
 		return false;
 	};
 	
+	//Buildings with ability to carry 
+	
+	this.canCarry = function()
+	{
+		return (this._proto.carry !== null);
+	};
+	
+	this.haveInsideUnits = function()
+	{
+		return (this._carry_spaces < this._proto.carry.places);
+	};
+	
+	this.haveFreeSpace = function(min_mass)
+	{
+		return (this._carry_spaces>0 && this._proto.carry.max_mass>=min_mass && (this.state==BUILDING_STATE_NORMAL || this.state==BUILDING_STATE_CHARGING));
+	};
+	
+	this.extractCarry = function()
+	{
+		if (!this.haveInsideUnits())
+			return;
+		
+		var i, pos, unit, mypos = this.getCell();
+		for (i in this._carry_units)
+		{
+			unit = game.objects[this._carry_units[i]];
+			pos = PathFinder.findNearestStandCell(mypos.x + 1, mypos.y + 2);
+			unit.position = MapCell.cellToPixel(pos);
+			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
+		}
+		
+		this._carry_units = [];
+		this._carry_spaces = this._proto.carry.places;
+	};
+	
+	this.inputCarry = function(unit)
+	{
+		unit.orderStop();
+		
+		if (!this.haveFreeSpace(unit._proto.mass))
+			return;
+		
+		var pos = unit.getCell();
+		game.unselectUnit(unit.uid);
+		game.level.map_cells[pos.x][pos.y].ground_unit = -1;
+		unit.position = {x: -100, y: -100};
+		this._carry_units.push(unit.uid);
+		this._carry_spaces--;
+	};
+	
 	//Functions for resource containing buildings
 	//Need to move it to another abstract object
 	
@@ -598,6 +651,7 @@ function AbstractBuilding()
 	this.onObjectDeletion = function() 
 	{
 		this.markCellsOnMap(-1);
+		this.onObjectDeletionCustom();
 	};
 	
 	this.onConstructed = function() 
@@ -638,12 +692,10 @@ function AbstractBuilding()
 			AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
 		}
 
-		this.onDestructed();
-
 		game.kill_objects.push(this.uid);
 	};
 	
-	this.onDestructed = function() {};
+	this.onObjectDeletionCustom = function() {};
 	this.onConstructedCustom = function() {};
 }
 
@@ -838,6 +890,8 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.is_healer = false;
 	obj.is_fixer = false;
 	obj.is_teleport = false;
+	
+	obj.carry = null;
 
 	obj.cell_size = null;       //Must redeclare
 	obj.cell_matrix = null;     //Must redeclare

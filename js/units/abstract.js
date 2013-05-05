@@ -25,6 +25,10 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.weapon = null;
 	this.tactic_group = -1;
 	
+	//For carry units
+	this._carry_units = [];
+	this._carry_spaces = 0;
+	
 	this.move_direction = 0; //[E, NE, N,    NW,     W,    SW, S, SE]
 	this.direction_matrix =    [3,  4, 5, -1, 2, -1, 6, -1, 1, 0,  7];
 	this.move_path = [];
@@ -179,22 +183,25 @@ function AbstractUnit(pos_x, pos_y, player)
 		this._move(pos.x, pos.y, false);
 	};
 	
-	this.orderToTeleport = function(teleport, play_sound)
+	this.orderToCarry = function(carrier, play_sound)
 	{
 		if (play_sound)
 			this._playSound(this._proto.response_sounds);
 		
 		if (this._proto.move_mode == MOVE_MODE_FLY)
 			return;
+		if (carrier._proto.carry.max_mass < this._proto.mass)
+			return;
 		
-		var pos = teleport.getCell();
-		pos.x += 1;
+		var pos = carrier.getCell();
 		pos.y += 1;
+		if (carrier.is_building)
+			pos.x += 1;
 		
 		this.action = {
-			type: 'go_teleport',
+			type: 'go_carry',
 			target_position: pos,
-			target_id: teleport.uid
+			target_id: carrier.uid
 		};
 		this._move(pos.x, pos.y, false);
 	};
@@ -663,6 +670,63 @@ function AbstractUnit(pos_x, pos_y, player)
 		return false;
 	};
 	
+	
+	//Units with ability to carry 
+	
+	this.canCarry = function()
+	{
+		return (this._proto.carry !== null);
+	};
+	
+	this.haveInsideUnits = function()
+	{
+		return (this._carry_spaces < this._proto.carry.places);
+	};
+	
+	this.haveFreeSpace = function(min_mass)
+	{
+		return (this._carry_spaces>0 && this._proto.carry.max_mass>=min_mass);
+	};
+	
+	this.extractCarry = function()
+	{
+		if (!this.haveInsideUnits())
+			return;
+		
+		var i, pos, unit, mypos = this.getCell();
+		for (i in this._carry_units)
+		{
+			unit = game.objects[this._carry_units[i]];
+			pos = PathFinder.findNearestStandCell(mypos.x, mypos.y);
+			unit.position = MapCell.cellToPixel(pos);
+			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
+		}
+		
+		this._carry_units = [];
+		this._carry_spaces = this._proto.carry.places;
+	};
+	
+	this.inputCarry = function(unit)
+	{
+		unit.orderStop();
+		
+		if (!this.haveFreeSpace(unit._proto.mass))
+			return;
+		
+		var pos = unit.getCell(), mypos = this.getCell();
+		if (pos.x==mypos.x && (pos.y-1)==mypos.y)
+		{
+			var pos = unit.getCell();
+			game.unselectUnit(unit.uid);
+			game.level.map_cells[pos.x][pos.y].ground_unit = -1;
+			unit.position = {x: -100, y: -100};
+			this._carry_units.push(unit.uid);
+			this._carry_spaces--;
+		}
+		else
+			unit.orderToCarry(this);
+	};
+	
 	//Events
 	
 	this.beforeMoveNextCell = function()
@@ -712,8 +776,8 @@ function AbstractUnit(pos_x, pos_y, player)
 					this.orderWait(1000);
 				break;
 				
-			case 'go_teleport':
-				if (!AbstractBuilding.isExists(this.action.target_id))
+			case 'go_carry':
+				if (game.objects[this.action.target_id] === undefined)
 				{
 					this.orderStop();
 					return;
@@ -722,12 +786,11 @@ function AbstractUnit(pos_x, pos_y, player)
 				var cell = this.getCell();
 				if (cell.x==this.action.target_position.x && cell.y==this.action.target_position.y)
 				{
-					game.objects[this.action.target_id].input(this);
-					this.orderStop();
+					game.objects[this.action.target_id].inputCarry(this);
 				}
 				else
 				{
-					if (!game.objects[this.action.target_id].haveFreeSpace())
+					if (!game.objects[this.action.target_id].haveFreeSpace(this._proto.mass))
 						this.orderStop();
 					else
 						this.orderWait(1000);
@@ -742,6 +805,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.onObjectDeletion = function() 
 	{
 		this.markCellsOnMap(-1);
+		this.onObjectDeletionCustom();
 	};
 	
 	this.afterWaiting = function()
@@ -755,8 +819,8 @@ function AbstractUnit(pos_x, pos_y, player)
 					this.orderStop();
 				break;
 				
-			case 'go_teleport':
-				if (!AbstractBuilding.isExists(this.action.target_id) || !game.objects[this.action.target_id].haveFreeSpace())
+			case 'go_carry':
+				if (game.objects[this.action.target_id] === undefined || !game.objects[this.action.target_id].haveFreeSpace(this._proto.mass))
 					this.orderStop();
 				else
 					this._move(this.action.target_position.x, this.action.target_position.y, false);
@@ -781,6 +845,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.beforeMoveNextCellCustom = function(){};
 	this.runCustom = function(){};
 	this.afterWaitingCustom = function(){};
+	this.onObjectDeletionCustom = function(){};
 }
 
 AbstractUnit.createNew = function(obj, x, y, player, instant_build)
@@ -841,6 +906,9 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.is_human = false;
 	obj.shield_type = 'ToughHumanWet';
 	obj.move_mode = MOVE_MODE_GROUND;
+	obj.mass = 1;
+	
+	obj.carry = null;
 
 	obj.require_building = [];
 

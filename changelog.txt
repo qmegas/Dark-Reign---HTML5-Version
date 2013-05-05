@@ -1,6 +1,7 @@
 Build 38
 - Added music player (tracks will be not available on GitHub)
 - Added ability to change music volume on right panel (at Menu tab)
+- Added Invader Troop Transport unit
 
 Build 37 (01.05.2013)
 - Added Rearming Deck building

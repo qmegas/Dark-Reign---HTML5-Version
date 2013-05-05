@@ -1,11 +1,10 @@
 function TemporalGateBuilding(pos_x, pos_y, player)
 {
-	var max_places = 3, max_charge = 42;
+	var max_charge = 42;
 	
 	this._proto = TemporalGateBuilding;
 	
-	this._inside_units = [];
-	this._free_spaces = max_places;
+	this._carry_spaces = this._proto.carry.places;
 	this._charge = max_charge;
 	
 	this.init(pos_x, pos_y, player);
@@ -18,60 +17,19 @@ function TemporalGateBuilding(pos_x, pos_y, player)
 		var i, color, top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y + 18  - game.viewport_y,
 			top_x = this.position.x - game.viewport_x + 4;
 		
-		for (i = 0; i < max_places; ++i)
+		for (i = 0; i < this._proto.carry.places; ++i)
 		{
 			game.viewport_ctx.fillStyle = '#000000';
 			game.viewport_ctx.fillRect(top_x + i*22, top_y, 20, 4);
-			color = ((2 - this._free_spaces)>=i) ? '#ff0000' : '#A5FF6C';
+			color = ((2 - this._carry_spaces)>=i) ? '#ff0000' : '#A5FF6C';
 			game.viewport_ctx.fillStyle = color;
 			game.viewport_ctx.fillRect(top_x + 1 + i*22, top_y + 1, 18, 2);
 		}
 	};
 	
-	this.haveInsideUnits = function()
-	{
-		return (this._free_spaces < max_places);
-	};
-	
-	this.haveFreeSpace = function()
-	{
-		return (this._free_spaces>0 && (this.state==BUILDING_STATE_NORMAL || this.state==BUILDING_STATE_CHARGING));
-	};
-	
 	this.canTeleport = function()
 	{
 		return (this.haveInsideUnits() && this._charge==max_charge && this.state==BUILDING_STATE_NORMAL);
-	};
-	
-	this.extract = function()
-	{
-		if (!this.haveInsideUnits())
-			return;
-		
-		var i, pos, unit, mypos = this.getCell();
-		for (i in this._inside_units)
-		{
-			unit = game.objects[this._inside_units[i]];
-			pos = PathFinder.findNearestStandCell(mypos.x + 1, mypos.y + 2);
-			unit.position = MapCell.cellToPixel(pos);
-			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
-		}
-		
-		this._inside_units = [];
-		this._free_spaces = max_places;
-	};
-	
-	this.input = function(unit)
-	{
-		if (!this.haveFreeSpace())
-			return;
-		
-		var pos = unit.getCell();
-		game.unselectUnit(unit.uid);
-		game.level.map_cells[pos.x][pos.y].ground_unit = -1;
-		unit.position = {x: -100, y: -100};
-		this._inside_units.push(unit.uid);
-		this._free_spaces--;
 	};
 	
 	this.teleport = function(tpos)
@@ -80,9 +38,9 @@ function TemporalGateBuilding(pos_x, pos_y, player)
 		
 		PathFinder.setSearchRadius(5);
 		
-		for (i in this._inside_units)
+		for (i in this._carry_units)
 		{
-			unit = game.objects[this._inside_units[i]];
+			unit = game.objects[this._carry_units[i]];
 			pos = PathFinder.findNearestEmptyCell(tpos.x, tpos.y, unit._proto.move_mode);
 			if (pos !== null)
 			{
@@ -94,12 +52,12 @@ function TemporalGateBuilding(pos_x, pos_y, player)
 						y: unit.position.y + 12
 					}
 				});
-				this._free_spaces++;
+				this._carry_spaces++;
 				teleported++;
-				this._inside_units[i] = -1;
+				this._carry_units[i] = -1;
 			}
 			else
-				new_arr.push(this._inside_units[i]);
+				new_arr.push(this._carry_units[i]);
 		}
 		
 		if (teleported > 0)
@@ -113,7 +71,7 @@ function TemporalGateBuilding(pos_x, pos_y, player)
 		
 		PathFinder.restoreSearchRadius();
 		
-		this._inside_units = new_arr;
+		this._carry_units = new_arr;
 	};
 	
 	this.charge = function()
@@ -127,7 +85,7 @@ function TemporalGateBuilding(pos_x, pos_y, player)
 		}
 	};
 	
-	this.onDestructed = function() 
+	this.onObjectDeletionCustom = function() 
 	{
 		if (this.haveInsideUnits())
 			this.extract();
@@ -147,6 +105,8 @@ TemporalGateBuilding.energy = 100;
 TemporalGateBuilding.can_build = true;
 TemporalGateBuilding.crater = 1;
 TemporalGateBuilding.is_teleport = true;
+
+TemporalGateBuilding.carry = {places: 3, max_mass: 10};
 
 TemporalGateBuilding.cell_size = {x: 3, y: 2};
 TemporalGateBuilding.cell_matrix = [1,1,1,1,1,1];
