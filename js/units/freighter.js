@@ -218,7 +218,7 @@ function FreighterUnit(pos_x, pos_y, player)
 			this.state = UNIT_STATE_LOADING;
 			this._setLoadSpeed();
 			this.startAnimation = (new Date).getTime();
-			this.setDirection(4); //NW
+			this.setDirection(-135); //NW
 		}
 		else
 			this.orderWait(1000); //Wait 1 second
@@ -280,6 +280,12 @@ FreighterUnit.parts = [
 		]
 	}
 ];
+FreighterUnit.shadow = {
+	stand: {
+		size: {x: 40, y: 40},
+		padding: {x: 6, y: 7}
+	}
+};
 
 FreighterUnit.select_sounds = ['gvig1sl0', 'gvig1sl1', 'gvig1sl2', 'gvig1sl5'];
 FreighterUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl3'];

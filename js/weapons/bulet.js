@@ -31,7 +31,7 @@ function Bulet(config_name)
 		//0 = W, 6 = S, 12 = E, 18 = N
 		animation_id = SimpleEffect.quickCreate(config.bulet_animation, {
 			looped: true,
-			direction: 12 - parseInt(Math.atan2(from.y - to.y, from.x - to.x)*(180/Math.PI)/15),
+			direction: Math.calcFrameByAngle(Math.getAngle(to.y - from.y, to.x - from.x), 24),
 			pos: position_now
 		});
 	};

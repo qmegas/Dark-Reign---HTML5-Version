@@ -1,9 +1,5 @@
 To do:
-	- Complete code refactoring
-		- Move construction manager to interface folder
 	- Allow unit to shoot not only to the center of the building
-	- Add unit generation in progress sound
-	- Add ingame music support
 	- Add more units
 
 - High priority bugs:
@@ -13,16 +9,17 @@ To do:
 	- Add animation for repair station
 	- Move static elements to dynamic map
 	- Fog of war
+	- Add weapon for Amper unit
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
-	- Energy meter blinking incorrectly
-	- Need to add animation when energy state changed
-	- Add smooth animation on water indicator when selling water
 	- When building upgraded we should calculate exact proportion on health for new building
 
 - Very low priority bugs:
+	- Add smooth animation on water indicator when selling water
+	- Need to add animation when energy state changed
+	- Energy meter blinking incorrectly
 	- When mouseover building or unit, it's name should be shown after small delay
 
 

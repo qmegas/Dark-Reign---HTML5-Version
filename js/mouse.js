@@ -105,6 +105,8 @@ var MousePointer = {
 		if (!MapCell.isCorrectCord(pos.x, pos.y))
 			return this._drawNormalCursor();
 		
+		var objid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+		
 		//Actions
 		if (game.action_state != ACTION_STATE_NONE)
 		{
@@ -123,14 +125,18 @@ var MousePointer = {
 					return this._drawCursor(current_time, 8, 9);
 				case ACTION_STATE_ATTACK:
 					if (game.selected_info.can_attack_ground)
+					{
+						if ((objid == -1) || game.objects[objid].is_building || (game.objects[objid]._proto.move_mode != MOVE_MODE_FLY))
+							return this._drawCursor(current_time, 3, 8);
+					}
+					if (game.selected_info.can_attack_fly && (objid != -1) && !game.objects[objid].is_building && (game.objects[objid]._proto.move_mode == MOVE_MODE_FLY))
 						return this._drawCursor(current_time, 3, 8);
-					else
-						return this._drawCursor(current_time, 4, 2);
+					
+					return this._drawCursor(current_time, 4, 2);
 			}
 		}
 		
 		//On object
-		var objid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
 		if (objid != -1)
 		{
 			if (game.objects[objid].is_building)

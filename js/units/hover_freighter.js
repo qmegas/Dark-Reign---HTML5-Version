@@ -63,6 +63,12 @@ HoverFreighterUnit.parts = [
 		weapon: 'LaserRifle'
 	}
 ];
+HoverFreighterUnit.shadow = {
+	stand: {
+		size: {x: 44, y: 44},
+		padding: {x: 8, y: 9}
+	}
+};
 
 HoverFreighterUnit.select_sounds = ['gvig1sl0', 'gvig1sl1', 'gvig1sl2', 'gvig1sl3'];
 HoverFreighterUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl3'];

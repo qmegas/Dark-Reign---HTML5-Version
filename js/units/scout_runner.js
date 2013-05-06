@@ -37,6 +37,12 @@ ScoutRunnerUnit.parts = [
 		weapon: 'LaserCannon'
 	}
 ];
+ScoutRunnerUnit.shadow = {
+	stand: {
+		size: {x: 33, y: 33},
+		padding: {x: 2, y: 3}
+	}
+};
 
 ScoutRunnerUnit.select_sounds = ['gvig1sl0', 'gvig1sl1', 'gvig1sl2', 'gvig1sl3'];
 ScoutRunnerUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl6'];

@@ -41,7 +41,7 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 		{
 			AbstractBuilding.createNew(this.action.object, this.action.position.x, this.action.position.y, this.player);
 			if (this.is_selected)
-				game.constructor.drawUnits();
+				InterfaceConstructManager.drawUnits();
 			game.kill_objects.push(this.uid);
 		}
 	};

@@ -60,3 +60,14 @@ function cloneObj(obj)
 
 	return clone;
 }
+
+Math.getAngle = function(y, x)
+{
+	return this.atan2(y, x) * (180/this.PI);
+};
+
+Math.calcFrameByAngle = function(angle, rotation_number)
+{
+	angle = parseInt(360 - angle + 360/(rotation_number*2)) % 360;
+	return parseInt(angle / (360/rotation_number));
+};

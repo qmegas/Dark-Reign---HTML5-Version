@@ -384,6 +384,9 @@ body {
 .dk-button-small:hover {
 	background-position: -71px 0;
 }
+.dk-button-small:active {
+	background-position: -142px 0;
+}
 .dk-button-small.disable {
 	background-position: -213px 0;
 }

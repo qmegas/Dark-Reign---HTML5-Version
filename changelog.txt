@@ -1,7 +1,16 @@
 Build 38
-- Added music player (tracks will be not available on GitHub)
+- Added music player (tracks will not be available on GitHub)
 - Added ability to change music volume on right panel (at Menu tab)
 - Added Invader Troop Transport unit
+- Added Plasma Tank unit & PlasmaCannon weapon
+- Added Amper unit (without weapon)
+- Added Mobile Air Defense unit with its weapon
+- Added Recon Drone unit (first fly unit)
+- Added shadows to all units that still not had it
+- Added unit generation in progress sound
+- Unit rotation function significantly improved
+- Code refactoring
+- Different bug fixes
 
 Build 37 (01.05.2013)
 - Added Rearming Deck building

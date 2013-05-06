@@ -20,6 +20,9 @@ var InterfaceMusicPlayer = {
 		
 	setVolume: function(volume)
 	{
+		if (this._tracks.length == 0)
+			return;
+		
 		if (volume == 0)
 		{
 			if (this._volume > 0)

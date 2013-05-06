@@ -26,10 +26,25 @@ var WeaponConfig = {
 		hit_explosion: 'eoplsex2_explosion',
 		bulet_speed: 700
 	},
+	GroundToAirLaser: {
+		bulet_animation: 'eoorbpr0_animation',
+		minimum_range: 0,
+		maximum_range: 5,
+		firedelay: 675,
+		can_shoot_ground: false,
+		can_shoot_flyer: true,
+		offence: {
+			type: 'A1',
+			strength: 48
+		},
+		fire_sound: 'gxmadwc0',
+		hit_explosion: 'eoblatr0_explosion',
+		bulet_speed: 2000
+	},
 	IMPFixedGroundToAirLaser: {
 		bulet_animation: 'eoorbpr0_animation',
 		minimum_range: 0,
-		maximum_range: 10,
+		maximum_range: 8,
 		firedelay: 473,
 		can_shoot_ground: false,
 		can_shoot_flyer: true,
@@ -84,6 +99,21 @@ var WeaponConfig = {
 		},
 		fire_sound: 'gxneuwc0',
 		hit_explosion: 'eoncnex0_explosion',
+		bulet_speed: 2000 //SetSpeed(35.0  0.0  1000.0 1)
+	},
+	PlasmaCannon: {
+		bulet_animation: 'eoplspr1_animation',
+		minimum_range: 0,
+		maximum_range: 5,
+		firedelay: 507,
+		can_shoot_ground: true,
+		can_shoot_flyer: false,
+		offence: {
+			type: 'E3',
+			strength: 19
+		},
+		fire_sound: 'gxpltwc0',
+		hit_explosion: 'eoplsex2_explosion',
 		bulet_speed: 2000 //SetSpeed(35.0  0.0  1000.0 1)
 	},
 	PlasmaRifle: {

@@ -114,11 +114,11 @@ function WeaponHolder(config_name)
 		
 		//Rotate unit
 		if (unit.is_building)
-			unit.setWeaponDirection(8 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/23.5));
+			unit.setWeaponDirection(Math.getAngle(to.y - position.y, to.x - position.x));
 		else
 		{
 			var x = unit.position.x, y = unit.position.y;
-			unit.setDirection(4 - parseInt(Math.atan2(position.y - to.y, position.x - to.x)*(180/Math.PI)/45));
+			unit.setDirection(Math.getAngle(to.y - position.y, to.x - position.x));
 			if (partid > 0)
 			{
 				x += unit._proto.parts[0].hotspots[unit.parts[0].direction][1].x;

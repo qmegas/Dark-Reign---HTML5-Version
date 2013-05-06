@@ -24,7 +24,6 @@ function Game()
 	
 	//Drawers
 	this.objDraw = new ObjectDraw();
-	this.constructor = {};
 	this.dialog = new InterfaceDialog();
 	
 	//Flags
@@ -103,7 +102,7 @@ function Game()
 		this.level.getInitUnits();
 		
 		//Interface init
-		this.constructor = new ConstructManager(this.level.getAvailableUnits(), this.level.getAvailableBuildings());
+		InterfaceConstructManager.init(this.level.getAvailableUnits(), this.level.getAvailableBuildings());
 		InterfaceMoneyDraw.init();
 		InterfaceFontDraw.init();
 		InterfaceEnergyWaterDraw.init();
@@ -119,7 +118,7 @@ function Game()
 		this.resources.onComplete = function(){
 			game.moveViewport(game.level.start_positions[0].x - 10, game.level.start_positions[0].y - 10, false);
 			game.players[PLAYER_HUMAN].addMoney(15000); //Should add money to all players
-			game.constructor.drawUnits();
+			InterfaceConstructManager.drawUnits();
 			game.level.generateMap();
 			game._resetSelectionInfo();
 			InterfaceEnergyWaterDraw.drawAll();
@@ -337,7 +336,7 @@ function Game()
 			ActionsHeap.run();
 			
 			//Update producing canvases
-			this.constructor.redrawProductionState();
+			InterfaceConstructManager.redrawProductionState();
 			
 			//Update minimap
 			InterfaceMinimap.drawObjects();
@@ -391,7 +390,7 @@ function Game()
 					this.cleanActionState();
 				case ACTION_STATE_NONE:
 					this._deselectUnits();
-					this.constructor.drawUnits();
+					InterfaceConstructManager.drawUnits();
 					break;
 					
 				default:
@@ -463,9 +462,9 @@ function Game()
 			
 		//Constructor selected?
 		if (this.selected_objects.length==1 && (this.objects[this.selected_objects[0]] instanceof ConstructionRigUnit))
-			this.constructor.drawBuildings();
+			InterfaceConstructManager.drawBuildings();
 		else
-			this.constructor.drawUnits();
+			InterfaceConstructManager.drawUnits();
 	};
 	
 	this._deselectUnits = function()
@@ -499,12 +498,13 @@ function Game()
 		this.resources.addSound('fixed', 'sounds/gxrepoc0.' + AUDIO_TYPE);
 		this.resources.addSound('water_sell', 'sounds/gxcrdoc0.' + AUDIO_TYPE);
 		this.resources.addSound('teleport', 'sounds/gxtgtoc0.' + AUDIO_TYPE);
+		this.resources.addSound('unit_generation_in_progress', 'sounds/gvstscl3.' + AUDIO_TYPE);
 		for (i=0; i<10; ++i)
 			this.resources.addSound('tactical_group' + ((i+1)%10), 'sounds/gvselcl' + i + '.' + AUDIO_TYPE);
 		
 		//Units & Buildings
-		this.constructor.loadUnitResources();
-		this.constructor.loadBuildingResources();
+		InterfaceConstructManager.loadUnitResources();
+		InterfaceConstructManager.loadBuildingResources();
 		
 		//Effects
 		CraterEffect.loadResources();
@@ -643,7 +643,7 @@ function Game()
 				$('#top_button_power').removeClass('active');
 				break;
 			case ACTION_STATE_BUILD:
-				this.constructor.removeCellSelection();
+				InterfaceConstructManager.removeCellSelection();
 				break;
 			case ACTION_STATE_REPAIR:
 				$('#top_button_repair').removeClass('active');

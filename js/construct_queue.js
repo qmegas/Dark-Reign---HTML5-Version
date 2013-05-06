@@ -42,7 +42,19 @@ var ProducingQueue = {
 		if (typeof this._queue[obj.producing_building_id] == 'undefined')
 			this._queue[obj.producing_building_id] = [];
 		
+		if (this._getTotalProducingCount() == 0)
+			InterfaceSoundQueue.addIfEmpty('unit_generation_in_progress');
+		
 		this._queue[obj.producing_building_id].push(obj);
+	},
+		
+	_getTotalProducingCount: function()
+	{
+		var i, cnt = 0;
+		for (i in this._queue)
+			cnt += this._queue[i].length;
+		
+		return cnt;
 	},
 	
 	pauseProduction: function(obj) 

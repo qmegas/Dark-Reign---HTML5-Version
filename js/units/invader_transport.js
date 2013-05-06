@@ -86,6 +86,12 @@ InvaderTransportUnit.parts = [
 		weapon: 'LaserRifle'
 	}
 ];
+InvaderTransportUnit.shadow = {
+	stand: {
+		size: {x: 45, y: 45},
+		padding: {x: 6, y: 13}
+	}
+};
 
 InvaderTransportUnit.select_sounds = ['gvig1sl0', 'gvig1sl1', 'gvig1sl2', 'gvig1sl3'];
 InvaderTransportUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl6'];

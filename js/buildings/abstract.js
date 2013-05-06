@@ -94,7 +94,7 @@ function AbstractBuilding()
 				game.resources.playOnPosition(this._proto.death_sound, false, this.position, true);
 			
 			this._removingRecalc(this._proto);
-			game.constructor.recalcUnitAvailability();
+			InterfaceConstructManager.recalcUnitAvailability();
 			
 			game.kill_objects.push(this.uid);
 		}
@@ -409,11 +409,12 @@ function AbstractBuilding()
 		}
 	};
 	
-	this.setWeaponDirection = function(val)
+	this.setWeaponDirection = function(angle)
 	{
 		if (this._proto.images.weapon.no_direction)
 			return;
-		this.weapon_direction = val;
+		
+		this.weapon_direction = Math.calcFrameByAngle(angle, 16);
 	};
 	
 	this._drawWeapon = function(key, frame)
@@ -663,7 +664,7 @@ function AbstractBuilding()
 		if (this.state == BUILDING_STATE_UPGRADING)
 			this.health = this._proto.health_max;
 		
-		game.constructor.recalcUnitAvailability();
+		InterfaceConstructManager.recalcUnitAvailability();
 
 		game.players[this.player].energyAddCurrent(this._proto.energy);
 		this.state = BUILDING_STATE_NORMAL;
@@ -682,7 +683,7 @@ function AbstractBuilding()
 		var cell = this.getCell();
 			
 		this._removingRecalc(this._proto);
-		game.constructor.recalcUnitAvailability();
+		InterfaceConstructManager.recalcUnitAvailability();
 
 		game.players[this.player].addMoney(this._proto.sell_cost);
 

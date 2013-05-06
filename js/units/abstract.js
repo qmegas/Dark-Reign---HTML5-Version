@@ -29,8 +29,6 @@ function AbstractUnit(pos_x, pos_y, player)
 	this._carry_units = [];
 	this._carry_spaces = 0;
 	
-	this.move_direction = 0; //[E, NE, N,    NW,     W,    SW, S, SE]
-	this.direction_matrix =    [3,  4, 5, -1, 2, -1, 6, -1, 1, 0,  7];
 	this.move_path = [];
 	
 	this.startAnimation = 0; 
@@ -334,7 +332,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			this.position.y += y_movement * change;
 		}
 
-		this.setDirection(this.direction_matrix[(x_movement+1)*4 + y_movement + 1]);
+		this.setDirection(Math.getAngle(y_movement, x_movement));
 
 		if (next_x==this.position.x && next_y==this.position.y)
 		{
@@ -347,25 +345,10 @@ function AbstractUnit(pos_x, pos_y, player)
 		}
 	};
 	
-	this.setDirection = function(direction)
+	this.setDirection = function(angle)
 	{
-		this.move_direction = direction;
-		
 		for (var i in this.parts)
-		{
-			switch (this._proto.parts[i].rotations)
-			{
-				case 1:
-					this.parts[i].direction = 0;
-					break;
-				case 8:
-					this.parts[i].direction = this.move_direction;
-					break;
-				case 16:
-					this.parts[i].direction = this.move_direction*2;
-					break;
-			}
-		}
+			this.parts[i].direction = Math.calcFrameByAngle(angle, this._proto.parts[i].rotations);
 	};
 	
 	this._moveToNextCell = function()

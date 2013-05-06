@@ -68,16 +68,16 @@ var InterfaceGUI = {
 
 		$('.unit-image').click(function(){
 			var cellid = $(this).parent('div').attr('data-cell');
-			game.constructor.cellClick(cellid, 'left');
+			InterfaceConstructManager.cellClick(cellid, 'left');
 		});
 		$('.unit-image').bind('contextmenu', function(){
 			var cellid = $(this).parent('div').attr('data-cell');
-			game.constructor.cellClick(cellid, 'right');
+			InterfaceConstructManager.cellClick(cellid, 'right');
 			return false;
 		});
 		$('.unit-image').mouseover(function(){
 			var cellid = $(this).parent('div').attr('data-cell'), position = $(this).offset();
-			game.constructor.cellPopupPrepere(cellid);
+			InterfaceConstructManager.cellPopupPrepere(cellid);
 
 			position.left -= 392;
 			$('#cell_popup').css(position);
@@ -95,7 +95,7 @@ var InterfaceGUI = {
 				return;
 
 			var position = $(this).offset();
-			game.constructor.upgradePopupPrepere();
+			InterfaceConstructManager.upgradePopupPrepere();
 
 			position.left -= 398;
 			$('#cell_popup').css(position);
@@ -141,10 +141,10 @@ var InterfaceGUI = {
 			MousePointer.setPosition(event);
 		});
 		$('#cm_page_up').click(function(){
-			game.constructor.pageUp();
+			InterfaceConstructManager.pageUp();
 		});
 		$('#cm_page_down').click(function(){
-			game.constructor.pageDown();
+			InterfaceConstructManager.pageDown();
 		});
 		$('.scroll-box').live('mousedown', function(event){
 			var $this = $(this), proc = parseInt(event.offsetX / $this.width() * 100);

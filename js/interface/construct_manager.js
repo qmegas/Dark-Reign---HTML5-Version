@@ -3,26 +3,31 @@ var CM_ITEMS_COUNT = 15;
 var CM_VIEW_UNITS = 1;
 var CM_VIEW_BUILDINGS = 2;
 
-function ConstructManager(units, buildings)
-{
-	this.available_units = units;
-	this.available_buildings = [];
-	this.all_buildings = buildings;
+var InterfaceConstructManager = {
+	available_units: [],
+	available_buildings: [],
+	all_buildings: [],
 	
-	this.current_view_type = CM_VIEW_UNITS;
-	this.current_view_offset = 0;
-	this.unit_offset = 0;
-	this.building_offset = 0;
+	current_view_type: CM_VIEW_UNITS,
+	current_view_offset: 0,
+	unit_offset: 0,
+	building_offset: 0,
 	
-	this._popup_ctx = $('#cell_popup').get(0).getContext('2d');
+	_popup_ctx: null,
 	
-	//Constructor
-	for (var i in buildings)
-		if (buildings[i].can_build)
-			this.available_buildings.push(buildings[i]);
-	//Constructor end
+	init: function(units, buildings)
+	{
+		this.available_units = units;
+		this.all_buildings = buildings;
+		
+		this._popup_ctx = $('#cell_popup').get(0).getContext('2d');
+		
+		for (var i in buildings)
+			if (buildings[i].can_build)
+				this.available_buildings.push(buildings[i]);
+	},
 	
-	this.pageUp = function()
+	pageUp: function()
 	{
 		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset;
 		
@@ -40,9 +45,9 @@ function ConstructManager(units, buildings)
 			this.building_offset = offset;
 			this.drawBuildings();
 		}
-	};
+	},
 	
-	this.pageDown = function()
+	pageDown: function()
 	{
 		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
 			total = (this.current_view_type == CM_VIEW_UNITS) ? this.available_units.length : this.available_buildings.length;
@@ -50,6 +55,8 @@ function ConstructManager(units, buildings)
 		offset += CM_ITEMS_COUNT;
 		if ((offset + CM_ITEMS_COUNT - total) > 2)
 			offset = Math.ceil((total - CM_ITEMS_COUNT) / 3)*3;
+		if (offset < 0)
+			offset = 0;
 		
 		if (this.current_view_type == CM_VIEW_UNITS)
 		{
@@ -61,9 +68,9 @@ function ConstructManager(units, buildings)
 			this.building_offset = offset;
 			this.drawBuildings();
 		}
-	};
+	},
 	
-	this.recalcUnitAvailability = function()
+	recalcUnitAvailability: function()
 	{
 		var units = this._checkArrayAvailability(this.available_units);
 		var buildings = this._checkArrayAvailability(this.available_buildings);
@@ -75,9 +82,9 @@ function ConstructManager(units, buildings)
 		
 		if (units.is_changed || buildings.is_changed)
 			this._drawCells();
-	};
+	},
 	
-	this._checkUpgrade = function()
+	_checkUpgrade: function()
 	{
 		var i, j, obj, new_state, new_upgrade = false;
 		
@@ -106,9 +113,9 @@ function ConstructManager(units, buildings)
 		
 		if (new_upgrade)
 			InterfaceSoundQueue.addSound('upgrade_available');
-	};
+	},
 	
-	this._checkArrayAvailability = function(arr)
+	_checkArrayAvailability: function(arr)
 	{
 		var i, j, obj, have_new = false, have_changes = false, cur_enabled;
 		
@@ -135,24 +142,24 @@ function ConstructManager(units, buildings)
 		}
 		
 		return {is_changed: have_changes, is_new: have_new};
-	};
+	},
 	
-	this.loadUnitResources = function()
+	loadUnitResources: function()
 	{
 		for (var i=0; i<this.available_units.length; ++i)
 		{
 			var obj = this.available_units[i];
 			obj.loadResources();
 		}
-	};
+	},
 	
-	this.loadBuildingResources = function()
+	loadBuildingResources: function()
 	{
 		for (var i=0; i<this.all_buildings.length; ++i)
 			this.all_buildings[i].loadResources();
-	};
+	},
 	
-	this.drawUnits = function()
+	drawUnits: function()
 	{
 		this.removeCellSelection();
 		this.current_view_type = CM_VIEW_UNITS;
@@ -161,9 +168,9 @@ function ConstructManager(units, buildings)
 		//Check upgrade button state
 		if (game.selected_info.is_building && game.objects[game.selected_objects[0]]._proto.upgradable)
 			$('#upgrade_button').removeClass('disable');
-	};
+	},
 	
-	this.drawBuildings = function()
+	drawBuildings: function()
 	{
 		this.removeCellSelection();
 		this.current_view_type = CM_VIEW_BUILDINGS;
@@ -172,9 +179,9 @@ function ConstructManager(units, buildings)
 		//Make sure build tab is shown
 		if (!$('#tab_button_build').hasClass('active'))
 			$('#tab_button_build').click();
-	};
+	},
 	
-	this._drawCells = function()
+	_drawCells: function()
 	{
 		var offset = 0;
 		
@@ -218,14 +225,14 @@ function ConstructManager(units, buildings)
 					break;
 			}
 		}
-	};
+	},
 	
-	this._drawCellEmpty = function(cell)
+	_drawCellEmpty: function(cell)
 	{
 		$('#unit_box'+cell).css('background-image', 'url(images/units/empty_unit_box.png)');
-	};
+	},
 	
-	this._drawCell = function(cell, path, enabled, is_blue)
+	_drawCell: function(cell, path, enabled, is_blue)
 	{
 		var style;
 			
@@ -238,16 +245,16 @@ function ConstructManager(units, buildings)
 			'background-image': 'url('+path+')',
 			'background-position': style
 		});
-	};
+	},
 	
-	this.removeCellSelection = function()
+	removeCellSelection: function()
 	{
 		$('.unit-image.active').removeClass('active');
 		$('#upgrade_button').addClass('disable');
 		$('#cell_popup').hide();
-	};
+	},
 	
-	this.cellClick = function(cell_id, button)
+	cellClick: function(cell_id, button)
 	{
 		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
 			i = offset + parseInt(cell_id);
@@ -288,9 +295,9 @@ function ConstructManager(units, buildings)
 			
 			this._canvasRedraw(i);
 		}
-	};
+	},
 	
-	this.cellPopupPrepere = function(cell_id)
+	cellPopupPrepere: function(cell_id)
 	{
 		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
 			i = offset + parseInt(cell_id), obj;
@@ -313,23 +320,23 @@ function ConstructManager(units, buildings)
 		}
 		
 		this._drawPopup(obj);
-	};
+	},
 	
-	this.upgradePopupPrepere = function()
+	upgradePopupPrepere: function()
 	{
 		this._clearPopup();
 		if (game.selected_info.is_building && game.objects[game.selected_objects[0]]._proto.upgradable)
 			this._drawPopup(game.objects[game.selected_objects[0]]._proto.upgrade_to);
-	};
+	},
 	
-	this._clearPopup = function()
+	_clearPopup: function()
 	{
 		this._popup_ctx.clearRect(0, 0, 400, 200);
-	};
+	},
 	
-	this._drawPopup = function(obj)
+	_drawPopup: function(obj)
 	{
-		var MAX_X = 400, MAX_Y = 200;
+		var MAX_X = 400;
 		var i, text;
 		
 		text = obj.obj_name + ' ' + obj.cost + 'c';
@@ -393,10 +400,9 @@ function ConstructManager(units, buildings)
 		
 		for (i=0; i<texts.length; ++i)
 			InterfaceFontDraw.drawOnCanvas(texts[i], this._popup_ctx, left - 12.5 - max_text_size, i*15 + 2.5, 'red');
-	};
+	},
 	
-	
-	this.redrawProductionState = function()
+	redrawProductionState: function()
 	{
 		var i, index;
 		
@@ -413,9 +419,9 @@ function ConstructManager(units, buildings)
 			
 			this._canvasRedraw(i);
 		}
-	};
+	},
 	
-	this._canvasRedraw = function(index)
+	_canvasRedraw: function(index)
 	{
 		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
 			ctx = $('#cell_canvas_' + index).get(0).getContext('2d'), 
@@ -453,9 +459,9 @@ function ConstructManager(units, buildings)
 		if (obj.producing_paused)
 			txt += ' [P]';
 		InterfaceFontDraw.drawOnCanvas(txt, ctx, 13, 2, 'yellow');
-	};
+	},
 	
-	this.clearProducingByObject = function(obj)
+	clearProducingByObject: function(obj)
 	{
 		var i, index;
 		
@@ -471,11 +477,11 @@ function ConstructManager(units, buildings)
 			if (this.available_units[index] == obj)
 				$('#cell_canvas_' + i).get(0).getContext('2d').clearRect(0, 0, 64, 50);
 		}
-	};
+	},
 	
-	this._clearAllCellCanvases = function()
+	_clearAllCellCanvases: function()
 	{
 		for (var i = 0; i<CM_ITEMS_COUNT; ++i)
 			$('#cell_canvas_' + i).get(0).getContext('2d').clearRect(0, 0, 64, 50);
-	};
-}
+	}
+};
