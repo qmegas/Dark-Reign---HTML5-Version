@@ -54,6 +54,11 @@ var AnimationList = {
 		{start: 0, min_point: 0, max_point: 0, effect: 'eoblatr0_animation'},
 		{start: 0, min_point: 0, max_point: 0, effect: 'lite2_animation'}
 	],
+	eoiarex0_explosion: [
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoiarex0_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoiarex1_animation'},
+		{start: 15, min_point: 3, max_point: 3, effect: 'eoiarex2_animation'}
+	],
 	eolasex1_explosion: [
 		{start: 0, min_point: 3, max_point: 3, effect: 'eolasex1_animation'},
 		{start: 0, min_point: 3, max_point: 3, effect: 'lite1_animation'}
@@ -74,6 +79,11 @@ var AnimationList = {
 		{start: 0, min_point: 3, max_point: 3, effect: 'eorfgex0_animation'},
 		{start: 22, min_point: 3, max_point: 3, effect: 'eorfgex1_animation'},
 		{start: 0, min_point: 3, max_point: 3, effect: 'lite1_animation'}
+	],
+	eotacex0_explosion: [
+		{start: 0, min_point: 0, max_point: 0, effect: 'eotacex0_animation'},
+		{start: 0, min_point: 0, max_point: 0, effect: 'lite2_animation'},
+		{start: 0, min_point: 0, max_point: 0, effect: 'eodebsp3_animation'}
 	],
 	headquarter_80_explosion: [
 		{start: 0, min_point: 0, max_point: 0, effect: 'eoblamd0_animation'},

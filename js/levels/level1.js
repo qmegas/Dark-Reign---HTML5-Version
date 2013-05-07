@@ -2387,7 +2387,7 @@ function Level1()
 		game.players[PLAYER_HUMAN] = new Player('#ffffbb', true);
 		game.players[PLAYER_COMPUTER1] = new Player('#fc3c58', false);
 		
-		AbstractUnit.createNew(ConstructionRigUnit, 63, 4, PLAYER_HUMAN, true);
+		AbstractUnit.createNew(ScarabUnit, 63, 4, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 66, 4, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 64, 6, PLAYER_HUMAN, true);
 		
@@ -2412,7 +2412,8 @@ function Level1()
 			ConstructionRigUnit, FreighterUnit, HoverFreighterUnit, 
 			GuardianUnit, BionUnit, ExterminatorUnit,
 			ScoutRunnerUnit, InvaderTransportUnit, PlasmaTankUnit,
-			AmperUnit, MadUnit, ReconDroneUnit
+			AmperUnit, MadUnit, ReconDroneUnit,
+			TachyonTankUnit, ScarabUnit
 		];
 	};
 	

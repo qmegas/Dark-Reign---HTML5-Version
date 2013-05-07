@@ -66,6 +66,10 @@ function Bulet(config_name)
 	{
 		var dmg, i, ids = MapCell.getAllUserIds(game.level.map_cells[x][y]);
 		
+		//Play hit sound
+		if (config.hit_sound)
+			game.resources.playOnPosition(config.hit_sound, true, position_now, true);
+		
 		for (i = 0; i<ids.length; ++i)
 		{
 			dmg = game.damageTable.calcDamage(

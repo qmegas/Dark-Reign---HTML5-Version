@@ -1,20 +1,25 @@
 To do:
 	- Allow unit to shoot not only to the center of the building
 	- Add more units
+	- Implement minimal attack range
+	- Add Vortex weapon
+	- Add Boost weapon (weapon for Amper unit)
+	- Fog of war
+	- Move static elements to dynamic map
+	- Add weapon area effect
+	- Implement unit rotation
 
 - High priority bugs:
 
 - Medium priority bugs:
 	- Air Defense Site should have 3 weapons instead one
 	- Add animation for repair station
-	- Move static elements to dynamic map
-	- Fog of war
-	- Add weapon for Amper unit
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
 	- When building upgraded we should calculate exact proportion on health for new building
+	- Added support of persistent damage
 
 - Very low priority bugs:
 	- Add smooth animation on water indicator when selling water

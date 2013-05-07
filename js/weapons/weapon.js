@@ -155,5 +155,7 @@ WeaponHolder.loadResources = function()
 	{
 		if (WeaponConfig[i].fire_sound)
 			game.resources.addSound(WeaponConfig[i].fire_sound, 'sounds/weapon/' + WeaponConfig[i].fire_sound + '.' + AUDIO_TYPE);
+		if (WeaponConfig[i].hit_sound)
+			game.resources.addSound(WeaponConfig[i].hit_sound, 'sounds/weapon/' + WeaponConfig[i].hit_sound + '.' + AUDIO_TYPE);
 	}
 };

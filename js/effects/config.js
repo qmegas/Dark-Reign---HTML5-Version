@@ -65,6 +65,42 @@ var EffectList = {
 		hotpoint: {x: 20, y: 89},
 		frames: 20
 	},
+	eobpfsm4_animation: {
+		res_key: 'eobpfsm4',
+		size: {x: 90, y: 80},
+		hotpoint: {x: 41, y: 65},
+		frames: 22
+	},
+	eodebsp3_animation: {
+		res_key: 'eodebsp3',
+		size: {x: 100, y: 100},
+		hotpoint: {x: 51, y: 50},
+		frames: 23
+	},
+	eoiarex0_animation: {
+		res_key: 'eoiarex0',
+		size: {x: 72, y: 72},
+		hotpoint: {x: 34, y: 29},
+		frames: 20
+	},
+	eoiarex1_animation: {
+		res_key: 'eoiarex1',
+		size: {x: 60, y: 60},
+		hotpoint: {x: 28, y: 31},
+		frames: 18
+	},
+	eoiarex2_animation: {
+		res_key: 'eoiarex2',
+		size: {x: 72, y: 72},
+		hotpoint: {x: 30, y: 47},
+		frames: 21
+	},
+	eoiarpr0_animation: { //Bulet
+		res_key: 'eoiarpr0',
+		size: {x: 30, y: 30},
+		hotpoint: {x: 15, y: 15},
+		frames: 5
+	},
 	eolasex0_animation: {
 		res_key: 'eolasex0',
 		size: {x: 25, y: 25},
@@ -214,6 +250,18 @@ var EffectList = {
 		size: {x: 40, y: 20},
 		hotpoint: {x: 5, y: 13},
 		frames: 15
+	},
+	eotacex0_animation: {
+		res_key: 'eotacex0',
+		size: {x: 60, y: 60},
+		hotpoint: {x: 31, y: 29},
+		frames: 17
+	},
+	eotacpr0_animation: { //Bulet
+		res_key: 'eotacpr0',
+		size: {x: 20, y: 20},
+		hotpoint: {x: 10, y: 10},
+		frames: 6
 	},
 	holyrandom1_animation: {
 		res_key: 'eomedsm0',

@@ -29,8 +29,8 @@ var WeaponConfig = {
 	GroundToAirLaser: {
 		bulet_animation: 'eoorbpr0_animation',
 		minimum_range: 0,
-		maximum_range: 5,
-		firedelay: 675,
+		maximum_range: 10,
+		firedelay: 473,
 		can_shoot_ground: false,
 		can_shoot_flyer: true,
 		offence: {
@@ -41,10 +41,26 @@ var WeaponConfig = {
 		hit_explosion: 'eoblatr0_explosion',
 		bulet_speed: 2000
 	},
+	IMPArtilleryShell: {
+		bulet_animation: 'eoiarpr0_animation',
+		minimum_range: 3,
+		maximum_range: 45,
+		firedelay: 2700,
+		can_shoot_ground: true,
+		can_shoot_flyer: false,
+		offence: {
+			type: 'K2',
+			strength: 30
+		},
+		fire_sound: 'gxiarwc0',
+		hit_sound: 'gxex1oc0',
+		hit_explosion: 'eoiarex0_explosion',
+		bulet_speed: 200 //SetSpeed(7.0 0.0 5.0 1)
+	},
 	IMPFixedGroundToAirLaser: {
 		bulet_animation: 'eoorbpr0_animation',
 		minimum_range: 0,
-		maximum_range: 8,
+		maximum_range: 10,
 		firedelay: 473,
 		can_shoot_ground: false,
 		can_shoot_flyer: true,
@@ -145,5 +161,20 @@ var WeaponConfig = {
 		fire_sound: 'gxextwc1',
 		hit_explosion: 'eorfgex0_explosion',
 		bulet_speed: 700
+	},
+	TachyonCannon: {
+		bulet_animation: 'eotacpr0_animation',
+		minimum_range: 1,
+		maximum_range: 8,
+		firedelay: 675,
+		can_shoot_ground: true,
+		can_shoot_flyer: false,
+		offence: {
+			type: 'E4',
+			strength: 20
+		},
+		fire_sound: 'gxtctwc0',
+		hit_explosion: 'eotacex0_explosion',
+		bulet_speed: 2000
 	}
 };
