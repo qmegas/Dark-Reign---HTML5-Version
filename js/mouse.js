@@ -159,6 +159,8 @@ var MousePointer = {
 					game.objects[objid].isFixer()
 				)
 					return this._drawCursor(current_time, 23, 5);
+				else if (game.selected_info.cyclones && game.objects[objid]._proto==RearmingDeckBuilding && game.objects[objid].state==BUILDING_STATE_NORMAL)
+					return this._drawCursor(current_time, 27, 12);
 			}
 			
 			if (game.objects[objid].canCarry())
@@ -274,6 +276,14 @@ var MousePointer = {
 						{
 							for (var i in game.selected_objects)
 								game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
+							return;
+						}
+						
+						//Rearm Cyclones
+						if (game.selected_info.cyclones && game.objects[unitid]._proto==RearmingDeckBuilding && game.objects[unitid].state==BUILDING_STATE_NORMAL)
+						{
+							for (var i in game.selected_objects)
+								game.objects[game.selected_objects[i]].orderRearm(game.objects[unitid], true);
 							return;
 						}
 						

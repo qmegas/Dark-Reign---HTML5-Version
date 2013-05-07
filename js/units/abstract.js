@@ -9,6 +9,7 @@ var UNIT_STATE_ATTACK = 3;
 var UNIT_STATE_HEALING = 4;
 var UNIT_STATE_WAITING = 5;
 var UNIT_STATE_LOADING = 6; //Freighter
+var UNIT_STATE_REARMING = 7; //Cyclone
 
 function AbstractUnit(pos_x, pos_y, player)
 {

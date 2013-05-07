@@ -34,6 +34,10 @@ var ActionsHeap = {
 			{
 				switch (type)
 				{
+					case 'arming':
+						this._runArming(object_id, type);
+						break;
+						
 					case 'charge':
 						this._runCharge(object_id, type);
 						break;
@@ -82,11 +86,21 @@ var ActionsHeap = {
 			game.players[obj.player].decMoney(BUILDING_REPAIR_COST);
 	},
 		
+	_runArming: function(object_id, type)
+	{
+		var obj = game.objects[object_id];
+		
+		if (obj.state == UNIT_STATE_REARMING)
+			obj.onArmed();
+		
+		this.remove(object_id, type);
+	},
+		
 	_runHeal: function(object_id, type)
 	{
 		var obj = game.objects[object_id];
 		
-		if (obj.state != 'HEALING')
+		if (obj.state != UNIT_STATE_HEALING)
 		{
 			this.remove(object_id, type);
 			return;

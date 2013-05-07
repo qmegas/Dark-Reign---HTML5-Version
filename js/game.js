@@ -435,7 +435,7 @@ function Game()
 	
 	this.rebuildSelectionInfo = function()
 	{
-		var i, cur_unit, harvesters = true, humans_only = true;
+		var i, cur_unit, harvesters = true, humans_only = true, cyclones = true;
 		
 		for (i in this.selected_objects)
 		{
@@ -451,12 +451,14 @@ function Game()
 			this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
 			this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
 			harvesters = harvesters && this.objects[cur_unit].canHarvest();
+			cyclones = cyclones && (this.objects[cur_unit]._proto == CycloneUnit);
 			humans_only = humans_only && this.objects[cur_unit].isHuman();
 		}
 		
 		if (this.selected_objects.length > 0)
 		{
 			this.selected_info.harvesters = harvesters;
+			this.selected_info.cyclones = cyclones;
 			this.selected_info.humans = humans_only;
 		}
 			
@@ -562,9 +564,11 @@ function Game()
 			is_produce: false,
 			can_attack_ground: false,
 			can_attack_fly: false,
-			harvesters: false,
 			humans: false,
-			min_mass: 999
+			min_mass: 999,
+			
+			harvesters: false,
+			cyclones: false
 		};
 	};
 	

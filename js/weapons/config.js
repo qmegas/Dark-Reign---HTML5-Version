@@ -1,16 +1,34 @@
 /**
  * ?movement: <= SetMovement(Linear, )
- * minimum_range: <= SetAttributes(minimum_range, maximum_range, ?maxammo?, firedelay, energypershot)
+ * minimum_range: <= SetAttributes(minimum_range, maximum_range, ammo, firedelay, energypershot)
  * maximum_range
+ * ammo
  * firedelay => shoot per msec. Calculation: 33.75*firedelay
  * can_shoot_ground <= CanShootGround() & CanShootGroundUnit() & CanShootBuilding()
  * can_shoot_flyer <= CanShootFlyer()
  * offence <= SetOffense(type strength ?area_effect?)
  * fire_sound <= SetFireSound()
+ * hit_sound <= SetHitSound()
  * hit_explosion <= SetHitExplosion()
  * bulet_speed <= SetSpeed(?InitialSpeed?, ?acceleration?, ?maxspeed?, ?rotationalspeed?)
  */
 var WeaponConfig = {
+	CycloneCannon: {
+		bulet_animation: 'eoncnpr0_animation',
+		minimum_range: 1,
+		maximum_range: 6,
+		ammo: 6,
+		firedelay: 338,
+		can_shoot_ground: true,
+		can_shoot_flyer: true,
+		offence: {
+			type: 'G1',
+			strength: 24
+		},
+		fire_sound: 'gxcycwc0',
+		hit_explosion: 'eoncnex0_explosion',
+		bulet_speed: 700
+	},
 	GatPlasma: {
 		bulet_animation: 'eoplspr1_animation',
 		minimum_range: 0,

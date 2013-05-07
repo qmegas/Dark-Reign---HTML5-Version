@@ -1,13 +1,30 @@
 function WeaponHolder(config_name)
 {
-	var config, position, unit, target = null, last_shoot = 0, partid = 0;
+	var config, position, unit, target = null, last_shoot = 0, partid = 0, current_ammo = -1;
 	
 	this.init = function(obj, obj_partid)
 	{
 		unit = obj;
 		partid = obj_partid;
 		config = WeaponConfig[config_name];
+		
+		if (config.ammo)
+			current_ammo = config.ammo;
+		
 		this.updatePosition();
+	};
+	
+	this.getAmmoState = function()
+	{
+		if (config.ammo)
+			return current_ammo / config.ammo;
+		return 1;
+	};
+	
+	this.reArm = function()
+	{
+		if (config.ammo)
+			current_ammo = config.ammo;
 	};
 	
 	this.updatePosition = function()
@@ -55,6 +72,9 @@ function WeaponHolder(config_name)
 	//Can shoot now?
 	this.canShoot = function()
 	{
+		if (current_ammo == 0)
+			return false;
+		
 		return ((last_shoot + config.firedelay) < (new Date()).getTime());
 	};
 	
@@ -111,6 +131,10 @@ function WeaponHolder(config_name)
 		var position_from = position, to = this.getTargetPosition();
 		
 		last_shoot = (new Date()).getTime();
+		
+		//Decrease ammo
+		if (config.ammo)
+			current_ammo--;
 		
 		//Rotate unit
 		if (unit.is_building)
