@@ -10,6 +10,7 @@ To do:
 	- Implement unit rotation
 
 - High priority bugs:
+	- Make rechargable weapon for Sky Fortress
 
 - Medium priority bugs:
 	- Air Defense Site should have 3 weapons instead one

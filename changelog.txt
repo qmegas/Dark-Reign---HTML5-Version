@@ -9,6 +9,7 @@ Build 38
 - Added Tachion Tank unit and TachyonCannon weapon
 - Added S.C.A.R.A.B. unit and its weapon
 - Added Cyclone unit and its weapon
+- Added Sky Fortress unit
 - Added ability for Cyclone to rearm in Rearming Deck
 - Added shadows to all units that still not had it
 - Added unit generation in progress sound

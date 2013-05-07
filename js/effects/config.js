@@ -179,6 +179,12 @@ var EffectList = {
 		hotpoint: {x: 23, y: 22},
 		frames: 16
 	},
+	eoplsex4_animation: {
+		res_key: 'eoplsex4',
+		size: {x: 70, y: 70},
+		hotpoint: {x: 33, y: 32},
+		frames: 18
+	},
 	eoplspr0_animation: { //Bulet
 		res_key: 'eoplspr0',
 		size: {x: 12, y: 10},
@@ -208,6 +214,13 @@ var EffectList = {
 		size: {x: 4, y: 3},
 		hotpoint: {x: 2, y: 1},
 		frames: 1
+	},
+	eoskypr0_animation: {
+		res_key: 'eoskypr0',
+		size: {x: 40, y: 40},
+		hotpoint: {x: 19, y: 21},
+		frames: 10,
+		no_direction: true
 	},
 	eosmlfl0_animation: { //Looped
 		res_key: 'eosmlfl0',

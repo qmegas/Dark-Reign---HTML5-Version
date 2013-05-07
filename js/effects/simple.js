@@ -6,6 +6,7 @@
  *  - looped: boolean
  *  - res_key: string
  *  - delay: int
+ *  - no_direction: boolean
  */
 function SimpleEffect(info)
 {
@@ -28,6 +29,8 @@ function SimpleEffect(info)
 	
 	this.setDirection = function(val)
 	{
+		if (this.info.no_direction)
+			return;
 		direction = val;
 	};
 	

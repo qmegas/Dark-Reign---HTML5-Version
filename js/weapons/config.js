@@ -29,6 +29,21 @@ var WeaponConfig = {
 		hit_explosion: 'eoncnex0_explosion',
 		bulet_speed: 700
 	},
+	FortressCannon: {
+		bulet_animation: 'eoskypr0_animation',
+		minimum_range: 0,
+		maximum_range: 7,
+		firedelay: 675,
+		can_shoot_ground: true,
+		can_shoot_flyer: false,
+		offence: {
+			type: 'E3',
+			strength: 650
+		},
+		fire_sound: 'gxskywc0',
+		hit_explosion: 'fortress_hit_explosion',
+		bulet_speed: 2000
+	},
 	GatPlasma: {
 		bulet_animation: 'eoplspr1_animation',
 		minimum_range: 0,

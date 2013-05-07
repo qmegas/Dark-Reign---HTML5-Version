@@ -85,6 +85,12 @@ var AnimationList = {
 		{start: 0, min_point: 0, max_point: 0, effect: 'lite2_animation'},
 		{start: 0, min_point: 0, max_point: 0, effect: 'eodebsp3_animation'}
 	],
+	fortress_hit_explosion: [
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoplsex4_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'lite2_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoplsex0_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoplsex2_animation'}
+	],
 	headquarter_80_explosion: [
 		{start: 0, min_point: 0, max_point: 0, effect: 'eoblamd0_animation'},
 		{start: 0, min_point: 0, max_point: 0, effect: 'lite2_animation'},
