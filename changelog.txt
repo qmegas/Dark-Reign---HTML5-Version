@@ -1,4 +1,9 @@
-Build 38
+Build 39
+- Sky Fortress now have correct fire delay and weapon state display
+- Font class optimizations
+- Bug fixes
+
+Build 38 (09.05.2013)
 - Added music player (tracks will not be available on GitHub)
 - Added ability to change music volume on right panel (at Menu tab)
 - Added Invader Troop Transport unit

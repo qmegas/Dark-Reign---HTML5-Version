@@ -27,8 +27,6 @@ function Bulet(config_name)
 			game.resources.playOnPosition(config.fire_sound, true, position_now, true);
 		
 		//Create animation
-		//Calc angle: There is an image for each 15 degrees. Images are from 0 to 23
-		//0 = W, 6 = S, 12 = E, 18 = N
 		animation_id = SimpleEffect.quickCreate(config.bulet_animation, {
 			looped: true,
 			direction: Math.calcFrameByAngle(Math.getAngle(to.y - from.y, to.x - from.x), 24),

@@ -10,7 +10,8 @@ To do:
 	- Add support of persistent damage
 
 - High priority bugs:
-	- Make rechargable weapon for Sky Fortress
+	- Correct unit movement speed
+	- Correct bullet fly speed
 
 - Medium priority bugs:
 	- Air Defense Site should have 3 weapons instead one

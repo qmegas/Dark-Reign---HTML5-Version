@@ -21,6 +21,11 @@ function WeaponHolder(config_name)
 		return 1;
 	};
 	
+	this.getDelayState = function()
+	{
+		return ((new Date()).getTime() - last_shoot) / config.firedelay;
+	};
+	
 	this.reArm = function()
 	{
 		if (config.ammo)
@@ -75,7 +80,7 @@ function WeaponHolder(config_name)
 		if (current_ammo == 0)
 			return false;
 		
-		return ((last_shoot + config.firedelay) < (new Date()).getTime());
+		return (this.getDelayState() >= 1);
 	};
 	
 	this.isTargetAlive = function()

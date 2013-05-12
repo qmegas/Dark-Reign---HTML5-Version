@@ -39,6 +39,7 @@ var InterfaceConstructManager = {
 		{
 			this.unit_offset = offset;
 			this.drawUnits();
+			this._drawUnitProductionState();
 		}
 		else
 		{
@@ -62,6 +63,7 @@ var InterfaceConstructManager = {
 		{
 			this.unit_offset = offset;
 			this.drawUnits();
+			this._drawUnitProductionState();
 		}
 		else
 		{
@@ -293,7 +295,7 @@ var InterfaceConstructManager = {
 			else
 				ProducingQueue.pauseProduction(this.available_units[i]);
 			
-			this._canvasRedraw(i);
+			this._canvasRedraw(i - offset);
 		}
 	},
 	
@@ -404,12 +406,19 @@ var InterfaceConstructManager = {
 	
 	redrawProductionState: function()
 	{
-		var i, index;
-		
 		ProducingQueue.run();
 		
 		if (this.current_view_type == CM_VIEW_BUILDINGS)
 			return;
+		
+		this._drawUnitProductionState();
+	},
+		
+	_drawUnitProductionState: function()
+	{
+		var i, index;
+		
+		this._clearAllCellCanvases();
 		
 		for (i = 0; i<CM_ITEMS_COUNT; ++i)
 		{

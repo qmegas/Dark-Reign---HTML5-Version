@@ -104,7 +104,6 @@ function Game()
 		//Interface init
 		InterfaceConstructManager.init(this.level.getAvailableUnits(), this.level.getAvailableBuildings());
 		InterfaceMoneyDraw.init();
-		InterfaceFontDraw.init();
 		InterfaceEnergyWaterDraw.init();
 		InterfaceMinimap.init();
 		

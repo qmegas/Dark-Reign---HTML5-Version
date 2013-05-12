@@ -21,14 +21,7 @@ var InterfaceFontDraw = {
 		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7]  //F
 	],
 	
-	_buffer: null,
 	_cache_table: {},
-	_cache_offset: 0,
-	
-	init: function()
-	{
-		this._buffer = $('#text_buffer').get(0).getContext('2d');
-	},
 	
 	drawOnCanvas: function(text, ctx, x, y, color, align, align_width)
 	{
@@ -36,8 +29,12 @@ var InterfaceFontDraw = {
 		
 		if (typeof this._cache_table[key] === 'undefined')
 		{
-			this._cache_table[key] = {top: this._cache_offset, width: this._bufferDraw(text, color)};
-			this._cache_offset += this._size;
+			var canvas = $('<canvas width="500" height="' + this._size + '"></canvas>'), twidth = this._bufferDraw(canvas, text, color);
+			canvas.width = twidth;
+			this._cache_table[key] = {
+				width: twidth,
+				canvas: canvas.get(0)
+			};
 		}
 		
 		switch (align)
@@ -54,7 +51,7 @@ var InterfaceFontDraw = {
 		}
 		
 		ctx.drawImage(
-			$('#text_buffer').get(0), 0, this._cache_table[key].top, this._cache_table[key].width, this._size,
+			this._cache_table[key].canvas, 0, 0, this._cache_table[key].width, this._size,
 			x+0.5, y+0.5, this._cache_table[key].width, this._size
 		);
 	},
@@ -68,9 +65,10 @@ var InterfaceFontDraw = {
 		return summ;
 	},
 	
-	_bufferDraw: function(text, color)
+	_bufferDraw: function(canvas, text, color)
 	{
-		var current_position = 0, ascii, letter, color_offset = this._getColorOffset(color), font = game.resources.get('font');
+		var ctx = canvas.get(0).getContext('2d'), current_position = 0, ascii, letter, 
+			color_offset = this._getColorOffset(color), font = game.resources.get('font');
 		
 		for (var i=0; i<text.length; ++i)
 		{
@@ -80,9 +78,9 @@ var InterfaceFontDraw = {
 			else
 			{
 				letter = this._table[ascii];
-				this._buffer.drawImage(
+				ctx.drawImage(
 					font, letter[0], color_offset, letter[1], this._size, 
-					current_position, this._cache_offset, letter[1], this._size
+					current_position, 0, letter[1], this._size
 				);
 				current_position += letter[1];
 			}

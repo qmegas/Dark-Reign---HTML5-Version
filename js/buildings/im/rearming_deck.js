@@ -15,7 +15,6 @@ RearmingDeckBuilding.sell_cost = 50;
 RearmingDeckBuilding.sell_time = 10;
 RearmingDeckBuilding.health_max = 960;
 RearmingDeckBuilding.energy = 100;
-RearmingDeckBuilding.enabled = true;
 RearmingDeckBuilding.can_build = true;
 RearmingDeckBuilding.crater = 1;
 

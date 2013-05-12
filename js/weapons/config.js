@@ -6,7 +6,7 @@
  * firedelay => shoot per msec. Calculation: 33.75*firedelay
  * can_shoot_ground <= CanShootGround() & CanShootGroundUnit() & CanShootBuilding()
  * can_shoot_flyer <= CanShootFlyer()
- * offence <= SetOffense(type strength ?area_effect?)
+ * offence <= SetOffense(type strength area_effect)
  * fire_sound <= SetFireSound()
  * hit_sound <= SetHitSound()
  * hit_explosion <= SetHitExplosion()
@@ -23,7 +23,8 @@ var WeaponConfig = {
 		can_shoot_flyer: true,
 		offence: {
 			type: 'G1',
-			strength: 24
+			strength: 24,
+			area_effect: 10
 		},
 		fire_sound: 'gxcycwc0',
 		hit_explosion: 'eoncnex0_explosion',
@@ -33,12 +34,13 @@ var WeaponConfig = {
 		bulet_animation: 'eoskypr0_animation',
 		minimum_range: 0,
 		maximum_range: 7,
-		firedelay: 675,
+		firedelay: 25000,
 		can_shoot_ground: true,
 		can_shoot_flyer: false,
 		offence: {
 			type: 'E3',
-			strength: 650
+			strength: 650,
+			area_effect: 36
 		},
 		fire_sound: 'gxskywc0',
 		hit_explosion: 'fortress_hit_explosion',
@@ -53,7 +55,8 @@ var WeaponConfig = {
 		can_shoot_flyer: true,
 		offence: {
 			type: 'E3',
-			strength: 10
+			strength: 10,
+			area_effect: 8
 		},
 		fire_sound: 'gxigtwc0',
 		hit_explosion: 'eoplsex2_explosion',
@@ -68,7 +71,8 @@ var WeaponConfig = {
 		can_shoot_flyer: true,
 		offence: {
 			type: 'A1',
-			strength: 48
+			strength: 48,
+			area_effect: 8
 		},
 		fire_sound: 'gxmadwc0',
 		hit_explosion: 'eoblatr0_explosion',
@@ -83,7 +87,8 @@ var WeaponConfig = {
 		can_shoot_flyer: false,
 		offence: {
 			type: 'K2',
-			strength: 30
+			strength: 30,
+			area_effect: 100
 		},
 		fire_sound: 'gxiarwc0',
 		hit_sound: 'gxex1oc0',
@@ -99,7 +104,8 @@ var WeaponConfig = {
 		can_shoot_flyer: true,
 		offence: {
 			type: 'A1',
-			strength: 14
+			strength: 14,
+			area_effect: 10
 		},
 		fire_sound: 'gxiaawc0',
 		hit_explosion: 'eoblatr0_explosion',
@@ -114,7 +120,8 @@ var WeaponConfig = {
 		can_shoot_flyer: false,
 		offence: {
 			type: 'E2',
-			strength: 10
+			strength: 10,
+			area_effect: 10
 		},
 		fire_sound: 'gxsttwc0',
 		hit_explosion: 'eolasex1_explosion',
@@ -129,7 +136,8 @@ var WeaponConfig = {
 		can_shoot_flyer: false,
 		offence: {
 			type: 'E2',
-			strength: 11
+			strength: 11,
+			area_effect: 8
 		},
 		fire_sound: 'gxlgnwc0',
 		hit_explosion: 'smalllaser_hitpuff_explosion',
@@ -144,7 +152,8 @@ var WeaponConfig = {
 		can_shoot_flyer: false,
 		offence: {
 			type: 'E3',
-			strength: 180
+			strength: 180,
+			area_effect: 12
 		},
 		fire_sound: 'gxneuwc0',
 		hit_explosion: 'eoncnex0_explosion',
@@ -159,7 +168,8 @@ var WeaponConfig = {
 		can_shoot_flyer: false,
 		offence: {
 			type: 'E3',
-			strength: 19
+			strength: 19,
+			area_effect: 8
 		},
 		fire_sound: 'gxpltwc0',
 		hit_explosion: 'eoplsex2_explosion',
@@ -174,7 +184,8 @@ var WeaponConfig = {
 		can_shoot_flyer: true,
 		offence: {
 			type: 'E3',
-			strength: 18
+			strength: 18,
+			area_effect: 8
 		},
 		fire_sound: 'gxbonwc0',
 		hit_explosion: 'eoplsex0_explosion',
@@ -189,7 +200,8 @@ var WeaponConfig = {
 		can_shoot_flyer: false,
 		offence: {
 			type: 'M3',
-			strength: 15
+			strength: 15,
+			area_effect: 24
 		},
 		fire_sound: 'gxextwc1',
 		hit_explosion: 'eorfgex0_explosion',
@@ -204,7 +216,8 @@ var WeaponConfig = {
 		can_shoot_flyer: false,
 		offence: {
 			type: 'E4',
-			strength: 20
+			strength: 20,
+			area_effect: 20
 		},
 		fire_sound: 'gxtctwc0',
 		hit_explosion: 'eotacex0_explosion',
