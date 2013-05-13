@@ -23,6 +23,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.is_building = false;
 	this.is_effect = false;
 	this.position = null;
+	this.position_cell = null;
 	this.weapon = null;
 	this.tactic_group = -1;
 	
@@ -42,7 +43,8 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.init = function(pos_x, pos_y)
 	{
-		this.position = MapCell.cellToPixel({x: pos_x, y: pos_y});
+		this.position_cell = {x: pos_x, y: pos_y};
+		this.position = MapCell.cellToPixel(this.position_cell);
 		
 		this.health = this._proto.health_max;
 		this.parts = [];
@@ -62,7 +64,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.getCell = function()
 	{
-		return MapCell.pixelToCell(this.position);
+		return this.position_cell;
 	};
 	
 	this.applyHeal = function(heal)
@@ -384,6 +386,8 @@ function AbstractUnit(pos_x, pos_y, player)
 				game.level.map_cells[this.move_path[0].x][this.move_path[0].y].ground_unit = this.uid;
 				game.level.map_cells[curr_pos.x][curr_pos.y].ground_unit = -1;
 			}
+			
+			this.position_cell = {x: this.move_path[0].x, y: this.move_path[0].y};
 		}
 	};
 	
@@ -885,7 +889,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 
 	obj.cost = 0;
 	obj.health_max = 100;
-	obj.speed = 0.87;      // 0.87 = 6 config speed [SetPhysics(mass speed)]
+	obj.speed = 0.91;      // (0.1365*speed)/0.9 [SetPhysics(mass speed)] {0.9 - should be dynamic game speed coeficient}
 	obj.enabled = false;
 	obj.is_human = false;
 	obj.shield_type = 'ToughHumanWet';

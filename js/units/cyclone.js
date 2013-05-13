@@ -125,7 +125,7 @@ CycloneUnit.response_sounds = ['gvcycrl0', 'gvcycrl1', 'gvcycrl2', 'gvcycrl3'];
 
 CycloneUnit.cost = 1500;
 CycloneUnit.health_max = 150;
-CycloneUnit.speed = 3.48;
+CycloneUnit.speed = 3.642;
 CycloneUnit.shield_type = 'FlyingArmour';
 CycloneUnit.move_mode = MOVE_MODE_FLY;
 CycloneUnit.mass = 10;

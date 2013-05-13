@@ -33,13 +33,12 @@
 // V1 is the offense for the vortex (temporal rift)
 // W1 is the offense for the Seismic Wave
 
-function DamageTable()
-{
-	this._table = {};
-	this._weapon_types = ['A1', 'B1', 'B2', 'C1', 'E1', 'E2', 'E3', 'E4', 'E5', 'F1', 'G1', 'G2', 'G3', 'H1', 
-		'K1', 'K2', 'M1', 'M2', 'M3', 'M4', 'R1', 'R2', 'S1', 'S2', 'V1', 'W1', 'Z0'];
+var DamageTable = {
+	_table: {},
+	_weapon_types: ['A1', 'B1', 'B2', 'C1', 'E1', 'E2', 'E3', 'E4', 'E5', 'F1', 'G1', 'G2', 'G3', 'H1', 
+		'K1', 'K2', 'M1', 'M2', 'M3', 'M4', 'R1', 'R2', 'S1', 'S2', 'V1', 'W1', 'Z0'],
 	
-	this.init = function()
+	init: function()
 	{
 		this.addArmor('ToughHuman', 1, 0.1, 0, {
 			A1: [0.5,  0.1,    0],
@@ -176,9 +175,9 @@ function DamageTable()
 		});
 		
 		this.addArmor('SuperArmour2', 0, 0, 0, {});
-	}
+	},
 	
-	this.addArmor = function(armor_type, default_vulnerability, default_variation, default_critical_hit, custom_settings)
+	addArmor: function(armor_type, default_vulnerability, default_variation, default_critical_hit, custom_settings)
 	{
 		var i, key;
 		
@@ -199,9 +198,9 @@ function DamageTable()
 					critical_hit: default_critical_hit
 				};
 		}
-	}
+	},
 	
-	this.calcDamage = function(armor_type, weapon_type, strength)
+	calcDamage: function(armor_type, weapon_type, strength)
 	{
 		var type = this._table[armor_type][weapon_type], proc;
 		
@@ -214,5 +213,57 @@ function DamageTable()
 			strength *= 3;
 		 
 		 return strength;
+	},
+		
+	applyOffence: function(position, offence, layer)
+	{
+		var x, y, pixel_pos, damage_proc, damage_cache = {}, ids, i, damage, 
+			top_left = MapCell.pixelToCell({x: position.x - offence.area_effect, y: position.y - offence.area_effect}),
+			bottom_right = MapCell.pixelToCell({x: position.x + offence.area_effect, y: position.y + offence.area_effect});
+		
+		for (x = top_left.x; x <= bottom_right.x; ++x)
+		{
+			if (!MapCell.isCorrectX(x))
+				continue;
+			
+			for (y = top_left.y; y <= bottom_right.y; ++y)
+			{
+				if (!MapCell.isCorrectY(y))
+					continue;
+				
+				//Calculate damage coefficient
+				pixel_pos = MapCell.cellToPixel({x: x, y: y});
+				pixel_pos.x += 12;
+				pixel_pos.y += 12;
+				damage_proc = (1 - Math.min(1, MapCell.getPixelDistance(pixel_pos.x, pixel_pos.y, position.x, position.y) / offence.area_effect)) / 2 + 0.5;
+				
+				//Get objects
+				ids = MapCell.getIdsByLayer(x, y, layer);
+				
+				//Calculate damage
+				for (i in ids)
+				{
+					//Make sure we do not hit same unit twice. It possible for buildings.
+					damage = this.calcDamage(
+						game.objects[ids[i]]._proto.shield_type, 
+						offence.type, 
+						offence.strength
+					);
+					damage *= damage_proc;
+					
+					if (damage == 0)
+						continue;
+					
+					if (damage_cache[ids[i]] && damage_cache[ids[i]]>damage)
+						continue;
+					
+					damage_cache[ids[i]] = damage;
+				}
+			}
+		}
+		
+		//Apply damage
+		for (i in damage_cache)
+			game.objects[i].applyDamage(damage_cache[i]);
 	}
-}
+};

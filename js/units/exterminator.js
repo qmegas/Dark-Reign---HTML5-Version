@@ -50,7 +50,7 @@ ExterminatorUnit.response_sounds = ['gvextrl0', 'gvextrl1', 'gvextrl2', 'gvextal
 
 ExterminatorUnit.cost = 500;
 ExterminatorUnit.health_max = 75;
-ExterminatorUnit.speed = 2.32;
+ExterminatorUnit.speed = 2.428;
 ExterminatorUnit.is_human = true;
 ExterminatorUnit.shield_type = 'PowerHuman';
 ExterminatorUnit.move_mode = MOVE_MODE_HOVER;

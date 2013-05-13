@@ -1,7 +1,11 @@
 Build 39
 - Sky Fortress now have correct fire delay and weapon state display
+- Added damage area for all weapons
+- Added persistent damage for S.C.A.R.A.B. weapon
 - Font class optimizations
 - Bug fixes
+- Bullet speed corrected
+- Unit speed corrected
 
 Build 38 (09.05.2013)
 - Added music player (tracks will not be available on GitHub)

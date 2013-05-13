@@ -5,13 +5,9 @@ To do:
 	- Add Boost weapon (weapon for Amper unit)
 	- Fog of war
 	- Move static elements to dynamic map
-	- Add weapon area effect
 	- Implement unit rotation
-	- Add support of persistent damage
 
 - High priority bugs:
-	- Correct unit movement speed
-	- Correct bullet fly speed
 
 - Medium priority bugs:
 	- Air Defense Site should have 3 weapons instead one

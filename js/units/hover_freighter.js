@@ -75,7 +75,7 @@ HoverFreighterUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1
 
 HoverFreighterUnit.cost = 1500;
 HoverFreighterUnit.health_max = 500;
-HoverFreighterUnit.speed = 2.4;
+HoverFreighterUnit.speed = 2.428;
 HoverFreighterUnit.shield_type = 'TankPlating';
 HoverFreighterUnit.move_mode = MOVE_MODE_HOVER;
 HoverFreighterUnit.mass = 10;

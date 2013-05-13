@@ -49,7 +49,7 @@ ScoutRunnerUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl6
 
 ScoutRunnerUnit.cost = 500;
 ScoutRunnerUnit.health_max = 150;
-ScoutRunnerUnit.speed = 2.9;
+ScoutRunnerUnit.speed = 3.035;
 ScoutRunnerUnit.shield_type = 'TankPlating';
 ScoutRunnerUnit.move_mode = MOVE_MODE_HOVER;
 ScoutRunnerUnit.mass = 10;

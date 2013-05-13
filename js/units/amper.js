@@ -49,7 +49,7 @@ AmperUnit.response_sounds = ['gvamprl0', 'gvamprl2', 'gvampal0'];
 
 AmperUnit.cost = 500;
 AmperUnit.health_max = 66;
-AmperUnit.speed = 1.16;
+AmperUnit.speed = 1.214;
 AmperUnit.shield_type = 'PowerHumanWet';
 
 AmperUnit.require_building = [TrainingFacilityBuilding, AssemblyPlantBuilding, FieldHospitalBuilding];

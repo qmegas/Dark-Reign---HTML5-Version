@@ -49,7 +49,7 @@ MadUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl6'];
 
 MadUnit.cost = 800;
 MadUnit.health_max = 150;
-MadUnit.speed = 2.32;
+MadUnit.speed = 2.428;
 MadUnit.shield_type = 'TankPlating';
 MadUnit.move_mode = MOVE_MODE_HOVER;
 MadUnit.mass = 10;

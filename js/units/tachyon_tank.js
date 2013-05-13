@@ -73,7 +73,7 @@ TachyonTankUnit.response_sounds = ['gvtctrl0', 'gvtctal2', 'gvtctrl2', 'gvtctrl3
 
 TachyonTankUnit.cost = 1500;
 TachyonTankUnit.health_max = 410;
-TachyonTankUnit.speed = 1.74;
+TachyonTankUnit.speed = 1.821;
 TachyonTankUnit.shield_type = 'TankPlating';
 TachyonTankUnit.move_mode = MOVE_MODE_HOVER;
 TachyonTankUnit.mass = 10;

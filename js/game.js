@@ -33,7 +33,6 @@ function Game()
 	this.minimap_navigation = false;
 	
 	this.debug = new Debuger();
-	this.damageTable = new DamageTable();
 	
 	this.moveViewport = function(x, y, relative)
 	{
@@ -96,7 +95,7 @@ function Game()
 					building: -1
 				};
 		
-		this.damageTable.init();
+		DamageTable.init();
 		
 		//Init units
 		this.level.getInitUnits();

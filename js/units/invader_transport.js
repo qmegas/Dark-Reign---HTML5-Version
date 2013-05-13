@@ -98,7 +98,7 @@ InvaderTransportUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvi
 
 InvaderTransportUnit.cost = 600;
 InvaderTransportUnit.health_max = 150;
-InvaderTransportUnit.speed = 2.9;
+InvaderTransportUnit.speed = 3.035;
 InvaderTransportUnit.shield_type = 'TankPlating';
 InvaderTransportUnit.move_mode = MOVE_MODE_HOVER;
 InvaderTransportUnit.mass = 100;

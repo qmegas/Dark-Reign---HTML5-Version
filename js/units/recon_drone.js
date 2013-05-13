@@ -44,7 +44,7 @@ ReconDroneUnit.response_sounds = ['gxrdrrc0', 'gxrdrrc1', 'gxrdrrc2'];
 
 ReconDroneUnit.cost = 400;
 ReconDroneUnit.health_max = 66;
-ReconDroneUnit.speed = 2.32;
+ReconDroneUnit.speed = 2.428;
 ReconDroneUnit.shield_type = 'FlyingArmour';
 ReconDroneUnit.move_mode = MOVE_MODE_FLY;
 ReconDroneUnit.mass = 10;

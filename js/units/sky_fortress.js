@@ -65,7 +65,7 @@ SkyFortressUnit.response_sounds = ['gvskyrl0', 'gvskyrl1', 'gvskyrl2', 'gvskyrl3
 
 SkyFortressUnit.cost = 2500;
 SkyFortressUnit.health_max = 266;
-SkyFortressUnit.speed = 1.45;
+SkyFortressUnit.speed = 1.518;
 SkyFortressUnit.shield_type = 'FlyingArmour';
 SkyFortressUnit.move_mode = MOVE_MODE_FLY;
 SkyFortressUnit.mass = 10;

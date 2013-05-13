@@ -119,6 +119,11 @@ function WeaponHolder(config_name)
 		};
 	};
 	
+	this.getTargetLayer = function()
+	{
+		return (target.type == 'object' && game.objects[target.objid]._proto.move_mode == MOVE_MODE_FLY) ? MOVE_MODE_FLY : MOVE_MODE_GROUND;
+	};
+	
 	this._getDistance = function()
 	{
 		var target_pos = this.getTargetPosition();
@@ -161,7 +166,7 @@ function WeaponHolder(config_name)
 		}
 		
 		//Create bulet
-		var uid = game.objects.length, bulet = new Bulet(config_name);
+		var uid = game.objects.length, bulet = new Bulet(config_name, this.getTargetLayer());
 		bulet.uid = uid;
 		game.objects.push(bulet);
 		bulet.init(position_from, to);

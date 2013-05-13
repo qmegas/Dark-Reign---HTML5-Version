@@ -37,6 +37,25 @@ MapCell.getIdByType = function(x, y, is_fly)
 	return cell.ground_unit;
 };
 
+MapCell.getIdsByLayer = function(x, y, layer)
+{
+	var cell = game.level.map_cells[x][y], ids = [];
+	
+	if (layer == MOVE_MODE_FLY)
+	{
+		if (cell.fly_unit != -1)
+			ids.push(cell.fly_unit);
+	}
+	else
+	{
+		if (cell.ground_unit != -1)
+			ids.push(cell.ground_unit);
+		if (cell.building != -1)
+			ids.push(cell.building);
+	}
+	return ids;
+};
+
 MapCell.canStepInto = function(x, y, move_mode)
 {
 	var cell = game.level.map_cells[x][y];

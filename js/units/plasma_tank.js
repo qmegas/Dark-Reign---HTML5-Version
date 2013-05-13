@@ -73,7 +73,7 @@ PlasmaTankUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl6'
 
 PlasmaTankUnit.cost = 700;
 PlasmaTankUnit.health_max = 250;
-PlasmaTankUnit.speed = 2.32;
+PlasmaTankUnit.speed = 2.428;
 PlasmaTankUnit.shield_type = 'TankPlating';
 PlasmaTankUnit.move_mode = MOVE_MODE_HOVER;
 PlasmaTankUnit.mass = 10;

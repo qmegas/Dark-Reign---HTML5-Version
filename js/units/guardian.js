@@ -43,6 +43,7 @@ GuardianUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl6'];
 
 GuardianUnit.cost = 150;
 GuardianUnit.health_max = 100;
+GuardianUnit.speed = 1.214;
 GuardianUnit.is_human = true;
 GuardianUnit.shield_type = 'PowerHumanWet';
 

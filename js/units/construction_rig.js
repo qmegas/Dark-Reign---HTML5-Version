@@ -124,7 +124,6 @@ ConstructionRigUnit.select_sounds = ['gvicnsl0', 'gvicnsl1', 'gvicnsl2'];
 ConstructionRigUnit.response_sounds = ['gvicnrl0', 'gvicnrl1', 'gvicnrl2'];
 
 ConstructionRigUnit.cost = 300;
-ConstructionRigUnit.speed = 0.87;
 ConstructionRigUnit.shield_type = 'TankPlatingWet';
 
 ConstructionRigUnit.require_building = [HeadquarterBuilding];

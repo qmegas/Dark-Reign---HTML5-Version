@@ -1,6 +1,6 @@
-function Bulet(config_name)
+function Bulet(config_name, layer)
 {
-	var config, position_now, position_to, position_to_cells, move_steps, animation_id;
+	var config, position_now, position_to, move_steps, animation_id;
 	
 	this.uid = -1;
 	this.is_effect = true;
@@ -12,9 +12,8 @@ function Bulet(config_name)
 		config = WeaponConfig[config_name];
 		
 		//Set positions & steps
-		position_now = {x: from.x, y: from.y};
-		position_to = {x: to.x, y: to.y};
-		position_to_cells = MapCell.pixelToCell(to);
+		position_now = cloneObj(from);
+		position_to = cloneObj(to);
 		len = MapCell.getPixelDistance(from.x, from.y, to.x, to.y);
 		parts = (len / config.bulet_speed) * RUNS_PER_SECOND;
 		move_steps = {
@@ -47,7 +46,7 @@ function Bulet(config_name)
 			((move_steps.y<0 && position_now.y<position_to.y) || 
 			(move_steps.y>=0 && position_now.y>=position_to.y)))
 		{
-			this.onImpact(position_to_cells.x, position_to_cells.y);
+			this.onImpact();
 
 			//Draw blast animation
 			Animator.quickAnimation(config.hit_explosion, cloneObj(position_to));
@@ -60,23 +59,19 @@ function Bulet(config_name)
 		}
 	};
 	
-	this.onImpact = function(x, y) 
+	this.onImpact = function() 
 	{
-		var dmg, i, ids = MapCell.getAllUserIds(game.level.map_cells[x][y]);
-		
 		//Play hit sound
 		if (config.hit_sound)
 			game.resources.playOnPosition(config.hit_sound, true, position_now, true);
 		
-		for (i = 0; i<ids.length; ++i)
+		DamageTable.applyOffence(position_to, config.offence, layer);
+		
+		if (config.persistent_damage)
 		{
-			dmg = game.damageTable.calcDamage(
-				game.objects[ids[i]]._proto.shield_type, 
-				config.offence.type, 
-				config.offence.strength
-			);
-			if (dmg > 0)
-				game.objects[ids[i]].applyDamage(dmg);
+			var uid = game.objects.length, pdamage = new PersistentDamage(position_to, config.persistent_damage);
+			pdamage.uid = uid;
+			game.objects.push(pdamage);
 		}
 	};
 	

@@ -292,7 +292,7 @@ FreighterUnit.response_sounds = ['gvig1rl0', 'gvig1rl1', 'gvig1rl2', 'gvig1rl3']
 
 FreighterUnit.cost = 1000;
 FreighterUnit.health_max = 750;
-FreighterUnit.speed = 1.5;
+FreighterUnit.speed = 1.518;
 FreighterUnit.shield_type = 'TankPlatingWet';
 FreighterUnit.mass = 10;
 
