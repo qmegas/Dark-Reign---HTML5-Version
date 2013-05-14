@@ -393,7 +393,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this._drawPartImage = function(layer, key_prefix, part, frame, x, y)
 	{
-		game.objDraw.addElement(layer, this.position.x, {
+		game.objDraw.addElement(layer, this.position.y, {
 			res_key: this._proto.resource_key + key_prefix + part,
 			src_x: this.parts[part].direction * this._proto.parts[part].image_size.x,
 			src_y: frame * this._proto.parts[part].image_size.y,
@@ -406,7 +406,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this._drawShadow = function(key_prefix, item, frame, top_x, top_y)
 	{
-		game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+		game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.y, {
 			res_key: this._proto.resource_key + key_prefix,
 			src_x: (item.static_img) ? 0 : this.parts[0].direction * item.size.x,
 			src_y: (item.static_img) ? 0 : frame * item.size.y,

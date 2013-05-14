@@ -29,7 +29,7 @@ function MapElement(x, y, type, config)
 		{
 			top_x = this._position_cache.shadow.x - game.viewport_x, top_y = this._position_cache.shadow.y - game.viewport_y;
 		
-			game.objDraw.addElement(DRAW_LAYER_SHADOWS, this._position_cache.body.x, {
+			game.objDraw.addElement(DRAW_LAYER_SHADOWS, this._position_cache.draw_line, {
 				res_key: 'mapobj_' + type + '_shadow',
 				src_x: 0,
 				src_y: 0,

@@ -4,7 +4,6 @@ To do:
 	- Add Vortex weapon
 	- Add Boost weapon (weapon for Amper unit)
 	- Fog of war
-	- Move static elements to dynamic map
 	- Implement unit rotation
 
 - High priority bugs:

@@ -419,7 +419,7 @@ function AbstractBuilding()
 	
 	this._drawWeapon = function(key, frame)
 	{
-		game.objDraw.addElement(DRAW_LAYER_ABUILD, this.position.x, {
+		game.objDraw.addElement(DRAW_LAYER_ABUILD, this.position.y, {
 			res_key: this._proto.res_key + '_' + key, 
 			src_x: this._proto.images.weapon.size.x * this.weapon_direction,
 			src_y: this._proto.images.weapon.size.y * frame,
@@ -432,7 +432,7 @@ function AbstractBuilding()
 	
 	this._drawSprite = function(layer, frame_x, frame_y)
 	{
-		game.objDraw.addElement(layer, this.position.x, {
+		game.objDraw.addElement(layer, this.position.y, {
 			res_key: this._proto.res_key, 
 			src_x: this._proto.images.normal.size.x * frame_x,
 			src_y: this._proto.images.normal.size.y * frame_y,
@@ -445,7 +445,7 @@ function AbstractBuilding()
 	
 	this._drawShadow = function(frame_x, frame_y)
 	{
-		game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.x, {
+		game.objDraw.addElement(DRAW_LAYER_SHADOWS, this.position.y, {
 			res_key: this._proto.res_key + '_shadow',
 			src_x: (this._proto.images.shadow.static_img) ? 0 : this._proto.images.shadow.size.x * frame_x,
 			src_y: (this._proto.images.shadow.static_img) ? 0 : this._proto.images.shadow.size.y * frame_y,
