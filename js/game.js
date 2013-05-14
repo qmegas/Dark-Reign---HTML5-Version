@@ -17,6 +17,7 @@ function Game()
 	this.players = [];
 	this.objects = [];
 	this.effects = [];
+	this.map_elements = [];
 	this.kill_objects = [];
 	this.selected_objects = [];
 	this.selected_info = {};
@@ -92,7 +93,8 @@ function Game()
 					type: this.level.map_cells[x][y], 
 					ground_unit: -1,
 					fly_unit: -1,
-					building: -1
+					building: -1,
+					map_element: -1
 				};
 		
 		DamageTable.init();
@@ -193,7 +195,7 @@ function Game()
 	
 	this._draw = function()
 	{
-		var cur_time = (new Date()).getTime(), onscreen = [], unitid, eindex;
+		var cur_time = (new Date()).getTime(), onscreen = [], unitid, eindex, mapelem_onscreen = [];
 		var top_x = parseInt(this.viewport_x / CELL_SIZE) - 1, top_y = parseInt(this.viewport_y / CELL_SIZE) - 1;
 		
 		//Debug
@@ -215,6 +217,8 @@ function Game()
 						onscreen[this.level.map_cells[top_x+x][top_y+y].fly_unit] = 1;
 					if (this.level.map_cells[top_x+x][top_y+y].building != -1)
 						onscreen[this.level.map_cells[top_x+x][top_y+y].building] = 1;
+					if (this.level.map_cells[top_x+x][top_y+y].map_element != -1)
+						mapelem_onscreen[this.level.map_cells[top_x+x][top_y+y].map_element] = 1;
 				}
 			}
 			
@@ -222,6 +226,10 @@ function Game()
 		for (unitid in onscreen)
 			if (this.objects[unitid] !== undefined)
 				this.objects[unitid].draw(cur_time);
+		
+		//Round 1.1: Put map elements to draw heap
+		for (eindex in mapelem_onscreen)
+			this.map_elements[eindex].draw();
 		
 		//Round 1.5: Put effects to draw heap
 		for (eindex in this.effects)
@@ -481,8 +489,7 @@ function Game()
 		MousePointer.loadResources();
 		
 		//Map objects
-		for (var i in this.level.map_object_proto)
-			this.resources.addImage('mapobj_'+i, this.level.map_object_proto[i].image);
+		this.level.loadMapElements();
 		
 		//Common resources
 		this.resources.addSound('construction_under_way', 'sounds/construction_under_way.' + AUDIO_TYPE);

@@ -8,11 +8,17 @@ class MapObjectParser
 		preg_match_all('/AddThingAt\(([0-9]+) ([a-z|0-9]+) ([0-9]+) ([0-9]+)\)/', $text, $matches);
 		
 		foreach ($matches[1] as $key => $val)
-			$items[] = array(
+		{
+			$tmp = array(
 				'type' => $matches[2][$key],
-				'x' => (int)$matches[3][$key],
-				'y' => (int)$matches[4][$key]
+				'x' => (int)$matches[3][$key] - 1,
+				'y' => (int)$matches[4][$key] - 1
 			);
+			if ($tmp['type'] == 'rock5' || $tmp['type'] == 'rock6')
+				$tmp['x']--;
+				
+			$items[] = $tmp;
+		}
 
 		usort($items, array($this, 'sorter'));
 		return $items;

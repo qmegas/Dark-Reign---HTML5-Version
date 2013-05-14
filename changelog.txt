@@ -6,6 +6,7 @@ Build 39
 - Bug fixes
 - Bullet speed corrected
 - Unit speed corrected
+- Map elements (trees, rocks) now draw dynamically
 
 Build 38 (09.05.2013)
 - Added music player (tracks will not be available on GitHub)
