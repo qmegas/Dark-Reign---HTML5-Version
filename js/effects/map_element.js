@@ -6,7 +6,7 @@ function MapElement(x, y, type, config)
 	{
 		var pos = MapCell.cellToPixel({x: x, y: y});
 		this._position_cache.body = {x: pos.x - config.padding.x, y: pos.y - config.padding.y};
-		this._position_cache.draw_line = pos.x + 12;
+		this._position_cache.draw_line = pos.y;
 		if (config.shadow)
 			this._position_cache.shadow = {x: pos.x - config.shadow_padding.x, y: pos.y - config.shadow_padding.y};
 	};
