@@ -450,15 +450,31 @@ function Game()
 			if (this.objects[cur_unit].is_building)
 				this.selected_info.is_building = true;
 			else
+			{
 				this.selected_info.min_mass = Math.min(this.selected_info.min_mass, this.objects[cur_unit]._proto.mass);
+				harvesters = harvesters && this.objects[cur_unit].canHarvest();
+				cyclones = cyclones && (this.objects[cur_unit]._proto == CycloneUnit);
+				humans_only = humans_only && this.objects[cur_unit].isHuman();
+				this.selected_info.move_mode = Math.max(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
+				this.selected_info.move_mode_min = Math.min(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
+				
+				if (i == 0)
+					this.selected_info.tactic_info = cloneObj(this.objects[cur_unit].tactic);
+				else
+				{
+					if (this.objects[cur_unit].tactic.order != this.selected_info.tactic_info.order)
+						this.selected_info.tactic_info.order = 0;
+					if (this.objects[cur_unit].tactic.pursuit != this.selected_info.tactic_info.pursuit)
+						this.selected_info.tactic_info.pursuit = 0;
+					if (this.objects[cur_unit].tactic.tolerance != this.selected_info.tactic_info.tolerance)
+						this.selected_info.tactic_info.tolerance = 0;
+					if (this.objects[cur_unit].tactic.independance != this.selected_info.tactic_info.independance)
+						this.selected_info.tactic_info.independance = 0;
+				}
+			}
 			
-			this.selected_info.move_mode = Math.max(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
-			this.selected_info.move_mode_min = Math.min(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
 			this.selected_info.can_attack_ground = this.selected_info.can_attack_ground || this.objects[cur_unit].canAttackGround();
 			this.selected_info.can_attack_fly = this.selected_info.can_attack_fly || this.objects[cur_unit].canAttackFly();
-			harvesters = harvesters && this.objects[cur_unit].canHarvest();
-			cyclones = cyclones && (this.objects[cur_unit]._proto == CycloneUnit);
-			humans_only = humans_only && this.objects[cur_unit].isHuman();
 		}
 		
 		if (this.selected_objects.length > 0)
@@ -473,6 +489,8 @@ function Game()
 			InterfaceConstructManager.drawBuildings();
 		else
 			InterfaceConstructManager.drawUnits();
+		
+		InterfaceGUI.updateOrdersTab();
 	};
 	
 	this._deselectUnits = function()
@@ -481,6 +499,8 @@ function Game()
 		for (var i in this.selected_objects)
 			this.objects[this.selected_objects[i]].select(false);
 		this.selected_objects = [];
+		
+		InterfaceGUI.updateOrdersTab();
 	};
 	
 	this._loadGameResources = function()
@@ -573,7 +593,14 @@ function Game()
 			min_mass: 999,
 			
 			harvesters: false,
-			cyclones: false
+			cyclones: false,
+			
+			tactic_info: {
+				order: 0,
+				pursuit: 0,
+				tolerance: 0,
+				independance: 0
+			}
 		};
 	};
 	

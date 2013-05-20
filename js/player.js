@@ -1,5 +1,12 @@
 function Player(map_color, is_human)
 {
+	this.default_tactic = {
+		order: TACTIC_ORDER_DEFAULT,
+		pursuit: TACTIC_LOW,
+		tolerance: TACTIC_HIGH,
+		independance: TACTIC_MED
+	};
+		
 	this._money = 0;
 	this._map_color = map_color;
 	this._energy_max = 0;

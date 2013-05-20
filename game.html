@@ -123,7 +123,7 @@
 					<div class="tab build active" data-panel="panel_build" id="tab_button_build"></div>
 					<div class="tab comms"></div>
 					<div class="tab menu" data-panel="panel_menu"></div>
-					<div class="tab orders"></div>
+					<div class="tab orders" data-panel="panel_orders"></div>
 					<div class="tab paths"></div>
 					<div class="tab special" data-panel="panel_special"></div>
 				</div>
@@ -193,10 +193,10 @@
 					<div class="ext-buttons">
 						<div class="up" id="cm_page_up"></div>
 						<div class="down" id="cm_page_down"></div>
-						<div class="dk-button-small disable btn" id="upgrade_button">
+						<div class="dk-button small disable btn" id="upgrade_button">
 							<div class="caption"></div>
 						</div>
-						<div class="dk-button-small btn">
+						<div class="dk-button small btn">
 							<img src="images/shell/texts/decoy.png" />
 						</div>
 					</div>
@@ -213,6 +213,74 @@
 							<div class="scroll-box" data-param="music_volume"><div class="scale"></div></div>
 							<div class="scroll-box" data-param="game_speed"><div class="scale"></div></div>
 							<div class="scroll-box" data-param="panning_speed"><div class="scale"></div></div>
+						</div>
+					</div>
+				</div>
+				<div class="panel hidden" id="panel_orders">
+					<div class="spacer1"></div>
+					<div class="title">
+						<img src="images/shell/texts/orders.png" />
+					</div>
+					<div class="order-buttons">
+						<div class="block line1">
+							<div class="dk-checkbox" id="order_scout_chk"></div>
+							<div class="dk-button small">
+								<img src="images/shell/texts/scout.png" />
+							</div>
+							<div class="dk-checkbox" id="order_harass_chk"></div>
+							<div class="dk-button small">
+								<img src="images/shell/texts/harass.png" />
+							</div>
+						</div>
+						<div class="block line2">
+							<div class="dk-checkbox" id="order_snd_chk"></div>
+							<div class="dk-button medium">
+								<img src="images/shell/texts/search_destroy.png" />
+							</div>
+						</div>
+					</div>
+					<div class="spacer2"></div>
+					<div class="title">
+						<img src="images/shell/texts/behaviors.png" />
+					</div>
+					<div class="order-buttons">
+						<div class="block line1">
+							<div class="dummy_check"></div>
+							<div class="dk-button small">
+								<img src="images/shell/texts/guard.png" />
+							</div>
+							<div class="dummy_check"></div>
+							<div class="dk-button small">
+								<img src="images/shell/texts/pursue.png" />
+							</div>
+						</div>
+						<div class="block line2">
+							<div class="dummy_check"></div>
+							<div class="dk-button medium">
+								<img src="images/shell/texts/default.png" />
+							</div>
+						</div>
+					</div>
+					<div class="options" id="order_options">
+						<div class="opt-line">
+							<div class="dk-order-chk low" id="order_pursuit_1"></div>
+							<div class="dk-order-chk med" id="order_pursuit_2"></div>
+							<div class="dk-order-chk high" id="order_pursuit_3"></div>
+						</div>
+						<div class="opt-line">
+							<div class="dk-order-chk low" id="order_tolerance_1"></div>
+							<div class="dk-order-chk med" id="order_tolerance_2"></div>
+							<div class="dk-order-chk high" id="order_tolerance_3"></div>
+						</div>
+						<div class="opt-line">
+							<div class="dk-order-chk low" id="order_independance_1"></div>
+							<div class="dk-order-chk med" id="order_independance_2"></div>
+							<div class="dk-order-chk high" id="order_independance_3"></div>
+						</div>
+					</div>
+					<div>
+						<div class="dk-button medium centered">
+							<img src="images/shell/texts/set_default.png" />
 						</div>
 					</div>
 				</div>
@@ -249,8 +317,8 @@
 					<img src="#" id="dialog_text" />
 				</div>
 				<div class="buttons-box">
-					<div class="dk-button-small" id="d_button1"><img src="#" id="d_button1_img" /></div>
-					<div class="dk-button-small" id="d_button2"><img src="#" id="d_button2_img" /></div>
+					<div class="dk-button small" id="d_button1"><img src="#" id="d_button1_img" /></div>
+					<div class="dk-button small" id="d_button2"><img src="#" id="d_button2_img" /></div>
 				</div>
 			</div>
 		</div>

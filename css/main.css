@@ -8,6 +8,10 @@ body {
 	color: #000;
 }
 
+.centered {
+	margin: 0 auto;
+}
+
 .load-screen {
 	margin: 0;
 	width: 640px;
@@ -300,40 +304,86 @@ body {
 .game .right-frame .panel .title {
 	background: url("../images/shell/title.png") no-repeat right bottom;
 	width: 166px;
-	height: 15px;
+	height: 16px;
 	padding: 0 0 3px 5px;
-	margin-left: 20px;
+	clear: both;
+}
+
+.game .right-frame .panel#panel_menu {
+	padding-left: 20px;
 }
 .game .right-frame .panel#panel_menu .spacer1 {
 	height: 12px;
 }
-.game .right-frame .panel .scrolls {
+.game .right-frame .panel#panel_menu .scrolls {
 	margin-top: 10px;
-	padding-left: 26px;
+	padding-left: 6px;
 }
-.game .right-frame .panel .scrolls .icons {
+.game .right-frame .panel#panel_menu .scrolls .icons {
 	float: left;
 	width: 50px;
 	height: 91px;
 	background: url("../images/shell/menu_icons.png") no-repeat right bottom;;
 }
-.game .right-frame .panel .scrolls .conteiner {
+.game .right-frame .panel#panel_menu .scrolls .conteiner {
 	float: left;
 	width: 105px;
 	height: 91px;
 	padding-left: 3px;
 }
-.game .right-frame .panel .scrolls .conteiner .scroll-box {
+.game .right-frame .panel#panel_menu .scrolls .conteiner .scroll-box {
 	width: 103px;
 	height: 15px;
 	background: url("../images/shell/slider_box.png");
 	margin-bottom: 7px;
 	padding: 1px;
 }
-.game .right-frame .panel .scrolls .conteiner .scroll-box .scale {
+.game .right-frame .panel#panel_menu .scrolls .conteiner .scroll-box .scale {
 	background: url("../images/shell/slide_scale.png");
 	height: 15px;
 }
+
+.game .right-frame .panel#panel_orders {
+	padding-left: 20px;
+}
+.game .right-frame .panel#panel_orders .spacer1 {
+	height: 19px;
+}
+.game .right-frame .panel#panel_orders .spacer2 {
+	height: 8px;
+}
+.game .right-frame .panel#panel_orders .order-buttons {
+	padding-top: 3px;
+}
+.game .right-frame .panel#panel_orders .order-buttons .block {
+	clear: both;
+	padding-top: 3px;
+	margin: 0 auto;
+}
+.game .right-frame .panel#panel_orders .order-buttons .block.line1 {
+	width: 162px;
+}
+.game .right-frame .panel#panel_orders .order-buttons .block.line2 {
+	width: 113px;
+}
+.game .right-frame .panel#panel_orders .order-buttons .block > div {
+	float: left;
+}
+.game .right-frame .panel#panel_orders .order-buttons .block .dummy_check {
+	width: 10px;
+	height: 22px;
+}
+.game .right-frame .panel#panel_orders .options {
+	clear: both;
+	height: 69px;
+	background: url("../images/shell/texts/orders_opt.png") no-repeat 7px 10px;
+	font-size: 0;
+	padding: 2px 0 8px 80px;
+}
+.game .right-frame .panel#panel_orders .options .opt-line {
+	margin-bottom: 4px;
+}
+
 .game .right-frame .bottom-right {
 	height: 138px;
 }
@@ -374,33 +424,98 @@ body {
 	margin: 16px 0 0 8px;
 }
 
-/* Buttons */
-.dk-button-small {
-	width: 71px;
+/* Form elements */
+.dk-order-chk {
+	display: inline-block;
+	width: 30px;
+	height: 22px;
+	background-image: url("../images/shell/order_check.png");
+}
+.dk-order-chk.low {
+	background-position: 0 0;
+}
+.dk-order-chk.low:hover {
+	background-position: -90px 0;
+}
+.dk-order-chk.low.checked,
+.dk-order-chk.low:active {
+	background-position: -180px 0;
+}
+.dk-order-chk.med {
+	background-position: -30px 0;
+}
+.dk-order-chk.med:hover {
+	background-position: -120px 0;
+}
+.dk-order-chk.med.checked,
+.dk-order-chk.med:active {
+	background-position: -210px 0;
+}
+.dk-order-chk.high {
+	background-position: -60px 0;
+}
+.dk-order-chk.high:hover {
+	background-position: -150px 0;
+}
+.dk-order-chk.high.checked,
+.dk-order-chk.high:active {
+	background-position: -240px 0;
+}
+
+.dk-checkbox {
+	width: 10px;
+	height: 22px;
+	background: url("../images/shell/checkbox.png") no-repeat 0 6px;
+}
+.dk-checkbox.checked {
+	background-position: -9px 6px;
+}
+
+.dk-button {
 	height: 22px;
 	background: url("../images/shell/buttons.png") no-repeat 0 0;
 	text-align: center;
 }
-.dk-button-small:hover {
+
+.dk-button.small {
+	width: 71px;
+}
+.dk-button.small:hover {
 	background-position: -71px 0;
 }
-.dk-button-small:active {
+.dk-button.small:active {
 	background-position: -142px 0;
 }
-.dk-button-small.disable {
+.dk-button.small.disable {
 	background-position: -213px 0;
 }
-.dk-button-small img {
+.dk-button.medium {
+	width: 103px;
+	background-position: -284px 0;
+}
+.dk-button.medium:hover {
+	background-position: -387px 0;
+}
+.dk-button.medium:active {
+	background-position: -490px 0;
+}
+.dk-button.medium.disable {
+	background-position: -593px 0;
+}
+.dk-button img {
 	padding-top: 7px;
 }
+.dk-button:active img {
+	padding-top: 8px;
+}
 
-.dk-button-small#upgrade_button .caption {
+.dk-button#upgrade_button .caption {
 	margin: 7px 0 0 16px;
 	width: 40px;
 	height: 12px;
 	background: url("../images/shell/texts/upgrade.png") no-repeat 0 -12px;
 }
-.dk-button-small.disable#upgrade_button .caption {
+.dk-button.disable#upgrade_button .caption {
 	background-position: 0 0;
 }
 
@@ -429,7 +544,7 @@ body {
 .dialog-screen .simple .text-container #dialog_text {
 	margin-top: 22px;
 }
-.dialog-screen .buttons-box .dk-button-small {
+.dialog-screen .buttons-box .dk-button.small {
 	float: left;
 	display: none;
 }

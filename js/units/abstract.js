@@ -26,6 +26,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.position_cell = null;
 	this.weapon = null;
 	this.tactic_group = -1;
+	this.tactic = null;
 	
 	//For carry units
 	this._carry_units = [];
@@ -48,6 +49,9 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		this.health = this._proto.health_max;
 		this.parts = [];
+		
+		if (game)
+			this.tactic = cloneObj(game.players[this.player].default_tactic);
 		
 		for (var i=0; i<this._proto.parts.length; ++i)
 		{
@@ -826,6 +830,16 @@ function AbstractUnit(pos_x, pos_y, player)
 		game.resources.playOnPosition(sound_key, false, this.position, true);
 		var pos = PathFinder.findNearestEmptyCell(this.action.target_position.x + 5, this.action.target_position.y, this._proto.move_mode);
 		this.orderMove(pos.x, pos.y);
+	};
+	
+	this.triggerEvent = function(event, params)
+	{
+		switch (event)
+		{
+			case 'standing_too_far':
+				TacticalAI.handleUnitEvent(this, event, {target: this.action.target});
+				break;
+		}
 	};
 	
 	//Abstract functions

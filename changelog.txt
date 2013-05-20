@@ -1,3 +1,6 @@
+Build 40
+- Added "Orders" tab to right panel
+
 Build 39 (17.05.2013)
 - Sky Fortress now have correct fire delay and weapon state display
 - Added damage area for all weapons

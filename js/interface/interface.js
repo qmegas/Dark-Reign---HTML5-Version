@@ -1,4 +1,6 @@
 var InterfaceGUI = {
+	_current_tab: 'panel_build',
+		
 	preloadImages: function()
 	{
 		//-- CSS --
@@ -19,11 +21,42 @@ var InterfaceGUI = {
 		game.resources.addImage('css15', 'images/shell/slider_box.png');
 		game.resources.addImage('css16', 'images/shell/slide_scale.png');
 		game.resources.addImage('css17', 'images/shell/title.png');
+		game.resources.addImage('css18', 'images/shell/order_check.png');
+		game.resources.addImage('css19', 'images/shell/checkbox.png');
 		//---------
 		game.resources.addImage('map-tiles', 'images/levels/'+game.level.tiles);
 		game.resources.addImage('minimap', 'images/levels/'+game.level.minimap.image);
 		game.resources.addImage('clr', 'images/buildings/clr.png');
 		game.resources.addImage('font', 'images/font.png');
+	},
+		
+	tabChanged: function(tab_id)
+	{
+		this._current_tab = tab_id;
+		this.updateOrdersTab();
+	},
+		
+	updateOrdersTab: function()
+	{
+		if (this._current_tab != 'panel_orders')
+			return;
+		
+		var i, info = game.selected_info.tactic_info, keys = ['pursuit', 'tolerance', 'independance'];
+		
+		(info.order == TACTIC_ORDER_SCOUT) ? $('#order_scout_chk').addClass('checked') : $('#order_scout_chk').removeClass('checked');
+		(info.order == TACTIC_ORDER_HARASS) ? $('#order_harass_chk').addClass('checked') : $('#order_harass_chk').removeClass('checked');
+		(info.order == TACTIC_ORDER_SND) ? $('#order_snd_chk').addClass('checked') : $('#order_snd_chk').removeClass('checked');
+		
+		$('#order_options .dk-order-chk').removeClass('checked');
+		if (info.order == TACTIC_ORDER_DEFAULT)
+		{
+			for (i in keys)
+			{
+				if (info[keys[i]] == 0)
+					continue;
+				$('#order_'+keys[i]+'_'+info[keys[i]]).addClass('checked');
+			}
+		}
 	},
 	
 	setHandlers: function()
@@ -54,15 +87,16 @@ var InterfaceGUI = {
 		});
 
 		$('.tab').click(function(){
-			var $this = $(this);
+			var $this = $(this), panel_id = $this.attr('data-panel');
 
 			$('.tab').removeClass('active');
 			$this.addClass('active');
 
-			if ($this.attr('data-panel'))
+			if (panel_id)
 			{
 				$('.panel').addClass('hidden');
-				$('#'+$this.attr('data-panel')).removeClass('hidden');
+				$('#'+panel_id).removeClass('hidden');
+				InterfaceGUI.tabChanged(panel_id);
 			}
 		});
 
