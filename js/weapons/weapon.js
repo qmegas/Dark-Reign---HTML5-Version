@@ -133,19 +133,31 @@ function WeaponHolder(config_name)
 		return Math.sqrt(Math.pow((position.x - target_pos.x)/CELL_SIZE, 2) + Math.pow((position.y - target_pos.y)/CELL_SIZE, 2));
 	};
 	
-	this.canReach = function()
+	this.getMinRange = function()
+	{
+		return config.minimum_range;
+	};
+	
+	this.getMaxRange = function()
+	{
+		return config.maximum_range;
+	};
+	
+	this.canReach = function(trigger_events)
 	{
 		var distance = this._getDistance();
 		
 		if (distance < config.minimum_range)
 		{
-			unit.triggerEvent('standing_too_close', partid);
+			if (trigger_events)
+				unit.triggerEvent('standing_too_close', partid);
 			return false;
 		}
 		
 		if (distance > config.maximum_range)
 		{
-			unit.triggerEvent('standing_too_far', partid);
+			if (trigger_events)
+				unit.triggerEvent('standing_too_far', partid);
 			return false;
 		}
 		

@@ -282,7 +282,7 @@ function AbstractBuilding()
 			case BUILDING_STATE_ATTACK:
 				if (this.weapon.canShoot() && this.weapon.isTargetAlive())
 				{
-					if (this.weapon.canReach())
+					if (this.weapon.canReach(false))
 					{
 						this.state = BUILDING_STATE_ATTACKING;
 						this.anim_attack_frame = 0;

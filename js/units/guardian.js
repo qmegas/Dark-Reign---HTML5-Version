@@ -46,6 +46,7 @@ GuardianUnit.health_max = 100;
 GuardianUnit.speed = 1.214;
 GuardianUnit.is_human = true;
 GuardianUnit.shield_type = 'PowerHumanWet';
+GuardianUnit.seeing_range = 8;
 
 GuardianUnit.require_building = [TrainingFacilityBuilding];
 

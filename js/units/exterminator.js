@@ -54,6 +54,7 @@ ExterminatorUnit.speed = 2.428;
 ExterminatorUnit.is_human = true;
 ExterminatorUnit.shield_type = 'PowerHuman';
 ExterminatorUnit.move_mode = MOVE_MODE_HOVER;
+ExterminatorUnit.seeing_range = 8;
 
 ExterminatorUnit.require_building = [TrainingFacility2Building];
 

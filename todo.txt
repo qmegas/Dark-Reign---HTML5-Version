@@ -1,13 +1,11 @@
 To do:
 	- Allow unit to shoot not only to the center of the building
-	- Implement minimal attack range
 	- Add Vortex weapon
 	- Add Boost weapon (weapon for Amper unit)
 	- Fog of war
 	- Implement unit rotation
 
 - High priority bugs:
-	- Cyclone do no stand in queue to Rearming deck
 
 - Medium priority bugs:
 	- Air Defense Site should have 3 weapons instead one

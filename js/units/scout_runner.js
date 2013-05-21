@@ -53,6 +53,7 @@ ScoutRunnerUnit.speed = 3.035;
 ScoutRunnerUnit.shield_type = 'TankPlating';
 ScoutRunnerUnit.move_mode = MOVE_MODE_HOVER;
 ScoutRunnerUnit.mass = 10;
+ScoutRunnerUnit.seeing_range = 13;
 
 ScoutRunnerUnit.require_building = [AssemblyPlantBuilding];
 

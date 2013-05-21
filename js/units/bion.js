@@ -45,6 +45,7 @@ BionUnit.cost = 350;
 BionUnit.health_max = 150;
 BionUnit.is_human = true;
 BionUnit.shield_type = 'PowerHumanWet';
+BionUnit.seeing_range = 8;
 
 BionUnit.require_building = [TrainingFacilityBuilding];
 

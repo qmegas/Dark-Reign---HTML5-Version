@@ -68,9 +68,10 @@ function CycloneUnit(pos_x, pos_y, player)
 			return;
 		
 		if (AbstractBuilding.isExists(this.action.target_id))
-			this.orderStop();
-		else
 			this._move(this.action.target_position.x, this.action.target_position.y, false);
+		else
+			this.orderStop();
+			
 	};
 	
 	this.onArmed = function()

@@ -277,7 +277,7 @@ function AbstractUnit(pos_x, pos_y, player)
 					
 					if (this.parts[i].weapon.canShoot() && this.parts[i].weapon.isTargetAlive())
 					{
-						if (this.parts[i].weapon.canReach())
+						if (this.parts[i].weapon.canReach(true))
 						{
 							this.state = UNIT_STATE_ATTACKING;
 							this.anim_attack_frame = 0;
@@ -732,7 +732,7 @@ function AbstractUnit(pos_x, pos_y, player)
 				for (var i in this.parts)
 					if (this.parts[i].weapon)
 					{
-						if (!this.parts[i].weapon.isTargetAlive() || this.parts[i].weapon.canReach())
+						if (!this.parts[i].weapon.isTargetAlive() || this.parts[i].weapon.canReach(false))
 							this.move_path = [];
 					}
 				break;
@@ -800,6 +800,10 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		switch (this.action.type)
 		{
+			case 'attack':
+				this.state = UNIT_STATE_ATTACK;
+				break;
+				
 			case 'go_heal':
 				if (AbstractBuilding.isExists(this.action.target_id))
 					this._move(this.action.target_position.x, this.action.target_position.y, false);
@@ -913,6 +917,7 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.shield_type = 'ToughHumanWet';
 	obj.move_mode = MOVE_MODE_GROUND;
 	obj.mass = 1;
+	obj.seeing_range = 9;
 	
 	obj.carry = null;
 
