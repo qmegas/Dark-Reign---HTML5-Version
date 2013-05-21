@@ -7,6 +7,7 @@ To do:
 	- Implement unit rotation
 
 - High priority bugs:
+	- Cyclone do no stand in queue to Rearming deck
 
 - Medium priority bugs:
 	- Air Defense Site should have 3 weapons instead one

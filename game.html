@@ -78,6 +78,7 @@
 		<script type="text/javascript" src="js/units/cyclone.js"></script>
 		<script type="text/javascript" src="js/units/sky_fortress.js"></script>
 		
+		<script type="text/javascript" src="js/ai/tactical.js"></script>
 		<script type="text/javascript" src="js/actions_heap.js"></script>
 		<script type="text/javascript" src="js/construct_queue.js"></script>
 		<script type="text/javascript" src="js/pathfinding.js"></script>
@@ -224,17 +225,17 @@
 					<div class="order-buttons">
 						<div class="block line1">
 							<div class="dk-checkbox" id="order_scout_chk"></div>
-							<div class="dk-button small">
+							<div class="dk-button small" id="order_scout_btn">
 								<img src="images/shell/texts/scout.png" />
 							</div>
 							<div class="dk-checkbox" id="order_harass_chk"></div>
-							<div class="dk-button small">
+							<div class="dk-button small" id="order_harasst_btn">
 								<img src="images/shell/texts/harass.png" />
 							</div>
 						</div>
 						<div class="block line2">
 							<div class="dk-checkbox" id="order_snd_chk"></div>
-							<div class="dk-button medium">
+							<div class="dk-button medium" id="order_snd_btn">
 								<img src="images/shell/texts/search_destroy.png" />
 							</div>
 						</div>
@@ -246,40 +247,40 @@
 					<div class="order-buttons">
 						<div class="block line1">
 							<div class="dummy_check"></div>
-							<div class="dk-button small">
+							<div class="dk-button small" id="order_predefined_guard">
 								<img src="images/shell/texts/guard.png" />
 							</div>
 							<div class="dummy_check"></div>
-							<div class="dk-button small">
+							<div class="dk-button small" id="order_predefined_pursue">
 								<img src="images/shell/texts/pursue.png" />
 							</div>
 						</div>
 						<div class="block line2">
 							<div class="dummy_check"></div>
-							<div class="dk-button medium">
+							<div class="dk-button medium" id="order_predefined_default">
 								<img src="images/shell/texts/default.png" />
 							</div>
 						</div>
 					</div>
 					<div class="options" id="order_options">
 						<div class="opt-line">
-							<div class="dk-order-chk low" id="order_pursuit_1"></div>
-							<div class="dk-order-chk med" id="order_pursuit_2"></div>
-							<div class="dk-order-chk high" id="order_pursuit_3"></div>
+							<div class="dk-order-chk low" id="order_pursuit_1" data-type="pursuit" data-value="1"></div>
+							<div class="dk-order-chk med" id="order_pursuit_2" data-type="pursuit" data-value="2"></div>
+							<div class="dk-order-chk high" id="order_pursuit_3" data-type="pursuit" data-value="3"></div>
 						</div>
 						<div class="opt-line">
-							<div class="dk-order-chk low" id="order_tolerance_1"></div>
-							<div class="dk-order-chk med" id="order_tolerance_2"></div>
-							<div class="dk-order-chk high" id="order_tolerance_3"></div>
+							<div class="dk-order-chk low" id="order_tolerance_1" data-type="tolerance" data-value="1"></div>
+							<div class="dk-order-chk med" id="order_tolerance_2" data-type="tolerance" data-value="2"></div>
+							<div class="dk-order-chk high" id="order_tolerance_3" data-type="tolerance" data-value="3"></div>
 						</div>
 						<div class="opt-line">
-							<div class="dk-order-chk low" id="order_independance_1"></div>
-							<div class="dk-order-chk med" id="order_independance_2"></div>
-							<div class="dk-order-chk high" id="order_independance_3"></div>
+							<div class="dk-order-chk low" id="order_independance_1" data-type="independance" data-value="1"></div>
+							<div class="dk-order-chk med" id="order_independance_2" data-type="independance" data-value="2"></div>
+							<div class="dk-order-chk high" id="order_independance_3" data-type="independance" data-value="3"></div>
 						</div>
 					</div>
 					<div>
-						<div class="dk-button medium centered">
+						<div class="dk-button medium centered" id="order_set_default">
 							<img src="images/shell/texts/set_default.png" />
 						</div>
 					</div>

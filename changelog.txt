@@ -1,5 +1,7 @@
 Build 40
 - Added "Orders" tab to right panel
+- Tactical AI: Cyclone flies to Rearming deck when have no ammo
+- Tactical AI: weapon maximal range check moved to tactical AI
 
 Build 39 (17.05.2013)
 - Sky Fortress now have correct fire delay and weapon state display

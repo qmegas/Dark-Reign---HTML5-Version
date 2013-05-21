@@ -44,7 +44,7 @@ function TemporalGateBuilding(pos_x, pos_y, player)
 			pos = PathFinder.findNearestEmptyCell(tpos.x, tpos.y, unit._proto.move_mode);
 			if (pos !== null)
 			{
-				unit.position = MapCell.cellToPixel(pos);
+				unit.setCell(pos);
 				game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
 				SimpleEffect.quickCreate('electric_blue_animation', {
 					pos: {

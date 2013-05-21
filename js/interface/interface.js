@@ -58,6 +58,70 @@ var InterfaceGUI = {
 			}
 		}
 	},
+		
+	changeDefaultTactic: function()
+	{
+		if (game.selected_objects.length==0 || game.selected_objects.is_building)
+			return;
+		
+		var info = game.selected_info.tactic_info;
+		if (info.pursuit==0 || info.tolerance==0 || info.independance==0)
+			return;
+		
+		game.players[PLAYER_HUMAN].default_tactic = {
+			order: TACTIC_ORDER_DEFAULT,
+			pursuit: info.pursuit,
+			tolerance: info.tolerance,
+			independance: info.independance
+		};
+	},
+		
+	ordersChange: function(order, type, val)
+	{
+		if (game.selected_objects.length==0 || game.selected_objects.is_building)
+			return;
+		
+		this._changeSelectionOrders(order, type, val);
+		
+		game.rebuildSelectionInfo(true);
+	},
+		
+	orderChangePredefinedSet: function(set)
+	{
+		if (game.selected_objects.length==0 || game.selected_objects.is_building)
+			return;
+		
+		this._changeSelectionOrders(TACTIC_ORDER_DEFAULT, 'pursuit', set.pursuit);
+		this._changeSelectionOrders(TACTIC_ORDER_DEFAULT, 'tolerance', set.tolerance);
+		this._changeSelectionOrders(TACTIC_ORDER_DEFAULT, 'independance', set.independance);
+		
+		game.rebuildSelectionInfo(true);
+	},
+		
+	_changeSelectionOrders: function(order, type, val)
+	{
+		var i, uid;
+		
+		for (i in game.selected_objects)
+		{
+			uid = game.selected_objects[i];
+			if (order != TACTIC_ORDER_DEFAULT)
+			{
+				if (game.selected_info.tactic_info.order == order)
+					game.objects[uid].tactic.order = TACTIC_ORDER_DEFAULT;
+				else
+					game.objects[uid].tactic.order = order;
+			}
+			else
+			{
+				game.objects[uid].tactic[type] = val;
+				if (game.objects[uid].tactic.order != TACTIC_ORDER_DEFAULT)
+					game.objects[uid].tactic.order = TACTIC_ORDER_DEFAULT;
+			}
+			
+			game.objects[uid].triggerEvent('tactic_changed');
+		}
+	},
 	
 	setHandlers: function()
 	{
@@ -185,6 +249,35 @@ var InterfaceGUI = {
 			$this.children().css('width', proc + '%');
 			game.changeGameParam($this.attr('data-param'), proc);
 		});
+		
+		//Order tab handlers
+		$('#order_options .dk-order-chk').click(function(){
+			var $this = $(this), type = $this.attr('data-type'), val = parseInt($this.attr('data-value'));
+			InterfaceGUI.ordersChange(TACTIC_ORDER_DEFAULT, type, val);
+		});
+		$('#order_predefined_guard').click(function(){
+			InterfaceGUI.orderChangePredefinedSet({pursuit: TACTIC_LOW, tolerance: TACTIC_HIGH, independance: TACTIC_HIGH});
+		});
+		$('#order_predefined_pursue').click(function(){
+			InterfaceGUI.orderChangePredefinedSet({pursuit: TACTIC_HIGH, tolerance: TACTIC_HIGH, independance: TACTIC_LOW});
+		});
+		$('#order_predefined_default').click(function(){
+			InterfaceGUI.orderChangePredefinedSet({
+				pursuit: game.players[PLAYER_HUMAN].default_tactic.pursuit, 
+				tolerance: game.players[PLAYER_HUMAN].default_tactic.tolerance, 
+				independance: game.players[PLAYER_HUMAN].default_tactic.independance
+			});
+		});
+		$('#order_scout_btn').click(function(){
+			InterfaceGUI.ordersChange(TACTIC_ORDER_SCOUT, 0, 0);
+		});
+		$('#order_harasst_btn').click(function(){
+			InterfaceGUI.ordersChange(TACTIC_ORDER_HARASS, 0, 0);
+		});
+		$('#order_snd_btn').click(function(){
+			InterfaceGUI.ordersChange(TACTIC_ORDER_SND, 0, 0);
+		});
+		$('#order_set_default').click(InterfaceGUI.changeDefaultTactic);
 
 		$(document).keydown(function(event) {
 			var prevent = true;

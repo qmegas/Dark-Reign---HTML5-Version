@@ -439,7 +439,7 @@ function Game()
 		this.rebuildSelectionInfo();
 	};
 	
-	this.rebuildSelectionInfo = function()
+	this.rebuildSelectionInfo = function(skip_constructor)
 	{
 		var i, cur_unit, harvesters = true, humans_only = true, cyclones = true;
 		
@@ -485,10 +485,13 @@ function Game()
 		}
 			
 		//Constructor selected?
-		if (this.selected_objects.length==1 && (this.objects[this.selected_objects[0]] instanceof ConstructionRigUnit))
-			InterfaceConstructManager.drawBuildings();
-		else
-			InterfaceConstructManager.drawUnits();
+		if (!skip_constructor)
+		{
+			if (this.selected_objects.length==1 && (this.objects[this.selected_objects[0]] instanceof ConstructionRigUnit))
+				InterfaceConstructManager.drawBuildings();
+			else
+				InterfaceConstructManager.drawUnits();
+		}
 		
 		InterfaceGUI.updateOrdersTab();
 	};
@@ -576,7 +579,7 @@ function Game()
 			this.selected_objects.splice(index, 1);
 			
 			this._resetSelectionInfo();
-			this.rebuildSelectionInfo();
+			this.rebuildSelectionInfo(true);
 		}
 	};
 	

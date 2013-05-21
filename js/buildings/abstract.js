@@ -574,7 +574,7 @@ function AbstractBuilding()
 		{
 			unit = game.objects[this._carry_units[i]];
 			pos = PathFinder.findNearestStandCell(mypos.x + 1, mypos.y + 2);
-			unit.position = MapCell.cellToPixel(pos);
+			unit.setCell(pos);
 			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
 		}
 		
@@ -648,6 +648,10 @@ function AbstractBuilding()
 	};
 	
 	//Event functions
+	
+	this.triggerEvent = function(event, params)
+	{
+	};
 	
 	this.onObjectDeletion = function() 
 	{

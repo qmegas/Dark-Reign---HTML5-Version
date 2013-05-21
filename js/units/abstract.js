@@ -44,8 +44,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.init = function(pos_x, pos_y)
 	{
-		this.position_cell = {x: pos_x, y: pos_y};
-		this.position = MapCell.cellToPixel(this.position_cell);
+		this.setCell({x: pos_x, y: pos_y});
 		
 		this.health = this._proto.health_max;
 		this.parts = [];
@@ -69,6 +68,12 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.getCell = function()
 	{
 		return this.position_cell;
+	};
+	
+	this.setCell = function(pos)
+	{
+		this.position_cell = cloneObj(pos);
+		this.position = MapCell.cellToPixel(this.position_cell);
 	};
 	
 	this.applyHeal = function(heal)
@@ -277,15 +282,6 @@ function AbstractUnit(pos_x, pos_y, player)
 							this.state = UNIT_STATE_ATTACKING;
 							this.anim_attack_frame = 0;
 							this.startAnimation = 0;
-						}
-						else
-						{
-							var pos = MapCell.pixelToCell(this.parts[i].weapon.getTargetPosition());
-							pos = PathFinder.findNearestEmptyCell(pos.x, pos.y, this._proto.move_mode);
-							if (pos !== null)
-								this._move(pos.x, pos.y);
-							else
-								this.state = UNIT_STATE_STAND;
 						}
 					}
 				}
@@ -690,7 +686,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		{
 			unit = game.objects[this._carry_units[i]];
 			pos = PathFinder.findNearestStandCell(mypos.x, mypos.y);
-			unit.position = MapCell.cellToPixel(pos);
+			unit.setCell(pos);
 			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
 		}
 		
@@ -836,8 +832,16 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		switch (event)
 		{
+			case 'standing_too_close':
 			case 'standing_too_far':
-				TacticalAI.handleUnitEvent(this, event, {target: this.action.target});
+				TacticalAI.handleUnitEvent(this, event, {
+					target: this.action.target,
+					part: params
+				});
+				break;
+				
+			default:
+				TacticalAI.handleUnitEvent(this, event);
 				break;
 		}
 	};

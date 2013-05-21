@@ -78,7 +78,10 @@ function WeaponHolder(config_name)
 	this.canShoot = function()
 	{
 		if (current_ammo == 0)
+		{
+			unit.triggerEvent('no_ammo');
 			return false;
+		}
 		
 		return (this.getDelayState() >= 1);
 	};
@@ -133,7 +136,20 @@ function WeaponHolder(config_name)
 	this.canReach = function()
 	{
 		var distance = this._getDistance();
-		return ((distance >= config.minimum_range) && (distance <= config.maximum_range));
+		
+		if (distance < config.minimum_range)
+		{
+			unit.triggerEvent('standing_too_close', partid);
+			return false;
+		}
+		
+		if (distance > config.maximum_range)
+		{
+			unit.triggerEvent('standing_too_far', partid);
+			return false;
+		}
+		
+		return true;
 	};
 	
 	this.shoot = function()

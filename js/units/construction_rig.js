@@ -3,8 +3,6 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 	this._proto = ConstructionRigUnit;
 	this.player = player;
 	
-	this.health = 5;
-	
 	this.init(pos_x, pos_y);
 	
 	this.orderBuild = function(x, y, build)
