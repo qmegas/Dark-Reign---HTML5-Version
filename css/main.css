@@ -159,15 +159,24 @@ body {
 	background-position: -111px 0;
 }
 .game .left-frame .game-area {
+	width: 448px;
 	height: 448px;
 	background: #000;
+}
+.game .left-frame .game-area .view {
+	width: 448px;
+	height: 448px;
+	position: absolute;
 	overflow: hidden;
 }
-.game .left-frame .game-area .level {
+.game .left-frame .game-area .view canvas {
 	position: relative;
 }
 .game .left-frame .game-area #viewport {
-	position: relative;
+	position: absolute;
+ }
+.game .left-frame .game-area #mouseview {
+	position: absolute;
 	cursor: none;
 }
 .game .right-frame {

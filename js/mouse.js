@@ -11,6 +11,18 @@ var MousePointer = {
 	
 	panning_region_time: 0,
 	direction_to_cursor: [18, 20, 16, 0, 22, 0, 21, 0, 17, 19, 15],
+
+	mouse_ctx: null,
+
+	init: function()
+	{
+		this.mouse_ctx = document.getElementById('mouseview').getContext('2d');
+	},
+
+	clearView: function()
+	{
+		this.mouse_ctx.clearRect(0, 0, VIEWPORT_SIZE, VIEWPORT_SIZE);
+	},
 	
 	setPosition: function(event)
 	{
@@ -30,17 +42,17 @@ var MousePointer = {
 		if (this.is_selection)
 		{
 			var sel_size = this._getSelectionSize();
-			
-			game.viewport_ctx.strokeStyle = '#fff';
-			game.viewport_ctx.lineWidth = 1;
-			game.viewport_ctx.strokeRect(
+
+			this.mouse_ctx.strokeStyle = '#fff';
+			this.mouse_ctx.lineWidth = 1;
+			this.mouse_ctx.strokeRect(
 				this.selection_start_pos.x - game.viewport_x, 
 				this.selection_start_pos.y - game.viewport_y, 
 				sel_size.width, sel_size.height);
 			
 			if (Math.abs(sel_size.width)>3 || Math.abs(sel_size.height)>3)
 			{
-				game.viewport_ctx.drawImage(game.resources.get('cursors'), 0, 0, 17, 24, this.position.x, this.position.y, 17, 24);
+				this.mouse_ctx.drawImage(game.resources.get('cursors'), 0, 0, 17, 24, this.position.x, this.position.y, 17, 24);
 				return;
 			}
 		}
@@ -200,7 +212,7 @@ var MousePointer = {
 		
 	_drawNormalCursor: function()
 	{
-		game.viewport_ctx.drawImage(game.resources.get('cursors'), 0, 0, 17, 24, this.position.x, this.position.y, 17, 24);
+		this.mouse_ctx.drawImage(game.resources.get('cursors'), 0, 0, 17, 24, this.position.x, this.position.y, 17, 24);
 	},
 		
 	_drawCursor: function(current_time, cursorid, frames)
@@ -210,7 +222,7 @@ var MousePointer = {
 			this.draw_frame = ((this.draw_frame + 1) % frames);
 			this.draw_time = current_time;
 		}
-		game.viewport_ctx.drawImage(
+		this.mouse_ctx.drawImage(
 			game.resources.get('cursors'), this.draw_frame*32, cursorid*32, 32, 32, 
 			this.position.x - 16, this.position.y - 16, 32, 32
 		);
@@ -221,7 +233,7 @@ var MousePointer = {
 	getCellPosition: function()
 	{
 		return {
-			x: Math.floor((this.position.x + game.viewport_x - 12)/CELL_SIZE), 
+			x: Math.floor((this.position.x + game.viewport_x - 12)/CELL_SIZE),
 			y: Math.floor((this.position.y + game.viewport_y - 12)/CELL_SIZE)
 		};
 	},

@@ -220,22 +220,22 @@ var InterfaceGUI = {
 			game.minimapMove(event.layerX, event.layerY);
 		});
 
-		$('#viewport').bind('contextmenu', function(){
+		$('#mouseview').bind('contextmenu', function(){
 			game.onClick('right');
 			return false;
 		});
-		$('#viewport').mousedown(function(event){
+		$('#mouseview').mousedown(function(event){
 			if (event.button == 0)
 				MousePointer.selectionStart();
 		});
-		$('#viewport').mouseup(function(event){
+		$('#mouseview').mouseup(function(event){
 			if (event.button == 0)
 				MousePointer.selectionStop();
 		});
-		$('#viewport').mouseout(function(){
+		$('#mouseview').mouseout(function(){
 			MousePointer.show_cursor = false;
 		});
-		$('#viewport').mousemove(function(event){
+		$('#mouseview').mousemove(function(event){
 			MousePointer.setPosition(event);
 		});
 		$('#cm_page_up').click(function(){

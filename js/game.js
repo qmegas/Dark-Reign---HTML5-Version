@@ -57,7 +57,7 @@ function Game()
 		if (this.viewport_y > this.level.max_movement.y)
 			this.viewport_y = this.level.max_movement.y;
 		
-		$('#map_view').css({
+		$('#map_view, #map_fog').css({
 			left: -this.viewport_x,
 			top: -this.viewport_y
 		}, 'fast');
@@ -76,10 +76,8 @@ function Game()
 		this.viewport_ctx = $('#viewport').get(0).getContext('2d');
 		
 		this.level = level;
-		this.level.max_movement.x = CELL_SIZE*this.level.size.x-448;
-		this.level.max_movement.y = CELL_SIZE*this.level.size.y-448;
-		
-		$('#viewport').css('top', '-' + (CELL_SIZE*this.level.size.y+5) + 'px');
+		this.level.max_movement.x = CELL_SIZE*this.level.size.x-VIEWPORT_SIZE;
+		this.level.max_movement.y = CELL_SIZE*this.level.size.y-VIEWPORT_SIZE;
 		
 		$('#minimap_viewport, #minimap_objects')
 			.attr('width', this.level.minimap.x)
@@ -107,6 +105,7 @@ function Game()
 		InterfaceMoneyDraw.init();
 		InterfaceEnergyWaterDraw.init();
 		InterfaceMinimap.init();
+		MousePointer.init();
 		
 		//Preloading images
 		InterfaceGUI.preloadImages();
@@ -202,6 +201,7 @@ function Game()
 		this.debug.countDraw();
 		
 		this.viewport_ctx.clearRect(0, 0, VIEWPORT_SIZE, VIEWPORT_SIZE);
+		MousePointer.clearView();
 		this.objDraw.clear();
 		
 		//Detect onscreen units

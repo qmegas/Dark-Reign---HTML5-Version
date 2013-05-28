@@ -2483,10 +2483,10 @@ function Level1()
 	
 	this.generateMap = function()
 	{
-		var $canvas = $('#map_view'), ctx = $canvas.get(0).getContext('2d'), tiles = game.resources.get('map-tiles');
+		var ctx = $('#map_view').get(0).getContext('2d'), tiles = game.resources.get('map-tiles');
 		var element, proto, eid, xx, yy, i, j;
 		
-		$canvas.attr({
+		$('#map_view, #map_fog').attr({
 			width: CELL_SIZE*this.size.x,
 			height: CELL_SIZE*this.size.y
 		});
