@@ -92,7 +92,9 @@ function Game()
 					ground_unit: -1,
 					fly_unit: -1,
 					building: -1,
-					map_element: -1
+					map_element: -1,
+					fog: 1,
+					fog_new_state: 0
 				};
 		
 		DamageTable.init();
@@ -105,6 +107,7 @@ function Game()
 		InterfaceMoneyDraw.init();
 		InterfaceEnergyWaterDraw.init();
 		InterfaceMinimap.init();
+		InterfaceFogOfWar.init();
 		MousePointer.init();
 		
 		//Preloading images
@@ -211,14 +214,22 @@ function Game()
 				if (this.level.map_cells[top_x+x] && this.level.map_cells[top_x+x][top_y+y])
 				{
 					//Preventing duplicate entries (for example building can be placed in few cells)
-					if (this.level.map_cells[top_x+x][top_y+y].ground_unit != -1)
-						onscreen[this.level.map_cells[top_x+x][top_y+y].ground_unit] = 1;
-					if (this.level.map_cells[top_x+x][top_y+y].fly_unit != -1)
-						onscreen[this.level.map_cells[top_x+x][top_y+y].fly_unit] = 1;
-					if (this.level.map_cells[top_x+x][top_y+y].building != -1)
-						onscreen[this.level.map_cells[top_x+x][top_y+y].building] = 1;
+					
 					if (this.level.map_cells[top_x+x][top_y+y].map_element != -1)
 						mapelem_onscreen[this.level.map_cells[top_x+x][top_y+y].map_element] = 1;
+					if (this.level.map_cells[top_x+x][top_y+y].building != -1)
+						onscreen[this.level.map_cells[top_x+x][top_y+y].building] = 1;
+					
+					if (this.level.map_cells[top_x+x][top_y+y].fog == 0)
+						continue;
+					
+					if (this.level.map_cells[top_x+x][top_y+y].ground_unit != -1)
+					{
+						onscreen[this.level.map_cells[top_x+x][top_y+y].ground_unit] = 1;
+						//console.log('Unit %s on position %s:%s', this.level.map_cells[top_x+x][top_y+y].ground_unit, top_x+x, top_y+y);
+					}
+					if (this.level.map_cells[top_x+x][top_y+y].fly_unit != -1)
+						onscreen[this.level.map_cells[top_x+x][top_y+y].fly_unit] = 1;
 				}
 			}
 			
@@ -246,10 +257,13 @@ function Game()
 		//Round 4: On mouse selection
 		var mouse_pos = MousePointer.getCellPosition();
 		unitid = -1;
-		if (MapCell.isCorrectCord(mouse_pos.x, mouse_pos.y))
+		if (MapCell.isCorrectCord(mouse_pos.x, mouse_pos.y) && game.level.map_cells[mouse_pos.x][mouse_pos.y].fog>0)
 			unitid = MapCell.getSingleUserId(this.level.map_cells[mouse_pos.x][mouse_pos.y]);
 		if (unitid != -1) // && !this.objects[unitid].is_selected)
 			this.objects[unitid].drawSelection(true);
+		
+		//Round 5: Update fog of war
+		InterfaceFogOfWar.redrawFog();
 		
 		//DEBUG: Unit placement
 		if (this.debug.show_obj)
@@ -515,6 +529,7 @@ function Game()
 		this.level.loadMapElements();
 		
 		//Common resources
+		this.resources.addImage('fogofwar', 'images/fog.png');
 		this.resources.addSound('construction_under_way', 'sounds/construction_under_way.' + AUDIO_TYPE);
 		this.resources.addSound('construction_complete', 'sounds/construction_complete.' + AUDIO_TYPE);
 		this.resources.addSound('new_units_available', 'sounds/new_units_available.' + AUDIO_TYPE);

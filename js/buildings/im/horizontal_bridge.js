@@ -31,6 +31,7 @@ HorizontalBridgeBuilding.enabled = true;
 HorizontalBridgeBuilding.can_build = true;
 HorizontalBridgeBuilding.is_bridge = true;
 HorizontalBridgeBuilding.is_built_from_edge = true;
+HorizontalBridgeBuilding.seeing_range = 0;
 
 HorizontalBridgeBuilding.cell_size = {x: 3, y: 4};
 HorizontalBridgeBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1];

@@ -31,6 +31,7 @@ CenterBridgeBuilding.enabled = true;
 CenterBridgeBuilding.can_build = true;
 CenterBridgeBuilding.is_bridge = true;
 CenterBridgeBuilding.is_built_from_edge = true;
+CenterBridgeBuilding.seeing_range = 0;
 
 CenterBridgeBuilding.cell_size = {x: 4, y: 4};
 CenterBridgeBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];

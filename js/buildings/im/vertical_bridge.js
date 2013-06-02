@@ -31,6 +31,7 @@ VerticalBridgeBuilding.enabled = true;
 VerticalBridgeBuilding.can_build = true;
 VerticalBridgeBuilding.is_bridge = true;
 VerticalBridgeBuilding.is_built_from_edge = true;
+VerticalBridgeBuilding.seeing_range = 0;
 
 VerticalBridgeBuilding.cell_size = {x: 4, y: 3};
 VerticalBridgeBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1];

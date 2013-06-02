@@ -19,6 +19,7 @@ AirDefenceSiteBuilding.enabled = false;
 AirDefenceSiteBuilding.can_build = true;
 AirDefenceSiteBuilding.crater = 1;
 AirDefenceSiteBuilding.weapon = 'IMPFixedGroundToAirLaser';
+AirDefenceSiteBuilding.seeing_range = 12;
 
 AirDefenceSiteBuilding.cell_size = {x: 3, y: 3};
 AirDefenceSiteBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];

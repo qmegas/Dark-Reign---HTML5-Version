@@ -17,6 +17,7 @@ Headquarter3Building.sell_time = 12;
 Headquarter3Building.health_max = 4330;
 Headquarter3Building.energy = 100;
 Headquarter3Building.crater = 4;
+Headquarter3Building.seeing_range = 16;
 
 Headquarter3Building.cell_size = {x: 5, y: 4};
 Headquarter3Building.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];

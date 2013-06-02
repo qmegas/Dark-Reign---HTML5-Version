@@ -647,6 +647,34 @@ function AbstractBuilding()
 		};
 	};
 	
+	this.changeFogState = function(state)
+	{
+		if (this.player != PLAYER_HUMAN)
+			return;
+		
+		var x, y, pos = this.getCell();
+		
+		pos.x += this._proto.cell_padding.x;
+		pos.y += this._proto.cell_padding.y;
+		
+		for (x = pos.x - this._proto.seeing_range + 1; x < pos.x + this._proto.seeing_range; ++x)
+		{
+			if (!MapCell.isCorrectX(x))
+				continue;
+			
+			for (y = pos.y - this._proto.seeing_range + 1; y < pos.y + this._proto.seeing_range; ++y)
+			{
+				if (!MapCell.isCorrectY(y))
+					continue;
+				
+				if ((Math.sqrt(Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2)) < this._proto.seeing_range))
+					game.level.map_cells[x][y].fog_new_state += state;
+			}
+		}
+		
+		InterfaceFogOfWar.need_redraw = true;
+	};
+	
 	//Event functions
 	
 	this.triggerEvent = function(event, params)
@@ -657,6 +685,7 @@ function AbstractBuilding()
 	{
 		this.markCellsOnMap(-1);
 		this.onObjectDeletionCustom();
+		this.changeFogState(-1);
 	};
 	
 	this.onConstructed = function() 
@@ -765,6 +794,7 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 	new_obj = game.objects[uid];
 	new_obj.uid = uid;
 	new_obj.markCellsOnMap(uid);
+	new_obj.changeFogState(1);
 	
 	if (instant_build)
 	{
@@ -895,6 +925,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.is_healer = false;
 	obj.is_fixer = false;
 	obj.is_teleport = false;
+	obj.seeing_range = 8;
 	
 	obj.carry = null;
 

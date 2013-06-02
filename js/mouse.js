@@ -117,7 +117,7 @@ var MousePointer = {
 		if (!MapCell.isCorrectCord(pos.x, pos.y))
 			return this._drawNormalCursor();
 		
-		var objid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+		var objid = (game.level.map_cells[pos.x][pos.y].fog == 0) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
 		
 		//Actions
 		if (game.action_state != ACTION_STATE_NONE)

@@ -18,6 +18,7 @@ NeutronAcceleratorBuilding.energy = 100;
 NeutronAcceleratorBuilding.can_build = true;
 NeutronAcceleratorBuilding.crater = 1;
 NeutronAcceleratorBuilding.weapon = 'NeutronAss';
+NeutronAcceleratorBuilding.seeing_range = 12;
 
 NeutronAcceleratorBuilding.cell_size = {x: 3, y: 3};
 NeutronAcceleratorBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1];

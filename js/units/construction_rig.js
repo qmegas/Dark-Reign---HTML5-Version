@@ -48,7 +48,7 @@ function ConstructionRigUnit(pos_x, pos_y, player)
 	{
 		if (this.action.type == 'build')
 		{
-			var pos = this.getCell();
+			var pos = cloneObj(this.getCell());
 			if (this._isBuldingCell(pos))
 				this._startBuild();
 			else

@@ -18,6 +18,7 @@ CameraTowerBuilding.energy = 50;
 CameraTowerBuilding.can_build = true;
 CameraTowerBuilding.crater = 0;
 CameraTowerBuilding.is_built_from_edge = true;
+CameraTowerBuilding.seeing_range = 16;
 
 CameraTowerBuilding.cell_size = {x: 1, y: 2};
 CameraTowerBuilding.cell_matrix = [1,1];

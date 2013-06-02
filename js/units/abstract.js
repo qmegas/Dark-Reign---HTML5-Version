@@ -387,8 +387,35 @@ function AbstractUnit(pos_x, pos_y, player)
 				game.level.map_cells[curr_pos.x][curr_pos.y].ground_unit = -1;
 			}
 			
+			this.changeFogState(-1);
 			this.position_cell = {x: this.move_path[0].x, y: this.move_path[0].y};
+			this.changeFogState(1);
 		}
+	};
+	
+	this.changeFogState = function(state)
+	{
+		if (this.player != PLAYER_HUMAN)
+			return;
+		
+		var x, y;
+		
+		for (x = this.position_cell.x - this._proto.seeing_range + 1; x < this.position_cell.x + this._proto.seeing_range; ++x)
+		{
+			if (!MapCell.isCorrectX(x))
+				continue;
+			
+			for (y = this.position_cell.y - this._proto.seeing_range + 1; y < this.position_cell.y + this._proto.seeing_range; ++y)
+			{
+				if (!MapCell.isCorrectY(y))
+					continue;
+				
+				if ((Math.sqrt(Math.pow(x - this.position_cell.x, 2) + Math.pow(y - this.position_cell.y, 2)) < this._proto.seeing_range))
+					game.level.map_cells[x][y].fog_new_state += state;
+			}
+		}
+		
+		InterfaceFogOfWar.need_redraw = true;
 	};
 	
 	this._drawPartImage = function(layer, key_prefix, part, frame, x, y)
@@ -584,7 +611,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	};
 	
 	this.markCellsOnMap = function(unitid)
-	{
+	{	
 		var cell = this.getCell();
 		
 		if (unitid == -1)
@@ -792,6 +819,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.onObjectDeletion = function() 
 	{
+		this.changeFogState(-1);
 		this.markCellsOnMap(-1);
 		this.onObjectDeletionCustom();
 	};
@@ -864,6 +892,7 @@ AbstractUnit.createNew = function(obj, x, y, player, instant_build)
 	game.objects.push(new obj(x, y, player));
 	game.objects[uid].uid = uid;
 	game.objects[uid].markCellsOnMap(uid);
+	game.objects[uid].changeFogState(1);
 	
 	if (!instant_build)
 		InterfaceSoundQueue.addSound('unit_completed');
