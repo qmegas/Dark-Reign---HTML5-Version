@@ -42,14 +42,37 @@ var InterfaceMinimap = {
 			this._objects_ctx.fillStyle = game.players[game.objects[i].player].getMapColor();
 				
 			if (game.objects[i].is_building)
+			{
 				this._objects_ctx.fillRect(
 					x, y, 
 					Math.round(game.objects[i]._proto.cell_size.x*cell_on_mini), 
 					Math.round(game.objects[i]._proto.cell_size.y*cell_on_mini)
 				); 
+			}
 			else
-				this._objects_ctx.fillRect(x, y, 1, 1); 
+			{
+				if (game.level.map_cells[x][y].fog > 0)
+					this._objects_ctx.fillRect(x, y, 1, 1); 
+			}
 		}
+		
+		var x, y, x_prop = game.level.minimap.x / game.level.size.x, y_prop = game.level.minimap.y / game.level.size.y, cur_position = 0;
+		var img = this._objects_ctx.getImageData(0, 0, game.level.minimap.x, game.level.minimap.y);
+		
+		for (y = 0; y < game.level.minimap.y; ++y)
+		{
+			for (x = 0; x < game.level.minimap.x; ++x)
+			{
+				if (game.level.map_cells[parseInt(x/x_prop)][parseInt(y/y_prop)].fog == 0)
+				{
+					img.data[cur_position] *= 0.7;
+					img.data[cur_position + 1] *= 0.7;
+					img.data[cur_position + 2] *= 0.7;
+				}
+				cur_position += 4;
+			}
+		}
+		this._objects_ctx.putImageData(img, 0, 0);
 	},
 	
 	switchState: function()

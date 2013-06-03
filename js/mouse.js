@@ -268,7 +268,7 @@ var MousePointer = {
 		
 				if (Math.abs(sizes.width)<4 && Math.abs(sizes.height)<4)
 				{
-					unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+					unitid = (game.level.map_cells[pos.x][pos.y].fog == 0) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
 					
 					if (unitid!=-1 && game.objects[unitid].is_building)
 					{
