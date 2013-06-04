@@ -204,7 +204,7 @@ function AbstractBuilding()
 			if (this._proto.upgradable && this._proto.can_upgrade_now)
 			{
 				var up_top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 8.5 - game.viewport_y;;
-				InterfaceFontDraw.drawOnCanvas(
+				game.fontDraw.drawOnCanvas(
 					'Upgrade ' + this._proto.upgrade_to.cost + 'c', game.viewport_ctx, top_x, up_top_y, 
 					'yellow', 'center', health_width
 				);
@@ -212,7 +212,7 @@ function AbstractBuilding()
 		}
 		
 		if (is_onmouse)
-			InterfaceFontDraw.drawOnCanvas(
+			game.fontDraw.drawOnCanvas(
 				this._proto.obj_name, game.viewport_ctx, top_x, top_y, 
 				'yellow', 'center', health_width
 			);
@@ -233,7 +233,7 @@ function AbstractBuilding()
 		
 		top_y = this.position.y - this._proto.images.normal.padding.y - 16.5 - game.viewport_y;
 		
-		InterfaceFontDraw.drawOnCanvas(
+		game.fontDraw.drawOnCanvas(
 			title, game.viewport_ctx, top_x + 0.5, top_y, 
 			'yellow', 'center', bar_width
 		);

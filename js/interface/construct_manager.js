@@ -344,7 +344,7 @@ var InterfaceConstructManager = {
 		text = obj.obj_name + ' ' + obj.cost + 'c';
 		
 		//Draw name
-		var text_size = InterfaceFontDraw.getSize(text) + 4, left = MAX_X - text_size - 13;
+		var text_size = game.fontDraw.getSize(text) + 4, left = MAX_X - text_size - 13;
 		
 		this._popup_ctx.fillStyle = '#07f4ff';
 		this._popup_ctx.fillRect(MAX_X - 15 - text_size, 0, text_size + 2, 18);
@@ -362,7 +362,7 @@ var InterfaceConstructManager = {
 		this._popup_ctx.lineTo(MAX_X, 10.5);
 		this._popup_ctx.stroke();
 		
-		InterfaceFontDraw.drawOnCanvas(text, this._popup_ctx, MAX_X - 12.5 - text_size, 2.5, 'green');
+		game.fontDraw.drawOnCanvas(text, this._popup_ctx, MAX_X - 12.5 - text_size, 2.5, 'green');
 		
 		//Draw required
 		var texts = [], max_text_size = 0;
@@ -378,7 +378,7 @@ var InterfaceConstructManager = {
 		
 		for (i=0; i<texts.length; ++i)
 		{
-			text_size = InterfaceFontDraw.getSize(texts[i]);
+			text_size = game.fontDraw.getSize(texts[i]);
 			if (text_size > max_text_size)
 				max_text_size = text_size;
 		}
@@ -401,7 +401,7 @@ var InterfaceConstructManager = {
 		this._popup_ctx.stroke();
 		
 		for (i=0; i<texts.length; ++i)
-			InterfaceFontDraw.drawOnCanvas(texts[i], this._popup_ctx, left - 12.5 - max_text_size, i*15 + 2.5, 'red');
+			game.fontDraw.drawOnCanvas(texts[i], this._popup_ctx, left - 12.5 - max_text_size, i*15 + 2.5, 'red');
 	},
 	
 	redrawProductionState: function()
@@ -467,7 +467,7 @@ var InterfaceConstructManager = {
 		txt = obj.producing_count.toString();
 		if (obj.producing_paused)
 			txt += ' [P]';
-		InterfaceFontDraw.drawOnCanvas(txt, ctx, 13, 2, 'yellow');
+		game.fontDraw.drawOnCanvas(txt, ctx, 13, 2, 'yellow');
 	},
 	
 	clearProducingByObject: function(obj)

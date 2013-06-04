@@ -5,6 +5,9 @@ Build 40
 - Implemented weapon's minimal attack range
 - First implementation of the fog of war
 - Starting this build you can not run game just from local folder, you should set up virtual domain or upload it to remote computer.
+- Water display switcher are now clickable
+- Start working on game menu (level select menu)
+- Code refactoring
 
 Build 39 (17.05.2013)
 - Sky Fortress now have correct fire delay and weapon state display

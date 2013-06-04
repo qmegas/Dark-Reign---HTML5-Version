@@ -4,25 +4,25 @@ var InterfaceGUI = {
 	preloadImages: function()
 	{
 		//-- CSS --
-		game.resources.addImage('css1', 'images/shell/load-screen.png');
-		game.resources.addImage('css2', 'images/shell/load-bar.png');
-		game.resources.addImage('css3', 'images/shell/money.png');
-		game.resources.addImage('css4', 'images/shell/topbuttons.png');
-		game.resources.addImage('css5', 'images/shell/money_numbers.png');
-		game.resources.addImage('css6', 'images/shell/menutabs.png');
-		game.resources.addImage('css7', 'images/shell/panel.png');
-		game.resources.addImage('css8', 'images/shell/unit_box.png');
-		game.resources.addImage('css9', 'images/shell/b_buttons.png');
-		game.resources.addImage('css10', 'images/shell/minimap.png');
-		game.resources.addImage('css11', 'images/shell/switches.png');
-		game.resources.addImage('css12', 'images/shell/metrics.png');
-		game.resources.addImage('css13', 'images/shell/buttons.png');
-		game.resources.addImage('css14', 'images/shell/menu_icons.png');
-		game.resources.addImage('css15', 'images/shell/slider_box.png');
-		game.resources.addImage('css16', 'images/shell/slide_scale.png');
-		game.resources.addImage('css17', 'images/shell/title.png');
-		game.resources.addImage('css18', 'images/shell/order_check.png');
-		game.resources.addImage('css19', 'images/shell/checkbox.png');
+		game.resources.addImage('css1', 'images/interface/load-screen.png');
+		game.resources.addImage('css2', 'images/interface/load-bar.png');
+		game.resources.addImage('css3', 'images/interface/money.png');
+		game.resources.addImage('css4', 'images/interface/topbuttons.png');
+		game.resources.addImage('css5', 'images/interface/money_numbers.png');
+		game.resources.addImage('css6', 'images/interface/menutabs.png');
+		game.resources.addImage('css7', 'images/interface/panel.png');
+		game.resources.addImage('css8', 'images/interface/unit_box.png');
+		game.resources.addImage('css9', 'images/interface/b_buttons.png');
+		game.resources.addImage('css10', 'images/interface/minimap.png');
+		game.resources.addImage('css11', 'images/interface/switches.png');
+		game.resources.addImage('css12', 'images/interface/metrics.png');
+		game.resources.addImage('css13', 'images/interface/buttons.png');
+		game.resources.addImage('css14', 'images/interface/menu_icons.png');
+		game.resources.addImage('css15', 'images/interface/slider_box.png');
+		game.resources.addImage('css16', 'images/interface/slide_scale.png');
+		game.resources.addImage('css17', 'images/interface/title.png');
+		game.resources.addImage('css18', 'images/interface/order_check.png');
+		game.resources.addImage('css19', 'images/interface/checkbox.png');
 		//---------
 		game.resources.addImage('map-tiles', 'images/levels/'+game.level.tiles);
 		game.resources.addImage('minimap', 'images/levels/'+game.level.minimap.image);
@@ -122,6 +122,12 @@ var InterfaceGUI = {
 			game.objects[uid].triggerEvent('tactic_changed');
 		}
 	},
+		
+	stopButton: function()
+	{
+		for (var i in game.selected_objects)
+			game.objects[game.selected_objects[i]].orderStop();
+	},
 	
 	setHandlers: function()
 	{
@@ -133,7 +139,7 @@ var InterfaceGUI = {
 			$(this).removeClass('active');
 		});
 		$('#top_button_stop').click(function(){
-			game.shellStopButton();
+			InterfaceGUI.stopButton();
 		});
 		//Interface sell building button
 		$('#top_button_sell').click(function(){
@@ -318,7 +324,7 @@ var InterfaceGUI = {
 					game.togglePause();
 					break;
 				case 83: //s - stop selected units
-					game.shellStopButton();
+					InterfaceGUI.stopButton();
 					break;
 				default:
 					prevent = false;

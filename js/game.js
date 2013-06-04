@@ -22,6 +22,7 @@ function Game()
 	this.selected_objects = [];
 	this.selected_info = {};
 	this.tactical_groups = {};
+	this.fontDraw = null;
 	
 	//Drawers
 	this.objDraw = new ObjectDraw();
@@ -30,7 +31,7 @@ function Game()
 	//Flags
 	this.action_state = 0;
 	this.action_state_options = {};
-	this.shell_update_time = 0;
+	this.interface_update_time = 0;
 	this.minimap_navigation = false;
 	
 	this.debug = new Debuger();
@@ -69,7 +70,7 @@ function Game()
 	{
 		if (!this._checkBrowserSupport())
 		{
-			$('.load-screen').css('background-image', 'url("images/shell/not_supported.png")');
+			$('.load-screen').css('background-image', 'url("images/interface/not_supported.png")');
 			return;
 		}
 		
@@ -118,6 +119,7 @@ function Game()
 			$('#progress-bar').css({width: progress+'px'});
 		};
 		this.resources.onComplete = function(){
+			game.fontDraw = new FontDraw('font', 14);
 			game.moveViewport(game.level.start_positions[0].x - 10, game.level.start_positions[0].y - 10, false);
 			game.players[PLAYER_HUMAN].addMoney(15000); //Should add money to all players
 			InterfaceConstructManager.drawUnits();
@@ -348,10 +350,10 @@ function Game()
 		//Mouse
 		MousePointer.draw(cur_time);
 		
-		//Once per second update shell info
-		if ((cur_time - this.shell_update_time) > 1000)
+		//Once per second update interface info
+		if ((cur_time - this.interface_update_time) > 1000)
 		{
-			this.shell_update_time = cur_time;
+			this.interface_update_time = cur_time;
 			
 			ActionsHeap.run();
 			
@@ -577,12 +579,6 @@ function Game()
 			return false;
 		
 		return true;
-	};
-	
-	this.shellStopButton = function()
-	{
-		for (var i in this.selected_objects)
-			this.objects[this.selected_objects[i]].orderStop();
 	};
 	
 	this.unselectUnit = function(uid)
@@ -866,7 +862,7 @@ function Game()
 
 $(function(){
 	var img = new Image();
-	img.src = 'images/shell/load-screen.png';
+	img.src = 'images/interface/load-screen.png';
 	img.onload = function(){
 		game = new Game();
 		game.init(new Level1(), function(){

@@ -36,12 +36,40 @@ function ResourseLoader()
 		if (this.isSet(key))
 			return;
 		
-		var audio = new Audio(), obj = this;;
+		var audio = new Audio(), obj = this;
 		audio.src = sound_path;
 		this.items[key] = audio;
 		this.total++;
 		
 		audio.addEventListener('canplaythrough', function(){
+			obj.loaded++;
+			obj.onLoaded(obj.loaded, obj.total);
+			if (obj.loaded == obj.total)
+				obj.onComplete();
+		});
+	};
+	
+	this.addVideo = function(key, video_path, class_name)
+	{
+		if (this.isSet(key))
+			return;
+		
+		var video = document.createElement('video'), source = document.createElement('source'), obj = this;
+		$(video).attr({
+			id: 'example_video_test',
+			class: class_name,
+			preload: 'auto'
+		});
+		$(source).attr({
+			type: 'video/webm',
+			src: video_path
+		});
+		$(video).append(source);
+		
+		this.items[key] = video;
+		this.total++;
+		
+		video.addEventListener('canplaythrough', function(){
 			obj.loaded++;
 			obj.onLoaded(obj.loaded, obj.total);
 			if (obj.loaded == obj.total)

@@ -16,15 +16,36 @@ body {
 	margin: 0;
 	width: 640px;
 	height: 480px;
-	background: url("../images/shell/load-screen.png") no-repeat 0 0;
+	background: url("../images/interface/load-screen.png") no-repeat 0 0;
 }
 .load-screen .progress {
 	width: 0px;
 	height: 20px;
-	background: url("../images/shell/load-bar.png") no-repeat 0 0;
+	background: url("../images/interface/load-bar.png") no-repeat 0 0;
 	position: relative;
 	top: 419px;
 	left: 70px;
+}
+
+#level_select {
+	background: url("../images/shell/level_select_tmp.png") no-repeat 0 0;
+	height: 480px;
+	display: none;
+}
+#level_select .ring {
+	width: 144px;
+	height: 144px;
+	position: absolute;
+	top: 190px;
+	left: 248px;
+}
+.menu_video {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 640px;
+	height: 480px;
+	z-index: 999;
 }
 
 .game {
@@ -44,19 +65,19 @@ body {
 	width: 6px;
 	height: 32px;
 	float: left;
-	background: url("../images/shell/money.png") no-repeat 0 0;
+	background: url("../images/interface/money.png") no-repeat 0 0;
 }
 .game .left-frame .top-panel .dummy-last {
 	width: 7px;
 	height: 32px;
 	float: left;
-	background: url("../images/shell/money.png") no-repeat -147px 0;
+	background: url("../images/interface/money.png") no-repeat -147px 0;
 }
 .game .left-frame .top-panel .button {
 	float: left;
 	width: 49px;
 	height: 32px;
-	background-image: url("../images/shell/topbuttons.png");
+	background-image: url("../images/interface/topbuttons.png");
 }
 .game .left-frame .top-panel .button.sell {
 	background-position: 0 0;
@@ -116,14 +137,14 @@ body {
 	float: left;
 	width: 116px;
 	height: 26px;
-	background: url("../images/shell/money.png") no-repeat -6px 0;
+	background: url("../images/interface/money.png") no-repeat -6px 0;
 	padding: 6px 0 0 25px;
 }
 .game .left-frame .top-panel .money .num {
 	float: left;
 	width: 10px;
 	height: 16px;
-	background-image: url("../images/shell/money_numbers.png");
+	background-image: url("../images/interface/money_numbers.png");
 }
 .game .left-frame .top-panel .money .num.d0 {
 	background-position: -1px 0;
@@ -192,7 +213,7 @@ body {
 	float: left;
 	width: 64px;
 	height: 32px;
-	background-image: url("../images/shell/menutabs.png");
+	background-image: url("../images/interface/menutabs.png");
 }
 .game .right-frame .tab-buttons .tab.build {
 	background-position: 0 0;
@@ -250,7 +271,7 @@ body {
 }
 .game .right-frame .panel {
 	height: 278px;
-	background-image: url("../images/shell/panel.png");
+	background-image: url("../images/interface/panel.png");
 }
 .game .right-frame .panel.hidden {
 	display: none;
@@ -267,7 +288,7 @@ body {
 .game .right-frame .panel .unit-boxes .box .unit-image {
 	width: 64px;
 	height: 50px;
-	background-image: url("../images/shell/unit_box.png");
+	background-image: url("../images/interface/unit_box.png");
 	position: relative;
 	top: -55px;
 }
@@ -286,7 +307,7 @@ body {
 	width: 22px;
 	height: 22px;
 	float: left;
-	background: url("../images/shell/b_buttons.png");
+	background: url("../images/interface/b_buttons.png");
 }
 .game .right-frame .panel .ext-buttons .up:hover {
 	background-position: -22px 0;
@@ -298,7 +319,7 @@ body {
 	width: 22px;
 	height: 22px;
 	float: left;
-	background: url("../images/shell/b_buttons.png") no-repeat -66px 0;
+	background: url("../images/interface/b_buttons.png") no-repeat -66px 0;
 }
 .game .right-frame .panel .ext-buttons .btn {
 	float: left;
@@ -311,7 +332,7 @@ body {
 	background-position: -110px 0;
 }
 .game .right-frame .panel .title {
-	background: url("../images/shell/title.png") no-repeat right bottom;
+	background: url("../images/interface/title.png") no-repeat right bottom;
 	width: 166px;
 	height: 16px;
 	padding: 0 0 3px 5px;
@@ -332,7 +353,7 @@ body {
 	float: left;
 	width: 50px;
 	height: 91px;
-	background: url("../images/shell/menu_icons.png") no-repeat right bottom;;
+	background: url("../images/interface/menu_icons.png") no-repeat right bottom;;
 }
 .game .right-frame .panel#panel_menu .scrolls .conteiner {
 	float: left;
@@ -343,12 +364,12 @@ body {
 .game .right-frame .panel#panel_menu .scrolls .conteiner .scroll-box {
 	width: 103px;
 	height: 15px;
-	background: url("../images/shell/slider_box.png");
+	background: url("../images/interface/slider_box.png");
 	margin-bottom: 7px;
 	padding: 1px;
 }
 .game .right-frame .panel#panel_menu .scrolls .conteiner .scroll-box .scale {
-	background: url("../images/shell/slide_scale.png");
+	background: url("../images/interface/slide_scale.png");
 	height: 15px;
 }
 
@@ -385,7 +406,7 @@ body {
 .game .right-frame .panel#panel_orders .options {
 	clear: both;
 	height: 69px;
-	background: url("../images/shell/texts/orders_opt.png") no-repeat 7px 10px;
+	background: url("../images/interface/texts/orders_opt.png") no-repeat 7px 10px;
 	font-size: 0;
 	padding: 2px 0 8px 80px;
 }
@@ -400,7 +421,7 @@ body {
 	float: left;
 	width: 130px;
 	height: 127px;
-	background-image: url("../images/shell/minimap.png");
+	background-image: url("../images/interface/minimap.png");
 	text-align: center;
 	padding: 6px 5px 5px 5px;
 }
@@ -414,11 +435,72 @@ body {
 }
 .game .right-frame .bottom-right .resources .switches {
 	height: 34px;
-	background: url("../images/shell/switches.png") no-repeat 0 0;
+}
+.game .right-frame .bottom-right .resources .switches .switch {
+	float: left;
+	width: 13px;
+	height: 17px;
+	background: url("../images/interface/switches.png") 0 0;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c1:hover {
+	background-position: -13px -17px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c2:hover {
+	background-position: -26px -17px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c3:hover {
+	background-position: -39px -17px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c4:hover {
+	background-position: -52px -17px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c5:hover {
+	background-position: -65px -17px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c6:hover {
+	background-position: -78px -17px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c7:hover {
+	background-position: -91px -17px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c8:hover {
+	background-position: -104px -17px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c1:active,
+.game .right-frame .bottom-right .resources .switches .switch.c1.active {
+	background-position: -13px -34px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c2:active,
+.game .right-frame .bottom-right .resources .switches .switch.c2.active {
+	background-position: -26px -34px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c3:active,
+.game .right-frame .bottom-right .resources .switches .switch.c3.active {
+	background-position: -39px -34px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c4:active,
+.game .right-frame .bottom-right .resources .switches .switch.c4.active {
+	background-position: -52px -34px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c5:active,
+.game .right-frame .bottom-right .resources .switches .switch.c5.active {
+	background-position: -65px -34px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c6:active,
+.game .right-frame .bottom-right .resources .switches .switch.c6.active {
+	background-position: -78px -34px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c7:active,
+.game .right-frame .bottom-right .resources .switches .switch.c7.active {
+	background-position: -91px -34px;
+}
+.game .right-frame .bottom-right .resources .switches .switch.c8:active,
+.game .right-frame .bottom-right .resources .switches .switch.c8.active {
+	background-position: -104px -34px;
 }
 .game .right-frame .bottom-right .resources .metrics {
 	height: 104px;
-	background: url("../images/shell/metrics.png") no-repeat 0 0;
+	background: url("../images/interface/metrics.png") no-repeat 0 0;
 }
 @keyframes energy-blink {
 	0%  { background-position: 0 0; }
@@ -438,7 +520,7 @@ body {
 	display: inline-block;
 	width: 30px;
 	height: 22px;
-	background-image: url("../images/shell/order_check.png");
+	background-image: url("../images/interface/order_check.png");
 }
 .dk-order-chk.low {
 	background-position: 0 0;
@@ -474,7 +556,7 @@ body {
 .dk-checkbox {
 	width: 10px;
 	height: 22px;
-	background: url("../images/shell/checkbox.png") no-repeat 0 6px;
+	background: url("../images/interface/checkbox.png") no-repeat 0 6px;
 }
 .dk-checkbox.checked {
 	background-position: -9px 6px;
@@ -482,7 +564,7 @@ body {
 
 .dk-button {
 	height: 22px;
-	background: url("../images/shell/buttons.png") no-repeat 0 0;
+	background: url("../images/interface/buttons.png") no-repeat 0 0;
 	text-align: center;
 }
 
@@ -522,7 +604,7 @@ body {
 	margin: 7px 0 0 16px;
 	width: 40px;
 	height: 12px;
-	background: url("../images/shell/texts/upgrade.png") no-repeat 0 -12px;
+	background: url("../images/interface/texts/upgrade.png") no-repeat 0 -12px;
 }
 .dk-button.disable#upgrade_button .caption {
 	background-position: 0 0;

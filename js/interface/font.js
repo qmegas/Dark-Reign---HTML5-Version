@@ -1,37 +1,39 @@
-var InterfaceFontDraw = {
-	_size: 14,
-	_space_size: 4,
-	_table: [
-		 //  0        1        2        3        4        5        6        7        8        9        A        B        C        D        E        F 
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //0
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //1
-		 [189,4],   [0,3],   [4,4],   [9,8],  [18,8], [27,10],  [38,8],  [47,3],  [51,5],  [57,5],  [63,6],  [70,5],  [76,2],  [79,4],  [84,2],  [87,6], //2
-		  [94,6], [101,3], [105,6], [112,6], [119,6], [126,6], [133,6], [140,6], [147,6], [154,6], [161,2], [164,2], [167,6], [174,7], [182,6], [189,7], //3
-		[197,13], [211,6], [218,6], [225,6], [232,6], [239,6], [246,6], [253,7], [261,6], [268,3], [272,6], [279,6], [286,5], [292,8], [301,6], [308,6], //4
-		 [315,6], [322,7], [330,6], [337,6], [344,7], [352,6], [359,6], [366,8], [375,6], [382,6], [389,6], [396,3], [400,5], [406,3], [410,6], [417,7], //5
-		 [425,3], [429,6], [436,6], [443,5], [449,6], [456,6], [463,4], [468,6], [475,6], [482,3], [486,4], [491,6], [498,3], [502,9], [512,6], [519,6], //6
-		 [526,6], [533,6], [540,4], [545,6], [552,4], [557,6], [564,6], [571,8], [580,6], [587,6], [594,6], [601,4], [606,3], [610,4], [615,7], [189,7], //7
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //8
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //9
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //A
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //B
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //C
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //D
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], //E
-		 [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7], [189,7]  //F
-	],
+function FontDraw(font_name, size)
+{
+	var _table = {}, _cache_table = {};
 	
-	_cache_table: {},
+	function constructor()
+	{
+		var img = game.resources.get(font_name), cur_char = 32, cur_start = 0, pos = 0;
+		
+		var tmp_canvas = $('<canvas width="' + img.width + '" height="' + size + '"></canvas>');
+		var tmp_ctx = tmp_canvas.get(0).getContext('2d');
+		
+		tmp_ctx.drawImage(img, 0, 0);
+		var img_data = tmp_ctx.getImageData(0, 0, img.width, size);
+		
+		while (pos<img.width && cur_char<127)
+		{
+			var offset = pos*4;
+			if (img_data.data[offset]==255 && img_data.data[offset+1]==0 && img_data.data[offset+2]==255)
+			{
+				_table[cur_char] = [cur_start, pos - cur_start];
+				cur_char++;
+				cur_start = pos + 1;
+			}
+			pos++;
+		}
+	}
 	
-	drawOnCanvas: function(text, ctx, x, y, color, align, align_width)
+	this.drawOnCanvas = function(text, ctx, x, y, color, align, align_width)
 	{
 		var key = 'chached_text_'+text+color;
 		
-		if (typeof this._cache_table[key] === 'undefined')
+		if (typeof _cache_table[key] === 'undefined')
 		{
-			var canvas = $('<canvas width="500" height="' + this._size + '"></canvas>'), twidth = this._bufferDraw(canvas, text, color);
+			var canvas = $('<canvas width="500" height="' + size + '"></canvas>'), twidth = this._bufferDraw(canvas, text, color);
 			canvas.width = twidth;
-			this._cache_table[key] = {
+			_cache_table[key] = {
 				width: twidth,
 				canvas: canvas.get(0)
 			};
@@ -40,10 +42,10 @@ var InterfaceFontDraw = {
 		switch (align)
 		{
 			case 'center':
-				x += parseInt((align_width - this._cache_table[key].width)/2);
+				x += parseInt((align_width - _cache_table[key].width)/2);
 				break;
 			case 'right':
-				x += (align_width - this._cache_table[key].width);
+				x += (align_width - _cache_table[key].width);
 				break;
 			default:
 				//No changes required for other types
@@ -51,45 +53,40 @@ var InterfaceFontDraw = {
 		}
 		
 		ctx.drawImage(
-			this._cache_table[key].canvas, 0, 0, this._cache_table[key].width, this._size,
-			x+0.5, y+0.5, this._cache_table[key].width, this._size
+			_cache_table[key].canvas, 0, 0, _cache_table[key].width, size,
+			x+0.5, y+0.5, _cache_table[key].width, size
 		);
-	},
+	};
 	
-	getSize: function(text)
+	this.getSize = function(text)
 	{
 		var summ = 0;
 		for (var i=0; i<text.length; ++i)
-			summ += this._table[text.charCodeAt(i)][1];
+			summ += _table[text.charCodeAt(i)][1];
 		
 		return summ;
-	},
+	};
 	
-	_bufferDraw: function(canvas, text, color)
+	this._bufferDraw = function(canvas, text, color)
 	{
 		var ctx = canvas.get(0).getContext('2d'), current_position = 0, ascii, letter, 
-			color_offset = this._getColorOffset(color), font = game.resources.get('font');
+			color_offset = this._getColorOffset(color), font = game.resources.get(font_name);
 		
 		for (var i=0; i<text.length; ++i)
 		{
 			ascii = text.charCodeAt(i);
-			if (ascii == 32)
-				current_position += this._space_size;
-			else
-			{
-				letter = this._table[ascii];
-				ctx.drawImage(
-					font, letter[0], color_offset, letter[1], this._size, 
-					current_position, 0, letter[1], this._size
-				);
-				current_position += letter[1];
-			}
+			letter = _table[ascii];
+			ctx.drawImage(
+				font, letter[0], color_offset, letter[1], size, 
+				current_position, 0, letter[1], size
+			);
+			current_position += letter[1];
 		}
 		
 		return current_position;
-	},
+	};
 	
-	_getColorOffset: function(color)
+	this._getColorOffset = function(color)
 	{
 		switch (color)
 		{
@@ -100,5 +97,7 @@ var InterfaceFontDraw = {
 			default:
 				return 0;
 		}
-	}
-};
+	};
+
+	constructor();
+}

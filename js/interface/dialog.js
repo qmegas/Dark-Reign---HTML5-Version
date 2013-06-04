@@ -4,12 +4,12 @@ function InterfaceDialog()
 	
 	this.show = function()
 	{
-		$('#dialog_text').attr('src', 'images/shell/texts/' + this._options.text + '.png');
+		$('#dialog_text').attr('src', 'images/interface/texts/' + this._options.text + '.png');
 		$('#d_button1')
 			.css('margin-left', '54px')
 			.click(this._options.buttons[0].callback)
 			.show();
-		$('#d_button1_img').attr('src', 'images/shell/texts/' + this._options.buttons[0].text + '.png');
+		$('#d_button1_img').attr('src', 'images/interface/texts/' + this._options.buttons[0].text + '.png');
 				
 		if (this._options.buttons.length == 1)
 		{
@@ -22,7 +22,7 @@ function InterfaceDialog()
 				.css('margin-left', '19px')
 				.click(this._options.buttons[1].callback)
 				.show();
-			$('#d_button2_img').attr('src', 'images/shell/texts/' + this._options.buttons[1].text + '.png');
+			$('#d_button2_img').attr('src', 'images/interface/texts/' + this._options.buttons[1].text + '.png');
 		}
 		
 		$('#dialog_simple, #dialog_box').show();
