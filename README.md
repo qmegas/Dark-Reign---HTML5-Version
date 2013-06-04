@@ -1,6 +1,8 @@
 ## How to run the game
 
-Just download the files and open `game.html` in Chrome or Firefox browsers. IE9/10 still not supported.
+1. Download the files 
+2. Upload it to your site or create virtual domain (it required due to CORS limitations)
+3. Open `game.html` in Chrome or Firefox browsers. IE9/10 still not supported.
 
 [See it live](http://qmegas.info/dark-reign-html5/)
 
