@@ -29,27 +29,27 @@ function Level1()
 	this.map_elements_proto = {
 		misc1: {
 			padding: {x: 0, y: -12},
-			static: true
+			static_img: true
 		},
 		misc2: {
 			padding: {x: 0, y: -12},
-			static: true
+			static_img: true
 		},
 		misc3: {
 			padding: {x: 0, y: -12},
-			static: true
+			static_img: true
 		},
 		plnt1: {
 			padding: {x: -6, y: -7},
-			static: true
+			static_img: true
 		},
 		plnt2: {
 			padding: {x: -5, y: -18},
-			static: true
+			static_img: true
 		},
 		plnt3: {
 			padding: {x: -3, y: -11},
-			static: true
+			static_img: true
 		},
 		rock1: {
 			size: {x: 1, y: 1},
@@ -101,11 +101,11 @@ function Level1()
 		},
 		rubble1: {
 			padding: {x: 9, y: -12},
-			static: true
+			static_img: true
 		},
 		rubble3: {
 			padding: {x: 7, y: -17},
-			static: true
+			static_img: true
 		},
 //		tree1: {
 //			size: {x: 1, y: 1},
@@ -141,7 +141,7 @@ function Level1()
 		},
 		tree5: {
 			padding: {x: 0, y: 2},
-			static: true
+			static_img: true
 		},
 		tree6: {
 			size: {x: 1, y: 1},
@@ -2506,7 +2506,7 @@ function Level1()
 		{
 			proto = this.map_elements_proto[this.map_elements[i].key];
 			
-			if (proto.static)
+			if (proto.static_img)
 				MapElement.addStatic(ctx, this.map_elements[i].x, this.map_elements[i].y, this.map_elements[i].key, proto);
 			else
 			{

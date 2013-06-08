@@ -1,4 +1,4 @@
-Build 40
+Build 40 (05.06.2013)
 - Added "Orders" tab to right panel
 - Tactical AI: Cyclone flies to Rearming deck when have no ammo
 - Tactical AI: weapon maximal range check moved to tactical AI

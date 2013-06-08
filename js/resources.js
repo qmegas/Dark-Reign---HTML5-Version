@@ -57,7 +57,7 @@ function ResourseLoader()
 		var video = document.createElement('video'), source = document.createElement('source'), obj = this;
 		$(video).attr({
 			id: 'example_video_test',
-			class: class_name,
+			'class': class_name,
 			preload: 'auto'
 		});
 		$(source).attr({

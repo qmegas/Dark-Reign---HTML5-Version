@@ -27,25 +27,33 @@ body {
 	left: 70px;
 }
 
-#level_select {
+.shell-menu {
+	background-color: #000;
+}
+.shell-menu #level_select {
 	background: url("../images/shell/level_select_tmp.png") no-repeat 0 0;
 	height: 480px;
 	display: none;
 }
-#level_select .ring {
+.shell-menu #level_select .ring {
 	width: 144px;
 	height: 144px;
 	position: absolute;
 	top: 190px;
 	left: 248px;
 }
-.menu_video {
+.shell-menu .menu_video {
 	position: absolute;
 	left: 0;
 	top: 0;
 	width: 640px;
 	height: 480px;
 	z-index: 999;
+}
+.shell-menu #archive {
+	background: url("../images/shell/archive.png") no-repeat 0 0;
+	height: 480px;
+	display: none;
 }
 
 .game {
