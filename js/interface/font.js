@@ -25,19 +25,15 @@ function FontDraw(font_name, size)
 		}
 	}
 	
+	this.getDataUrl = function(text)
+	{
+		var key = this._checkCache(text, '');
+		return _cache_table[key].canvas.toDataURL();
+	};
+	
 	this.drawOnCanvas = function(text, ctx, x, y, color, align, align_width)
 	{
-		var key = 'chached_text_'+text+color;
-		
-		if (typeof _cache_table[key] === 'undefined')
-		{
-			var canvas = $('<canvas width="500" height="' + size + '"></canvas>'), twidth = this._bufferDraw(canvas, text, color);
-			canvas.width = twidth;
-			_cache_table[key] = {
-				width: twidth,
-				canvas: canvas.get(0)
-			};
-		}
+		var key = this._checkCache(text, color);
 		
 		switch (align)
 		{
@@ -65,6 +61,23 @@ function FontDraw(font_name, size)
 			summ += _table[text.charCodeAt(i)][1];
 		
 		return summ;
+	};
+	
+	this._checkCache = function(text, color)
+	{
+		var key = 'chached_text_'+text+color;
+		
+		if (typeof _cache_table[key] === 'undefined')
+		{
+			var canvas = $('<canvas width="500" height="' + size + '"></canvas>'), twidth = this._bufferDraw(canvas, text, color);
+			canvas.width = twidth;
+			_cache_table[key] = {
+				width: twidth,
+				canvas: canvas.get(0)
+			};
+		}
+		
+		return key;
 	};
 	
 	this._bufferDraw = function(canvas, text, color)

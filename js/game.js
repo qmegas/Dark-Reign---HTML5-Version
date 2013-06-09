@@ -68,9 +68,9 @@ function Game()
 
 	this.init = function(level, init_finish_callback)
 	{
-		if (!this._checkBrowserSupport())
+		if (!BrowserCheck.check())
 		{
-			$('.load-screen').css('background-image', 'url("images/interface/not_supported.png")');
+			BrowserCheck.standartMessage();
 			return;
 		}
 		
@@ -558,27 +558,6 @@ function Game()
 		
 		Animator.loadResources();
 		WeaponHolder.loadResources();
-	};
-	
-	this._checkBrowserSupport = function()
-	{
-		//Support canvas
-		var ret = !!document.createElement('canvas').getContext;
-		if (!ret)
-			return false;
-		
-		//Audio element
-		ret = !!document.createElement('audio').canPlayType;
-		if (!ret)
-			return false;
-		
-		//OGG support
-		var v = document.createElement('audio');
-		ret = v.canPlayType('audio/ogg; codecs="theora, vorbis"');
-		if (!ret)
-			return false;
-		
-		return true;
 	};
 	
 	this.unselectUnit = function(uid)

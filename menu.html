@@ -4,10 +4,11 @@
 		<title>Dark Reign HTML5</title>
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-		<script type="text/javascript" src="http://goldfirestudios.com/proj/howlerjs/howler.min.js?v=2"></script>
 		<script type="text/javascript" src="js/constants.js"></script>
 		<script type="text/javascript" src="js/interface/font.js"></script>
 		<script type="text/javascript" src="js/resources.js"></script>
+		<script type="text/javascript" src="js/browser_check.js"></script>
+		<script type="text/javascript" src="js/shell/howler.min.js"></script>
 		<script type="text/javascript" src="js/shell/menu.js"></script>
 	</head>
 	<body class="shell-menu">
@@ -17,10 +18,20 @@
 		
 		<div id="video_container"></div>
 		<div id="level_select">
-			<div style="position: absolute; border: 1px solid #f00; width: 100px; height: 30px; left: 500px; top: 225px" id="test"></div>
+			<div class="link top" id="link_mession">
+				<div class="bull"></div><br>
+				<div class="text" id="link_mession_text"></div>
+			</div>
+			<div class="link right" id="link_archive">
+				<div class="text" id="link_archive_text"></div>
+				<div class="bull"></div>
+			</div>
 		</div>
 		<div id="archive">
-			
+			<div class="link left" id="link_back">
+				<div class="bull"></div>
+				<div class="text" id="link_back_text"></div>
+			</div>
 		</div>
 	</body>
 </html>

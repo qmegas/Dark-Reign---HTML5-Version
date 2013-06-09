@@ -30,6 +30,79 @@ body {
 .shell-menu {
 	background-color: #000;
 }
+.shell-menu .link {
+	font-size: 0;
+	position: absolute; 
+	height: 53px;
+}
+.shell-menu .link .text {
+	height: 18px;
+	position: relative;
+}
+.shell-menu .link .bull {
+	background-image: url("../images/shell/arrows.png");
+}
+.shell-menu .link.left {
+	width: 100px; 
+	left: 2px;
+	top: 213px;
+	text-align: left;
+}
+.shell-menu .link.left .text {
+	display: inline-block;
+	width: 45px;
+	top: -16px;
+}
+.shell-menu .link.left .bull,
+.shell-menu .link.right .bull {
+	width: 34px;
+	height: 53px;
+	display: inline-block;
+}
+.shell-menu .link.left .bull{
+	background-position: -34px 0;
+}
+.shell-menu .link.left:active .bull {
+	background-position: -34px -53px;
+}
+.shell-menu .link.right {
+	width: 100px; 
+	left: 540px; 
+	top: 213px;
+	text-align: right;
+}
+.shell-menu .link.right .text {
+	display: inline-block;
+	width: 45px;
+	top: -16px;
+}
+.shell-menu .link.right .bull{
+	background-position: 0 0;
+}
+.shell-menu .link.right:active .bull {
+	background-position: 0 -53px;
+}
+.shell-menu .link.top {
+	width: 45px; 
+	left: 297px;
+	top: 2px;
+	text-align: center;
+}
+.shell-menu .link.top .text {
+	display: inline-block;
+	width: 45px;
+}
+.shell-menu .link.top .bull {
+	width: 45px;
+	height: 28px;
+	display: inline-block;
+}
+.shell-menu .link.top .bull{
+	background-position: -68px 0;
+}
+.shell-menu .link.top:active .bull {
+	background-position: -68px -28px;
+}
 .shell-menu #level_select {
 	background: url("../images/shell/level_select_tmp.png") no-repeat 0 0;
 	height: 480px;
