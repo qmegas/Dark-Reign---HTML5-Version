@@ -69,8 +69,8 @@ function FontDraw(font_name, size)
 		
 		if (typeof _cache_table[key] === 'undefined')
 		{
-			var canvas = $('<canvas width="500" height="' + size + '"></canvas>'), twidth = this._bufferDraw(canvas, text, color);
-			canvas.width = twidth;
+			var twidth = this.getSize(text), canvas = $('<canvas width="' + twidth + '" height="' + size + '"></canvas>');
+			this._bufferDraw(canvas, text, color);
 			_cache_table[key] = {
 				width: twidth,
 				canvas: canvas.get(0)

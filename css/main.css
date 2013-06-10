@@ -38,6 +38,7 @@ body {
 .shell-menu .link .text {
 	height: 18px;
 	position: relative;
+	background-repeat: no-repeat;
 }
 .shell-menu .link .bull {
 	background-image: url("../images/shell/arrows.png");
@@ -104,7 +105,7 @@ body {
 	background-position: -68px -28px;
 }
 .shell-menu #level_select {
-	background: url("../images/shell/level_select_tmp.png") no-repeat 0 0;
+	background: url("../images/shell/level_select.png") no-repeat 0 0;
 	height: 480px;
 	display: none;
 }
@@ -114,6 +115,26 @@ body {
 	position: absolute;
 	top: 190px;
 	left: 248px;
+}
+.shell-menu #level_select .dselect {
+	position: absolute;
+	width: 38px;
+	height: 38px;
+	top: 112px;
+}
+.shell-menu #level_select .dselect.fg {
+	left: 236px;
+}
+.shell-menu #level_select .dselect.imp {
+	left: 368px;
+}
+.shell-menu #level_select #level_name {
+	position: absolute;
+	background: no-repeat center 0;
+	width: 325px;
+	height: 20px;
+	top: 68px;
+	left: 157px;
 }
 .shell-menu .menu_video {
 	position: absolute;
@@ -125,6 +146,10 @@ body {
 }
 .shell-menu #archive {
 	background: url("../images/shell/archive.png") no-repeat 0 0;
+	height: 480px;
+	display: none;
+}
+.shell-menu #objective {
 	height: 480px;
 	display: none;
 }

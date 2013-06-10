@@ -17,20 +17,34 @@
 		</div>
 		
 		<div id="video_container"></div>
+		
 		<div id="level_select">
-			<div class="link top" id="link_mession">
+			<div class="link top moovable" data-to="objective" data-way="up">
 				<div class="bull"></div><br>
 				<div class="text" id="link_mession_text"></div>
 			</div>
-			<div class="link right" id="link_archive">
+			<div class="link right moovable" data-to="archive" data-way="right">
 				<div class="text" id="link_archive_text"></div>
 				<div class="bull"></div>
 			</div>
+			
+			<div class="dselect fg moovable" data-side="fg" data-to="objective" data-way="up"></div>
+			<div class="dselect imp moovable" data-side="imp" data-to="objective" data-way="up"></div>
+			
+			<div id="level_name"></div>
 		</div>
+		
 		<div id="archive">
-			<div class="link left" id="link_back">
+			<div class="link left moovable" data-to="back" data-way="left">
 				<div class="bull"></div>
 				<div class="text" id="link_back_text"></div>
+			</div>
+		</div>
+		
+		<div id="objective">
+			<div class="link right moovable" data-to="archive" data-way="right">
+				<div class="text" id="link_archive2_text"></div>
+				<div class="bull"></div>
 			</div>
 		</div>
 	</body>

@@ -4,8 +4,12 @@ function GameShell()
 {
 	var self = this;
 	
+	this.curr_srcreen = '';
+	this.prev_screen = '';
+	
 	this.resources = new ResourseLoader();
 	this.fontNormal = null;
+	this.fontRed = null;
 	
 	this.init = function()
 	{
@@ -15,10 +19,11 @@ function GameShell()
 			return;
 		}
 		
-		this.resources.addImage('css1', 'images/shell/level_select_tmp.png');
+		this.resources.addImage('css1', 'images/shell/level_select.png');
 		this.resources.addImage('css2', 'images/shell/archive.png');
 		
 		this.resources.addImage('font-normal', 'images/shell/font-normal.png');
+		this.resources.addImage('font-red', 'images/shell/font-red.png');
 		
 		this.resources.addSound('bridge_sound', 'sounds/shell/bridge.' + AUDIO_TYPE); //Just for preload
 		for (var i = 1; i <= PUNKT_SOUNDS; ++i)
@@ -39,10 +44,15 @@ function GameShell()
 		
 		this.resources.onComplete = function(){
 			$('.load-screen').hide();
+			
 			this.fontNormal = new FontDraw('font-normal', 18);
-			$('#link_archive_text').css('background-image', 'url("' + this.fontNormal.getDataUrl('ARCHIVE') + '")');
+			this.fontRed = new FontDraw('font-red', 20);
+			
+			$('#link_archive_text, #link_archive2_text').css('background-image', 'url("' + this.fontNormal.getDataUrl('ARCHIVE') + '")');
 			$('#link_back_text').css('background-image', 'url("' + this.fontNormal.getDataUrl('BACK') + '")');
 			$('#link_mession_text').css('background-image', 'url("' + this.fontNormal.getDataUrl('MISSION') + '")');
+			
+			$('#level_name').css('background-image', 'url("' + this.fontRed.getDataUrl('2JUNGLE TEST LEVEL') + '")');
 			
 			self.videoIntro();
 		};
@@ -54,15 +64,35 @@ function GameShell()
 		self.resources.play('punct_sound'+i);
 	};
 	
-	this.showLevelSelectScreen = function()
+	this.navigate = function(nav_to, animation)
 	{
-		var video = self.resources.get('ring0');
-		$('#level_select')
-			.show()
-			.append(video);
+		if (nav_to == 'back')
+			nav_to = self.prev_screen;
 		
-		$(video).attr('loop', true);
-		video.play();
+		if (self.curr_srcreen != '')
+			$('#' + self.curr_srcreen).hide();
+		
+		var callback = function(){
+			$('#' + nav_to).show();
+			self.prev_screen = self.curr_srcreen;
+			self.curr_srcreen = nav_to;
+		};
+		
+		switch (animation)
+		{
+			case 'up':
+				self._moveCube('cube04', callback);
+				break;
+			case 'down':
+				self._moveCube('cube05', callback);
+				break;
+			case 'left':
+				self._moveCube('cube02', callback);
+				break;
+			case 'right':
+				self._moveCube('cube03', callback);
+				break;
+		}
 	};
 	
 	this.showArchive = function()
@@ -70,24 +100,9 @@ function GameShell()
 		$('#archive').show();
 	};
 	
-	this.videoRight = function(callback)
+	this.showObjective = function()
 	{
-		self._moveCube('cube03', callback);
-	};
-	
-	this.videoLeft = function(callback)
-	{
-		self._moveCube('cube02', callback);
-	};
-	
-	this.videoUp = function(callback)
-	{
-		self._moveCube('cube04', callback);
-	};
-	
-	this.videoDown = function(callback)
-	{
-		self._moveCube('cube05', callback);
+		$('#objective').show();
 	};
 	
 	this.videoIntro = function()
@@ -101,7 +116,11 @@ function GameShell()
 //
 //			setInterval(self.playPunktSound, 13000);
 
-			self.showLevelSelectScreen();
+			self.curr_srcreen = 'level_select';
+			var video = self.resources.get('ring0');
+			$('#level_select').show().append(video);
+			$(video).attr('loop', true);
+			video.play();
 		});
 	};
 	
@@ -144,16 +163,8 @@ $(function(){
 		game.init();
 	};
 	
-	$('#link_archive').click(function(){
-		$('#level_select').hide();
-		game.videoRight(function(){
-			game.showArchive();
-		});
-	});
-	$('#link_back').click(function(){
-		$('#archive').hide();
-		game.videoLeft(function(){
-			game.showLevelSelectScreen();
-		});
+	$('.moovable').click(function(){
+		var $this = $(this);
+		game.navigate($this.attr('data-to'), $this.attr('data-way'));
 	});
 });
