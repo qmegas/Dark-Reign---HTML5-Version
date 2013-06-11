@@ -50,7 +50,7 @@ function FontDraw(font_name, size)
 		
 		ctx.drawImage(
 			_cache_table[key].canvas, 0, 0, _cache_table[key].width, size,
-			x+0.5, y+0.5, _cache_table[key].width, size
+			x-0.5, y-0.5, _cache_table[key].width, size
 		);
 	};
 	
@@ -82,16 +82,22 @@ function FontDraw(font_name, size)
 	
 	this._bufferDraw = function(canvas, text, color)
 	{
-		var ctx = canvas.get(0).getContext('2d'), current_position = 0, ascii, letter, 
+		var ctx = canvas.get(0).getContext('2d'), current_position = 0, ascii, letter, line = 0,
 			color_offset = this._getColorOffset(color), font = game.resources.get(font_name);
 		
 		for (var i=0; i<text.length; ++i)
 		{
 			ascii = text.charCodeAt(i);
+			if (ascii == 10)
+			{
+				line += size;
+				current_position = 0;
+				continue;
+			}
 			letter = _table[ascii];
 			ctx.drawImage(
 				font, letter[0], color_offset, letter[1], size, 
-				current_position, 0, letter[1], size
+				current_position, line, letter[1], size
 			);
 			current_position += letter[1];
 		}
@@ -104,9 +110,9 @@ function FontDraw(font_name, size)
 		switch (color)
 		{
 			case 'red':
-				return 14;
+				return size;
 			case 'green':
-				return 28;
+				return size * 2;
 			default:
 				return 0;
 		}

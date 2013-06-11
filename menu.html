@@ -9,6 +9,8 @@
 		<script type="text/javascript" src="js/resources.js"></script>
 		<script type="text/javascript" src="js/browser_check.js"></script>
 		<script type="text/javascript" src="js/shell/howler.min.js"></script>
+		<script type="text/javascript" src="js/shell/scroll.js"></script>
+		<script type="text/javascript" src="js/shell/archive.js"></script>
 		<script type="text/javascript" src="js/shell/menu.js"></script>
 	</head>
 	<body class="shell-menu">
@@ -28,8 +30,8 @@
 				<div class="bull"></div>
 			</div>
 			
-			<div class="dselect fg moovable" data-side="fg" data-to="objective" data-way="up"></div>
-			<div class="dselect imp moovable" data-side="imp" data-to="objective" data-way="up"></div>
+			<div class="dselect fg moovable" data-param="fg" data-to="launch" data-way="up"></div>
+			<div class="dselect imp moovable" data-param="imp" data-to="launch" data-way="up"></div>
 			
 			<div id="level_name"></div>
 		</div>
@@ -39,12 +41,44 @@
 				<div class="bull"></div>
 				<div class="text" id="link_back_text"></div>
 			</div>
+			
+			<div id="archive_content"></div>
+			
+			<div class="scroll up" id="arch_scroll_up"></div>
+			<div class="scroll down" id="arch_scroll_down"></div>
+			<div class="scroll slider" id="arch_scroll_slider"></div>
+			
+			<div id="archive_up"></div>
 		</div>
 		
 		<div id="objective">
+			<div class="link-obj fg moovable" data-param="fg" data-to="launch" data-way="up">
+				<div class="bull"></div>
+				<div class="text" id="link_fg_text"></div>
+			</div>
+			<div class="link-obj imp moovable" data-param="imp" data-to="launch" data-way="up">
+				<div class="bull"></div>
+				<div class="text" id="link_imp_text"></div>
+			</div>
+			
 			<div class="link right moovable" data-to="archive" data-way="right">
 				<div class="text" id="link_archive2_text"></div>
 				<div class="bull"></div>
+			</div>
+			<div class="link bottom moovable" data-to="level_select" data-way="down">
+				<div class="text" id="link_main_text"></div><br>
+				<div class="bull"></div>
+			</div>
+			
+			<div id="level_name_obj"></div>
+		</div>
+		
+		<div id="launch">
+			<div class="link-back moovable" data-to="back" data-way="down">
+				<div class="text" id="link_lan_back_text"></div>
+			</div>
+			<div class="link-launch" id="launch_btn">
+				<div class="text" id="link_launch_text"></div>
 			</div>
 		</div>
 	</body>

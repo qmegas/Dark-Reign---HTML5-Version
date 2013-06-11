@@ -38,7 +38,7 @@ body {
 .shell-menu .link .text {
 	height: 18px;
 	position: relative;
-	background-repeat: no-repeat;
+	background: no-repeat center 0;
 }
 .shell-menu .link .bull {
 	background-image: url("../images/shell/arrows.png");
@@ -104,6 +104,48 @@ body {
 .shell-menu .link.top:active .bull {
 	background-position: -68px -28px;
 }
+.shell-menu .link.bottom {
+	width: 100px;
+	left: 270px;
+	top: 436px;
+	text-align: center;
+}
+.shell-menu .link.bottom .text {
+	display: inline-block;
+	width: 100px;
+}
+.shell-menu .link.bottom .bull {
+	width: 37px;
+	height: 25px;
+	display: inline-block;
+}
+.shell-menu .link.bottom .bull{
+	background-position: -68px -56px;
+}
+.shell-menu .link.bottom:active .bull {
+	background-position: -68px -81px;
+}
+.shell-menu .scroll {
+	position: absolute;
+	background: url("../images/shell/scroll.png");
+	width: 16px;
+	height: 16px;
+}
+.shell-menu .scroll.up {
+	background-position: 0 0;
+}
+.shell-menu .scroll.up:active {
+	background-position: -16px 0;
+}
+.shell-menu .scroll.down {
+	background-position: 0 -16px;
+}
+.shell-menu .scroll.down:active {
+	background-position: -16px -16px;
+}
+.shell-menu .scroll.slider {
+	background-position: 0 -32px;
+}
 .shell-menu #level_select {
 	background: url("../images/shell/level_select.png") no-repeat 0 0;
 	height: 480px;
@@ -149,9 +191,163 @@ body {
 	height: 480px;
 	display: none;
 }
+.shell-menu #archive #archive_content {
+	position: absolute;
+	width: 404px;
+	height: 306px;
+	left: 110px;
+	top: 61px;
+	overflow: hidden;
+}
+.shell-menu #archive #archive_content .text {
+	height: 18px;
+	background: no-repeat center 0;
+	margin-bottom: 2px;
+}
+.shell-menu #archive #archive_content .text:hover {
+	background-position: center -18px;
+}
+.shell-menu #archive #archive_content .text:active {
+	background-position: center -36px;
+}
+.shell-menu #archive #archive_content #archive_text {
+	margin-left: 6px;
+	position: relative;
+}
+.shell-menu #archive #archive_up {
+	position: absolute;
+	width: 232px;
+	height: 29px;
+	background: no-repeat center 7px;
+	left: 206px;
+	top: 382px;
+}
+.shell-menu #archive .scroll.up {
+	left: 518px;
+	top: 61px;
+}
+.shell-menu #archive .scroll.down {
+	left: 518px;
+	top: 354px;
+}
+.shell-menu #archive .scroll.slider {
+	left: 518px;
+	top: 77px;
+	display: none;
+}
 .shell-menu #objective {
+	background: url("../images/shell/objective.png") no-repeat 0 0;
 	height: 480px;
 	display: none;
+}
+.shell-menu #objective .link-obj {
+	width: 100px;
+	position: absolute;
+	top: 0px;
+	text-align: center;
+}
+.shell-menu #objective .link-obj.fg {
+	left: 87px;
+}
+.shell-menu #objective .link-obj.imp {
+	left: 457px;
+}
+.shell-menu #objective .link-obj .bull {
+	background: none;
+	display: inline-block;
+	width: 41px;
+	height: 76px;
+}
+.shell-menu #objective .link-obj.fg:active .bull {
+	background: url("../images/shell/arrows.png") no-repeat -154px 0;
+}
+.shell-menu #objective .link-obj.imp:active .bull {
+	background: url("../images/shell/arrows.png") no-repeat -113px 0;
+}
+.shell-menu #objective .link-obj .text {
+	height: 18px;
+	background: no-repeat center 0;
+}
+.shell-menu #objective #level_name_obj {
+	position: absolute;
+	background: no-repeat center 0;
+	width: 250px;
+	height: 20px;
+	top: 114px;
+	left: 195px;
+}
+.shell-menu #launch {
+	height: 480px;
+	display: none;
+}
+.shell-menu #launch.fg {
+	background: url("../images/shell/objective-fg.png") no-repeat 0 0;
+}
+.shell-menu #launch.imp {
+	background: url("../images/shell/objective-imp.png") no-repeat 0 0;
+}
+.shell-menu #launch .link-back {
+	position: absolute;
+}
+.shell-menu #launch.fg .link-back {
+	width: 114px;
+	height: 39px;
+	top: 412px;
+	left: 25px;
+}
+.shell-menu #launch.imp .link-back {
+	width: 72px;
+	height: 50px;
+	top: 409px;
+	left: 13px;
+}
+.shell-menu #launch .link-back .text {
+	height: 18px;
+	background: no-repeat center 0;
+	margin-top: 16px;
+}
+.shell-menu #launch .link-launch {
+	position: absolute;
+}
+.shell-menu #launch.fg .link-launch {
+	width: 150px;
+	height: 42px;
+	top: 416px;
+	left: 256px;
+}
+.shell-menu #launch.fg .link-launch:active {
+	background: url("../images/shell/launch-btn.png") no-repeat 0 0;
+}
+.shell-menu #launch.fg .link-launch .text {
+	height: 18px;
+	background: no-repeat center 0;
+	margin-top: 12px;
+}
+.shell-menu #launch.imp .link-launch {
+	width: 97px;
+	height: 61px;
+	top: 358px;
+	left: 147px;
+}
+.shell-menu #launch.imp .link-launch:active {
+	background: url("../images/shell/launch-btn.png") no-repeat 0 -42px;
+}
+.shell-menu #launch.imp .link-launch .text {
+	height: 18px;
+	background: no-repeat center 0;
+	margin-top: 23px;
+}
+.shell-menu #launch .link-launch:hover .text,
+.shell-menu #launch .link-back:hover .text,
+.shell-menu #objective .link-obj:hover .text,
+.shell-menu .link:hover .text {
+	background-position: center -18px;
+}
+.shell-menu #launch .link-launch:active .text,
+.shell-menu #launch .link-back:active .text,
+.shell-menu #objective .link-obj:active .text,
+.shell-menu .link:active .text {
+	background-position: center -36px;
 }
 
 .game {

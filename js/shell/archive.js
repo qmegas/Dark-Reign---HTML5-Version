@@ -12,7 +12,7 @@ var ShellArchive = {
 		},
 		final_message: {
 			type: 'text',
-			text: 'Centuries ago I left the Earth. Along with the other believers I set out to bring a new dawn to the age of man. I stood on the brink of a discovery that would change the very nature of existence. But, as usual, men do not see the doorways of history until they have passed through them. Ignorant and single-minded individuals attack that which threatens to disrupt their comfort, regardless of the good that may be born from that change. Our convoy was set upon by those who wished to steal my knowledge and exploit it for their trivial ends. But they did not understand. They will never understand. The new age will come even if it must incubate in the heat of their ashes.\n\nMy ship was damaged in the attack, and I became stranded on an uninhabited planet. In time the heathens followed us away from Earth and polluted the entire galaxy with their petty squabbling and narrow vision of what power really is. Now I have become trapped by their war. A Freedom Guard base has been established on this planet, and Imperium assaults are coming more frequently.\n\nThis probe will serve as a fail-safe should I fall victim to the chaos around me.  If you are reading this then the worst must have occurred. The probe contains a dimensional portal that will deliver you to the place and time of my demise. But you must be prepared to stop it. Recorded in the data stores of the probe are a number of battles from the vast war between the Imperium and Freedom Guard. These battles will be presented to you as a series of trials which you will relive through a neural interface. You can engage in each conflict from either side, but you must complete them all. You must demonstrate that you are strong enough to defeat these armies. If you cannot, the dimension door will not be wasted on you. Fight well. Much depends on it.'
+			text: 'Centuries ago I left the Earth. Along with the other believers I set out to bring\na new dawn to the age of man. I stood on the brink of a discovery that would\nchange the very nature of existence. But, as usual, men do not see the\ndoorways of history until they have passed through them. Ignorant and\nsingle-minded individuals attack that which threatens to disrupt their comfort,\nregardless of the good that may be born from that change. Our convoy was\nset upon by those who wished to steal my knowledge and exploit it for their\ntrivial ends. But they did not understand. They will never understand. The\nnew age will come even if it must incubate in the heat of their ashes.\n\nMy ship was damaged in the attack, and I became stranded on an uninhabited\nplanet. In time the heathens followed us away from Earth and polluted the\nentire galaxy with their petty squabbling and narrow vision of what power\nreally is. Now I have become trapped by their war. A Freedom Guard base\nhas been established on this planet, and Imperium assaults are coming more\nfrequently.\n\nThis probe will serve as a fail-safe should I fall victim to the chaos around\nme.  If you are reading this then the worst must have occurred. The probe\ncontains a dimensional portal that will deliver you to the place and time of my\ndemise. But you must be prepared to stop it. Recorded in the data stores of\nthe probe are a number of battles from the vast war between the Imperium\nand Freedom Guard. These battles will be presented to you as a series of\ntrials which you will relive through a neural interface. You can engage in each\nconflict from either side, but you must complete them all. You must\ndemonstrate that you are strong enough to defeat these armies. If you\ncannot, the dimension door will not be wasted on you. Fight well. Much\ndepends on it.'
 		},
 		history: {
 			type: 'list',
@@ -363,8 +363,12 @@ var ShellArchive = {
 	_browse_path: [],
 	_current_node: 'root',
 	
+	_font: null,
+	_scroll: new ScrollWidget(),
+	
 	init: function()
 	{
+		this._font = new FontDraw('font-white', 14);
 	},
 		
 	restart: function()
@@ -392,6 +396,58 @@ var ShellArchive = {
 		
 	_drawCurrentPage: function()
 	{
-		//TODO
+		var node = this._data[this._current_node];
+		
+		$('#archive_content').html('');
+		
+		if (node.type == 'list')
+			this._drawList(node.items);
+		else
+			this._drawText(node.text);
+	},
+		
+	_drawList: function(items)
+	{
+		var i, div, $content = $('#archive_content');
+		
+		for (var i in items)
+		{
+			div = $('<div></div>').attr({
+				'class': 'text',
+				'data-node': items[i].node
+			});
+			$content.append(div);
+			div.css('background-image', game.makeLinkImage(items[i].text));
+		}
+		$content.css('margin-top', (153 - items.length*10) + 'px');
+	},
+		
+	_drawText: function(text)
+	{
+		var i, lines = 1, $canvas;
+		
+		for (i=0; i<text.length; ++i)
+			if (text.charCodeAt(i) == 10)
+				lines++;
+		
+		$canvas = $('<canvas></canvas>').attr({
+			id: 'archive_text',
+			width: '400',
+			height: lines*14
+		});
+		
+		this._font._bufferDraw($canvas, text);
+		
+		$('#archive_content').css('margin-top', 0).append($canvas);
+		
+		this._scroll.set({
+			button_up: '#arch_scroll_up',
+			button_down: '#arch_scroll_down',
+			button_slider: '#arch_scroll_slider',
+			scroll_element: '#archive_text',
+			window_size: 306,
+			slider_top: 77,
+			slider_bottom: 338
+		});
 	}
 };
