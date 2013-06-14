@@ -9,7 +9,7 @@ function TaelonMineBuilding(pos_x, pos_y, player)
 	
 	this.run = function() 
 	{
-		this.increaseRes(0.02);
+		this.increaseRes(0.03);
 	};
 	
 	this.draw = function()

@@ -9,7 +9,7 @@ function WaterWellBuilding(pos_x, pos_y, player)
 	
 	this.run = function() 
 	{
-		this.increaseRes(0.026);
+		this.increaseRes(0.04);
 	};
 	
 	this.draw = function()

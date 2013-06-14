@@ -10,12 +10,11 @@
  */
 function ScrollWidget()
 {
-	var options, is_set = false, overflow_size, scroll_size, current_pos, self = this;
+	var options, is_set = false, overflow_size, scroll_size, current_pos, self = this, slider_hold = false;
 	
 	this.set = function(opt)
 	{
-		if (is_set)
-			self._unsetHandlers();
+		this.unset();
 		
 		options = opt;
 		
@@ -28,6 +27,12 @@ function ScrollWidget()
 		current_pos = 0;
 		
 		self._setHandlers();
+	};
+	
+	this.unset = function()
+	{
+		if (is_set)
+			this._unsetHandlers();
 	};
 	
 	this._setHandlers = function()
@@ -48,7 +53,27 @@ function ScrollWidget()
 			self._scroll();
 		});
 		
-		$(options.button_slider).show().css('top', options.slider_top + 'px');
+		$(options.button_slider)
+			.bind('mousedown', function(){
+				slider_hold = true;
+			})
+			.bind('mouseup', function(){
+				slider_hold = false;
+			})
+			.bind('mousemove', function(event){
+				if (slider_hold)
+				{
+					
+					var y = event.pageY - 8;
+					if (y >= options.slider_top && y <= options.slider_bottom)
+					{
+						current_pos = (y - options.slider_top) / scroll_size * overflow_size;
+						self._scroll();
+					}
+				}
+			})
+			.show()
+			.css('top', options.slider_top + 'px');
 		
 		is_set = true;
 	};
@@ -57,9 +82,10 @@ function ScrollWidget()
 	{
 		$(options.button_up).unbind('mousedown');
 		$(options.button_down).unbind('mousedown');
-		$(options.button_slider).hide();
+		$(options.button_slider).unbind('mousedown mouseup mousemove').hide();
 		
 		is_set = false;
+		slider_hold = false;
 	};
 	
 	this._scroll = function()

@@ -1,12 +1,12 @@
 To do:
 	- Allow unit to shoot not only to the center of the building
 	- Add Vortex weapon
-	- Add Boost weapon (weapon for Amper unit)
 	- Implement unit rotation
 
 - High priority bugs:
 
 - Medium priority bugs:
+	- Add Boost weapon (weapon for Amper unit)
 	- Air Defense Site should have 3 weapons instead one
 	- Add animation for repair station
 	- More beautiful Fog of War 
@@ -15,12 +15,14 @@ To do:
 	- Mouse cursor should not change when mouse over other player's units
 	- Map: Water animation
 	- When building upgraded we should calculate exact proportion on health for new building
+	- Implement access by level in Archive > journal
 
 - Very low priority bugs:
 	- Add smooth animation on water indicator when selling water
 	- Need to add animation when energy state changed
 	- Energy meter blinking incorrectly
 	- When mouseover building or unit, it's name should be shown after small delay
+	- Game menu scroll (for example in archive) works not exactly as in the game
 
 
 - Known browser-related bugs

@@ -33,7 +33,7 @@ function GameShell()
 		this.resources.addImage('font-white', 'images/shell/font-white.png');
 		this.resources.addImage('font-game', 'images/font.png');
 		
-		this.resources.addSound('bridge_sound', 'sounds/shell/bridge.' + AUDIO_TYPE); //Just for preload
+		this.resources.addSound('bridge_sound', 'sounds/shell/bridge.' + AUDIO_TYPE);
 		for (var i = 1; i <= PUNKT_SOUNDS; ++i)
 			this.resources.addSound('punct_sound' + i, 'sounds/shell/punct_' + i + '.' + AUDIO_TYPE);
 		
@@ -141,13 +141,13 @@ function GameShell()
 	this.videoIntro = function()
 	{
 		self._runVideo('cube_in', function(){
-//			new Howl({
-//				urls: ['sounds/shell/bridge.' + AUDIO_TYPE],
-//				autoplay: true,
-//				loop: true
-//			});
-//
-//			setInterval(self.playPunktSound, 13000);
+			new Howl({
+				urls: ['sounds/shell/bridge.' + AUDIO_TYPE],
+				autoplay: true,
+				loop: true
+			});
+
+			setInterval(self.playPunktSound, 13000);
 
 			self.curr_srcreen = 'level_select';
 			var video = self.resources.get('ring0');
@@ -169,9 +169,9 @@ function GameShell()
 	
 	this._runVideo = function(video_name, callback)
 	{
-		if (callback)
-			callback();
-		return;
+//		if (callback)
+//			callback();
+//		return;
 			
 		var video = self.resources.get(video_name), $cont = $('#video_container');
 		
