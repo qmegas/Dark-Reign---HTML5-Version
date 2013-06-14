@@ -1,3 +1,8 @@
+Build 41 (14.06.2013)
+- Added level select screen
+- Added game archive
+- Game require browser to support WebM video
+
 Build 40 (05.06.2013)
 - Added "Orders" tab to right panel
 - Tactical AI: Cyclone flies to Rearming deck when have no ammo
