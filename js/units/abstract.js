@@ -67,7 +67,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.getCell = function()
 	{
-		return this.position_cell;
+		return cloneObj(this.position_cell);
 	};
 	
 	this.setCell = function(pos)
@@ -715,6 +715,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			pos = PathFinder.findNearestStandCell(mypos.x, mypos.y);
 			unit.setCell(pos);
 			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
+			unit.changeFogState(1);
 		}
 		
 		this._carry_units = [];
@@ -733,6 +734,7 @@ function AbstractUnit(pos_x, pos_y, player)
 		{
 			var pos = unit.getCell();
 			game.unselectUnit(unit.uid);
+			unit.changeFogState(-1);
 			game.level.map_cells[pos.x][pos.y].ground_unit = -1;
 			unit.position = {x: -100, y: -100};
 			this._carry_units.push(unit.uid);

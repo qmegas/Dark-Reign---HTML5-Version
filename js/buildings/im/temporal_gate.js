@@ -45,6 +45,7 @@ function TemporalGateBuilding(pos_x, pos_y, player)
 			if (pos !== null)
 			{
 				unit.setCell(pos);
+				unit.changeFogState(1);
 				game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
 				SimpleEffect.quickCreate('electric_blue_animation', {
 					pos: {

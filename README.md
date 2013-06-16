@@ -2,8 +2,8 @@
 
 1. Download files from GitHub
 2. Download [media files](http://qmegas.info/dark-reign-html5/media.rar) and extract them to same folder.
-2. Upload all files to your site or create virtual domain (it required due to CORS limitations)
-3. Open `menu.html` in Chrome or Firefox browsers. IE9/10 still not supported.
+3. Upload all files to your site or create virtual domain (it required due to CORS limitations)
+4. Open `menu.html` in Chrome or Firefox browsers. IE9/10 still not supported.
 
 OR [See it live](http://qmegas.info/dark-reign-html5/)
 

@@ -576,6 +576,7 @@ function AbstractBuilding()
 			pos = PathFinder.findNearestStandCell(mypos.x + 1, mypos.y + 2);
 			unit.setCell(pos);
 			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
+			unit.changeFogState(1);
 		}
 		
 		this._carry_units = [];
@@ -592,6 +593,7 @@ function AbstractBuilding()
 		var pos = unit.getCell();
 		game.unselectUnit(unit.uid);
 		game.level.map_cells[pos.x][pos.y].ground_unit = -1;
+		unit.changeFogState(-1);
 		unit.position = {x: -100, y: -100};
 		this._carry_units.push(unit.uid);
 		this._carry_spaces--;

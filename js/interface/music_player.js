@@ -1,6 +1,6 @@
 var InterfaceMusicPlayer = {
 	_volume: 1,
-	_tracks: [], //['track1','track2','track3','track4','track5','track6','track7','track8'],
+	_tracks: ['track1','track2','track3','track4','track5','track6','track7','track8'],
 	_player: null,
 	_current_track: 0,
 	

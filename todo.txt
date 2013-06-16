@@ -4,9 +4,6 @@ To do:
 	- Implement unit rotation
 
 - High priority bugs:
-	- is_selected - error when destroying unit with sky fortress
-	- Unit can't enter invader transport
-	- Fog of war wrong calculations when teleport units
 
 - Medium priority bugs:
 	- Add Boost weapon (weapon for Amper unit)

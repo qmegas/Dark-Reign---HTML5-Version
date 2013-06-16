@@ -9,8 +9,6 @@ var InterfaceFogOfWar = {
 		this._layer_size = {x: CELL_SIZE*game.level.size.x, y: CELL_SIZE*game.level.size.y};
 	},
 		
-	
-		
 	redrawFog: function()
 	{
 		if (!this.need_redraw)

@@ -1,3 +1,7 @@
+Build 42
+- Bugfix: Fog of war fix during unit teleport by Temporal gate
+- Bugfix: Unit can't enter invader transport
+
 Build 41 (14.06.2013)
 - Added level select screen
 - Added game archive
