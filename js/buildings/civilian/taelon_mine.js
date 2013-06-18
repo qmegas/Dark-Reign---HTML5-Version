@@ -48,6 +48,7 @@ function TaelonMineBuilding(pos_x, pos_y, player)
 AbstractBuilding.setBuildingCommonOptions(TaelonMineBuilding);
 
 TaelonMineBuilding.res_key = 'taelon_mine';
+TaelonMineBuilding.res_multicolor = false;
 TaelonMineBuilding.obj_name = 'Taelon';
 TaelonMineBuilding.shield_type = 'SuperArmour2';
 

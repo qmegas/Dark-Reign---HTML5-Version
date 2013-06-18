@@ -42,6 +42,8 @@ function AbstractUnit(pos_x, pos_y, player)
 	this.parts = [];
 	this._is_have_weapon = false;
 	
+	this._object_color = '';
+	
 	this.init = function(pos_x, pos_y)
 	{
 		this.setCell({x: pos_x, y: pos_y});
@@ -50,7 +52,12 @@ function AbstractUnit(pos_x, pos_y, player)
 		this.parts = [];
 		
 		if (game)
+		{
 			this.tactic = cloneObj(game.players[this.player].default_tactic);
+			
+			if (player != PLAYER_NEUTRAL)
+				this._object_color = game.players[this.player].getUnitColor();
+		}
 		
 		for (var i=0; i<this._proto.parts.length; ++i)
 		{
@@ -421,7 +428,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	this._drawPartImage = function(layer, key_prefix, part, frame, x, y)
 	{
 		game.objDraw.addElement(layer, this.position.y, {
-			res_key: this._proto.resource_key + key_prefix + part,
+			res_key: this._proto.resource_key + key_prefix + part + this._object_color,
 			src_x: this.parts[part].direction * this._proto.parts[part].image_size.x,
 			src_y: frame * this._proto.parts[part].image_size.y,
 			src_width: this._proto.parts[part].image_size.x,
@@ -915,7 +922,7 @@ AbstractUnit.loadResources = function(obj)
 			key = types[j];
 			if (obj.parts[i][key])
 			{
-				game.resources.addImage(obj.resource_key + key + i, 'images/units/' + obj.resource_key + '/' + i + key + '.png');
+				game.resources.addImage(obj.resource_key + key + i, 'images/units/' + obj.resource_key + '/' + i + key + '.png', true);
 				if (obj.shadow && obj.shadow[key])
 					game.resources.addImage(obj.resource_key + key + '_shadow', 'images/units/' + obj.resource_key + '/' + key + '_shadow.png');
 			}

@@ -19,6 +19,7 @@ function CivilianVerticalBridge(pos_x, pos_y, player)
 AbstractBuilding.setBuildingCommonOptions(CivilianVerticalBridge);
 
 CivilianVerticalBridge.res_key = 'civilian_vertical_bridge';
+CivilianVerticalBridge.res_multicolor = false;
 CivilianVerticalBridge.obj_name = 'Vertical Bridge';
 CivilianVerticalBridge.cost = 100;
 CivilianVerticalBridge.build_time = 2;

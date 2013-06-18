@@ -1,4 +1,4 @@
-function Player(map_color, is_human)
+function Player(map_color, unit_color, is_human)
 {
 	this.default_tactic = {
 		order: TACTIC_ORDER_DEFAULT,
@@ -6,12 +6,17 @@ function Player(map_color, is_human)
 		tolerance: TACTIC_HIGH,
 		independance: TACTIC_MED
 	};
-		
+	
 	this._money = 0;
 	this._map_color = map_color;
 	this._energy_max = 0;
 	this._energy_current = 0;
 	this._is_human = is_human;
+	
+	this.getUnitColor = function()
+	{
+		return unit_color;
+	};
 	
 	this.getMapColor = function()
 	{

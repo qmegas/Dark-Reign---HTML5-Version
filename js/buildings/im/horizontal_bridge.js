@@ -19,6 +19,7 @@ function HorizontalBridgeBuilding(pos_x, pos_y, player)
 AbstractBuilding.setBuildingCommonOptions(HorizontalBridgeBuilding);
 
 HorizontalBridgeBuilding.res_key = 'horizontal_bridge';
+HorizontalBridgeBuilding.res_multicolor = false;
 HorizontalBridgeBuilding.obj_name = 'Small Horizontal Bridge';
 HorizontalBridgeBuilding.cost = 100;
 HorizontalBridgeBuilding.build_time = 2;

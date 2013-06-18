@@ -32,6 +32,7 @@ function AbstractBuilding()
 	//Building animation
 	this._draw_last_frame_change = 0;
 	this._draw_cur_frame = 0;
+	this._object_color = '';
 	
 	//Repairing
 	this._is_repairing = false;
@@ -49,6 +50,9 @@ function AbstractBuilding()
 		this.player = player;
 		
 		this.position = MapCell.cellToPixel({x: pos_x, y: pos_y});
+		
+		if (player != PLAYER_NEUTRAL)
+			this._object_color = game.players[this.player].getUnitColor();
 		
 		if (this._proto.weapon != '')
 		{
@@ -317,7 +321,7 @@ function AbstractBuilding()
 	
 	this.sell = function()
 	{
-		if (this.state != BUILDING_STATE_NORMAL)
+		if (this.state!=BUILDING_STATE_NORMAL && this.state!=BUILDING_STATE_CHARGING)
 			return;
 		
 		this.state = BUILDING_STATE_SELL;
@@ -433,7 +437,7 @@ function AbstractBuilding()
 	this._drawSprite = function(layer, frame_x, frame_y)
 	{
 		game.objDraw.addElement(layer, this.position.y, {
-			res_key: this._proto.res_key, 
+			res_key: this._proto.res_key + this._object_color, 
 			src_x: this._proto.images.normal.size.x * frame_x,
 			src_y: this._proto.images.normal.size.y * frame_y,
 			src_width: this._proto.images.normal.size.x,
@@ -744,17 +748,17 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 		return;
 	}
 		
-	var i = -1;
+	var i = -1, color_type = obj.res_multicolor ? 'yellow' : '';
 
 	MousePointer.mouse_ctx.drawImage(
-		game.resources.get(obj.res_key), 0, obj.images.normal.size.y, 
+		game.resources.get(obj.res_key + color_type), 0, obj.images.normal.size.y, 
 		obj.images.normal.size.x, obj.images.normal.size.y, 
 		x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x + 12, 
 		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y + 12, 
 		obj.images.normal.size.x, obj.images.normal.size.y
 	);
 	MousePointer.mouse_ctx.drawImage(
-		game.resources.get(obj.res_key), obj.images.normal.size.x, obj.images.normal.size.y, 
+		game.resources.get(obj.res_key + color_type), obj.images.normal.size.x, obj.images.normal.size.y, 
 		obj.images.normal.size.x, obj.images.normal.size.y, 
 		x*CELL_SIZE - game.viewport_x - obj.images.normal.padding.x + 12, 
 		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y + 12, 
@@ -858,7 +862,7 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 
 AbstractBuilding.loadResources = function(obj)
 {
-	game.resources.addImage(obj.res_key, 'images/buildings/'+obj.res_key+'/sprite.png');
+	game.resources.addImage(obj.res_key, 'images/buildings/'+obj.res_key+'/sprite.png', obj.res_multicolor);
 	
 	if (typeof obj.require_building == 'undefined')
 		game.resources.addImage(obj.res_key + '_box', 'images/buildings/'+obj.res_key+'/box.png');
@@ -909,6 +913,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.prototype = new AbstractBuilding();
 	
 	obj.res_key = '';  //Must redeclare
+	obj.res_multicolor = true;
 	obj.obj_name = ''; //Must redeclare
 	obj.cost = 0;
 	obj.build_time = 0; //config_speed / 1.5

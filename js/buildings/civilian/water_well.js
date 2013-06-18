@@ -48,6 +48,7 @@ function WaterWellBuilding(pos_x, pos_y, player)
 AbstractBuilding.setBuildingCommonOptions(WaterWellBuilding);
 
 WaterWellBuilding.res_key = 'water_well';
+WaterWellBuilding.res_multicolor = false;
 WaterWellBuilding.obj_name = 'Pure Water Spring';
 WaterWellBuilding.shield_type = 'SuperArmour';
 

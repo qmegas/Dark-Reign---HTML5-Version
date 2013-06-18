@@ -2429,9 +2429,9 @@ function Level1()
 	
 	this.getInitUnits = function()
 	{
-		game.players[PLAYER_NEUTRAL] = new Player('#ffff00', false);
-		game.players[PLAYER_HUMAN] = new Player('#ffffbb', true);
-		game.players[PLAYER_COMPUTER1] = new Player('#fc3c58', false);
+		game.players[PLAYER_NEUTRAL] = new Player('#ffff00', '', false);
+		game.players[PLAYER_HUMAN] = new Player('#ffffbb', 'yellow', true);
+		game.players[PLAYER_COMPUTER1] = new Player('#fc3c58', 'red', false);
 		
 		AbstractUnit.createNew(ConstructionRigUnit, 63, 4, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 66, 4, PLAYER_HUMAN, true);

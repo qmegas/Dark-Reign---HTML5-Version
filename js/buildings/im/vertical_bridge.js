@@ -19,6 +19,7 @@ function VerticalBridgeBuilding(pos_x, pos_y, player)
 AbstractBuilding.setBuildingCommonOptions(VerticalBridgeBuilding);
 
 VerticalBridgeBuilding.res_key = 'vertical_bridge';
+VerticalBridgeBuilding.res_multicolor = false;
 VerticalBridgeBuilding.obj_name = 'Small Vertical Bridge';
 VerticalBridgeBuilding.cost = 100;
 VerticalBridgeBuilding.build_time = 2;

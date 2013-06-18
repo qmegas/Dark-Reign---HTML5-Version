@@ -19,6 +19,7 @@ function CenterBridgeBuilding(pos_x, pos_y, player)
 AbstractBuilding.setBuildingCommonOptions(CenterBridgeBuilding);
 
 CenterBridgeBuilding.res_key = 'center_bridge';
+CenterBridgeBuilding.res_multicolor = false;
 CenterBridgeBuilding.obj_name = 'Bridge Junction';
 CenterBridgeBuilding.cost = 150;
 CenterBridgeBuilding.build_time = 4;
