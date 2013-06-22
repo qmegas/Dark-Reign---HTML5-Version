@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(BionUnit);
 
 BionUnit.obj_name = 'Bion';
 BionUnit.resource_key = 'bion';
-BionUnit.die_effect = 'splatb_animation';
 BionUnit.parts = [
 	{
 		rotations: 8,
@@ -46,6 +45,10 @@ BionUnit.health_max = 150;
 BionUnit.is_human = true;
 BionUnit.shield_type = 'PowerHumanWet';
 BionUnit.seeing_range = 8;
+
+BionUnit.health_explosions = {
+	0: 'splatb_explosion'
+};
 
 BionUnit.require_building = [TrainingFacilityBuilding];
 

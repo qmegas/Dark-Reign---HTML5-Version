@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(ScarabUnit);
 
 ScarabUnit.obj_name = 'S.C.A.R.A.B.';
 ScarabUnit.resource_key = 'scarab';
-ScarabUnit.die_effect = 'death_with_sparks_animation';
 ScarabUnit.parts = [
 	{
 		rotations: 16,
@@ -53,6 +52,12 @@ ScarabUnit.health_max = 133;
 ScarabUnit.shield_type = 'TankPlating';
 ScarabUnit.move_mode = MOVE_MODE_HOVER;
 ScarabUnit.mass = 10;
+
+ScarabUnit.health_explosions = {
+	0: 'death_with_sparks_explosion',
+	30: 'smallfired_explosion',
+	60: 'smor_explosion'
+};
 
 ScarabUnit.require_building = [AssemblyPlant2Building];
 

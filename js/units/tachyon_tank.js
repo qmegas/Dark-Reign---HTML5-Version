@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(TachyonTankUnit);
 
 TachyonTankUnit.obj_name = 'Tachion Tank';
 TachyonTankUnit.resource_key = 'tachyon_tank';
-TachyonTankUnit.die_effect = 'eobpfsm4_animation';
 TachyonTankUnit.parts = [
 	{
 		rotations: 16,
@@ -77,6 +76,10 @@ TachyonTankUnit.speed = 1.821;
 TachyonTankUnit.shield_type = 'TankPlating';
 TachyonTankUnit.move_mode = MOVE_MODE_HOVER;
 TachyonTankUnit.mass = 10;
+
+TachyonTankUnit.health_explosions = {
+	0: 'eobpfsm4_explosion'
+};
 
 TachyonTankUnit.require_building = [AssemblyPlant2Building];
 

@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(ScoutRunnerUnit);
 
 ScoutRunnerUnit.obj_name = 'Scout Runner';
 ScoutRunnerUnit.resource_key = 'scout_runner';
-ScoutRunnerUnit.die_effect = 'death_with_sparks_animation';
 ScoutRunnerUnit.parts = [
 	{
 		rotations: 16,
@@ -54,6 +53,12 @@ ScoutRunnerUnit.shield_type = 'TankPlating';
 ScoutRunnerUnit.move_mode = MOVE_MODE_HOVER;
 ScoutRunnerUnit.mass = 10;
 ScoutRunnerUnit.seeing_range = 13;
+
+ScoutRunnerUnit.health_explosions = {
+	0: 'death_with_sparks_explosion',
+	30: 'smallfired_explosion',
+	60: 'smor_explosion'
+};
 
 ScoutRunnerUnit.require_building = [AssemblyPlantBuilding];
 

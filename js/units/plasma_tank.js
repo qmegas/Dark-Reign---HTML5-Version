@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(PlasmaTankUnit);
 
 PlasmaTankUnit.obj_name = 'Plasma Tank';
 PlasmaTankUnit.resource_key = 'plasma_tank';
-PlasmaTankUnit.die_effect = 'death_with_sparks_animation';
 PlasmaTankUnit.parts = [
 	{
 		rotations: 16,
@@ -77,6 +76,10 @@ PlasmaTankUnit.speed = 2.428;
 PlasmaTankUnit.shield_type = 'TankPlating';
 PlasmaTankUnit.move_mode = MOVE_MODE_HOVER;
 PlasmaTankUnit.mass = 10;
+
+PlasmaTankUnit.health_explosions = {
+	0: 'death_with_sparks_explosion'
+};
 
 PlasmaTankUnit.require_building = [AssemblyPlantBuilding];
 

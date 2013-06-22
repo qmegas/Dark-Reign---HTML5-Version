@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(AmperUnit);
 
 AmperUnit.obj_name = 'Amper';
 AmperUnit.resource_key = 'amper';
-AmperUnit.die_effect = 'death_with_sparks_animation';
 AmperUnit.parts = [
 	{
 		rotations: 8,
@@ -51,6 +50,12 @@ AmperUnit.cost = 500;
 AmperUnit.health_max = 66;
 AmperUnit.speed = 1.214;
 AmperUnit.shield_type = 'PowerHumanWet';
+
+AmperUnit.health_explosions = {
+	0: 'death_with_sparks_explosion',
+	30: 'smallfired_explosion',
+	60: 'smor_explosion'
+};
 
 AmperUnit.require_building = [TrainingFacilityBuilding, AssemblyPlantBuilding, FieldHospitalBuilding];
 

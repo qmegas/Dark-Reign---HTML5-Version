@@ -86,7 +86,6 @@ AbstractUnit.setUnitCommonOptions(CycloneUnit);
 
 CycloneUnit.obj_name = 'Cyclone';
 CycloneUnit.resource_key = 'cyclone';
-CycloneUnit.die_effect = 'death_with_sparks_animation';
 CycloneUnit.parts = [
 	{
 		rotations: 16,
@@ -130,6 +129,12 @@ CycloneUnit.speed = 3.642;
 CycloneUnit.shield_type = 'FlyingArmour';
 CycloneUnit.move_mode = MOVE_MODE_FLY;
 CycloneUnit.mass = 10;
+
+CycloneUnit.health_explosions = {
+	0: 'death_with_sparks_explosion',
+	30: 'smallfired_explosion',
+	60: 'smor_explosion'
+};
 
 CycloneUnit.require_building = [AssemblyPlantBuilding, RearmingDeckBuilding, Headquarter3Building];
 

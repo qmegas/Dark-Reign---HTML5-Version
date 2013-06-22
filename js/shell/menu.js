@@ -37,15 +37,19 @@ function GameShell()
 		for (var i = 1; i <= PUNKT_SOUNDS; ++i)
 			this.resources.addSound('punct_sound' + i, 'sounds/shell/punct_' + i + '.' + AUDIO_TYPE);
 		
-		this.resources.addVideo('cube_in', 'videos/cube_in.webm', 'menu_video');
-		this.resources.addVideo('cube01', 'videos/cube01.webm', 'menu_video');
-		this.resources.addVideo('cube02', 'videos/cube02.webm', 'menu_video');
-		this.resources.addVideo('cube03', 'videos/cube03.webm', 'menu_video');
-		this.resources.addVideo('cube04', 'videos/cube04.webm', 'menu_video');
-		this.resources.addVideo('cube05', 'videos/cube05.webm', 'menu_video');
+		if (GAMECONFIG.playVideo)
+		{
+			this.resources.addVideo('cube_in', 'videos/cube_in.webm', 'menu_video');
+			this.resources.addVideo('cube01', 'videos/cube01.webm', 'menu_video');
+			this.resources.addVideo('cube02', 'videos/cube02.webm', 'menu_video');
+			this.resources.addVideo('cube03', 'videos/cube03.webm', 'menu_video');
+			this.resources.addVideo('cube04', 'videos/cube04.webm', 'menu_video');
+			this.resources.addVideo('cube05', 'videos/cube05.webm', 'menu_video');
+			this.resources.addVideo('brief_fg', 'videos/brief_fg.webm');
+			this.resources.addVideo('brief_imp', 'videos/brief_imp.webm');
+		}
 		this.resources.addVideo('ring0', 'videos/m_ring00.webm', 'ring');
-		this.resources.addVideo('brief_fg', 'videos/brief_fg.webm');
-		this.resources.addVideo('brief_imp', 'videos/brief_imp.webm');
+		
 		
 		this.resources.onLoaded = function(loaded, total){
 			var progress = parseInt(500/total*loaded);
@@ -169,9 +173,12 @@ function GameShell()
 	
 	this._runVideo = function(video_name, callback)
 	{
-//		if (callback)
-//			callback();
-//		return;
+		if (!GAMECONFIG.playVideo)
+		{
+			if (callback)
+				callback();
+			return;
+		}
 			
 		var video = self.resources.get(video_name), $cont = $('#video_container');
 		

@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(ExterminatorUnit);
 
 ExterminatorUnit.obj_name = 'Exterminator';
 ExterminatorUnit.resource_key = 'exterminator';
-ExterminatorUnit.die_effect = 'splatb_animation';
 ExterminatorUnit.parts = [
 	{
 		rotations: 16,
@@ -55,6 +54,10 @@ ExterminatorUnit.is_human = true;
 ExterminatorUnit.shield_type = 'PowerHuman';
 ExterminatorUnit.move_mode = MOVE_MODE_HOVER;
 ExterminatorUnit.seeing_range = 8;
+
+ExterminatorUnit.health_explosions = {
+	0: 'splatb_explosion'
+};
 
 ExterminatorUnit.require_building = [TrainingFacility2Building];
 

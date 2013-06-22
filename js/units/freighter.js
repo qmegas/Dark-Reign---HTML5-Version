@@ -252,7 +252,6 @@ AbstractUnit.setUnitCommonOptions(FreighterUnit);
 
 FreighterUnit.obj_name = 'Freighter';
 FreighterUnit.resource_key = 'freighter';
-FreighterUnit.die_effect = 'death_with_sparks_animation';
 FreighterUnit.parts = [
 	{
 		rotations: 16,
@@ -295,6 +294,12 @@ FreighterUnit.health_max = 750;
 FreighterUnit.speed = 1.518;
 FreighterUnit.shield_type = 'TankPlatingWet';
 FreighterUnit.mass = 10;
+
+FreighterUnit.health_explosions = {
+	0: 'death_with_sparks_explosion',
+	30: 'smallfired_explosion',
+	60: 'smor_explosion'
+};
 
 FreighterUnit.require_building = [AssemblyPlantBuilding];
 

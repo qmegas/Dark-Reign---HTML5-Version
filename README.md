@@ -12,9 +12,11 @@ OR [See it live](http://qmegas.info/dark-reign-html5/)
 * css - game interface CSS files
 * images - game images
 * js - game code files
+* music - music files. Should be downloaded separately. Not required if music disabled in config object.
 * nbproject - Project files for NetBeans IDE. Not required for game run.
 * php - just some useful scripts that i use during development. Not required for game run.
 * sounds - game sounds
+* video - Video files for game menu. Should be downloaded separately. Not all video files required if disabled in config object.
 
 ## Help required
 Need help to improve pathfinding algorithms. If you are good at this, then please contact me.

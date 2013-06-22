@@ -1,7 +1,7 @@
 To do:
+	- Implement unit rotation
 	- Allow unit to shoot not only to the center of the building
 	- Add Vortex weapon
-	- Implement unit rotation
 
 - High priority bugs:
 

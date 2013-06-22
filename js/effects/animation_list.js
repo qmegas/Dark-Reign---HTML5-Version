@@ -50,9 +50,15 @@ var AnimationList = {
 		{start: 4, min_point: 1, max_point: 1, effect: 'lite2_animation'},
 		{start: 2, min_point: 1, max_point: 3, effect: 'eobpfsm2_animation'}
 	],
+	death_with_sparks_explosion: [
+		{start: 0, min_point: 1, max_point: 1, effect: 'death_with_sparks_animation'}
+	],
 	eoblatr0_explosion: [
 		{start: 0, min_point: 0, max_point: 0, effect: 'eoblatr0_animation'},
 		{start: 0, min_point: 0, max_point: 0, effect: 'lite2_animation'}
+	],
+	eobpfsm4_explosion: [
+		{start: 0, min_point: 0, max_point: 0, effect: 'eobpfsm4_animation'}
 	],
 	eoiarex0_explosion: [
 		{start: 0, min_point: 3, max_point: 3, effect: 'eoiarex0_animation'},
@@ -128,8 +134,24 @@ var AnimationList = {
 		{start: 4, min_point: 1, max_point: 1, effect: 'eoblamd0_animation'},
 		{start: 4, min_point: 1, max_point: 1, effect: 'lite2_animation'}
 	],
+	smallfired_explosion: [
+		{start: 0, min_point: 3, max_point: 3, effect: 'smallfired_animation', looped: true},
+		{start: 0, min_point: 2, max_point: 2, effect: 'smor_animation', looped: true}
+	],
 	smalllaser_hitpuff_explosion: [
 		{start: 0, min_point: 0, max_point: 0, effect: 'eolasex0_animation'},
 		{start: 0, min_point: 0, max_point: 0, effect: 'eolasex3_animation'}
+	],
+	smor_explosion: [
+		{start: 0, min_point: 2, max_point: 2, effect: 'smor_animation', looped: true}
+	],
+	splata_explosion: [
+		{start: 0, min_point: 1, max_point: 1, effect: 'splata_animation'}
+	],
+	splatb_explosion: [
+		{start: 0, min_point: 1, max_point: 1, effect: 'splatb_animation'}
+	],
+	splatd_explosion: [
+		{start: 0, min_point: 1, max_point: 1, effect: 'splatd_animation'}
 	]
 };

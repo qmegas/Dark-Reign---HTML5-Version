@@ -35,7 +35,6 @@ AbstractUnit.setUnitCommonOptions(InvaderTransportUnit);
 
 InvaderTransportUnit.obj_name = 'Invader Troop Transport';
 InvaderTransportUnit.resource_key = 'invader_transport';
-InvaderTransportUnit.die_effect = 'death_with_sparks_animation';
 InvaderTransportUnit.parts = [
 	{
 		rotations: 16,
@@ -104,6 +103,10 @@ InvaderTransportUnit.move_mode = MOVE_MODE_HOVER;
 InvaderTransportUnit.mass = 100;
 
 InvaderTransportUnit.carry = {places: 5, max_mass: 4};
+
+InvaderTransportUnit.health_explosions = {
+	0: 'death_with_sparks_explosion'
+};
 
 InvaderTransportUnit.require_building = [AssemblyPlantBuilding];
 

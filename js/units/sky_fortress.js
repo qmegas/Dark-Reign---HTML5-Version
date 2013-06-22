@@ -33,7 +33,6 @@ AbstractUnit.setUnitCommonOptions(SkyFortressUnit);
 
 SkyFortressUnit.obj_name = 'Sky Fortress';
 SkyFortressUnit.resource_key = 'sky_fortress';
-SkyFortressUnit.die_effect = 'death_with_sparks_animation';
 SkyFortressUnit.parts = [
 	{
 		rotations: 8,
@@ -69,6 +68,12 @@ SkyFortressUnit.speed = 1.518;
 SkyFortressUnit.shield_type = 'FlyingArmour';
 SkyFortressUnit.move_mode = MOVE_MODE_FLY;
 SkyFortressUnit.mass = 10;
+
+SkyFortressUnit.health_explosions = {
+	0: 'death_with_sparks_explosion',
+	30: 'smallfired_explosion',
+	60: 'smor_explosion'
+};
 
 SkyFortressUnit.require_building = [AssemblyPlantBuilding, RearmingDeckBuilding, Headquarter3Building];
 

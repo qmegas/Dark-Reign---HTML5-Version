@@ -1,3 +1,10 @@
+var GAMECONFIG = {
+	playMusic: true,
+	playVideo: true,
+	defaultMusicVolume: 1,
+	defaultSoundVolume: 1
+};
+
 var CELL_SIZE = 24;
 var VIEWPORT_SIZE = 448;
 

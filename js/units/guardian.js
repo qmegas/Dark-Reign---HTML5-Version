@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(GuardianUnit);
 
 GuardianUnit.obj_name = 'Guardian';
 GuardianUnit.resource_key = 'guardian';
-GuardianUnit.die_effect = 'splata_animation';
 GuardianUnit.parts = [
 	{
 		rotations: 8,
@@ -47,6 +46,10 @@ GuardianUnit.speed = 1.214;
 GuardianUnit.is_human = true;
 GuardianUnit.shield_type = 'PowerHumanWet';
 GuardianUnit.seeing_range = 8;
+
+GuardianUnit.health_explosions = {
+	0: 'splata_explosion'
+};
 
 GuardianUnit.require_building = [TrainingFacilityBuilding];
 

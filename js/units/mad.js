@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(MadUnit);
 
 MadUnit.obj_name = 'Mobile Air Defense';
 MadUnit.resource_key = 'mad';
-MadUnit.die_effect = 'death_with_sparks_animation';
 MadUnit.parts = [
 	{
 		rotations: 16,
@@ -53,6 +52,10 @@ MadUnit.speed = 2.428;
 MadUnit.shield_type = 'TankPlating';
 MadUnit.move_mode = MOVE_MODE_HOVER;
 MadUnit.mass = 10;
+
+MadUnit.health_explosions = {
+	0: 'death_with_sparks_explosion'
+};
 
 MadUnit.require_building = [Headquarter2Building, AssemblyPlantBuilding];
 

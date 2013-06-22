@@ -10,7 +10,6 @@ AbstractUnit.setUnitCommonOptions(ReconDroneUnit);
 
 ReconDroneUnit.obj_name = 'Recon Drone';
 ReconDroneUnit.resource_key = 'recon_drone';
-ReconDroneUnit.die_effect = 'death_with_sparks_animation';
 ReconDroneUnit.parts = [
 	{
 		rotations: 12,
@@ -48,6 +47,12 @@ ReconDroneUnit.speed = 2.428;
 ReconDroneUnit.shield_type = 'FlyingArmour';
 ReconDroneUnit.move_mode = MOVE_MODE_FLY;
 ReconDroneUnit.mass = 10;
+
+ReconDroneUnit.health_explosions = {
+	0: 'death_with_sparks_explosion',
+	30: 'smallfired_explosion',
+	60: 'smor_explosion'
+};
 
 ReconDroneUnit.require_building = [Headquarter2Building, AssemblyPlantBuilding];
 

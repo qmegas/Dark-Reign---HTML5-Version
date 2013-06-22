@@ -11,7 +11,6 @@ AbstractUnit.setUnitCommonOptions(HoverFreighterUnit);
 HoverFreighterUnit.prototype = new FreighterUnit();
 HoverFreighterUnit.obj_name = 'Hover Freighter';
 HoverFreighterUnit.resource_key = 'hover_freighter';
-HoverFreighterUnit.die_effect = 'death_with_sparks_animation';
 HoverFreighterUnit.parts = [
 	{
 		rotations: 16,
@@ -79,6 +78,12 @@ HoverFreighterUnit.speed = 2.428;
 HoverFreighterUnit.shield_type = 'TankPlating';
 HoverFreighterUnit.move_mode = MOVE_MODE_HOVER;
 HoverFreighterUnit.mass = 10;
+
+HoverFreighterUnit.health_explosions = {
+	0: 'death_with_sparks_explosion',
+	30: 'smallfired_explosion',
+	60: 'smor_explosion'
+};
 
 HoverFreighterUnit.require_building = [AssemblyPlant2Building];
 

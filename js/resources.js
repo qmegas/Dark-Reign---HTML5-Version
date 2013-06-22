@@ -2,7 +2,7 @@ function ResourseLoader()
 {
 	var self = this;
 	
-	this.soundVolume = 1;
+	this.soundVolume = GAMECONFIG.defaultSoundVolume;
 	this.total = 0;
 	this.loaded = 0;
 	this.items = {};

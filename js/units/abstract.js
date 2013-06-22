@@ -36,6 +36,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.startAnimation = 0; 
 	this.anim_attack_frame = 0;
+	this.damage_animator = null;
 	
 	this.action = {type: ''};
 	this.state = UNIT_STATE_STAND;
@@ -85,9 +86,19 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.applyHeal = function(heal)
 	{
-		this.health += heal;
-		if (this.health > this._proto.health_max)
-			this.health = this._proto.health_max;
+		var aplly = Math.min(this._proto.health_max-this.health, heal),
+			new_health = this.health + aplly, 
+			animation_index;
+		
+		if (this.damage_animator !== null)
+		{
+			animation_index = this._findDamageAnimation(this.health, new_health);
+			if (animation_index !== -1)
+				this.damage_animator.stop();
+		}
+		
+		this.health = new_health;
+		return aplly;
 	};
 	
 	this.applyDamage = function(damage)
@@ -95,17 +106,43 @@ function AbstractUnit(pos_x, pos_y, player)
 		if (this.health <= 0)
 			return; //Already killed
 		
-		this.health -= damage;
+		var new_health = this.health - damage, animation_index = this._findDamageAnimation(new_health, this.health);
+		
+		this.health = new_health;
+		if (animation_index !== -1)
+			this._animateDamage(animation_index);
+		
 		if (this.health <= 0)
 		{
 			this.health = 0;
-			var ucenter = {
-				x: (this.position.x - this._proto.parts[0].hotspots[this.parts[0].direction][0].x) + parseInt(this._proto.parts[0].image_size.x / 2),
-				y: (this.position.y - this._proto.parts[0].hotspots[this.parts[0].direction][0].y) + parseInt(this._proto.parts[0].image_size.y / 2)
-			};
-			SimpleEffect.quickCreate(this._proto.die_effect, {pos: ucenter});
 			game.kill_objects.push(this.uid);
 		}
+	};
+	
+	this._findDamageAnimation = function(min_health, max_health)
+	{
+		if (this._proto.health_explosions.length == 0)
+			return -1;
+		
+		var j, i, proc_min = Math.ceil(min_health/this._proto.health_max * 100),
+			proc_max = Math.ceil(max_health/this._proto.health_max * 100);
+		
+		for (i in this._proto.health_explosions)
+		{
+			j = parseInt(i);
+			if ((j >= proc_min) && (j < proc_max))
+				return j;
+		}
+		return -1;
+	};
+	
+	this._animateDamage = function(state)
+	{
+		if (this.damage_animator !== null)
+			this.damage_animator.stop();
+		
+		this.damage_animator = new Animator();
+		this.damage_animator.animate(this.uid, this._proto.health_explosions[state]);
 	};
 	
 	this.orderMove = function(x, y, play_sound)
@@ -359,6 +396,9 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		for (var i in this.parts)
 			this.parts[i].direction = Math.calcFrameByAngle(angle, this._proto.parts[i].rotations);
+		
+		if (this.damage_animator != null)
+			this.damage_animator.updatePosition();
 	};
 	
 	this._moveToNextCell = function()
@@ -692,7 +732,6 @@ function AbstractUnit(pos_x, pos_y, player)
 		return false;
 	};
 	
-	
 	//Units with ability to carry 
 	
 	this.canCarry = function()
@@ -945,7 +984,6 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.shadow = null;
 	obj.select_sounds = [];
 	obj.response_sounds = [];
-	obj.die_effect = 'splatd_animation';
 
 	obj.cost = 0;
 	obj.health_max = 100;
@@ -968,6 +1006,10 @@ AbstractUnit.setUnitCommonOptions = function(obj)
 	obj.producing_paused = false;
 	obj.producing_count = 0;
 	obj.producing_building_id = 0;
+	
+	obj.health_explosions = {
+		0: 'splatd_explosion'
+	};
 
 	obj.loadResources = function() 
 	{

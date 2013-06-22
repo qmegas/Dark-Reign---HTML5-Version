@@ -1,18 +1,21 @@
 function Animator()
 {
-	var effect_ids = [], object_id = -1;
+	var effects = [], object_id = -1;
 	
-	this.setObject = function(uid)
+	this.updatePosition = function()
+	{
+		for (var i in effects)
+		{
+			if (!game.objects[effects[i].id])
+				continue;
+			game.objects[effects[i].id].setPosition(this._getHotpointPosition(effects[i].point));
+		}
+	};
+	
+	this.animate = function(uid, animation)
 	{
 		object_id = uid;
-	};
-	
-	this.newPosition = function(pos)
-	{
-	};
-	
-	this.animate = function(animation, mode)
-	{
+		
 		var i, effect_list = AnimationList[animation];
 		
 		for (i in effect_list)
@@ -21,9 +24,9 @@ function Animator()
 	
 	this.stop = function()
 	{
-		for (var i in effect_ids)
-			game.deleteEffect(effect_ids[i]);
-		effect_ids = [];
+		for (var i in effects)
+			game.deleteEffect(effects[i].id);
+		effects = [];
 	};
 	
 	this._runEffect = function(info)
@@ -31,17 +34,69 @@ function Animator()
 		if (!game.objects[object_id])
 			return;
 		
-		var id = SimpleEffect.quickCreate(info.effect, {
+		var hotpoint = this._chooseHotpoint(info.min_point, info.max_point);
+		var eid = SimpleEffect.quickCreate(info.effect, {
 			looped: info.looped,
 			start: info.start,
-			pos: game.objects[object_id].getHotpointPosition(info.min_point, info.max_point)
+			pos: this._getHotpointPosition(hotpoint)
 		});
-		effect_ids.push(id);
+		effects.push({id: eid, point: hotpoint});
+	};
+	
+	this._chooseHotpoint = function(min_point, max_point)
+	{
+		var obj = game.objects[object_id];
+		
+		if (obj.is_building)
+		{
+			if (obj._proto.hotpoints.length == 0)
+				return -1;
+
+			if (max_point >= obj._proto.hotpoints.length)
+				max_point = obj._proto.hotpoints.length - 1;
+
+			if (min_point >= obj._proto.hotpoints.length)
+				min_point = obj._proto.hotpoints.length - 1;
+		}
+		else
+		{
+			var hotspots = obj._proto.parts[0].hotspots[0];
+			if (hotspots.length == 0)
+				return -1;
+
+			if (max_point >= hotspots.length)
+				max_point = hotspots.length - 1;
+
+			if (min_point >= hotspots.length)
+				min_point = hotspots.length - 1;
+		}
+		
+		return parseInt(Math.random() * (max_point - min_point + 1)) + min_point;
+	};
+	
+	this._getHotpointPosition = function(hotspot)
+	{
+		var obj = game.objects[object_id];
+		
+		if (hotspot == -1)
+			return cloneObj(obj.position);
+		
+		if (obj.is_building)
+		{
+			return {
+				x: obj.position.x + obj._proto.hotpoints[hotspot].x,
+				y: obj.position.y + obj._proto.hotpoints[hotspot].y
+			};
+		}
+		else
+		{
+			return {
+				x: obj.position.x + obj._proto.parts[0].hotspots[obj.parts[0].direction][hotspot].x,
+				y: obj.position.y + obj._proto.parts[0].hotspots[obj.parts[0].direction][hotspot].y
+			};
+		}
 	};
 }
-
-Animator.MODE_ATTACHED = 0;
-Animator.MODE_FIXED = 1;
 
 Animator.loadResources = function()
 {

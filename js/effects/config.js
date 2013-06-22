@@ -306,20 +306,32 @@ var EffectList = {
 		hotpoint: {x: 16, y: 16},
 		frames: 8
 	},
+	smallfired_animation: { //Looped
+		res_key: 'ecfirsm2',
+		size: {x: 40, y: 40},
+		hotpoint: {x: 23, y: 27},
+		frames: 8
+	},
 	smallflames_1_animation: { //Looped
 		res_key: 'ecfirsm0',
 		size: {x: 30, y: 30},
 		hotpoint: {x: 15, y: 24},
 		frames: 8
 	},
-	splatb_animation: {
-		res_key: 'splatb',
+	smor_animation: { //Looped
+		res_key: 'eosmopf1',
+		size: {x: 50, y: 60},
+		hotpoint: {x: 17, y: 53},
+		frames: 10
+	},
+	splata_animation: {
+		res_key: 'splata',
 		size: {x: 40, y: 40},
 		hotpoint: {x: 20, y: 30},
 		frames: 15
 	},
-	splata_animation: {
-		res_key: 'splata',
+	splatb_animation: {
+		res_key: 'splatb',
 		size: {x: 40, y: 40},
 		hotpoint: {x: 20, y: 30},
 		frames: 15

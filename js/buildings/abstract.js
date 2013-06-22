@@ -249,8 +249,7 @@ function AbstractBuilding()
 			this.damage_animator.stop();
 		
 		this.damage_animator = new Animator();
-		this.damage_animator.setObject(this.uid);
-		this.damage_animator.animate(this._proto.health_explosions[state], Animator.MODE_FIXED);
+		this.damage_animator.animate(this.uid, this._proto.health_explosions[state]);
 	};
 	
 	this.canBeSelected = function()
@@ -634,25 +633,6 @@ function AbstractBuilding()
 		return amount;
 	};
 	
-	this.getHotpointPosition = function(min_point, max_point)
-	{
-		if (this._proto.hotpoints.length == 0)
-			return cloneObj(this.position);
-		
-		if (max_point >= this._proto.hotpoints.length)
-			max_point = this._proto.hotpoints.length - 1;
-		
-		if (min_point >= this._proto.hotpoints.length)
-			min_point = this._proto.hotpoints.length - 1;
-		
-		var point = parseInt(Math.random() * (max_point - min_point + 1)) + min_point;
-		
-		return {
-			x: this.position.x + this._proto.hotpoints[point].x,
-			y: this.position.y + this._proto.hotpoints[point].y
-		};
-	};
-	
 	this.changeFogState = function(state)
 	{
 		if (this.player != PLAYER_HUMAN)
@@ -731,6 +711,9 @@ function AbstractBuilding()
 			var pos = PathFinder.findNearestStandCell(cell.x + 2, cell.y + 2);
 			AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
 		}
+		
+		if (this.damage_animator !== null)
+			this.damage_animator.stop();
 
 		game.kill_objects.push(this.uid);
 	};
