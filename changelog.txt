@@ -5,6 +5,8 @@ Build 42
 - Units and buildings of other players now colored differently
 - Game basic parameters can be configured throw config object
 - Added damage animation for all units
+- Added Shredder unit (without weapon)
+- Added Infiltrator unit (without special abilities)
 
 Build 41 (14.06.2013)
 - Added level select screen

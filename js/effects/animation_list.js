@@ -151,6 +151,9 @@ var AnimationList = {
 	splatb_explosion: [
 		{start: 0, min_point: 1, max_point: 1, effect: 'splatb_animation'}
 	],
+	splatc_explosion: [
+		{start: 0, min_point: 1, max_point: 1, effect: 'splatc_animation'}
+	],
 	splatd_explosion: [
 		{start: 0, min_point: 1, max_point: 1, effect: 'splatd_animation'}
 	]

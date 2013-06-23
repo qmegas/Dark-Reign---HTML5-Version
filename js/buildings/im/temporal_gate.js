@@ -103,7 +103,6 @@ TemporalGateBuilding.sell_cost = 900;
 TemporalGateBuilding.sell_time = 18;
 TemporalGateBuilding.health_max = 1000;
 TemporalGateBuilding.energy = 100;
-TemporalGateBuilding.enabled = true;
 TemporalGateBuilding.can_build = true;
 TemporalGateBuilding.crater = 1;
 TemporalGateBuilding.is_teleport = true;

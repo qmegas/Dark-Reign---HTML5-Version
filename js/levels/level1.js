@@ -2457,10 +2457,10 @@ function Level1()
 		return [
 			ConstructionRigUnit, FreighterUnit, HoverFreighterUnit, 
 			GuardianUnit, BionUnit, ExterminatorUnit,
-			ScoutRunnerUnit, InvaderTransportUnit, PlasmaTankUnit,
-			AmperUnit, MadUnit, ReconDroneUnit,
-			TachyonTankUnit, ScarabUnit, CycloneUnit,
-			SkyFortressUnit
+			InfiltratorUnit, ScoutRunnerUnit, InvaderTransportUnit, 
+			PlasmaTankUnit, AmperUnit, MadUnit, 
+			ReconDroneUnit, ShredderUnit, TachyonTankUnit, 
+			ScarabUnit, CycloneUnit, SkyFortressUnit
 		];
 	};
 	

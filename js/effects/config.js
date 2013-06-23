@@ -336,6 +336,12 @@ var EffectList = {
 		hotpoint: {x: 20, y: 30},
 		frames: 15
 	},
+	splatc_animation: {
+		res_key: 'splatc',
+		size: {x: 40, y: 40},
+		hotpoint: {x: 20, y: 30},
+		frames: 13
+	},
 	splatd_animation: {
 		res_key: 'splatd',
 		size: {x: 50, y: 50},

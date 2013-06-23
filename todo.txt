@@ -1,12 +1,15 @@
 To do:
 	- Implement unit rotation
 	- Allow unit to shoot not only to the center of the building
-	- Add Vortex weapon
+	
 
 - High priority bugs:
 
 - Medium priority bugs:
 	- Add Boost weapon (weapon for Amper unit)
+	- Add Vortex weapon
+	- Add Shredder weapon
+	- Add self-destruction weapon
 	- Air Defense Site should have 3 weapons instead one
 	- Add animation for repair station
 	- More beautiful Fog of War 
@@ -23,6 +26,7 @@ To do:
 	- Energy meter blinking incorrectly
 	- When mouseover building or unit, it's name should be shown after small delay
 	- Game menu scroll (for example in archive) works not exactly as in the game
+	- Add infiltrator idle animation
 
 
 - Known browser-related bugs
