@@ -396,7 +396,7 @@ function Game()
 		
 		if (button == 'left')
 		{
-			var cunit = MapCell.getSingleUserId(this.level.map_cells[pos.x][pos.y]);
+			var cunit = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(this.level.map_cells[pos.x][pos.y]);
 			if ((cunit !== -1) && this.objects[cunit].canBeSelected())
 				this.regionSelect(pos.x, pos.y, pos.x, pos.y);
 			

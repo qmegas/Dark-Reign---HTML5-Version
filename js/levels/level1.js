@@ -2459,8 +2459,9 @@ function Level1()
 			GuardianUnit, BionUnit, ExterminatorUnit,
 			InfiltratorUnit, ScoutRunnerUnit, InvaderTransportUnit, 
 			PlasmaTankUnit, AmperUnit, MadUnit, 
-			ReconDroneUnit, ShredderUnit, TachyonTankUnit, 
-			ScarabUnit, CycloneUnit, SkyFortressUnit
+			ReconDroneUnit, ShredderUnit, HostageTakerUnit,
+			TachyonTankUnit, ScarabUnit, CycloneUnit, 
+			SkyFortressUnit, WaterContaminatorUnit
 		];
 	};
 	

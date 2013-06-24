@@ -117,7 +117,7 @@ var MousePointer = {
 		if (!MapCell.isCorrectCord(pos.x, pos.y))
 			return this._drawNormalCursor();
 		
-		var objid = (game.level.map_cells[pos.x][pos.y].fog == 0) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+		var objid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
 		
 		//Actions
 		if (game.action_state != ACTION_STATE_NONE)
@@ -268,7 +268,7 @@ var MousePointer = {
 		
 				if (Math.abs(sizes.width)<4 && Math.abs(sizes.height)<4)
 				{
-					unitid = (game.level.map_cells[pos.x][pos.y].fog == 0) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+					unitid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
 					
 					if (unitid!=-1 && game.objects[unitid].is_building)
 					{

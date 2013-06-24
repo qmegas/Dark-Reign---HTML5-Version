@@ -51,7 +51,7 @@ var InterfaceMinimap = {
 			}
 			else
 			{
-				if (game.level.map_cells[x][y].fog > 0)
+				if (game.level.map_cells[pos.x][pos.y].fog > 0)
 					this._objects_ctx.fillRect(x, y, 1, 1); 
 			}
 		}

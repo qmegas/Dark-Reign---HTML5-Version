@@ -100,3 +100,8 @@ MapCell.cellToPixel = function(cell_pos)
 {
 	return {x: cell_pos.x*CELL_SIZE + 12, y: cell_pos.y*CELL_SIZE + 12};
 };
+
+MapCell.isFogged = function(pos)
+{
+	return (game.level.map_cells[pos.x][pos.y].fog == 0);
+};

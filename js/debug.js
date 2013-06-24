@@ -38,11 +38,6 @@ function Debuger()
 		game.players[PLAYER_HUMAN].addMoney(15000);
 	});
 	
-	$('#debug_water').click(function(){
-		var obj = game.findNearestInstance(WaterLaunchPadBuilding, PLAYER_HUMAN, 1, 1);
-		obj.increaseRes(200);
-	});
-	
 	$('#debug_kill').click(function(){
 		for (var i in game.selected_objects)
 			game.objects[game.selected_objects[i]].applyDamage(9999);
@@ -72,17 +67,8 @@ function Debuger()
 	
 	this.drawFPS = function()
 	{
-		game.viewport_ctx.fillStyle = '#fff';
-		game.viewport_ctx.fillText('Game speed: ' + this.run_cache + ' (' + parseInt((this.run_cache/RUNS_PER_SECOND)*100) + '%)', 0, 10);
-		game.viewport_ctx.fillText('FPS: ' + this.fps_cache, 0, 20);
-	};
-	
-	this.drawCustomLine = function(text, line)
-	{
-		if (!line)
-			line = 1;
-		
-		game.viewport_ctx.fillStyle = '#fff';
-		game.viewport_ctx.fillText(text, 0, 10*line);
+		MousePointer.mouse_ctx.fillStyle = '#fff';
+		MousePointer.mouse_ctx.fillText('Game speed: ' + this.run_cache + ' (' + parseInt((this.run_cache/RUNS_PER_SECOND)*100) + '%)', 0, 10);
+		MousePointer.mouse_ctx.fillText('FPS: ' + this.fps_cache, 0, 20);
 	};
 }
