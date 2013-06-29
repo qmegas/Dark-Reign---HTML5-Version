@@ -1,15 +1,15 @@
-Build 42
-- Bugfix: Fog of war fix during unit teleport by Temporal gate
-- Bugfix: Unit can't enter invader transport
+Build 42 (28.06.2013)
+- Bugfix: Fog of war fix during unit teleport
+- Bugfix: Unit couldn't enter invader transport
 - Bugfix: demolishing Temporal gate during charge sate
-- Bugfix: minimap fog error when user moves near right side
+- Bugfix: minimap fog error when unit moves near right side
 - Bugfix: Fog drawing function rewritten to allow correct fog display on right and bottom edges
 - Bugfix: do not select unit/building if it positioned under the fog
 - Units and buildings of other players now colored differently
 - Game basic parameters can be configured throw config object
 - Added damage animation for all units
-- Added units without weapon: Shredder, Hostage Taker, Water Contaminator
-- Added Infiltrator unit (without special abilities)
+- Added units without weapons: Shredder, Hostage Taker, Water Contaminator
+- Added Infiltrator unit (without spy abilities)
 
 Build 41 (14.06.2013)
 - Added level select screen
