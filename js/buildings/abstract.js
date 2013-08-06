@@ -435,8 +435,12 @@ function AbstractBuilding()
 	
 	this._drawSprite = function(layer, frame_x, frame_y)
 	{
+		var key = this._proto.res_key;
+		if (this._proto.res_multicolor)
+			key += this._object_color;
+		
 		game.objDraw.addElement(layer, this.position.y, {
-			res_key: this._proto.res_key + this._object_color, 
+			res_key: key, 
 			src_x: this._proto.images.normal.size.x * frame_x,
 			src_y: this._proto.images.normal.size.y * frame_y,
 			src_width: this._proto.images.normal.size.x,
@@ -665,6 +669,7 @@ function AbstractBuilding()
 	
 	this.triggerEvent = function(event, params)
 	{
+		TacticalAI.handleUnitEvent(this, event, params);
 	};
 	
 	this.onObjectDeletion = function() 

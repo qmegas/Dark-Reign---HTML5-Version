@@ -1,6 +1,6 @@
-function PersistentDamage(position, config)
+function PersistentDamage(position, config, attacker)
 {
-	var count = config.damage_number, delay = config.damage_delay;
+	var count = config.damage_number, delay = config.damage_delay, attacker_id = attacker;
 	
 	this.uid = -1;
 	this.is_effect = true;
@@ -14,7 +14,7 @@ function PersistentDamage(position, config)
 			count--;
 			delay = config.damage_delay;
 			
-			DamageTable.applyOffence(position, config, MOVE_MODE_GROUND);
+			DamageTable.applyOffence(position, config, MOVE_MODE_GROUND, attacker_id);
 		}
 		
 		if (count == 0)

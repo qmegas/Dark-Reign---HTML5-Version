@@ -2,6 +2,8 @@ var MOVE_MODE_GROUND = 0;
 var MOVE_MODE_HOVER = 1;
 var MOVE_MODE_FLY = 2;
 
+var UNIT_SCAN_INTERVAL = 1000;
+
 var UNIT_STATE_STAND = 0;
 var UNIT_STATE_MOVE = 1;
 var UNIT_STATE_ATTACKING = 2;
@@ -45,6 +47,8 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this._object_color = '';
 	
+	this._last_scan_time = 0;
+	
 	this.init = function(pos_x, pos_y)
 	{
 		this.setCell({x: pos_x, y: pos_y});
@@ -82,6 +86,13 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		this.position_cell = cloneObj(pos);
 		this.position = MapCell.cellToPixel(this.position_cell);
+		
+		if (this._is_have_weapon)
+		{
+			for (var i = 0; i < this._proto.parts.length; ++i)
+				if (this.parts[i].weapon)
+					this.parts[i].weapon.updatePosition();
+		}
 	};
 	
 	this.applyHeal = function(heal)
@@ -167,19 +178,9 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.orderAttack = function(target)
 	{
-		if (!this._is_have_weapon)
-			return;
-		
-		var i, set_target = false;
-		
-		for (var i in this.parts)
-		{
-			if (this.parts[i].weapon && this.parts[i].weapon.canAttackTarget(target))
-			{
-				this.parts[i].weapon.setTarget(target);
-				set_target = true;
-			}
-		}
+		var set_target = this.isCanAttackTarget(target, function(weapon){
+			weapon.setTarget(target);
+		});
 		
 		if (!set_target)
 			return;
@@ -264,6 +265,26 @@ function AbstractUnit(pos_x, pos_y, player)
 	{
 		this.state = UNIT_STATE_WAITING;
 		this.action.wait_till = (new Date).getTime() + time;
+	};
+	
+	this.isCanAttackTarget = function(target, callback)
+	{
+		if (!this._is_have_weapon)
+			return false;
+		
+		var ret = false;
+		for (var i in this.parts)
+		{
+			if (this.parts[i].weapon && this.parts[i].weapon.canAttackTarget(target))
+			{
+				if (callback)
+					callback(this.parts[i].weapon);
+				
+				ret = true;
+			}
+		}
+		
+		return ret;
 	};
 	
 	this._move = function(x, y) 
@@ -353,6 +374,13 @@ function AbstractUnit(pos_x, pos_y, player)
 				
 			default:
 				this.runCustom();
+		}
+		
+		var time = (new Date()).getTime();
+		if  ((time - this._last_scan_time) > UNIT_SCAN_INTERVAL)
+		{
+			this._last_scan_time = time;
+			TacticalAI.regularScan(this);
 		}
 	};
 	
@@ -445,22 +473,9 @@ function AbstractUnit(pos_x, pos_y, player)
 		if (this.player != PLAYER_HUMAN)
 			return;
 		
-		var x, y;
-		
-		for (x = this.position_cell.x - this._proto.seeing_range + 1; x < this.position_cell.x + this._proto.seeing_range; ++x)
-		{
-			if (!MapCell.isCorrectX(x))
-				continue;
-			
-			for (y = this.position_cell.y - this._proto.seeing_range + 1; y < this.position_cell.y + this._proto.seeing_range; ++y)
-			{
-				if (!MapCell.isCorrectY(y))
-					continue;
-				
-				if ((Math.sqrt(Math.pow(x - this.position_cell.x, 2) + Math.pow(y - this.position_cell.y, 2)) < this._proto.seeing_range))
-					game.level.map_cells[x][y].fog_new_state += state;
-			}
-		}
+		rangeItterator(this.position_cell.x, this.position_cell.y, this._proto.seeing_range, function(x, y){
+			game.level.map_cells[x][y].fog_new_state += state;
+		});
 		
 		InterfaceFogOfWar.need_redraw = true;
 	};
@@ -921,7 +936,7 @@ function AbstractUnit(pos_x, pos_y, player)
 				break;
 				
 			default:
-				TacticalAI.handleUnitEvent(this, event);
+				TacticalAI.handleUnitEvent(this, event, params);
 				break;
 		}
 	};

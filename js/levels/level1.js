@@ -2429,11 +2429,11 @@ function Level1()
 	
 	this.getInitUnits = function()
 	{
-		game.players[PLAYER_NEUTRAL] = new Player('#ffff00', '', false);
-		game.players[PLAYER_HUMAN] = new Player('#ffffbb', 'yellow', true);
-		game.players[PLAYER_COMPUTER1] = new Player('#fc3c58', 'red', false);
+		game.addPlayer(new Player('#ffff00', '', PLAYER_NEUTRAL));
+		game.addPlayer(new Player('#ffffbb', 'yellow', PLAYER_HUMAN));
+		game.addPlayer(new Player('#fc3c58', 'red', PLAYER_COMPUTER1));
 		
-		AbstractUnit.createNew(ConstructionRigUnit, 63, 4, PLAYER_HUMAN, true);
+		AbstractUnit.createNew(TachyonTankUnit, 63, 4, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 66, 4, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 64, 6, PLAYER_HUMAN, true);
 		

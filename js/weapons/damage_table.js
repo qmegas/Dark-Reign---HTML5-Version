@@ -215,7 +215,7 @@ var DamageTable = {
 		 return strength;
 	},
 		
-	applyOffence: function(position, offence, layer)
+	applyOffence: function(position, offence, layer, attacker_id)
 	{
 		var x, y, pixel_pos, damage_proc, damage_cache = {}, ids, i, damage, 
 			top_left = MapCell.pixelToCell({x: position.x - offence.area_effect, y: position.y - offence.area_effect}),
@@ -264,6 +264,9 @@ var DamageTable = {
 		
 		//Apply damage
 		for (i in damage_cache)
+		{
 			game.objects[i].applyDamage(damage_cache[i]);
+			game.objects[i].triggerEvent('attacked', {attacker: attacker_id});
+		}
 	}
 };

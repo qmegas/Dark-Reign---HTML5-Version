@@ -76,6 +76,30 @@ function cloneObj(obj)
 	return clone;
 }
 
+function rangeItterator(pos_x, pos_y, range, callback)
+{
+	var x, y, is_stop;
+	
+	for (x = pos_x - range + 1; x < pos_x + range; ++x)
+	{
+		if (!MapCell.isCorrectX(x))
+			continue;
+
+		for (y = pos_y - range + 1; y < pos_y + range; ++y)
+		{
+			if (!MapCell.isCorrectY(y))
+				continue;
+
+			if (!(Math.sqrt(Math.pow(x - pos_x, 2) + Math.pow(y - pos_y, 2)) < range))
+				continue;
+			
+			is_stop = callback(x, y);
+			if (is_stop)
+				return;
+		}
+	}
+}
+
 Math.getAngle = function(y, x)
 {
 	return this.atan2(y, x) * (180/this.PI);

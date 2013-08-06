@@ -197,7 +197,7 @@ function WeaponHolder(config_name)
 		var uid = game.objects.length, bulet = new Bulet(config_name, this.getTargetLayer());
 		bulet.uid = uid;
 		game.objects.push(bulet);
-		bulet.init(position_from, to);
+		bulet.init(position_from, to, unit.uid);
 	};
 	
 	this.canAttackGround = function()

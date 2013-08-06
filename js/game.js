@@ -36,6 +36,11 @@ function Game()
 	
 	this.debug = new Debuger();
 	
+	this.addPlayer = function(player)
+	{
+		this.players[player.type] = player;
+	};
+	
 	this.moveViewport = function(x, y, relative)
 	{
 		if (relative)

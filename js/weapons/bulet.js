@@ -1,13 +1,15 @@
 function Bulet(config_name, layer)
 {
-	var config, position_now, position_to, move_steps, animation_id;
+	var config, position_now, position_to, move_steps, animation_id, attacker_id;
 	
 	this.uid = -1;
 	this.is_effect = true;
 	
-	this.init = function(from, to)
+	this.init = function(from, to, attacker)
 	{
 		var len, parts;
+		
+		attacker_id = attacker;
 		
 		config = WeaponConfig[config_name];
 		
@@ -65,11 +67,11 @@ function Bulet(config_name, layer)
 		if (config.hit_sound)
 			game.resources.playOnPosition(config.hit_sound, true, position_now, true);
 		
-		DamageTable.applyOffence(position_to, config.offence, layer);
+		DamageTable.applyOffence(position_to, config.offence, layer, attacker_id);
 		
 		if (config.persistent_damage)
 		{
-			var uid = game.objects.length, pdamage = new PersistentDamage(position_to, config.persistent_damage);
+			var uid = game.objects.length, pdamage = new PersistentDamage(position_to, config.persistent_damage, attacker_id);
 			pdamage.uid = uid;
 			game.objects.push(pdamage);
 		}

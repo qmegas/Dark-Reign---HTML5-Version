@@ -136,14 +136,8 @@ var MousePointer = {
 				case ACTION_STATE_REPAIR:
 					return this._drawCursor(current_time, 8, 9);
 				case ACTION_STATE_ATTACK:
-					if (game.selected_info.can_attack_ground)
-					{
-						if ((objid == -1) || game.objects[objid].is_building || (game.objects[objid]._proto.move_mode != MOVE_MODE_FLY))
-							return this._drawCursor(current_time, 3, 8);
-					}
-					if (game.selected_info.can_attack_fly && (objid != -1) && !game.objects[objid].is_building && (game.objects[objid]._proto.move_mode == MOVE_MODE_FLY))
+					if (this._checkAttackAbility(objid))
 						return this._drawCursor(current_time, 3, 8);
-					
 					return this._drawCursor(current_time, 4, 2);
 			}
 		}
@@ -181,6 +175,14 @@ var MousePointer = {
 					return this._drawCursor(current_time, 24, 10);
 				if (game.selected_info.move_mode_min<=MOVE_MODE_HOVER && game.objects[objid].haveFreeSpace(game.selected_info.min_mass))
 					return this._drawCursor(current_time, 25, 12);
+			}
+			
+			if (game.objects[objid].player!=PLAYER_HUMAN && game.players[PLAYER_HUMAN].isEnemy(game.objects[objid].player))
+			{
+				if (this._checkAttackAbility(objid))
+					return this._drawCursor(current_time, 3, 8);
+				else
+					return this._drawCursor(current_time, 4, 2);
 			}
 			
 			return this._drawCursor(current_time, 1, 8);
@@ -270,79 +272,91 @@ var MousePointer = {
 				{
 					unitid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
 					
-					if (unitid!=-1 && game.objects[unitid].is_building)
+					if (unitid!=-1)
 					{
-						//Is a bridge?
-						if (
-							game.objects[unitid]._proto.is_bridge && 
-							game.selected_objects.length>0 && 
-							!game.selected_info.is_building && 
-							game.level.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY)
+						if (game.objects[unitid].is_building)
 						{
-							game.moveSelectedUnits(pos);
-							return;
+							//Is a bridge?
+							if (
+								game.objects[unitid]._proto.is_bridge && 
+								game.selected_objects.length>0 && 
+								!game.selected_info.is_building && 
+								game.level.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY)
+							{
+								game.moveSelectedUnits(pos);
+								return;
+							}
+
+							//Is harvesting?
+							if (game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
+							{
+								for (var i in game.selected_objects)
+									game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
+								return;
+							}
+
+							//Rearm Cyclones
+							if (game.selected_info.cyclones && game.objects[unitid]._proto==RearmingDeckBuilding && game.objects[unitid].state==BUILDING_STATE_NORMAL)
+							{
+								for (var i in game.selected_objects)
+									game.objects[game.selected_objects[i]].orderRearm(game.objects[unitid], true);
+								return;
+							}
+
+							//Is healing humans
+							if (game.selected_info.humans && game.objects[unitid].isHealer())
+							{
+								for (var i in game.selected_objects)
+									game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
+								return;
+							}
+
+							//Is fixing vehical
+							if (
+								game.selected_objects.length>0 &&
+								!game.selected_info.humans && 
+								!game.selected_info.is_building && 
+								game.objects[unitid].isFixer())
+							{
+								for (var i in game.selected_objects)
+									game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
+								return;
+							}
 						}
 						
-						//Is harvesting?
-						if (game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
+						//Carry unit/building
+						if (game.objects[unitid].canCarry())
 						{
-							for (var i in game.selected_objects)
-								game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
-							return;
+							if (game.objects[unitid].is_selected && game.objects[unitid].haveInsideUnits())
+							{
+								game.objects[unitid].extractCarry();
+								return;
+							}
+							if (game.selected_info.move_mode_min<=MOVE_MODE_HOVER && game.objects[unitid].haveFreeSpace(game.selected_info.min_mass))
+							{
+								for (var i in game.selected_objects)
+									game.objects[game.selected_objects[i]].orderToCarry(game.objects[unitid], (i==0));
+								return;
+							}
 						}
 						
-						//Rearm Cyclones
-						if (game.selected_info.cyclones && game.objects[unitid]._proto==RearmingDeckBuilding && game.objects[unitid].state==BUILDING_STATE_NORMAL)
+						//Attack enemy unit
+						if (game.objects[unitid].player!=PLAYER_HUMAN && game.players[PLAYER_HUMAN].isEnemy(game.objects[unitid].player))
 						{
-							for (var i in game.selected_objects)
-								game.objects[game.selected_objects[i]].orderRearm(game.objects[unitid], true);
-							return;
-						}
-						
-						//Is healing humans
-						if (game.selected_info.humans && game.objects[unitid].isHealer())
-						{
-							for (var i in game.selected_objects)
-								game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
-							return;
-						}
-						
-						//Is fixing vehical
-						if (
-							game.selected_objects.length>0 &&
-							!game.selected_info.humans && 
-							!game.selected_info.is_building && 
-							game.objects[unitid].isFixer())
-						{
-							for (var i in game.selected_objects)
-								game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
-							return;
+							if (this._checkAttackAbility(unitid))
+								this._actAttack(pos);
 						}
 					}
-					
-					//Carry unit/building
-					if (unitid!=-1 && game.objects[unitid].canCarry())
+					else
 					{
-						if (game.objects[unitid].is_selected && game.objects[unitid].haveInsideUnits())
+						//Teleport
+						if (game.selected_info.is_building && game.objects[game.selected_objects[0]].isTeleport())
 						{
-							game.objects[unitid].extractCarry();
-							return;
-						}
-						if (game.selected_info.move_mode_min<=MOVE_MODE_HOVER && game.objects[unitid].haveFreeSpace(game.selected_info.min_mass))
-						{
-							for (var i in game.selected_objects)
-								game.objects[game.selected_objects[i]].orderToCarry(game.objects[unitid], (i==0));
-							return;
-						}
-					}
-					
-					//Teleport
-					if (unitid==-1 && game.selected_info.is_building && game.objects[game.selected_objects[0]].isTeleport())
-					{
-						if (game.objects[game.selected_objects[0]].canTeleport())
-						{
-							game.objects[game.selected_objects[0]].teleport(pos);
-							return;
+							if (game.objects[game.selected_objects[0]].canTeleport())
+							{
+								game.objects[game.selected_objects[0]].teleport(pos);
+								return;
+							}
 						}
 					}
 					
@@ -381,19 +395,23 @@ var MousePointer = {
 				break;
 				
 			case ACTION_STATE_ATTACK:
-				var target;
-				unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
-				
-				if (unitid == -1)
-					target = {type: 'ground', x: pos.x*CELL_SIZE + 12, y: pos.y*CELL_SIZE + 12};
-				else
-					target = {type: 'object', objid: unitid};
-				
-				for (var i in game.selected_objects)
-					game.objects[game.selected_objects[i]].orderAttack(target);
+				this._actAttack(pos);
 				game.toggleActionState(ACTION_STATE_ATTACK);
 				break;
 		}
+	},
+		
+	_actAttack: function(pos)
+	{
+		var target, unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+
+		if (unitid == -1)
+			target = {type: 'ground', x: pos.x*CELL_SIZE + 12, y: pos.y*CELL_SIZE + 12};
+		else
+			target = {type: 'object', objid: unitid};
+
+		for (var i in game.selected_objects)
+			game.objects[game.selected_objects[i]].orderAttack(target);
 	},
 		
 	_getSelectionSize: function()
@@ -407,5 +425,19 @@ var MousePointer = {
 	loadResources: function()
 	{
 		game.resources.addImage('cursors', 'images/cursors.png');
+	},
+		
+	_checkAttackAbility: function(objid)
+	{
+		if (game.selected_info.can_attack_ground)
+		{
+			if ((objid == -1) || game.objects[objid].is_building || (game.objects[objid]._proto.move_mode != MOVE_MODE_FLY))
+				return true;
+		}
+		
+		if (game.selected_info.can_attack_fly && (objid != -1) && !game.objects[objid].is_building && (game.objects[objid]._proto.move_mode == MOVE_MODE_FLY))
+			return true;
+		
+		return false;
 	}
 };
