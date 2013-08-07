@@ -1,9 +1,10 @@
 var ProducingQueue = {
 	_queue: {},
 		
+	//@todo Separate functionality by players
 	addProduction: function(obj) 
 	{
-		if (!obj.enabled)
+		if (!obj.enabled[PLAYER_HUMAN])
 		{
 			game.resources.play('cant_build');
 			return;

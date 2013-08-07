@@ -68,7 +68,7 @@ TaelonPowerBuilding.build_time = 20;
 TaelonPowerBuilding.sell_cost = 1000;
 TaelonPowerBuilding.sell_time = 10;
 TaelonPowerBuilding.health_max = 1450;
-TaelonPowerBuilding.enabled = true;
+TaelonPowerBuilding.enabled = Array.factory(PLAYERS_COUNT, true);
 TaelonPowerBuilding.can_build = true;
 TaelonPowerBuilding.crater = 1;
 

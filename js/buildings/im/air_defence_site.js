@@ -15,7 +15,6 @@ AirDefenceSiteBuilding.sell_cost = 500;
 AirDefenceSiteBuilding.sell_time = 10;
 AirDefenceSiteBuilding.health_max = 720;
 AirDefenceSiteBuilding.energy = 50;
-AirDefenceSiteBuilding.enabled = false;
 AirDefenceSiteBuilding.can_build = true;
 AirDefenceSiteBuilding.crater = 1;
 AirDefenceSiteBuilding.weapon = 'IMPFixedGroundToAirLaser';

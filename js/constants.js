@@ -31,6 +31,7 @@ var CELL_TYPE_WATER = 2;
 var CELL_TYPE_NOWALK = 3;
 var CELL_TYPE_BUILDING = 4;
 
+var PLAYERS_COUNT = 3;
 var PLAYER_NEUTRAL = 0;
 var PLAYER_HUMAN = 1;
 var PLAYER_COMPUTER1 = 2;
@@ -110,3 +111,15 @@ Math.calcFrameByAngle = function(angle, rotation_number)
 	angle = parseInt(360 - angle + 360/(rotation_number*2)) % 360;
 	return parseInt(angle / (360/rotation_number));
 };
+
+Array.factory = function(number, def_value)
+{
+	var i, arr = [];
+	
+	if (typeof def_value == 'undefined')
+		def_value = 0;
+	
+	for (i = 0; i < number; ++i)
+		arr[i] = def_value;
+	return arr;
+}

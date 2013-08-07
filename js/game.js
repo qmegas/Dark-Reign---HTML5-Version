@@ -721,9 +721,19 @@ function Game()
 		return null;
 	};
 	
+	/**
+	 * @param AbstractBuilding object_type
+	 * @param int player Player ID
+	 * @param int x
+	 * @param int y
+	 * @returns AbstractBuilding
+	 */
 	this.findNearestInstance = function(object_type, player, x, y)
 	{
 		var len = 99999, obj = null, i, tmp_path, cell;
+		
+		if (object_type.count[player] == 0)
+			return null;
 		
 		for (i in this.objects)
 		{

@@ -16,7 +16,7 @@ HeadquarterBuilding.sell_time = 7;
 HeadquarterBuilding.health_max = 1440;
 
 HeadquarterBuilding.energy = 100;
-HeadquarterBuilding.enabled = true;
+HeadquarterBuilding.enabled = Array.factory(PLAYERS_COUNT, true);
 HeadquarterBuilding.can_build = true;
 HeadquarterBuilding.crater = 4;
 

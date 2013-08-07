@@ -88,7 +88,7 @@ WaterLaunchPadBuilding.sell_cost = 1250;
 WaterLaunchPadBuilding.sell_time = 15;
 WaterLaunchPadBuilding.health_max = 1300;
 WaterLaunchPadBuilding.energy = 100;
-WaterLaunchPadBuilding.enabled = true;
+WaterLaunchPadBuilding.enabled = Array.factory(PLAYERS_COUNT, true);
 WaterLaunchPadBuilding.can_build = true;
 WaterLaunchPadBuilding.crater = 1;
 

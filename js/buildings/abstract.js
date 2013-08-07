@@ -98,7 +98,7 @@ function AbstractBuilding()
 				game.resources.playOnPosition(this._proto.death_sound, false, this.position, true);
 			
 			this._removingRecalc(this._proto);
-			InterfaceConstructManager.recalcUnitAvailability();
+			InterfaceConstructManager.recalcUnitAvailability(this.player);
 			
 			game.kill_objects.push(this.uid);
 		}
@@ -205,7 +205,7 @@ function AbstractBuilding()
 				top_y -= 15;
 			}
 			
-			if (this._proto.upgradable && this._proto.can_upgrade_now)
+			if (this._proto.upgradable && this._proto.can_upgrade_now[this.player])
 			{
 				var up_top_y = this.position.y + CELL_SIZE*this._proto.cell_size.y - 8.5 - game.viewport_y;;
 				game.fontDraw.drawOnCanvas(
@@ -505,7 +505,7 @@ function AbstractBuilding()
 	
 	this._removingRecalc = function(obj_proto)
 	{
-		obj_proto.count--;
+		obj_proto.count[this.player]--;
 		game.players[this.player].energyAddCurrent(-1*obj_proto.energy);
 		
 		if (obj_proto.upgrade_from !== null)
@@ -521,7 +521,7 @@ function AbstractBuilding()
 	
 	this.isUpgradePossible = function()
 	{
-		return (this._proto.upgradable && this._proto.can_upgrade_now && this.state==BUILDING_STATE_NORMAL);
+		return (this._proto.upgradable && this._proto.can_upgrade_now[this.player] && this.state==BUILDING_STATE_NORMAL);
 	};
 	
 	this.isHuman = function()
@@ -681,14 +681,14 @@ function AbstractBuilding()
 	
 	this.onConstructed = function() 
 	{
-		this._proto.count++;
+		this._proto.count[this.player]++;
 			
 		if (this.state == BUILDING_STATE_CONSTRUCTION)
 			InterfaceSoundQueue.addSound('construction_complete');
 		if (this.state == BUILDING_STATE_UPGRADING)
 			this.health = this._proto.health_max;
 		
-		InterfaceConstructManager.recalcUnitAvailability();
+		InterfaceConstructManager.recalcUnitAvailability(this.player);
 
 		game.players[this.player].energyAddCurrent(this._proto.energy);
 		this.state = BUILDING_STATE_NORMAL;
@@ -707,7 +707,7 @@ function AbstractBuilding()
 		var cell = this.getCell();
 			
 		this._removingRecalc(this._proto);
-		InterfaceConstructManager.recalcUnitAvailability();
+		InterfaceConstructManager.recalcUnitAvailability(this.player);
 
 		game.players[this.player].addMoney(this._proto.sell_cost);
 
@@ -814,7 +814,7 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 	if (!game.players[PLAYER_HUMAN].haveEnoughMoney(obj.cost))
 		return false;
 	
-	if (!obj.enabled)
+	if (!obj.enabled[PLAYER_HUMAN])
 		return false;
 	
 	if (obj.is_bridge)
@@ -909,9 +909,9 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 	obj.sell_time = 0;  //config_speed / 1.5
 	obj.health_max = 100;
 	obj.energy = 0;
-	obj.enabled = false;
+	obj.enabled = Array.factory(PLAYERS_COUNT, false);
 	obj.can_build = false;
-	obj.count = 0;
+	obj.count = Array.factory(PLAYERS_COUNT, 0);
 	obj.is_bridge = false;
 	obj.shield_type = 'BuildingArmour';
 	obj.crater = -1;
@@ -942,7 +942,7 @@ AbstractBuilding.setBuildingCommonOptions = function(obj)
 
 	obj.upgradable = false;
 	obj.upgrade_from = null;
-	obj.can_upgrade_now = false;
+	obj.can_upgrade_now = Array.factory(PLAYERS_COUNT, false);
 	obj.upgrade_to = null;
 	
 	obj.loadResources = function(){

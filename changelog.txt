@@ -2,8 +2,11 @@ Build 43
 - Fly units can't "stand" above buildings structures
 - Show attack cursor when mouse placed on enemy unit
 - Tactical AI: Attack enemy unit when it moved inside seeing range
+- Tactical AI: Damage tolerance now works
+- Tactical AI: basic actions when unit under attack
 - Bugfix: weapon location fix when unit teleported
 - Bugfix: bridge construction fixed
+- Some code refactoring and optimizations
 
 Build 42 (28.06.2013)
 - Bugfix: Fog of war fix during unit teleport

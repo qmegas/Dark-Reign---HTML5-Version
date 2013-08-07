@@ -15,7 +15,6 @@ FieldHospitalBuilding.sell_cost = 250;
 FieldHospitalBuilding.sell_time = 5;
 FieldHospitalBuilding.health_max = 720;
 FieldHospitalBuilding.energy = 100;
-FieldHospitalBuilding.enabled = false;
 FieldHospitalBuilding.can_build = true;
 FieldHospitalBuilding.crater = 2;
 FieldHospitalBuilding.is_healer = true;

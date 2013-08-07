@@ -53,10 +53,43 @@ var TacticalAI = {
 		if (this._flyUnderBuilding(unit))
 			return;
 		
-		//@todo Go fixing
+		if (this._goFixing(unit))
+			return;
 		
 		if (this._findEnemy(unit))
 			return;
+	},
+		
+	_goFixing: function(unit)
+	{
+		if (unit.tactic.tolerance == TACTIC_HIGH)
+			return false;
+		
+		if (unit.health >= unit._proto.health_max)
+			return false;
+		
+		if (((unit.tactic.tolerance == TACTIC_MED) && (unit.health < unit._proto.health_max*0.33)) || 
+			(unit.tactic.tolerance == TACTIC_LOW) && (unit.health < unit._proto.health_max*0.66))
+		{
+			var obj, pos = unit.getCell();
+			if (unit._proto.is_human)
+			{
+				obj = game.findNearestInstance(FieldHospitalBuilding, unit.player, pos.x, pos.y);
+				if (obj)
+					unit.orderHeal(obj);
+			}
+			else
+			{
+				obj = game.findNearestInstance(RepairStationBuilding, unit.player, pos.x, pos.y);
+				if (obj)
+					unit.orderFix(obj);
+			}
+			
+			if (obj)
+				return true;
+		}
+		
+		return false;
 	},
 		
 	_underAttack: function(unit, params)
@@ -70,7 +103,61 @@ var TacticalAI = {
 		if (!game.objects[params.attacker])
 			return;
 		
-		//@todo Run away or run toward
+		if (unit.tactic.independance == TACTIC_LOW)
+			return;
+		
+		var pos1 = unit.getCell(), pos2 = game.objects[params.attacker].getCell(), alpha, distance, new_x, new_y;
+		
+		if (unit.isCanAttackTarget({type: 'object', objid: params.attacker}))
+		{
+			//Run toward
+			alpha = Math.atan2(pos2.x - pos1.x, pos2.y - pos1.y);
+			distance = unit._proto.seeing_range / 2;
+		}
+		else
+		{
+			//Run away in oposite direction
+			alpha = Math.atan2(pos2.x - pos1.x, pos2.y - pos1.y) + Math.PI;
+			distance = unit._proto.seeing_range;
+		}
+		
+		new_x = Math.round(Math.sin(alpha)*distance + pos1.x);
+		new_y = Math.round(Math.cos(alpha)*distance + pos1.y);
+		
+		if (MapCell.isCorrectCord(new_x, new_y))
+			unit.orderMove(new_x, new_y);
+		
+		//Or run to random cell
+		if (unit.move_path.length == 0)
+			this._runToRandom(unit);
+	},
+		
+	_runToRandom: function(unit)
+	{
+		var try_cnt = 5, pos = unit.getCell();
+		
+		while (try_cnt)
+		{
+			--try_cnt;
+			
+			var half_range = unit._proto.seeing_range / 2, 
+				alpha = Math.random()*Math.PI*2,
+				distance = Math.random()*half_range + half_range,
+				new_x = Math.round(Math.sin(alpha)*distance + pos.x),
+				new_y = Math.round(Math.cos(alpha)*distance + pos.y);
+			
+			if (!MapCell.isCorrectCord(new_x, new_y))
+				continue;
+			
+			unit.orderMove(new_x, new_y);
+			
+			if (unit.move_path.length == 0)
+				continue;
+			
+			//@todo Add return point
+			
+			break;
+		}
 	},
 		
 	_findEnemy: function(unit)

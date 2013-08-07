@@ -16,6 +16,7 @@ var InterfaceMusicPlayer = {
 		});
 		
 		this.setTrack(0);
+		this.setVolume(GAMECONFIG.defaultMusicVolume);
 	},
 		
 	setVolume: function(volume)

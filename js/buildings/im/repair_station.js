@@ -22,7 +22,6 @@ RepairStationBuilding.sell_cost = 400;
 RepairStationBuilding.sell_time = 8;
 RepairStationBuilding.health_max = 720;
 RepairStationBuilding.energy = 100;
-RepairStationBuilding.enabled = false;
 RepairStationBuilding.can_build = true;
 RepairStationBuilding.crater = 3;
 RepairStationBuilding.is_fixer = true;

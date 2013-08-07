@@ -72,21 +72,24 @@ var InterfaceConstructManager = {
 		}
 	},
 	
-	recalcUnitAvailability: function()
+	recalcUnitAvailability: function(player_id)
 	{
-		var units = this._checkArrayAvailability(this.available_units);
-		var buildings = this._checkArrayAvailability(this.available_buildings);
+		var units = this._checkArrayAvailability(this.available_units, player_id);
+		var buildings = this._checkArrayAvailability(this.available_buildings, player_id);
 		
-		if (units.is_new)
-			InterfaceSoundQueue.addSound('new_units_available');
+		this._checkUpgrade(player_id);
 		
-		this._checkUpgrade();
-		
-		if (units.is_changed || buildings.is_changed)
-			this._drawCells();
+		if (player_id == PLAYER_HUMAN)
+		{
+			if (units.is_new)
+				InterfaceSoundQueue.addSound('new_units_available');
+			
+			if (units.is_changed || buildings.is_changed)
+				this._drawCells();
+		}
 	},
 	
-	_checkUpgrade: function()
+	_checkUpgrade: function(player_id)
 	{
 		var i, j, obj, new_state, new_upgrade = false;
 		
@@ -98,26 +101,26 @@ var InterfaceConstructManager = {
 				obj = this.all_buildings[i].upgrade_to;
 				
 				for (j=0; j<obj.require_building.length; ++j)
-					if (obj.require_building[j].count == 0)
+					if (obj.require_building[j].count[player_id] == 0)
 					{
 						new_state = false;
 						break;
 					}
 					
-				if (this.all_buildings[i].can_upgrade_now != new_state)
+				if (this.all_buildings[i].can_upgrade_now[player_id] != new_state)
 				{
-					this.all_buildings[i].can_upgrade_now = new_state;
+					this.all_buildings[i].can_upgrade_now[player_id] = new_state;
 					if (new_state)
 						new_upgrade = true;
 				}
 			}
 		}
 		
-		if (new_upgrade)
+		if (new_upgrade && (player_id == PLAYER_HUMAN))
 			InterfaceSoundQueue.addSound('upgrade_available');
 	},
 	
-	_checkArrayAvailability: function(arr)
+	_checkArrayAvailability: function(arr, player_id)
 	{
 		var i, j, obj, have_new = false, have_changes = false, cur_enabled;
 		
@@ -127,18 +130,18 @@ var InterfaceConstructManager = {
 			cur_enabled = true;
 				
 			for (j=0; j<obj.require_building.length; ++j)
-				if (obj.require_building[j].count == 0)
+				if (obj.require_building[j].count[player_id] == 0)
 				{
 					cur_enabled = false;
 					break;
 				}
 				
-			if (obj.enabled != cur_enabled)
+			if (obj.enabled[player_id] != cur_enabled)
 			{
-				if (!obj.enabled)
+				if (!obj.enabled[player_id])
 					have_new = true;
 				
-				obj.enabled = cur_enabled;
+				obj.enabled[player_id] = cur_enabled;
 				have_changes = true;
 			}
 		}
@@ -207,7 +210,7 @@ var InterfaceConstructManager = {
 						this._drawCell(
 							i-offset, 
 							'images/units/' + this.available_units[i].resource_key + '/box.png', 
-							this.available_units[i].enabled,
+							this.available_units[i].enabled[PLAYER_HUMAN],
 							!AbstractBuilding.canSelectedProduce(this.available_units[i])
 						);
 						if (this.available_units[i].producing_count > 0)
@@ -221,7 +224,7 @@ var InterfaceConstructManager = {
 						this._drawCell(
 							i-offset, 
 							'images/buildings/' + this.available_buildings[i].res_key + '/box.png', 
-							this.available_buildings[i].enabled,
+							this.available_buildings[i].enabled[PLAYER_HUMAN],
 							false
 						);
 					break;
@@ -265,7 +268,7 @@ var InterfaceConstructManager = {
 		{
 			if (typeof this.available_buildings[i] == 'undefined')
 				return;
-			if (!this.available_buildings[i].enabled)
+			if (!this.available_buildings[i].enabled[PLAYER_HUMAN])
 			{
 				game.resources.play('cant_build');
 				return;
@@ -367,11 +370,11 @@ var InterfaceConstructManager = {
 		//Draw required
 		var texts = [], max_text_size = 0;
 		text_size = 0;
-		if (obj.enabled)
+		if (obj.enabled[PLAYER_HUMAN])
 			return;
 		
 		for (i in obj.require_building)
-			if (obj.require_building[i].count == 0)
+			if (obj.require_building[i].count[PLAYER_HUMAN] == 0)
 				texts.push(obj.require_building[i].obj_name);
 		if (texts.length == 0)
 			return;
