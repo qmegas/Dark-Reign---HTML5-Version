@@ -58,6 +58,56 @@ var TacticalAI = {
 		
 		if (this._findEnemy(unit))
 			return;
+		
+		if (this._haveOrder(unit))
+			return;
+		
+		if (this._returnPosition(unit))
+			return;
+	},
+		
+	_haveOrder: function(unit)
+	{
+		if (unit.tactic.order == TACTIC_ORDER_DEFAULT)
+			return false;
+		
+		var try_cnt = 5, new_x, new_y;
+		
+		while (try_cnt)
+		{
+			--try_cnt;
+			
+			new_x = parseInt(Math.random() * (game.level.size.x - 1));
+			new_y = parseInt(Math.random() * (game.level.size.y - 1));
+			
+			if (!MapCell.canStepInto(new_x, new_y, unit._proto.move_mode))
+				continue;
+			
+			unit.orderMove(new_x, new_y);
+			
+			if (unit.move_path.length == 0)
+				continue;
+			
+			break;
+		}
+		return true;
+	},
+		
+	_returnPosition: function(unit)
+	{
+		if (!unit.action.return_position)
+			return false;
+		
+		var pos = unit.getCell();
+		
+		if (pos.x == unit.action.return_position.x && pos.y == unit.action.return_position.y)
+		{
+			delete unit.action.return_position;
+			return false;
+		}
+		
+		unit.orderMove(unit.action.return_position.x, unit.action.return_position.y);
+		return true;
 	},
 		
 	_goFixing: function(unit)
@@ -130,6 +180,9 @@ var TacticalAI = {
 		//Or run to random cell
 		if (unit.move_path.length == 0)
 			this._runToRandom(unit);
+		
+		//Return to start position
+		unit.action.return_position = cloneObj(pos1);
 	},
 		
 	_runToRandom: function(unit)
@@ -154,8 +207,6 @@ var TacticalAI = {
 			if (unit.move_path.length == 0)
 				continue;
 			
-			//@todo Add return point
-			
 			break;
 		}
 	},
@@ -163,6 +214,9 @@ var TacticalAI = {
 	_findEnemy: function(unit)
 	{
 		if (!unit._is_have_weapon)
+			return false;
+		
+		if (unit.tactic.order == TACTIC_ORDER_SCOUT)
 			return false;
 		
 		var pos = unit.getCell(), attack_unit = null, current_player = game.players[unit.player];

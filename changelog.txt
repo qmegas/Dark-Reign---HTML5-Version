@@ -4,8 +4,10 @@ Build 43
 - Tactical AI: Attack enemy unit when it moved inside seeing range
 - Tactical AI: Damage tolerance now works
 - Tactical AI: basic actions when unit under attack
+- Tactical AI: Orders implemented: scout & harass
 - Bugfix: weapon location fix when unit teleported
 - Bugfix: bridge construction fixed
+- Bugfix: fixed freighter auto-harvesting
 - Some code refactoring and optimizations
 
 Build 42 (28.06.2013)

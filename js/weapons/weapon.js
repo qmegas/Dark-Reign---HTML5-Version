@@ -94,7 +94,7 @@ function WeaponHolder(config_name)
 				if (unit.is_building)
 					unit.state = BUILDING_STATE_NORMAL;
 				else
-					unit.state = 'STAND';
+					unit.state = UNIT_STATE_STAND;
 				target = null;
 				return false;
 			}

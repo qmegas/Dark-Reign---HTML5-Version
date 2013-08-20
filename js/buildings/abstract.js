@@ -795,6 +795,7 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 		new_obj.state = BUILDING_STATE_NORMAL;
 		new_obj.health = obj.health_max;
 		new_obj.onConstructedCustom();
+		obj.count[player]++;
 	}
 	else
 	{
