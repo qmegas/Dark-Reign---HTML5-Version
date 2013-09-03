@@ -30,7 +30,7 @@ MapCell.getAllUserIds = function(cell)
 
 MapCell.getIdByType = function(x, y, is_fly)
 {
-	var cell = game.level.map_cells[x][y];
+	var cell = CurrentLevel.map_cells[x][y];
 	
 	if (is_fly)
 		return cell.fly_unit;
@@ -39,7 +39,7 @@ MapCell.getIdByType = function(x, y, is_fly)
 
 MapCell.getIdsByLayer = function(x, y, layer)
 {
-	var cell = game.level.map_cells[x][y], ids = [];
+	var cell = CurrentLevel.map_cells[x][y], ids = [];
 	
 	if (layer == MOVE_MODE_FLY)
 	{
@@ -58,7 +58,7 @@ MapCell.getIdsByLayer = function(x, y, layer)
 
 MapCell.canStepInto = function(x, y, move_mode)
 {
-	var cell = game.level.map_cells[x][y];
+	var cell = CurrentLevel.map_cells[x][y];
 	
 	if (cell.type==CELL_TYPE_WATER && move_mode==MOVE_MODE_GROUND)
 		return false;
@@ -70,12 +70,12 @@ MapCell.canStepInto = function(x, y, move_mode)
 
 MapCell.isCorrectX = function(x)
 {
-	return !(x<0 || x>=game.level.size.x-1);
+	return !(x<0 || x>=CurrentLevel.size.x-1);
 };
 
 MapCell.isCorrectY = function(y)
 {
-	return !(y<0 || y>=game.level.size.y-1);
+	return !(y<0 || y>=CurrentLevel.size.y-1);
 };
 
 MapCell.isCorrectCord = function(x, y)
@@ -103,5 +103,5 @@ MapCell.cellToPixel = function(cell_pos)
 
 MapCell.isFogged = function(pos)
 {
-	return (game.level.map_cells[pos.x][pos.y].fog == 0);
+	return (CurrentLevel.map_cells[pos.x][pos.y].fog == 0);
 };

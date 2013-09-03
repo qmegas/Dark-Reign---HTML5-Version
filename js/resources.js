@@ -69,6 +69,9 @@ function ResourseLoader()
 		if (self.isSet(skey))
 			return;
 		
+		if (!image_path)
+			debugger;
+		
 		var img = new Image();
 		img.src = image_path;
 		self.items[skey] = img;
@@ -177,5 +180,14 @@ function ResourseLoader()
 			return;
 		
 		self.play(key, volume, multiple);
+	};
+	
+	this.loadScript = function(file, callback)
+	{
+		$.get(file, function(js){
+			eval(js);
+			if (callback)
+				callback();
+		});
 	};
 }

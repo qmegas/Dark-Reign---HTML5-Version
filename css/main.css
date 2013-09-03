@@ -276,6 +276,28 @@ body {
 	top: 114px;
 	left: 195px;
 }
+.shell-menu #objective .objective_content {
+	position: absolute;
+	width: 417px;
+	height: 255px;
+	left: 105px;
+	top: 155px;
+	overflow: hidden;
+}
+.shell-menu #objective .scroll.up {
+	left: 524px;
+	top: 153px;
+}
+.shell-menu #objective .scroll.down {
+	left: 524px;
+	top: 399px;
+}
+.shell-menu #objective .scroll.slider {
+	left: 524px;
+	top: 169px;
+	display: none;
+}
+
 .shell-menu #launch {
 	height: 480px;
 	display: none;
@@ -323,6 +345,27 @@ body {
 	background: no-repeat center 0;
 	margin-top: 12px;
 }
+.shell-menu #launch.fg .launch_objective {
+	position: absolute;
+	width: 259px;
+	height: 337px;
+	left: 23px;
+	top: 20px;
+	overflow: hidden;
+}
+.shell-menu #launch.fg .scroll.up {
+	left: 284px;
+	top: 20px;
+}
+.shell-menu #launch.fg .scroll.down {
+	left: 284px;
+	top: 344px;
+}
+.shell-menu #launch.fg .scroll.slider {
+	left: 284px;
+	top: 36px;
+	display: none;
+}
 .shell-menu #launch.imp .link-launch {
 	width: 97px;
 	height: 61px;
@@ -337,6 +380,27 @@ body {
 	background: no-repeat center 0;
 	margin-top: 23px;
 }
+.shell-menu #launch.imp .launch_objective {
+	position: absolute;
+	width: 231px;
+	height: 293px;
+	left: 357px;
+	top: 150px;
+	overflow: hidden;
+}
+.shell-menu #launch.imp .scroll.up {
+	left: 589px;
+	top: 150px;
+}
+.shell-menu #launch.imp .scroll.down {
+	left: 589px;
+	top: 429px;
+}
+.shell-menu #launch.imp .scroll.slider {
+	left: 589px;
+	top: 166px;
+	display: none;
+}
 .shell-menu #launch .link-launch:hover .text,
 .shell-menu #launch .link-back:hover .text,
 .shell-menu #objective .link-obj:hover .text,
@@ -349,6 +413,7 @@ body {
 .shell-menu .link:active .text {
 	background-position: center -36px;
 }
+
 
 .game {
 	width: 640px;

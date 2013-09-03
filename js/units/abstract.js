@@ -453,13 +453,13 @@ function AbstractUnit(pos_x, pos_y, player)
 		{
 			if (this._proto.move_mode == MOVE_MODE_FLY)
 			{
-				game.level.map_cells[this.move_path[0].x][this.move_path[0].y].fly_unit = this.uid;
-				game.level.map_cells[curr_pos.x][curr_pos.y].fly_unit = -1;
+				CurrentLevel.map_cells[this.move_path[0].x][this.move_path[0].y].fly_unit = this.uid;
+				CurrentLevel.map_cells[curr_pos.x][curr_pos.y].fly_unit = -1;
 			}
 			else
 			{
-				game.level.map_cells[this.move_path[0].x][this.move_path[0].y].ground_unit = this.uid;
-				game.level.map_cells[curr_pos.x][curr_pos.y].ground_unit = -1;
+				CurrentLevel.map_cells[this.move_path[0].x][this.move_path[0].y].ground_unit = this.uid;
+				CurrentLevel.map_cells[curr_pos.x][curr_pos.y].ground_unit = -1;
 			}
 			
 			this.changeFogState(-1);
@@ -473,8 +473,11 @@ function AbstractUnit(pos_x, pos_y, player)
 		if (this.player != PLAYER_HUMAN)
 			return;
 		
+		if (!GAMECONFIG.fog && state<1)
+			return;
+		
 		rangeItterator(this.position_cell.x, this.position_cell.y, this._proto.seeing_range, function(x, y){
-			game.level.map_cells[x][y].fog_new_state += state;
+			CurrentLevel.map_cells[x][y].fog_new_state += state;
 		});
 		
 		InterfaceFogOfWar.need_redraw = true;
@@ -680,21 +683,21 @@ function AbstractUnit(pos_x, pos_y, player)
 		{
 			if (this._proto.move_mode == MOVE_MODE_FLY)
 			{
-				if (game.level.map_cells[cell.x][cell.y].fly_unit == this.uid)
-					game.level.map_cells[cell.x][cell.y].fly_unit = -1;
+				if (CurrentLevel.map_cells[cell.x][cell.y].fly_unit == this.uid)
+					CurrentLevel.map_cells[cell.x][cell.y].fly_unit = -1;
 			}
 			else
 			{
-				if (game.level.map_cells[cell.x][cell.y].ground_unit == this.uid)
-					game.level.map_cells[cell.x][cell.y].ground_unit = -1;
+				if (CurrentLevel.map_cells[cell.x][cell.y].ground_unit == this.uid)
+					CurrentLevel.map_cells[cell.x][cell.y].ground_unit = -1;
 			}
 		}
 		else
 		{
 			if (this._proto.move_mode == MOVE_MODE_FLY)
-				game.level.map_cells[cell.x][cell.y].fly_unit = unitid;
+				CurrentLevel.map_cells[cell.x][cell.y].fly_unit = unitid;
 			else
-				game.level.map_cells[cell.x][cell.y].ground_unit = unitid;
+				CurrentLevel.map_cells[cell.x][cell.y].ground_unit = unitid;
 		}
 	};
 	
@@ -775,7 +778,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			unit = game.objects[this._carry_units[i]];
 			pos = PathFinder.findNearestStandCell(mypos.x, mypos.y);
 			unit.setCell(pos);
-			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
+			CurrentLevel.map_cells[pos.x][pos.y].ground_unit = unit.uid;
 			unit.changeFogState(1);
 		}
 		
@@ -796,7 +799,7 @@ function AbstractUnit(pos_x, pos_y, player)
 			var pos = unit.getCell();
 			game.unselectUnit(unit.uid);
 			unit.changeFogState(-1);
-			game.level.map_cells[pos.x][pos.y].ground_unit = -1;
+			CurrentLevel.map_cells[pos.x][pos.y].ground_unit = -1;
 			unit.position = {x: -100, y: -100};
 			this._carry_units.push(unit.uid);
 			this._carry_spaces--;
@@ -836,7 +839,17 @@ function AbstractUnit(pos_x, pos_y, player)
 		switch (this.action.type)
 		{
 			case '':
-				this.state = UNIT_STATE_STAND;
+				if (this.action.return_position)
+				{
+					var pos = this.getCell();
+		
+					if (pos.x == this.action.return_position.x && pos.y == this.action.return_position.y)
+						delete this.action.return_position;
+					else
+						this.orderMove(this.action.return_position.x, this.action.return_position.y);
+				}
+				else
+					this.state = UNIT_STATE_STAND;
 				break;
 				
 			case 'attack':

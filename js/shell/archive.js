@@ -426,11 +426,7 @@ var ShellArchive = {
 		
 	_drawText: function(text)
 	{
-		var i, lines = 1, $canvas;
-		
-		for (i=0; i<text.length; ++i)
-			if (text.charCodeAt(i) == 10)
-				lines++;
+		var lines = game.getLinesCount(text), $canvas;
 		
 		$canvas = $('<canvas></canvas>').attr({
 			id: 'archive_text',

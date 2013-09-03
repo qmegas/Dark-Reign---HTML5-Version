@@ -6,7 +6,17 @@ var InterfaceFogOfWar = {
 	init: function()
 	{
 		this._fog_ctx = document.getElementById('map_fog').getContext('2d');
-		this._layer_size = {x: CELL_SIZE*game.level.size.x, y: CELL_SIZE*game.level.size.y};
+		this._layer_size = {x: CELL_SIZE*CurrentLevel.size.x, y: CELL_SIZE*CurrentLevel.size.y};
+	},
+		
+	drawShroud: function()
+	{
+		if (!GAMECONFIG.shroud)
+			return;
+		
+		var $element = $('#map_fog');
+		this._fog_ctx.fillStyle = '#000';
+		this._fog_ctx.fillRect(0, 0, $element.attr('width'), $element.attr('height'));
 	},
 		
 	redrawFog: function()
@@ -14,30 +24,30 @@ var InterfaceFogOfWar = {
 		if (!this.need_redraw)
 			return;
 		
-		var x, y, last_x = game.level.size.x - 1, last_y = game.level.size.y - 1;
+		var x, y, last_x = CurrentLevel.size.x - 1, last_y = CurrentLevel.size.y - 1;
 		
 		//Redraw corners
-		this.redrawCell(game.level.map_cells[0][0], -1, -1); //Top-left
-		this.redrawCell(game.level.map_cells[0][last_y-1], -1, last_y); //Bottom-left
-		this.redrawCell(game.level.map_cells[last_x - 1][0], last_x, -1); //Top-right
-		this.redrawCell(game.level.map_cells[last_x - 1][last_y - 1], last_x, last_y); //Bottom-right
+		this.redrawCell(CurrentLevel.map_cells[0][0], -1, -1); //Top-left
+		this.redrawCell(CurrentLevel.map_cells[0][last_y-1], -1, last_y); //Bottom-left
+		this.redrawCell(CurrentLevel.map_cells[last_x - 1][0], last_x, -1); //Top-right
+		this.redrawCell(CurrentLevel.map_cells[last_x - 1][last_y - 1], last_x, last_y); //Bottom-right
 		
 		//Redraw edges
 		for (x = 0; x < last_x; ++x)
 		{
-			this.redrawCell(game.level.map_cells[x][0], x, -1);
-			this.redrawCell(game.level.map_cells[x][last_y - 1], x, last_y);
+			this.redrawCell(CurrentLevel.map_cells[x][0], x, -1);
+			this.redrawCell(CurrentLevel.map_cells[x][last_y - 1], x, last_y);
 		}
 		for (y = 0; y < last_y; ++y)
 		{
-			this.redrawCell(game.level.map_cells[0][y], -1, y);
-			this.redrawCell(game.level.map_cells[last_x - 1][y], last_x, y);
+			this.redrawCell(CurrentLevel.map_cells[0][y], -1, y);
+			this.redrawCell(CurrentLevel.map_cells[last_x - 1][y], last_x, y);
 		}
 		
 		//Other cells
 		for (x = 0; x < last_x; ++x)
 			for (y = 0; y < last_y; ++y)
-				this.redrawCell(game.level.map_cells[x][y], x, y);
+				this.redrawCell(CurrentLevel.map_cells[x][y], x, y);
 		
 		this.need_redraw = false;
 	},
@@ -58,7 +68,10 @@ var InterfaceFogOfWar = {
 			}
 
 			if (MapCell.isCorrectCord(x, y))
-				game.level.map_cells[x][y].fog = new_value;
+			{
+				CurrentLevel.map_cells[x][y].shroud = 0;
+				CurrentLevel.map_cells[x][y].fog = new_value;
+			}
 		}
 	}
 };

@@ -1,7 +1,5 @@
 function Game()
 {
-	this.level = {};
-	
 	this.viewport_x = 0;
 	this.viewport_y = 0;
 	this.viewport_move_x = 0;
@@ -58,10 +56,10 @@ function Game()
 			this.viewport_x = 0;
 		if (this.viewport_y < 0)
 			this.viewport_y = 0;
-		if (this.viewport_x > this.level.max_movement.x)
-			this.viewport_x = this.level.max_movement.x;
-		if (this.viewport_y > this.level.max_movement.y)
-			this.viewport_y = this.level.max_movement.y;
+		if (this.viewport_x > CurrentLevel.max_movement.x)
+			this.viewport_x = CurrentLevel.max_movement.x;
+		if (this.viewport_y > CurrentLevel.max_movement.y)
+			this.viewport_y = CurrentLevel.max_movement.y;
 		
 		$('#map_view, #map_fog').css({
 			left: -this.viewport_x,
@@ -70,8 +68,8 @@ function Game()
 		
 		InterfaceMinimap.drawViewport();
 	};
-
-	this.init = function(level, init_finish_callback)
+	
+	this.init = function(init_finish_callback)
 	{
 		if (!BrowserCheck.check())
 		{
@@ -79,37 +77,30 @@ function Game()
 			return;
 		}
 		
+		var level = 'fg1'; //window.location.hash || 'fg1';
+		this.resources.loadScript('/js/levels/' + level + '/map.js', function(){
+			game.initLevel(init_finish_callback);
+		});
+	};
+
+	this.initLevel = function(init_finish_callback)
+	{
 		this.viewport_ctx = $('#viewport').get(0).getContext('2d');
 		
-		this.level = level;
-		this.level.max_movement.x = CELL_SIZE*this.level.size.x-VIEWPORT_SIZE;
-		this.level.max_movement.y = CELL_SIZE*this.level.size.y-VIEWPORT_SIZE;
+		var levelBuilder = new LevelBuilder(CurrentLevel);
+		levelBuilder.build();
 		
 		$('#minimap_viewport, #minimap_objects')
-			.attr('width', this.level.minimap.x)
-			.attr('height', this.level.minimap.y);
-			
-		//Init map matrix
-		for (var x=0; x<level.size.x; ++x)
-			for (var y=0; y<level.size.y; ++y)
-				this.level.map_cells[x][y] = {
-					original_type: this.level.map_cells[x][y], 
-					type: this.level.map_cells[x][y], 
-					ground_unit: -1,
-					fly_unit: -1,
-					building: -1,
-					map_element: -1,
-					fog: 1,
-					fog_new_state: 0
-				};
+			.attr('width', CurrentLevel.minimap.x)
+			.attr('height', CurrentLevel.minimap.y);
 		
 		DamageTable.init();
 		
 		//Init units
-		this.level.getInitUnits();
+		CurrentLevel.getInitUnits();
 		
 		//Interface init
-		InterfaceConstructManager.init(this.level.getAvailableUnits(), this.level.getAvailableBuildings());
+		InterfaceConstructManager.init(CurrentLevel.getAvailableUnits(), CurrentLevel.getAvailableBuildings());
 		InterfaceMoneyDraw.init();
 		InterfaceEnergyWaterDraw.init();
 		InterfaceMinimap.init();
@@ -118,6 +109,7 @@ function Game()
 		
 		//Preloading images
 		InterfaceGUI.preloadImages();
+		levelBuilder.loadMapElements();
 		this._loadGameResources();
 		this.resources.onLoaded = function(loaded, total){
 			var progress = parseInt(500/total*loaded);
@@ -125,10 +117,11 @@ function Game()
 		};
 		this.resources.onComplete = function(){
 			game.fontDraw = new FontDraw('font', 14);
-			game.moveViewport(game.level.start_positions[0].x - 10, game.level.start_positions[0].y - 10, false);
+			game.moveViewport(CurrentLevel.start_positions[0].x - 10, CurrentLevel.start_positions[0].y - 10, false);
 			game.players[PLAYER_HUMAN].addMoney(15000); //Should add money to all players
 			InterfaceConstructManager.drawUnits();
-			game.level.generateMap();
+			levelBuilder.generateMap();
+			InterfaceFogOfWar.drawShroud();
 			game._resetSelectionInfo();
 			InterfaceEnergyWaterDraw.drawAll();
 			InterfaceMinimap.switchState();
@@ -218,25 +211,25 @@ function Game()
 		for (var y=0; y<21; ++y)
 			for (var x=0; x<21; ++x)
 			{
-				if (this.level.map_cells[top_x+x] && this.level.map_cells[top_x+x][top_y+y])
+				if (CurrentLevel.map_cells[top_x+x] && CurrentLevel.map_cells[top_x+x][top_y+y])
 				{
 					//Preventing duplicate entries (for example building can be placed in few cells)
 					
-					if (this.level.map_cells[top_x+x][top_y+y].map_element != -1)
-						mapelem_onscreen[this.level.map_cells[top_x+x][top_y+y].map_element] = 1;
-					if (this.level.map_cells[top_x+x][top_y+y].building != -1)
-						onscreen[this.level.map_cells[top_x+x][top_y+y].building] = 1;
+					if (CurrentLevel.map_cells[top_x+x][top_y+y].map_element != -1)
+						mapelem_onscreen[CurrentLevel.map_cells[top_x+x][top_y+y].map_element] = 1;
+					if (CurrentLevel.map_cells[top_x+x][top_y+y].building != -1)
+						onscreen[CurrentLevel.map_cells[top_x+x][top_y+y].building] = 1;
 					
-					if (this.level.map_cells[top_x+x][top_y+y].fog == 0)
+					if (CurrentLevel.map_cells[top_x+x][top_y+y].fog == 0)
 						continue;
 					
-					if (this.level.map_cells[top_x+x][top_y+y].ground_unit != -1)
+					if (CurrentLevel.map_cells[top_x+x][top_y+y].ground_unit != -1)
 					{
-						onscreen[this.level.map_cells[top_x+x][top_y+y].ground_unit] = 1;
-						//console.log('Unit %s on position %s:%s', this.level.map_cells[top_x+x][top_y+y].ground_unit, top_x+x, top_y+y);
+						onscreen[CurrentLevel.map_cells[top_x+x][top_y+y].ground_unit] = 1;
+						//console.log('Unit %s on position %s:%s', CurrentLevel.map_cells[top_x+x][top_y+y].ground_unit, top_x+x, top_y+y);
 					}
-					if (this.level.map_cells[top_x+x][top_y+y].fly_unit != -1)
-						onscreen[this.level.map_cells[top_x+x][top_y+y].fly_unit] = 1;
+					if (CurrentLevel.map_cells[top_x+x][top_y+y].fly_unit != -1)
+						onscreen[CurrentLevel.map_cells[top_x+x][top_y+y].fly_unit] = 1;
 				}
 			}
 			
@@ -264,8 +257,8 @@ function Game()
 		//Round 4: On mouse selection
 		var mouse_pos = MousePointer.getCellPosition();
 		unitid = -1;
-		if (MapCell.isCorrectCord(mouse_pos.x, mouse_pos.y) && game.level.map_cells[mouse_pos.x][mouse_pos.y].fog>0)
-			unitid = MapCell.getSingleUserId(this.level.map_cells[mouse_pos.x][mouse_pos.y]);
+		if (MapCell.isCorrectCord(mouse_pos.x, mouse_pos.y) && CurrentLevel.map_cells[mouse_pos.x][mouse_pos.y].fog>0)
+			unitid = MapCell.getSingleUserId(CurrentLevel.map_cells[mouse_pos.x][mouse_pos.y]);
 		if (unitid != -1) // && !this.objects[unitid].is_selected)
 			this.objects[unitid].drawSelection(true);
 		
@@ -279,15 +272,15 @@ function Game()
 			var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24);
 			for (var x=0; x<20; ++x)
 			{
-				if (this.level.map_cells[start_x+x] === undefined)
+				if (CurrentLevel.map_cells[start_x+x] === undefined)
 					continue;
 				
 				for (var y=0; y<20; ++y)
 				{
-					if (this.level.map_cells[start_x+x][start_y+y] === undefined)
+					if (CurrentLevel.map_cells[start_x+x][start_y+y] === undefined)
 						continue;
 					
-					if (MapCell.getSingleUserId(this.level.map_cells[start_x+x][start_y+y]) != -1)
+					if (MapCell.getSingleUserId(CurrentLevel.map_cells[start_x+x][start_y+y]) != -1)
 						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x + 12, (start_y+y)*24-this.viewport_y + 12, 24, 24);
 				}
 			}
@@ -299,16 +292,16 @@ function Game()
 			var start_x = parseInt((this.viewport_x-12)/24), start_y = parseInt((this.viewport_y-12)/24), skip;
 			for (var x=0; x<20; ++x)
 			{
-				if (this.level.map_cells[start_x+x] === undefined)
+				if (CurrentLevel.map_cells[start_x+x] === undefined)
 					continue;
 				
 				for (var y=0; y<20; ++y)
 				{
-					if (this.level.map_cells[start_x+x][start_y+y] === undefined)
+					if (CurrentLevel.map_cells[start_x+x][start_y+y] === undefined)
 						continue;
 					
 					skip = false;
-					switch (this.level.map_cells[start_x+x][start_y+y].type)
+					switch (CurrentLevel.map_cells[start_x+x][start_y+y].type)
 					{
 						case CELL_TYPE_EMPTY:
 							skip = true;
@@ -389,8 +382,8 @@ function Game()
 		if (!this.minimap_navigation)
 			return;
 		
-		var realx = (x-this.level.minimap.rect_x/2),
-			realy = (y-this.level.minimap.rect_y/2);
+		var realx = (x-CurrentLevel.minimap.rect_x/2),
+			realy = (y-CurrentLevel.minimap.rect_y/2);
 			
 		this.moveViewport(realx, realy, false);
 	};
@@ -401,7 +394,7 @@ function Game()
 		
 		if (button == 'left')
 		{
-			var cunit = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(this.level.map_cells[pos.x][pos.y]);
+			var cunit = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(CurrentLevel.map_cells[pos.x][pos.y]);
 			if ((cunit !== -1) && this.objects[cunit].canBeSelected())
 				this.regionSelect(pos.x, pos.y, pos.x, pos.y);
 			
@@ -443,7 +436,7 @@ function Game()
 		for (x=x1; x<=x2; ++x)
 			for (y=y1; y<=y2; ++y)
 			{
-				cur_unit = MapCell.getSingleUserId(this.level.map_cells[x][y]);
+				cur_unit = MapCell.getSingleUserId(CurrentLevel.map_cells[x][y]);
 				if ((cur_unit !== -1) && this.objects[cur_unit].canBeSelected())
 				{
 					//Do not select buildings on multiselect
@@ -531,9 +524,6 @@ function Game()
 	{
 		//Mouse
 		MousePointer.loadResources();
-		
-		//Map objects
-		this.level.loadMapElements();
 		
 		//Common resources
 		this.resources.addImage('fogofwar', 'images/fog.png');
@@ -859,7 +849,7 @@ $(function(){
 	img.src = 'images/interface/load-screen.png';
 	img.onload = function(){
 		game = new Game();
-		game.init(new Level1(), function(){
+		game.init(function(){
 			game.draw();
 			setInterval(function(){game.run();}, 1000/RUNS_PER_SECOND);
 		});

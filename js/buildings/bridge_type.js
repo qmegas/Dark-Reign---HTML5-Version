@@ -36,7 +36,7 @@ var BridgeTypeBuilding = {
 					if (!MapCell.isCorrectY(yyy))
 						continue;
 
-					var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
+					var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
 					if ((cell.type!=CELL_TYPE_EMPTY && cell.type!=CELL_TYPE_WATER) || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
 					{
 						MousePointer.mouse_ctx.drawImage(
@@ -92,7 +92,7 @@ var BridgeTypeBuilding = {
 				if (!MapCell.isCorrectY(yyy))
 					return false;
 
-				var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
+				var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
 				if ((cell.type!=CELL_TYPE_EMPTY && cell.type!=CELL_TYPE_WATER) || (unitid!=-1 && unitid!=unit))
 					return false;
 			}
@@ -118,7 +118,7 @@ var BridgeTypeBuilding = {
 				if (!MapCell.isCorrectY(yy))
 					return false;
 
-				if (game.level.map_cells[xx][yy].type == CELL_TYPE_WATER)
+				if (CurrentLevel.map_cells[xx][yy].type == CELL_TYPE_WATER)
 				{
 					water_found = true;
 					break;
@@ -135,19 +135,19 @@ var BridgeTypeBuilding = {
 		for (yy = y; yy < y + height; ++yy)
 		{
 			//left line
-			if (MapCell.isCorrectCord(x-1, yy) && (game.level.map_cells[x-1][yy].type == CELL_TYPE_EMPTY))
+			if (MapCell.isCorrectCord(x-1, yy) && (CurrentLevel.map_cells[x-1][yy].type == CELL_TYPE_EMPTY))
 				return true;
 			//right line
-			if (MapCell.isCorrectCord(x+width, yy) && (game.level.map_cells[x+width][yy].type == CELL_TYPE_EMPTY))
+			if (MapCell.isCorrectCord(x+width, yy) && (CurrentLevel.map_cells[x+width][yy].type == CELL_TYPE_EMPTY))
 				return true;
 		}
 		for (xx = x; xx < x + width; ++xx)
 		{
 			//Top line
-			if (MapCell.isCorrectCord(xx, y-1) && (game.level.map_cells[xx][y-1].type == CELL_TYPE_EMPTY))
+			if (MapCell.isCorrectCord(xx, y-1) && (CurrentLevel.map_cells[xx][y-1].type == CELL_TYPE_EMPTY))
 				return true;
 			//Bottom line
-			if (MapCell.isCorrectCord(xx, y+height) && (game.level.map_cells[xx][y+height].type == CELL_TYPE_EMPTY))
+			if (MapCell.isCorrectCord(xx, y+height) && (CurrentLevel.map_cells[xx][y+height].type == CELL_TYPE_EMPTY))
 				return true;
 		}
 
@@ -162,7 +162,7 @@ var BridgeTypeBuilding = {
 			{
 				++i;
 				if ((obj._proto.cell_matrix[i] == 1) && (obj._proto.move_matrix[i] == 0))
-					game.level.map_cells[cell.x+x][cell.y+y].type = CELL_TYPE_EMPTY;
+					CurrentLevel.map_cells[cell.x+x][cell.y+y].type = CELL_TYPE_EMPTY;
 			}
 	},
 		
@@ -176,12 +176,12 @@ var BridgeTypeBuilding = {
 				++i;
 				if (obj._proto.cell_matrix[i] == 1)
 				{
-					type = game.level.map_cells[cell.x+x][cell.y+y].original_type;
-					game.level.map_cells[cell.x+x][cell.y+y].type = type;
+					type = CurrentLevel.map_cells[cell.x+x][cell.y+y].original_type;
+					CurrentLevel.map_cells[cell.x+x][cell.y+y].type = type;
 					
 					if (type == CELL_TYPE_WATER)
 					{
-						unitid = game.level.map_cells[cell.x+x][cell.y+y].ground_unit;
+						unitid = CurrentLevel.map_cells[cell.x+x][cell.y+y].ground_unit;
 						if (unitid != -1)
 						{
 							if (game.objects[unitid]._proto.move_mode == MOVE_MODE_GROUND)

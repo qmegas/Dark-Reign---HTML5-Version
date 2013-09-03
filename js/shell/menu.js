@@ -2,7 +2,7 @@ var PUNKT_SOUNDS = 6;
 
 function GameShell()
 {
-	var self = this;
+	var self = this, scroll = new ScrollWidget();
 	
 	this.curr_srcreen = '';
 	this.prev_screen = '';
@@ -10,6 +10,10 @@ function GameShell()
 	this.resources = new ResourseLoader();
 	this.fontNormal = null;
 	this.fontRed = null;
+	this.fontGame = null;
+	
+	this.levels = {};
+	this.current_level = 1;
 	
 	this.init = function()
 	{
@@ -57,12 +61,11 @@ function GameShell()
 		};
 		
 		this.resources.onComplete = function(){
-			var game_font = new FontDraw('font-game', 14);
-			
 			$('.load-screen').hide();
 			
 			self.fontNormal = new FontDraw('font-normal', 18);
 			self.fontRed = new FontDraw('font-red', 20);
+			self.fontGame = new FontDraw('font-game', 14);
 			
 			$('#link_archive_text, #link_archive2_text').css('background-image', self.makeLinkImage('ARCHIVE'));
 			$('#link_back_text, #link_lan_back_text').css('background-image', self.makeLinkImage('BACK'));
@@ -72,8 +75,10 @@ function GameShell()
 			$('#link_imp_text').css('background-image', self.makeLinkImage('IMPERIUM'));
 			$('#link_launch_text').css('background-image', self.makeLinkImage('LAUNCH'));
 			
-			$('#level_name').css('background-image', 'url("' + self.fontRed.getDataUrl('2JUNGLE TEST LEVEL') + '")');
-			$('#archive_up').css('background-image', 'url("' + game_font.getDataUrl('UP ONE LEVEL') + '")');
+			self.getLevelInfo(function(info){
+				$('#level_name').css('background-image', 'url("' + self.fontRed.getDataUrl(info.name) + '")');
+			});
+			$('#archive_up').css('background-image', 'url("' + self.fontGame.getDataUrl('UP ONE LEVEL') + '")');
 			
 			ShellArchive.init();
 			
@@ -96,14 +101,47 @@ function GameShell()
 			$('#' + self.curr_srcreen).hide();
 		
 		var callback = function(){
+			console.log('Navigate callback: ' + nav_to);
+			
 			if (nav_to == 'archive')
 				ShellArchive.restart();
 			else if (nav_to == 'objective')
-				$('#level_name_obj').css('background-image', 'url("' + self.fontRed.getDataUrl('2JUNGLE TEST LEVEL') + '")');
+			{
+				self.getLevelInfo(function(info){
+					$('#level_name_obj').css('background-image', 'url("' + self.fontRed.getDataUrl(info.name) + '")');
+					var lines = self.getLinesCount(info.objective);
+					$('#objective_text').attr({height: lines*14});
+					self.fontGame._bufferDraw($('#objective_text'), info.objective);
+					scroll.set({
+						button_up: '#obj_scroll_up',
+						button_down: '#obj_scroll_down',
+						button_slider: '#obj_scroll_slider',
+						scroll_element: '#objective_text',
+						window_size: 255,
+						slider_top: 169,
+						slider_bottom: 383
+					});
+				});
+			}
 			else if (nav_to == 'launch')
 			{
 				$('#launch').removeClass('imp fg').addClass(params);
 				self._runVideo('brief_'+params, function(){
+					self.getLevelInfo(function(info){
+						var lines = self.getLinesCount(info.objective);
+						$('#launch_text').attr({height: lines*14});
+						self.fontGame._bufferDraw($('#launch_text'), info.objective);
+						scroll.set({
+							button_up: '#launch_scroll_up',
+							button_down: '#launch_scroll_down',
+							button_slider: '#launch_scroll_slider',
+							scroll_element: '#launch_text',
+							window_size: (params == 'fg') ? 259 : 231,
+							slider_top: (params == 'fg') ? 20 : 150,
+							slider_bottom: (params == 'fg') ? 328 : 413
+						});
+					} /*, params */);
+					
 					$('#' + nav_to).show();
 				});
 			}
@@ -140,6 +178,19 @@ function GameShell()
 	this.showObjective = function()
 	{
 		$('#objective').show();
+	};
+	
+	this.getLevelInfo = function(callback, side)
+	{
+		var current_side = side || 'fg';
+		current_side += this.current_level;
+		
+		if (!self.levels[current_side])
+			self.resources.loadScript('/js/levels/'+current_side+'/objective.js', function(){
+				callback(self.levels[current_side]);
+			});
+		else
+			callback(self.levels[current_side]);
 	};
 	
 	this.videoIntro = function()
@@ -206,6 +257,21 @@ function GameShell()
 		
 		return 'url("' + tmp_canvas.get(0).toDataURL() + '")';
 	};
+	
+	this.getLinesCount = function(text)
+	{
+		var i, lines = 1;
+		for (i=0; i<text.length; ++i)
+			if (text.charCodeAt(i) == 10)
+				lines++;
+		return lines;
+	};
+	
+	this.startLevel = function()
+	{
+		var side = $('#launch').attr("class");
+		document.location.href = 'game.html#' + side + self.current_level;
+	};
 }
 
 $(function(){
@@ -221,7 +287,7 @@ $(function(){
 		game.navigate($this.attr('data-to'), $this.attr('data-way'), $this.attr('data-param'));
 	});
 	$('#launch_btn').click(function(){
-		document.location.href = 'game.html';
+		game.startLevel();
 	});
 	$('#archive_up').click(function(){
 		ShellArchive.pageUp();

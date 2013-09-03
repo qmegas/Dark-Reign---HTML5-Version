@@ -86,10 +86,10 @@ var MousePointer = {
 					
 					//check if can move
 					if (move_x != 0)
-						if ((move_x==-1 && game.viewport_x<=0) || (move_x==1 && game.viewport_x>=game.level.max_movement.x))
+						if ((move_x==-1 && game.viewport_x<=0) || (move_x==1 && game.viewport_x>=CurrentLevel.max_movement.x))
 							move_x = 0;
 					if (move_y != 0)
-						if ((move_y==-1 && game.viewport_y<=0) || (move_y==1 && game.viewport_y>=game.level.max_movement.y))
+						if ((move_y==-1 && game.viewport_y<=0) || (move_y==1 && game.viewport_y>=CurrentLevel.max_movement.y))
 							move_y = 0;
 					
 					//Draw move pointer
@@ -117,7 +117,7 @@ var MousePointer = {
 		if (!MapCell.isCorrectCord(pos.x, pos.y))
 			return this._drawNormalCursor();
 		
-		var objid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+		var objid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(CurrentLevel.map_cells[pos.x][pos.y]);
 		
 		//Actions
 		if (game.action_state != ACTION_STATE_NONE)
@@ -151,7 +151,7 @@ var MousePointer = {
 					game.objects[objid]._proto.is_bridge && 
 					game.selected_objects.length>0 && 
 					!game.selected_info.is_building && 
-					game.level.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY
+					CurrentLevel.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY
 				)
 					return this._drawCursor(current_time, 2, 7);
 				else if (game.selected_info.harvesters && game.objects[objid].isHarvestPlatform())
@@ -193,7 +193,7 @@ var MousePointer = {
 		{
 			if (!game.selected_info.is_building)
 			{
-				ptype = game.level.map_cells[pos.x][pos.y].type;
+				ptype = CurrentLevel.map_cells[pos.x][pos.y].type;
 				if ((ptype==CELL_TYPE_WATER && game.selected_info.move_mode==MOVE_MODE_GROUND) || (ptype==CELL_TYPE_NOWALK && game.selected_info.move_mode!=MOVE_MODE_FLY))
 					return this._drawCursor(current_time, 4, 2);
 				else
@@ -270,7 +270,7 @@ var MousePointer = {
 		
 				if (Math.abs(sizes.width)<4 && Math.abs(sizes.height)<4)
 				{
-					unitid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+					unitid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(CurrentLevel.map_cells[pos.x][pos.y]);
 					
 					if (unitid!=-1)
 					{
@@ -281,7 +281,7 @@ var MousePointer = {
 								game.objects[unitid]._proto.is_bridge && 
 								game.selected_objects.length>0 && 
 								!game.selected_info.is_building && 
-								game.level.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY)
+								CurrentLevel.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY)
 							{
 								game.moveSelectedUnits(pos);
 								return;
@@ -385,13 +385,13 @@ var MousePointer = {
 				break;
 				
 			case ACTION_STATE_SELL:
-				if (game.level.map_cells[pos.x][pos.y].building != -1)
-					game.objects[game.level.map_cells[pos.x][pos.y].building].sell();
+				if (CurrentLevel.map_cells[pos.x][pos.y].building != -1)
+					game.objects[CurrentLevel.map_cells[pos.x][pos.y].building].sell();
 				break;
 				
 			case ACTION_STATE_REPAIR:
-				if (game.level.map_cells[pos.x][pos.y].building != -1)
-					game.objects[game.level.map_cells[pos.x][pos.y].building].repair();
+				if (CurrentLevel.map_cells[pos.x][pos.y].building != -1)
+					game.objects[CurrentLevel.map_cells[pos.x][pos.y].building].repair();
 				break;
 				
 			case ACTION_STATE_ATTACK:
@@ -403,7 +403,7 @@ var MousePointer = {
 		
 	_actAttack: function(pos)
 	{
-		var target, unitid = MapCell.getSingleUserId(game.level.map_cells[pos.x][pos.y]);
+		var target, unitid = MapCell.getSingleUserId(CurrentLevel.map_cells[pos.x][pos.y]);
 
 		if (unitid == -1)
 			target = {type: 'ground', x: pos.x*CELL_SIZE + 12, y: pos.y*CELL_SIZE + 12};

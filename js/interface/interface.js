@@ -24,8 +24,8 @@ var InterfaceGUI = {
 		game.resources.addImage('css18', 'images/interface/order_check.png');
 		game.resources.addImage('css19', 'images/interface/checkbox.png');
 		//---------
-		game.resources.addImage('map-tiles', 'images/levels/'+game.level.tiles);
-		game.resources.addImage('minimap', 'images/levels/'+game.level.minimap.image);
+		game.resources.addImage('map-tiles', 'images/levels/'+CurrentLevel.tiles);
+		game.resources.addImage('minimap', 'images/levels/'+CurrentLevel.minimap.image);
 		game.resources.addImage('clr', 'images/buildings/clr.png');
 		game.resources.addImage('font', 'images/font.png');
 	},

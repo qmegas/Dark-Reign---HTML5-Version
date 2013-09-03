@@ -2,7 +2,8 @@ To do:
 	- Implement unit rotation
 	- Allow unit to shoot not only to the center of the building
 	- Bug: when ordering scouted unit it don't stop scout
-	
+	- Correct mouse state when under shroud
+	- Implement shroud for minimap
 
 - High priority bugs:
 

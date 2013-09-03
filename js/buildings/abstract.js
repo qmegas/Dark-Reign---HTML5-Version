@@ -270,10 +270,10 @@ function AbstractBuilding()
 			{
 				++i;
 				if (this._proto.move_matrix[i] == 1)
-					game.level.map_cells[cell.x+x][cell.y+y].type = cell_type;
+					CurrentLevel.map_cells[cell.x+x][cell.y+y].type = cell_type;
 				
 				if (this._proto.cell_matrix[i] == 1)
-					game.level.map_cells[cell.x+x][cell.y+y].building = userid;
+					CurrentLevel.map_cells[cell.x+x][cell.y+y].building = userid;
 				
 			}
 	};
@@ -582,7 +582,7 @@ function AbstractBuilding()
 			unit = game.objects[this._carry_units[i]];
 			pos = PathFinder.findNearestStandCell(mypos.x + 1, mypos.y + 2);
 			unit.setCell(pos);
-			game.level.map_cells[pos.x][pos.y].ground_unit = unit.uid;
+			CurrentLevel.map_cells[pos.x][pos.y].ground_unit = unit.uid;
 			unit.changeFogState(1);
 		}
 		
@@ -599,7 +599,7 @@ function AbstractBuilding()
 		
 		var pos = unit.getCell();
 		game.unselectUnit(unit.uid);
-		game.level.map_cells[pos.x][pos.y].ground_unit = -1;
+		CurrentLevel.map_cells[pos.x][pos.y].ground_unit = -1;
 		unit.changeFogState(-1);
 		unit.position = {x: -100, y: -100};
 		this._carry_units.push(unit.uid);
@@ -642,6 +642,9 @@ function AbstractBuilding()
 		if (this.player != PLAYER_HUMAN)
 			return;
 		
+		if (!GAMECONFIG.fog && state<1)
+			return;
+		
 		var x, y, pos = this.getCell();
 		
 		pos.x += this._proto.cell_padding.x;
@@ -658,7 +661,7 @@ function AbstractBuilding()
 					continue;
 				
 				if ((Math.sqrt(Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2)) < this._proto.seeing_range))
-					game.level.map_cells[x][y].fog_new_state += state;
+					CurrentLevel.map_cells[x][y].fog_new_state += state;
 			}
 		}
 		
@@ -769,7 +772,7 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 			if (!MapCell.isCorrectY(yyy))
 				continue;
 			
-			var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
+			var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
 			if (cell.type!=0 || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
 			{
 				MousePointer.mouse_ctx.drawImage(
@@ -840,7 +843,7 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 			if (!MapCell.isCorrectY(yyy))
 				return false;
 			
-			var cell = game.level.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
+			var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
 			if (cell.type!=CELL_TYPE_EMPTY || (unitid!=-1 && unitid!=unit))
 				return false;
 		}

@@ -340,7 +340,7 @@ var PathFinder = {
 		
 	findPath: function(from_x, from_y, to_x, to_y, move_mode, avoid_others)
 	{	
-		var graph = new Graph(game.level.map_cells, move_mode, avoid_others);
+		var graph = new Graph(CurrentLevel.map_cells, move_mode, avoid_others);
 		var start = graph.nodes[from_x][from_y];
 		var end = graph.nodes[to_x][to_y];
 		
@@ -434,7 +434,7 @@ var PathFinder = {
 		if (!MapCell.isCorrectCord(cell.x, cell.y))
 			return false;
 		
-		var m_cell = game.level.map_cells[cell.x][cell.y];
+		var m_cell = CurrentLevel.map_cells[cell.x][cell.y];
 		
 		if (m_cell.type==CELL_TYPE_WATER && move_mode==MOVE_MODE_GROUND)
 			return false;
