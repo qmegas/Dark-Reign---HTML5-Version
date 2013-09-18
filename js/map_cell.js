@@ -105,3 +105,8 @@ MapCell.isFogged = function(pos)
 {
 	return (CurrentLevel.map_cells[pos.x][pos.y].fog == 0);
 };
+
+MapCell.isShroud = function(pos)
+{
+	return (CurrentLevel.map_cells[pos.x][pos.y].shroud == 1);
+};

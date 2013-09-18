@@ -1,3 +1,33 @@
+var Cursor = {
+	SELECT: [1, 8],
+	MOVE: [2, 7],
+	ATTACK: [3, 8],
+	STOP: [4, 2],
+	POWER: [5, 8],
+	SELL: [6, 6],
+	HAND: [7, 1],
+	REPAIR: [8, 9],
+	HARVEST: [9, 8],
+	TOHEAL: [10, 5],
+	NOPAN_R: [11, 4],
+	NOPAN_L: [12, 4],
+	NOPAN_D: [13, 4],
+	NOPAN_U: [14, 4],
+	PANNING_RD: [15, 7],
+	PANNING_LD: [16, 7],
+	PANNING_RU: [17, 7],
+	PANNING_LU: [18, 7],
+	PANNING_R: [19, 7],
+	PANNING_L: [20, 7],
+	PANNING_D: [21, 7],
+	PANNING_U: [22, 7],
+	TOREPAIR: [23, 5],
+	EXTRACT: [24, 10],
+	ENTER: [25, 12],
+	TELEPORT: [26, 11],
+	REARM: [27, 12]
+};
+
 var MousePointer = {
 	type: 0, //0 - simple
 	show_cursor: false,
@@ -10,7 +40,19 @@ var MousePointer = {
 	selection_start_pos: {},
 	
 	panning_region_time: 0,
-	direction_to_cursor: [18, 20, 16, 0, 22, 0, 21, 0, 17, 19, 15],
+	direction_to_cursor: [
+		Cursor.PANNING_LU, 
+		Cursor.PANNING_L, 
+		Cursor.PANNING_LD, 
+		0, 
+		Cursor.PANNING_U, 
+		0, 
+		Cursor.PANNING_D, 
+		0, 
+		Cursor.PANNING_RU, 
+		Cursor.PANNING_R,
+		Cursor.PANNING_RD
+	],
 
 	mouse_ctx: null,
 
@@ -96,17 +138,17 @@ var MousePointer = {
 					if (move_x==0 && move_y==0)
 					{
 						if (game.viewport_move_mouse_y == -1)
-							cur_icon = 14;
+							cur_icon = Cursor.NOPAN_U;
 						else if (game.viewport_move_mouse_y == 1)
-							cur_icon = 13;
+							cur_icon = Cursor.NOPAN_D;
 						else if (game.viewport_move_mouse_x == -1)
-							cur_icon = 12;
+							cur_icon = Cursor.NOPAN_L;
 						else
-							cur_icon = 11;
-						return this._drawCursor(current_time, cur_icon, 4);
+							cur_icon = Cursor.NOPAN_R;
+						return this._drawCursor(current_time, cur_icon);
 					}
 					
-					return this._drawCursor(current_time, this.direction_to_cursor[(move_x+1)*4 + (move_y+1)], 7);
+					return this._drawCursor(current_time, this.direction_to_cursor[(move_x+1)*4 + (move_y+1)]);
 				}
 			}
 			else
@@ -125,20 +167,20 @@ var MousePointer = {
 			switch (game.action_state)
 			{
 				case ACTION_STATE_SELL:
-					return this._drawCursor(current_time, 6, 6);
+					return this._drawCursor(current_time, Cursor.SELL);
 				case ACTION_STATE_POWER:
-					return this._drawCursor(current_time, 5, 8);
+					return this._drawCursor(current_time, Cursor.POWER);
 				case ACTION_STATE_BUILD:
 					pos.x -= game.action_state_options.object.cell_padding.x;
 					pos.y -= game.action_state_options.object.cell_padding.y;
 					AbstractBuilding.drawBuildMouse(game.action_state_options.object, pos.x, pos.y);
-					return this._drawCursor(current_time, 7, 1);
+					return this._drawCursor(current_time, Cursor.HAND);
 				case ACTION_STATE_REPAIR:
-					return this._drawCursor(current_time, 8, 9);
+					return this._drawCursor(current_time, Cursor.REPAIR);
 				case ACTION_STATE_ATTACK:
 					if (this._checkAttackAbility(objid))
-						return this._drawCursor(current_time, 3, 8);
-					return this._drawCursor(current_time, 4, 2);
+						return this._drawCursor(current_time, Cursor.ATTACK);
+					return this._drawCursor(current_time, Cursor.STOP);
 			}
 		}
 		
@@ -153,39 +195,39 @@ var MousePointer = {
 					!game.selected_info.is_building && 
 					CurrentLevel.map_cells[pos.x][pos.y].type==CELL_TYPE_EMPTY
 				)
-					return this._drawCursor(current_time, 2, 7);
+					return this._drawCursor(current_time, Cursor.MOVE);
 				else if (game.selected_info.harvesters && game.objects[objid].isHarvestPlatform())
-					return this._drawCursor(current_time, 9, 8);
+					return this._drawCursor(current_time, Cursor.HARVEST);
 				else if (game.selected_info.humans && game.objects[objid].isHealer())
-					return this._drawCursor(current_time, 10, 5);
+					return this._drawCursor(current_time, Cursor.TOHEAL);
 				else if (
 					game.selected_objects.length>0 &&
 					!game.selected_info.humans && 
 					!game.selected_info.is_building && 
 					game.objects[objid].isFixer()
 				)
-					return this._drawCursor(current_time, 23, 5);
+					return this._drawCursor(current_time, Cursor.TOREPAIR);
 				else if (game.selected_info.cyclones && game.objects[objid]._proto==RearmingDeckBuilding && game.objects[objid].state==BUILDING_STATE_NORMAL)
-					return this._drawCursor(current_time, 27, 12);
+					return this._drawCursor(current_time, Cursor.REARM);
 			}
 			
 			if (game.objects[objid].canCarry())
 			{
 				if (game.objects[objid].is_selected && game.objects[objid].haveInsideUnits())
-					return this._drawCursor(current_time, 24, 10);
+					return this._drawCursor(current_time, Cursor.EXTRACT);
 				if (game.selected_info.move_mode_min<=MOVE_MODE_HOVER && game.objects[objid].haveFreeSpace(game.selected_info.min_mass))
-					return this._drawCursor(current_time, 25, 12);
+					return this._drawCursor(current_time, Cursor.ENTER);
 			}
 			
 			if (game.objects[objid].player!=PLAYER_HUMAN && game.players[PLAYER_HUMAN].isEnemy(game.objects[objid].player))
 			{
 				if (this._checkAttackAbility(objid))
-					return this._drawCursor(current_time, 3, 8);
+					return this._drawCursor(current_time, Cursor.ATTACK);
 				else
-					return this._drawCursor(current_time, 4, 2);
+					return this._drawCursor(current_time, Cursor.STOP);
 			}
 			
-			return this._drawCursor(current_time, 1, 8);
+			return this._drawCursor(current_time, Cursor.SELECT);
 		}
 		
 		//Ground
@@ -193,17 +235,20 @@ var MousePointer = {
 		{
 			if (!game.selected_info.is_building)
 			{
+				if (MapCell.isShroud(pos))
+					return this._drawCursor(current_time, Cursor.MOVE);
+					
 				ptype = CurrentLevel.map_cells[pos.x][pos.y].type;
 				if ((ptype==CELL_TYPE_WATER && game.selected_info.move_mode==MOVE_MODE_GROUND) || (ptype==CELL_TYPE_NOWALK && game.selected_info.move_mode!=MOVE_MODE_FLY))
-					return this._drawCursor(current_time, 4, 2);
+					return this._drawCursor(current_time, Cursor.STOP);
 				else
-					return this._drawCursor(current_time, 2, 7);
+					return this._drawCursor(current_time, Cursor.MOVE);
 			}
 			else
 			{
 				var obj = game.objects[game.selected_objects[0]];
 				if (obj.isTeleport() && obj.canTeleport())
-					return this._drawCursor(current_time, 26, 11);
+					return this._drawCursor(current_time, Cursor.TELEPORT);
 			}
 		}
 		
@@ -217,15 +262,15 @@ var MousePointer = {
 		this.mouse_ctx.drawImage(game.resources.get('cursors'), 0, 0, 17, 24, this.position.x, this.position.y, 17, 24);
 	},
 		
-	_drawCursor: function(current_time, cursorid, frames)
+	_drawCursor: function(current_time, cursor)
 	{
 		if ((current_time - this.draw_time) > 100)
 		{
-			this.draw_frame = ((this.draw_frame + 1) % frames);
+			this.draw_frame = ((this.draw_frame + 1) % cursor[1]);
 			this.draw_time = current_time;
 		}
 		this.mouse_ctx.drawImage(
-			game.resources.get('cursors'), this.draw_frame*32, cursorid*32, 32, 32, 
+			game.resources.get('cursors'), this.draw_frame*32, cursor[0]*32, 32, 32, 
 			this.position.x - 16, this.position.y - 16, 32, 32
 		);
 			
@@ -272,7 +317,7 @@ var MousePointer = {
 				{
 					unitid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(CurrentLevel.map_cells[pos.x][pos.y]);
 					
-					if (unitid!=-1)
+					if (unitid != -1)
 					{
 						if (game.objects[unitid].is_building)
 						{

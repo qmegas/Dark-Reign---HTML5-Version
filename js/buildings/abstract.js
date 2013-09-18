@@ -773,7 +773,7 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 				continue;
 			
 			var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
-			if (cell.type!=0 || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
+			if (cell.type!=CELL_TYPE_EMPTY || cell.shroud==1 || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
 			{
 				MousePointer.mouse_ctx.drawImage(
 					game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
@@ -844,7 +844,7 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 				return false;
 			
 			var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
-			if (cell.type!=CELL_TYPE_EMPTY || (unitid!=-1 && unitid!=unit))
+			if (cell.type!=CELL_TYPE_EMPTY || cell.shroud==1 || (unitid!=-1 && unitid!=unit))
 				return false;
 		}
 	}

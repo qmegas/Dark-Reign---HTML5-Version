@@ -37,7 +37,7 @@ var BridgeTypeBuilding = {
 						continue;
 
 					var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
-					if ((cell.type!=CELL_TYPE_EMPTY && cell.type!=CELL_TYPE_WATER) || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
+					if ((cell.type!=CELL_TYPE_EMPTY && cell.type!=CELL_TYPE_WATER) || cell.shroud==1 || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
 					{
 						MousePointer.mouse_ctx.drawImage(
 							game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
@@ -93,7 +93,7 @@ var BridgeTypeBuilding = {
 					return false;
 
 				var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
-				if ((cell.type!=CELL_TYPE_EMPTY && cell.type!=CELL_TYPE_WATER) || (unitid!=-1 && unitid!=unit))
+				if ((cell.type!=CELL_TYPE_EMPTY && cell.type!=CELL_TYPE_WATER) || cell.shroud==1 || (unitid!=-1 && unitid!=unit))
 					return false;
 			}
 		}

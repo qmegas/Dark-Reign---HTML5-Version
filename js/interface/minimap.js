@@ -56,23 +56,7 @@ var InterfaceMinimap = {
 			}
 		}
 		
-		var x, y, x_prop = CurrentLevel.minimap.x / CurrentLevel.size.x, y_prop = CurrentLevel.minimap.y / CurrentLevel.size.y, cur_position = 0;
-		var img = this._objects_ctx.getImageData(0, 0, CurrentLevel.minimap.x, CurrentLevel.minimap.y);
-		
-		for (y = 0; y < CurrentLevel.minimap.y; ++y)
-		{
-			for (x = 0; x < CurrentLevel.minimap.x; ++x)
-			{
-				if (CurrentLevel.map_cells[parseInt(x/x_prop)][parseInt(y/y_prop)].fog == 0)
-				{
-					img.data[cur_position] *= 0.7;
-					img.data[cur_position + 1] *= 0.7;
-					img.data[cur_position + 2] *= 0.7;
-				}
-				cur_position += 4;
-			}
-		}
-		this._objects_ctx.putImageData(img, 0, 0);
+		this._drawFogShroud();
 	},
 	
 	switchState: function()
@@ -96,5 +80,35 @@ var InterfaceMinimap = {
 			CurrentLevel.minimap.x, 0, CurrentLevel.minimap.x, CurrentLevel.minimap.y,
 			0, 0, CurrentLevel.minimap.x, CurrentLevel.minimap.y
 		);
+			
+		this._drawFogShroud();
+	},
+		
+	_drawFogShroud: function()
+	{
+		var x, y, x_prop = CurrentLevel.minimap.x / CurrentLevel.size.x, y_prop = CurrentLevel.minimap.y / CurrentLevel.size.y, cur_position = 0;
+		var cell, img = this._objects_ctx.getImageData(0, 0, CurrentLevel.minimap.x, CurrentLevel.minimap.y);
+		
+		for (y = 0; y < CurrentLevel.minimap.y; ++y)
+		{
+			for (x = 0; x < CurrentLevel.minimap.x; ++x)
+			{
+				cell = CurrentLevel.map_cells[parseInt(x/x_prop)][parseInt(y/y_prop)];
+				if (cell.shroud == 1)
+				{
+					img.data[cur_position] = 0;
+					img.data[cur_position + 1] = 0;
+					img.data[cur_position + 2] = 0;
+				}
+				else if (cell.fog == 0)
+				{
+					img.data[cur_position] *= 0.7;
+					img.data[cur_position + 1] *= 0.7;
+					img.data[cur_position + 2] *= 0.7;
+				}
+				cur_position += 4;
+			}
+		}
+		this._objects_ctx.putImageData(img, 0, 0);
 	}
 };

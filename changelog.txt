@@ -1,6 +1,7 @@
 Build 44
 - Added level objective text in game menu
 - First implementation of shroud
+- Added shroud on minimap
 - Map refactoring
 
 Build 43 (22.08.2013)
