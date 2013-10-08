@@ -2,6 +2,7 @@ To do:
 	- Implement unit rotation
 	- Allow unit to shoot not only to the center of the building
 	- Shroud should be calculated as passable cell for every unit
+	- Change unit order/action structure
 
 - High priority bugs:
 	- when ordering scouted unit it don't stop scout
@@ -15,7 +16,7 @@ To do:
 	- Add Hostage Taker weapon
 	- Air Defense Site should have 3 weapons instead one
 	- Add animation for repair station
-	- More beautiful Fog of War 
+	- More beautiful Fog of War and Shroud
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units

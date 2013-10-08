@@ -284,6 +284,9 @@ body {
 	top: 155px;
 	overflow: hidden;
 }
+.shell-menu #objective .objective_content #objective_text {
+	position: relative;
+}
 .shell-menu #objective .scroll.up {
 	left: 524px;
 	top: 153px;

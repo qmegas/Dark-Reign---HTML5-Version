@@ -18,7 +18,7 @@ function ScrollWidget()
 		
 		options = opt;
 		
-		overflow_size = $(options.scroll_element).height() - options.window_size;
+		overflow_size = $(options.scroll_element).attr('height') - options.window_size;
 		if (overflow_size <= 0)
 			return;
 		

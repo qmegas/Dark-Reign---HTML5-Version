@@ -3,6 +3,8 @@ Build 44
 - First implementation of shroud
 - Added shroud on minimap
 - Map refactoring
+- Add word warp function for text in game objective window
+- Starting to work on Imperium Level 1 map
 
 Build 43 (22.08.2013)
 - Fly units can't "stand" above buildings structures

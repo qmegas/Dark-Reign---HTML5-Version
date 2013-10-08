@@ -107,11 +107,11 @@ function GameShell()
 				ShellArchive.restart();
 			else if (nav_to == 'objective')
 			{
-				self.getLevelInfo(function(info){
-					$('#level_name_obj').css('background-image', 'url("' + self.fontRed.getDataUrl(info.name) + '")');
-					var lines = self.getLinesCount(info.objective);
+				self.getLevelInfo(function(level){
+					$('#level_name_obj').css('background-image', 'url("' + self.fontRed.getDataUrl(level.name) + '")');
+					var info = self.fontGame.prepareMultilineText(level.info, 413), lines = self.getLinesCount(info);
 					$('#objective_text').attr({height: lines*14});
-					self.fontGame._bufferDraw($('#objective_text'), info.objective);
+					self.fontGame._bufferDraw($('#objective_text'), info);
 					scroll.set({
 						button_up: '#obj_scroll_up',
 						button_down: '#obj_scroll_down',
@@ -127,10 +127,11 @@ function GameShell()
 			{
 				$('#launch').removeClass('imp fg').addClass(params);
 				self._runVideo('brief_'+params, function(){
-					self.getLevelInfo(function(info){
-						var lines = self.getLinesCount(info.objective);
+					self.getLevelInfo(function(level){
+						var info = self.fontGame.prepareMultilineText(level.objective, (params == 'fg') ? 259 : 231), 
+							lines = self.getLinesCount(info);
 						$('#launch_text').attr({height: lines*14});
-						self.fontGame._bufferDraw($('#launch_text'), info.objective);
+						self.fontGame._bufferDraw($('#launch_text'), info);
 						scroll.set({
 							button_up: '#launch_scroll_up',
 							button_down: '#launch_scroll_down',

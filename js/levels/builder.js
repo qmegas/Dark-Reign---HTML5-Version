@@ -43,7 +43,7 @@ function LevelBuilder(level_data)
 	
 	this.generateMap = function()
 	{
-		var ctx = $('#map_view').get(0).getContext('2d'), tiles = game.resources.get('map-tiles');
+		var ctx = $('#map_view').get(0).getContext('2d'), tiles = game.resources.get('map-tiles'), delta = tiles.width/CELL_SIZE;
 		var element, proto, eid, xx, yy, i, j;
 		
 		$('#map_view, #map_fog').attr({
@@ -56,7 +56,7 @@ function LevelBuilder(level_data)
 			for (var y=0; y<level_data.size.y; ++y)
 			{
 				ctx.drawImage(
-					tiles, (level_data.map_tiles[x][y]%32)*CELL_SIZE, Math.floor(level_data.map_tiles[x][y]/32)*CELL_SIZE, 
+					tiles, (level_data.map_tiles[x][y]%delta)*CELL_SIZE, Math.floor(level_data.map_tiles[x][y]/delta)*CELL_SIZE, 
 					CELL_SIZE, CELL_SIZE, x*CELL_SIZE, y*CELL_SIZE, CELL_SIZE, CELL_SIZE
 				);
 			}

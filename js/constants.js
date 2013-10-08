@@ -3,7 +3,6 @@ var GAMECONFIG = {
 	playVideo: true,
 	defaultMusicVolume: 0,
 	defaultSoundVolume: 0,
-	
 	shroud: true,
 	fog: true
 };
@@ -83,7 +82,7 @@ function cloneObj(obj)
 function rangeItterator(pos_x, pos_y, range, callback)
 {
 	var x, y, is_stop;
-	
+
 	for (x = pos_x - range + 1; x < pos_x + range; ++x)
 	{
 		if (!MapCell.isCorrectX(x))
@@ -96,7 +95,7 @@ function rangeItterator(pos_x, pos_y, range, callback)
 
 			if (!(Math.sqrt(Math.pow(x - pos_x, 2) + Math.pow(y - pos_y, 2)) < range))
 				continue;
-			
+
 			is_stop = callback(x, y);
 			if (is_stop)
 				return;
@@ -106,23 +105,28 @@ function rangeItterator(pos_x, pos_y, range, callback)
 
 Math.getAngle = function(y, x)
 {
-	return this.atan2(y, x) * (180/this.PI);
+	return this.atan2(y, x) * (180 / this.PI);
 };
 
 Math.calcFrameByAngle = function(angle, rotation_number)
 {
-	angle = parseInt(360 - angle + 360/(rotation_number*2)) % 360;
-	return parseInt(angle / (360/rotation_number));
+	angle = parseInt(360 - angle + 360 / (rotation_number * 2)) % 360;
+	return parseInt(angle / (360 / rotation_number));
 };
 
 Array.factory = function(number, def_value)
 {
 	var i, arr = [];
-	
+
 	if (typeof def_value == 'undefined')
 		def_value = 0;
-	
+
 	for (i = 0; i < number; ++i)
 		arr[i] = def_value;
 	return arr;
-}
+};
+
+String.prototype.replaceAt = function(index, character)
+{
+	return this.substr(0, index) + character + this.substr(index + character.length);
+};

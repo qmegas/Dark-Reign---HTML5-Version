@@ -1,4 +1,4 @@
-function MapEditor(level)
+function MapEditor()
 {
 	this.ctx = {};
 	this.map = [];
@@ -8,33 +8,34 @@ function MapEditor(level)
 	this.to_point = {};
 	this.path = [];
 	
-	this.level = level;
-	
 	this.resources = new ResourseLoader();
 	
 	this.init = function()
 	{
 		var x, y;
 		
-		this.resources.addImage('map-tiles', 'images/levels/'+level.tiles);
+		var levelBuilder = new LevelBuilder(CurrentLevel);
+		levelBuilder.build();
+		
+		this.resources.addImage('map-tiles', 'images/levels/'+CurrentLevel.tiles);
 		this._loadMapResources();
 		this.resources.onComplete = function(){
-			level.generateMap();
+			levelBuilder.generateMap();
 		};
 
 		this.drawGrid();
 		
-		this.map = level.map_cells;
+		this.map = CurrentLevel.map_cells;
 		
-		for (x=0; x<level.size.x-1; ++x)
-			for (y=0; y<level.size.y-1; ++y)
-				this._drawCell(x, y, this.map[x][y]);
+		for (x=0; x<CurrentLevel.size.x-1; ++x)
+			for (y=0; y<CurrentLevel.size.y-1; ++y)
+				this._drawCell(x, y, this.map[x][y].type);
 	};
 	
 	this._loadMapResources = function()
 	{
 		//Map objects
-		for (var i in level.map_object_proto)
+		for (var i in CurrentLevel.map_object_proto)
 			this.resources.addImage('mapobj_'+i, level.map_object_proto[i].image);
 	};
 	
@@ -43,23 +44,23 @@ function MapEditor(level)
 		var $canvas = $('#grid');
 		
 		$canvas
-			.attr('width', level.size.x*CELL_SIZE)
-			.attr('height', level.size.y*CELL_SIZE);
+			.attr('width', CurrentLevel.size.x*CELL_SIZE)
+			.attr('height', CurrentLevel.size.y*CELL_SIZE);
 		
 		this.ctx = $canvas.get(0).getContext('2d');
 		
 		this.ctx.strokeStyle = '#ffffff';
 		this.ctx.beginPath();
 
-		for (var i=0; i<=level.size.x; ++i)
+		for (var i=0; i<=CurrentLevel.size.x; ++i)
 		{
 			this.ctx.moveTo(i*CELL_SIZE + 12.5, 0);
-			this.ctx.lineTo(i*CELL_SIZE + 12.5, level.size.y*CELL_SIZE);
+			this.ctx.lineTo(i*CELL_SIZE + 12.5, CurrentLevel.size.y*CELL_SIZE);
 		}
-		for (i=0; i<=level.size.y; ++i)
+		for (i=0; i<=CurrentLevel.size.y; ++i)
 		{
 			this.ctx.moveTo(0, i*CELL_SIZE + 12.5);
-			this.ctx.lineTo(level.size.x*CELL_SIZE, i*CELL_SIZE + 12.5);
+			this.ctx.lineTo(CurrentLevel.size.x*CELL_SIZE, i*CELL_SIZE + 12.5);
 		}
 		this.ctx.stroke();
 	};
@@ -68,15 +69,15 @@ function MapEditor(level)
 	{
 		var cell_x = Math.floor((x - 12) / CELL_SIZE), cell_y = Math.floor((y - 12) / CELL_SIZE);
 		
-		if (cell_x<0 || cell_y<0 || cell_x>=level.size.x-1 || cell_y>=level.size.y-1)
+		if (cell_x<0 || cell_y<0 || cell_x>=CurrentLevel.size.x-1 || cell_y>=CurrentLevel.size.y-1)
 			return;
 		
-		if (this.map[cell_x][cell_y] == this.cur_type)
+		if (this.map[cell_x][cell_y].type == this.cur_type)
 			return;
 		
 		this._drawCell(cell_x, cell_y, this.cur_type);
 		
-		this.map[cell_x][cell_y] = this.cur_type;
+		this.map[cell_x][cell_y].type = this.cur_type;
 	};
 	
 	this._drawCell = function(x, y, type)
@@ -109,19 +110,21 @@ function MapEditor(level)
 	
 	this.exportData = function()
 	{
-//		for (var i in this.map)
-//			this.map[i][level.size.y - 1] = 0;
-//		this.map[level.size.x - 1] = [];
-//		for (i=0; i<level.size.y; ++i)
-//			this.map[level.size.x - 1][i] = 0;
-//		
-		return JSON.stringify(this.map);
+		var x, y, map = [];
+		
+		for (x=0; x<CurrentLevel.size.x; ++x)
+		{
+			map[x] = [];
+			for (y=0; y<CurrentLevel.size.y; ++y)
+				map[x][y] = this.map[x][y].type;
+		}
+		return JSON.stringify(map);
 	};
 }
 
 
 $(function(){
-	game = new MapEditor(new Level1());
+	game = new MapEditor();
 	var qdraw = false;
 	
 	game.init();
