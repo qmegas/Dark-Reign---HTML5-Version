@@ -41,7 +41,7 @@ var CraterEffect = {
 		
 	loadResources: function()
 	{
-		for (var i in this.items)
-			game.resources.addImage(i, 'images/effects/craters/'+i+'.png');
+//		for (var i in this.items)
+//			game.resources.addImage(i, 'images/'+CurrentLevel.theme+'/'+i+'.png');
 	}
 };

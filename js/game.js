@@ -77,7 +77,8 @@ function Game()
 			return;
 		}
 		
-		var level = 'fg1'; //window.location.hash || 'fg1';
+		var level = window.location.hash || '#fg1';
+		level = level.substr(1);
 		this.resources.loadScript('/js/levels/' + level + '/map.js', function(){
 			game.initLevel(init_finish_callback);
 		});
@@ -382,8 +383,9 @@ function Game()
 		if (!this.minimap_navigation)
 			return;
 		
-		var realx = (x-CurrentLevel.minimap.rect_x/2),
-			realy = (y-CurrentLevel.minimap.rect_y/2);
+		var delta = CurrentLevel.size.x / CurrentLevel.minimap.x,
+			realx = parseInt((x-CurrentLevel.minimap.rect_x/2) * delta),
+			realy = parseInt((y-CurrentLevel.minimap.rect_y/2) * delta);
 			
 		this.moveViewport(realx, realy, false);
 	};

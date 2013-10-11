@@ -854,25 +854,27 @@ AbstractBuilding.canBuild = function(obj, x, y, unit)
 
 AbstractBuilding.loadResources = function(obj)
 {
-	game.resources.addImage(obj.res_key, 'images/buildings/'+obj.res_key+'/sprite.png', obj.res_multicolor);
+	var img_path = 'images/buildings/' + CurrentLevel.theme + '/' + obj.res_key + '/';
+	
+	game.resources.addImage(obj.res_key, img_path + 'sprite.png', obj.res_multicolor);
 	
 	if (typeof obj.require_building == 'undefined')
-		game.resources.addImage(obj.res_key + '_box', 'images/buildings/'+obj.res_key+'/box.png');
+		game.resources.addImage(obj.res_key + '_box', img_path + 'box.png');
 	
 	if (obj.images.shadow !== null)
-		game.resources.addImage(obj.res_key + '_shadow', 'images/buildings/'+obj.res_key+'/shadow.png');
+		game.resources.addImage(obj.res_key + '_shadow', img_path + 'shadow.png');
 	
 	if (obj.death_sound != '')
 		game.resources.addSound(obj.death_sound,   'sounds/' + obj.death_sound + '.' + AUDIO_TYPE);
 	
 	if (obj.can_build && obj.upgrade_from===null)
-		game.resources.addImage(obj.res_key + '_box', 'images/buildings/'+obj.res_key+'/box.png');
+		game.resources.addImage(obj.res_key + '_box', img_path + 'box.png');
 	
 	if (obj.weapon != '')
 	{
-		game.resources.addImage(obj.res_key + '_weapon', 'images/buildings/'+obj.res_key+'/weapon.png');
+		game.resources.addImage(obj.res_key + '_weapon', img_path + 'weapon.png');
 		if (obj.images.weapon.animated)
-			game.resources.addImage(obj.res_key + '_attack', 'images/buildings/'+obj.res_key+'/attack.png');
+			game.resources.addImage(obj.res_key + '_attack', img_path + 'attack.png');
 	}
 };
 

@@ -14,12 +14,26 @@ class MapObjectParser
 				'x' => (int)$matches[3][$key] - 1,
 				'y' => (int)$matches[4][$key] - 1
 			);
-			if ($tmp['type'] == 'rock5' || $tmp['type'] == 'rock6')
+			
+			if ($tmp['type'] == 'rock5' || $tmp['type'] == 'rock6' || $tmp['type'] == 'clif6')
 				$tmp['x']--;
-				
+			
+			if ($tmp['type'] == 'special1')
+			{
+				$tmp['x']--;
+				$tmp['y'] += 2;
+			}
+			
+			if ($tmp['type'] == 'smcrater')
+				$tmp['type'] = 'crater0';
+			if ($tmp['type'] == 'medcrater')
+				$tmp['type'] = 'crater1';
+			if ($tmp['type'] == 'bigcrater')
+				$tmp['type'] = 'crater2';
+			
 			$items[] = $tmp;
 		}
-
+		
 		usort($items, array($this, 'sorter'));
 		return $items;
 	}
