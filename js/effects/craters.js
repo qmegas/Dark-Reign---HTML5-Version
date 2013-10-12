@@ -16,7 +16,7 @@ var CraterEffect = {
 			padding: {x: 35, y: 34}
 		},
 		crater5: {
-			padding: {x: 36, y: 72}
+			padding: {x: 70, y: 34}
 		},
 		crater6: {
 			padding: {x: 36, y: 72}
@@ -44,7 +44,7 @@ var CraterEffect = {
 		
 	loadResources: function()
 	{
-//		for (var i in this.items)
-//			game.resources.addImage(i, 'images/'+CurrentLevel.theme+'/'+i+'.png');
+		for (var i in this.items)
+			game.resources.addImage(i, 'images/'+CurrentLevel.theme+'/'+i+'.png');
 	}
 };
