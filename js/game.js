@@ -97,9 +97,6 @@ function Game()
 		
 		DamageTable.init();
 		
-		//Init units
-		CurrentLevel.getInitUnits();
-		
 		//Interface init
 		InterfaceConstructManager.init(CurrentLevel.getAvailableUnits(), CurrentLevel.getAvailableBuildings());
 		InterfaceMoneyDraw.init();
@@ -107,6 +104,9 @@ function Game()
 		InterfaceMinimap.init();
 		InterfaceFogOfWar.init();
 		MousePointer.init();
+		
+		//Init units
+		CurrentLevel.getInitUnits();
 		
 		//Preloading images
 		InterfaceGUI.preloadImages();
@@ -119,7 +119,6 @@ function Game()
 		this.resources.onComplete = function(){
 			game.fontDraw = new FontDraw('font', 14);
 			game.moveViewport(CurrentLevel.start_positions[0].x - 10, CurrentLevel.start_positions[0].y - 10, false);
-			game.players[PLAYER_HUMAN].addMoney(15000); //Should add money to all players
 			InterfaceConstructManager.drawUnits();
 			levelBuilder.generateMap();
 			InterfaceFogOfWar.drawShroud();

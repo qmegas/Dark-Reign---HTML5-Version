@@ -24,7 +24,7 @@ TrainingFacilityBuilding.move_matrix = [0,0,1,1,0,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,
 TrainingFacilityBuilding.cell_padding = {x: 2, y: 2};
 TrainingFacilityBuilding.images = {
 	normal: {
-		size: {x: 117, y: 101},
+		size: {x: 118, y: 103},
 		padding: {x: 0, y: 0}
 	},
 	shadow: null

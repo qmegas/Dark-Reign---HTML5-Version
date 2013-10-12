@@ -26,7 +26,7 @@ HeadquarterBuilding.move_matrix = [0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1];
 HeadquarterBuilding.cell_padding = {x: 2, y: 2};
 HeadquarterBuilding.images = {
 	normal: {
-		size: {x: 105, y: 138},
+		size: {x: 109, y: 138},
 		padding: {x: -11, y: 42}
 	},
 	shadow: {

@@ -5,6 +5,13 @@ var AnimationList = {
 		{start: 0, min_point: 3, max_point: 3, effect: 'eoblamd2_animation'},
 		{start: 0, min_point: 1, max_point: 3, effect: 'eoblamd2_animation'}
 	],
+	bridge2_explosion: [
+		{start: 0, min_point: 1, max_point: 1, effect: 'eoblamd1_animation'},
+		{start: 0, min_point: 2, max_point: 2, effect: 'eoblamd1_animation'},
+		{start: 0, min_point: 3, max_point: 3, effect: 'eoblamd1_animation'},
+		{start: 0, min_point: 4, max_point: 4, effect: 'eoblamd1_animation'},
+		{start: 0, min_point: 1, max_point: 4, effect: 'eoblamd1_animation'}
+	],
 	building_80_explosion: [
 		{start: 0, min_point: 1, max_point: 1, effect: 'eoblamd0_animation'},
 		{start: 0, min_point: 1, max_point: 1, effect: 'lite2_animation'},

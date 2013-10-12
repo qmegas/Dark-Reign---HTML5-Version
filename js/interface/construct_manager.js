@@ -223,7 +223,7 @@ var InterfaceConstructManager = {
 					else
 						this._drawCell(
 							i-offset, 
-							'images/buildings/' + this.available_buildings[i].res_key + '/box.png', 
+							'images/buildings/' + CurrentLevel.theme + '/' + this.available_buildings[i].res_key + '/box.png', 
 							this.available_buildings[i].enabled[PLAYER_HUMAN],
 							false
 						);

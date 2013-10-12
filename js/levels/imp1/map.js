@@ -1082,20 +1082,64 @@ var CurrentLevel = {
 		game.addPlayer(new Player('#ffffbb', 'yellow', PLAYER_HUMAN));
 		game.addPlayer(new Player('#fc3c58', 'red', PLAYER_COMPUTER1));
 		
-		AbstractUnit.createNew(ConstructionRigUnit, 12, 9, PLAYER_HUMAN, true);
+		AbstractBuilding.createNew(WaterWellBuilding, 4, 7, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(WaterWellBuilding, 10, 40, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(WaterWellBuilding, 53, 30, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(WaterWellBuilding, 42, 30, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(WaterWellBuilding, 42, 17, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(WaterWellBuilding, 53, 17, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(TaelonMineBuilding, 24, 0, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(TaelonMineBuilding, 2, 38, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(TaelonMineBuilding, 52, 48, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(TaelonMineBuilding, 41, 48, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianHorizontalBridge, 9, 23, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall2, 38, 21, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall2, 38, 17, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall2, 38, 28, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall2, 48, 12, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall2, 46, 36, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall2, 54, 36, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall1, 38, 19, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall1, 38, 26, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall1, 38, 30, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall1, 46, 12, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall1, 50, 12, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall1, 44, 36, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall1, 48, 36, PLAYER_NEUTRAL, true);
+		AbstractBuilding.createNew(CivilianSmallWall1, 52, 36, PLAYER_NEUTRAL, true);
+		
+		AbstractBuilding.createNew(WaterLaunchPadBuilding, 0, 1, PLAYER_HUMAN, true);
+		AbstractBuilding.createNew(HeadquarterBuilding, 5, 2, PLAYER_HUMAN, true);
+		AbstractBuilding.createNew(TaelonPowerBuilding, 18, 1, PLAYER_HUMAN, true);
+		ConstructionRigUnit.enabled[PLAYER_HUMAN] = true;
+		
+		AbstractBuilding.createNew(WaterLaunchPadBuilding, 47, 20, PLAYER_COMPUTER1, true);
+		AbstractBuilding.createNew(WaterLaunchPadBuilding, 10, 52, PLAYER_COMPUTER1, true);
+		AbstractBuilding.createNew(TaelonPowerBuilding, 4, 43, PLAYER_COMPUTER1, true);
+		
+		game.players[PLAYER_HUMAN].addMoney(4000);
 	},
 		
 	getAvailableUnits: function()
 	{
 		return [
-			ConstructionRigUnit, FreighterUnit
+			ConstructionRigUnit, FreighterUnit, GuardianUnit,
+			ScoutRunnerUnit
 		];
 	},
 		
 	getAvailableBuildings: function()
 	{
+		HeadquarterBuilding.upgradable = false;
+		TrainingFacilityBuilding.upgradable = false;
+		AssemblyPlantBuilding.upgradable = false;
+		
 		return [
-			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding
+			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding,
+			TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
+			//Civilian buildings
+			WaterWellBuilding, TaelonMineBuilding, CivilianHorizontalBridge,
+			CivilianSmallWall1, CivilianSmallWall2
 		];
 	}
 };

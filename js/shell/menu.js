@@ -141,7 +141,7 @@ function GameShell()
 							slider_top: (params == 'fg') ? 20 : 150,
 							slider_bottom: (params == 'fg') ? 328 : 413
 						});
-					} /*, params */);
+					}, params);
 					
 					$('#' + nav_to).show();
 				});

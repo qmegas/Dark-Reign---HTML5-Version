@@ -5,6 +5,8 @@ Build 44
 - Map refactoring
 - Add word warp function for text in game objective window
 - Starting to work on Imperium Level 1 map
+- Added snow sprites for: Headquarter, Water Launch Pad, Taelon Power, Training Facility, Assembly Plant, Plasma Turret, Water Well, Taelon Mine
+- Added new buildings: Civilian Horizontal Bridge, Small Wall 1, Small Wall 2
 
 Build 43 (22.08.2013)
 - Fly units can't "stand" above buildings structures

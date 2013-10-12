@@ -2433,6 +2433,8 @@ var CurrentLevel = {
 		AbstractBuilding.createNew(CivilianVerticalBridge, 21, 17, PLAYER_NEUTRAL, true);
 		AbstractBuilding.createNew(CivilianVerticalBridge, 54, 94, PLAYER_NEUTRAL, true);
 		
+		game.players[PLAYER_HUMAN].addMoney(15000);
+		
 		//Test unit
 		AbstractUnit.createNew(ConstructionRigUnit, 65, 110, PLAYER_COMPUTER1, true);
 	},
