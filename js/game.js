@@ -9,6 +9,7 @@ function Game()
 	this.viewport_ctx = {};
 	
 	this.paused = false;
+	this.started = false;
 	
 	this.resources = new ResourseLoader();
 	
@@ -105,9 +106,6 @@ function Game()
 		InterfaceFogOfWar.init();
 		MousePointer.init();
 		
-		//Init units
-		CurrentLevel.getInitUnits();
-		
 		//Preloading images
 		InterfaceGUI.preloadImages();
 		levelBuilder.loadMapElements();
@@ -118,6 +116,11 @@ function Game()
 		};
 		this.resources.onComplete = function(){
 			game.fontDraw = new FontDraw('font', 14);
+			
+			//Init units
+			CurrentLevel.getInitUnits();
+			this.resources
+		
 			game.moveViewport(CurrentLevel.start_positions[0].x - 10, CurrentLevel.start_positions[0].y - 10, false);
 			InterfaceConstructManager.drawUnits();
 			levelBuilder.generateMap();
@@ -130,6 +133,7 @@ function Game()
 			$('.load-screen').hide();
 			$('.game').show();
 			
+			this.started = true;
 			init_finish_callback();
 		};
 	};

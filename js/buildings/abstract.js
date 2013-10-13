@@ -696,7 +696,7 @@ function AbstractBuilding()
 		game.players[this.player].energyAddCurrent(this._proto.energy);
 		this.state = BUILDING_STATE_NORMAL;
 
-		if (this._proto.is_built_from_edge)
+		if (this._proto.is_built_from_edge && game.started)
 		{
 			var cell = this.getCell(), pos = PathFinder.findNearestStandCell(cell.x, cell.y);
 			AbstractUnit.createNew(ConstructionRigUnit, pos.x, pos.y, this.player, true);
@@ -797,7 +797,7 @@ AbstractBuilding.createNew = function(obj, x, y, player, instant_build)
 	{
 		new_obj.state = BUILDING_STATE_NORMAL;
 		new_obj.health = obj.health_max;
-		new_obj.onConstructedCustom();
+		new_obj.onConstructed();
 		obj.count[player]++;
 	}
 	else

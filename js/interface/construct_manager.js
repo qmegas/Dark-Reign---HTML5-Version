@@ -81,7 +81,7 @@ var InterfaceConstructManager = {
 		
 		if (player_id == PLAYER_HUMAN)
 		{
-			if (units.is_new)
+			if (units.is_new && game.started)
 				InterfaceSoundQueue.addSound('new_units_available');
 			
 			if (units.is_changed || buildings.is_changed)
@@ -116,7 +116,7 @@ var InterfaceConstructManager = {
 			}
 		}
 		
-		if (new_upgrade && (player_id == PLAYER_HUMAN))
+		if (new_upgrade && game.started && (player_id == PLAYER_HUMAN))
 			InterfaceSoundQueue.addSound('upgrade_available');
 	},
 	

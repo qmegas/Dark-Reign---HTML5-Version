@@ -70,10 +70,12 @@ function WaterLaunchPadBuilding(pos_x, pos_y, player)
 			game.players[this.player].addMoney(money);
 			
 			SimpleEffect.quickCreate('water_sell', {pos: cloneObj(this.position)});
-			game.resources.play('water_sell');
 			
 			if (this.player == PLAYER_HUMAN)
+			{
+				game.resources.play('water_sell');
 				InterfaceEnergyWaterDraw.waterReset();
+			}
 		}
 	};
 }

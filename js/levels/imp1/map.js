@@ -1078,10 +1078,6 @@ var CurrentLevel = {
 	
 	getInitUnits: function()
 	{
-		game.addPlayer(new Player('#ffff00', '', PLAYER_NEUTRAL));
-		game.addPlayer(new Player('#ffffbb', 'yellow', PLAYER_HUMAN));
-		game.addPlayer(new Player('#fc3c58', 'red', PLAYER_COMPUTER1));
-		
 		AbstractBuilding.createNew(WaterWellBuilding, 4, 7, PLAYER_NEUTRAL, true);
 		AbstractBuilding.createNew(WaterWellBuilding, 10, 40, PLAYER_NEUTRAL, true);
 		AbstractBuilding.createNew(WaterWellBuilding, 53, 30, PLAYER_NEUTRAL, true);
@@ -1111,7 +1107,6 @@ var CurrentLevel = {
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 0, 1, PLAYER_HUMAN, true);
 		AbstractBuilding.createNew(HeadquarterBuilding, 5, 2, PLAYER_HUMAN, true);
 		AbstractBuilding.createNew(TaelonPowerBuilding, 18, 1, PLAYER_HUMAN, true);
-		ConstructionRigUnit.enabled[PLAYER_HUMAN] = true;
 		
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 47, 20, PLAYER_COMPUTER1, true);
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 10, 52, PLAYER_COMPUTER1, true);

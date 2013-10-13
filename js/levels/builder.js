@@ -29,6 +29,10 @@ function LevelBuilder(level_data)
 	{
 		setMaxMovement();
 		createMatrix();
+		
+		game.addPlayer(new Player('#ffff00', '', PLAYER_NEUTRAL));
+		game.addPlayer(new Player('#ffffbb', 'yellow', PLAYER_HUMAN));
+		game.addPlayer(new Player('#fc3c58', 'red', PLAYER_COMPUTER1));
 	};
 	
 	this.loadMapElements = function()
