@@ -1,3 +1,6 @@
+Build 45
+- Added Freedom Guard Units: Raider, Spider Bike (and DoubleRailGun weapon)
+
 Build 44 (13.10.2013)
 - Added level objective text in game menu
 - First implementation of shroud

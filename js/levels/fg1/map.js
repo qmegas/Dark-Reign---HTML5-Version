@@ -2416,7 +2416,7 @@ var CurrentLevel = {
 	{
 		AbstractUnit.createNew(ConstructionRigUnit, 63, 4, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 66, 4, PLAYER_HUMAN, true);
-		AbstractUnit.createNew(ConstructionRigUnit, 64, 6, PLAYER_HUMAN, true);
+		AbstractUnit.createNew(SpiderBikeUnit, 64, 6, PLAYER_HUMAN, true);
 		
 		AbstractBuilding.createNew(WaterWellBuilding, 72, 1, PLAYER_NEUTRAL, true);
 		AbstractBuilding.createNew(WaterWellBuilding, 17, 25, PLAYER_NEUTRAL, true);
@@ -2439,12 +2439,13 @@ var CurrentLevel = {
 	{
 		return [
 			ConstructionRigUnit, FreighterUnit, HoverFreighterUnit, 
-			GuardianUnit, BionUnit, ExterminatorUnit,
-			InfiltratorUnit, ScoutRunnerUnit, InvaderTransportUnit, 
-			PlasmaTankUnit, AmperUnit, MadUnit, 
-			ReconDroneUnit, ShredderUnit, HostageTakerUnit,
-			TachyonTankUnit, ScarabUnit, CycloneUnit, 
-			SkyFortressUnit, WaterContaminatorUnit
+			RaiderUnit, SpiderBikeUnit
+//			GuardianUnit, BionUnit, ExterminatorUnit,
+//			InfiltratorUnit, ScoutRunnerUnit, InvaderTransportUnit, 
+//			PlasmaTankUnit, AmperUnit, MadUnit, 
+//			ReconDroneUnit, ShredderUnit, HostageTakerUnit,
+//			TachyonTankUnit, ScarabUnit, CycloneUnit, 
+//			SkyFortressUnit, WaterContaminatorUnit
 		];
 	},
 	

@@ -1,7 +1,7 @@
 var GAMECONFIG = {
 	playMusic: true,
 	playVideo: true,
-	defaultMusicVolume: 1,
+	defaultMusicVolume: 0,
 	defaultSoundVolume: 1,
 	shroud: true,
 	fog: true

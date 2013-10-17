@@ -80,7 +80,7 @@ function Game()
 		
 		var level = window.location.hash || '#fg1';
 		level = level.substr(1);
-		this.resources.loadScript('/js/levels/' + level + '/map.js', function(){
+		this.resources.loadScript('./js/levels/' + level + '/map.js', function(){
 			game.initLevel(init_finish_callback);
 		});
 	};
@@ -119,7 +119,6 @@ function Game()
 			
 			//Init units
 			CurrentLevel.getInitUnits();
-			this.resources
 		
 			game.moveViewport(CurrentLevel.start_positions[0].x - 10, CurrentLevel.start_positions[0].y - 10, false);
 			InterfaceConstructManager.drawUnits();

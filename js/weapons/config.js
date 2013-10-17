@@ -32,6 +32,22 @@ var WeaponConfig = {
 		hit_explosion: 'eoncnex0_explosion',
 		bulet_speed: 645
 	},
+	DoubleRailGun: {
+		bulet_animation: 'eorgnpr3_animation',
+		minimum_range: 0,
+		maximum_range: 5,
+		firedelay: 439,
+		can_shoot_ground: true,
+		can_shoot_flyer: false,
+		offence: {
+			type: 'E1',
+			strength: 10,
+			area_effect: 8
+		},
+		fire_sound: 'gxspbwc0',
+		hit_explosion: 'eorgnex1_explosion',
+		bulet_speed: 645
+	},
 	FortressCannon: {
 		bulet_animation: 'eoskypr0_animation',
 		minimum_range: 0,

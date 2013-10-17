@@ -215,6 +215,18 @@ var EffectList = {
 		hotpoint: {x: 2, y: 1},
 		frames: 1
 	},
+	eorgnex1_animation: {
+		res_key: 'eorgnex1',
+		size: {x: 40, y: 40},
+		hotpoint: {x: 20, y: 25},
+		frames: 14
+	},
+	eorgnpr3_animation: { //Bulet
+		res_key: 'eorgnpr3',
+		size: {x: 38, y: 38},
+		hotpoint: {x: 19, y: 19},
+		frames: 3
+	},
 	eoskypr0_animation: {
 		res_key: 'eoskypr0',
 		size: {x: 40, y: 40},

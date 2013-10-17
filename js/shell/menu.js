@@ -187,7 +187,7 @@ function GameShell()
 		current_side += this.current_level;
 		
 		if (!self.levels[current_side])
-			self.resources.loadScript('/js/levels/'+current_side+'/objective.js', function(){
+			self.resources.loadScript('./js/levels/'+current_side+'/objective.js', function(){
 				callback(self.levels[current_side]);
 			});
 		else
