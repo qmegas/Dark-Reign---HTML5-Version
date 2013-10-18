@@ -545,12 +545,8 @@ function Game()
 		this.resources.addSound('water_sell', 'sounds/gxcrdoc0.' + AUDIO_TYPE);
 		this.resources.addSound('teleport', 'sounds/gxtgtoc0.' + AUDIO_TYPE);
 		this.resources.addSound('unit_generation_in_progress', 'sounds/gvstscl3.' + AUDIO_TYPE);
-		for (i=0; i<10; ++i)
+		for (var i=0; i<10; ++i)
 			this.resources.addSound('tactical_group' + ((i+1)%10), 'sounds/gvselcl' + i + '.' + AUDIO_TYPE);
-		
-		//Units & Buildings
-		InterfaceConstructManager.loadUnitResources();
-		InterfaceConstructManager.loadBuildingResources();
 		
 		//Effects
 		CraterEffect.loadResources();

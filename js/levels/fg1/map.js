@@ -2416,7 +2416,7 @@ var CurrentLevel = {
 	{
 		AbstractUnit.createNew(ConstructionRigUnit, 63, 4, PLAYER_HUMAN, true);
 		AbstractUnit.createNew(ConstructionRigUnit, 66, 4, PLAYER_HUMAN, true);
-		AbstractUnit.createNew(SpiderBikeUnit, 64, 6, PLAYER_HUMAN, true);
+		AbstractUnit.createNew(ConstructionRigUnit, 64, 6, PLAYER_HUMAN, true);
 		
 		AbstractBuilding.createNew(WaterWellBuilding, 72, 1, PLAYER_NEUTRAL, true);
 		AbstractBuilding.createNew(WaterWellBuilding, 17, 25, PLAYER_NEUTRAL, true);
@@ -2438,31 +2438,45 @@ var CurrentLevel = {
 	getAvailableUnits: function()
 	{
 		return [
-			ConstructionRigUnit, FreighterUnit, HoverFreighterUnit, 
-			RaiderUnit, SpiderBikeUnit
-//			GuardianUnit, BionUnit, ExterminatorUnit,
-//			InfiltratorUnit, ScoutRunnerUnit, InvaderTransportUnit, 
-//			PlasmaTankUnit, AmperUnit, MadUnit, 
-//			ReconDroneUnit, ShredderUnit, HostageTakerUnit,
-//			TachyonTankUnit, ScarabUnit, CycloneUnit, 
-//			SkyFortressUnit, WaterContaminatorUnit
+			[],
+			[
+				ConstructionRigUnit, FreighterUnit, HoverFreighterUnit,
+				RaiderUnit, SpiderBikeUnit,
+				GuardianUnit, BionUnit, ExterminatorUnit,
+				InfiltratorUnit, ScoutRunnerUnit, InvaderTransportUnit, 
+				PlasmaTankUnit, AmperUnit, MadUnit, 
+				ReconDroneUnit, ShredderUnit, HostageTakerUnit,
+				TachyonTankUnit, ScarabUnit, CycloneUnit, 
+				SkyFortressUnit, WaterContaminatorUnit
+			],
+			[]
+			
+			
 		];
 	},
 	
 	getAvailableBuildings: function()
 	{
-		return [//Main buildings
-			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
-			TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
-			NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
-			FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
-			RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 
-			VerticalBridgeBuilding, CenterBridgeBuilding,
-			//Upgrades
-			Headquarter2Building, Headquarter3Building, 
-			TrainingFacility2Building, AssemblyPlant2Building,
+		return [
 			//Civilian buildings
-			WaterWellBuilding, TaelonMineBuilding, CivilianVerticalBridge
+			[WaterWellBuilding, TaelonMineBuilding, CivilianVerticalBridge],
+			
+			//Player buildings
+			[
+				//Main buildings
+				HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
+				TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
+				NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
+				FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
+				RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 
+				VerticalBridgeBuilding, CenterBridgeBuilding,
+				//Upgrades
+				Headquarter2Building, Headquarter3Building, 
+				TrainingFacility2Building, AssemblyPlant2Building
+			],
+			
+			//Computer buildings
+			[]
 		];
 	}
 };

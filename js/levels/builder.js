@@ -37,11 +37,30 @@ function LevelBuilder(level_data)
 	
 	this.loadMapElements = function()
 	{
-		for (var i in level_data.map_elements_proto)
+		var i, j, objects;
+		
+		//Load overlay
+		for (i in level_data.map_elements_proto)
 		{
 			game.resources.addImage('mapobj_' + i, 'images/' + level_data.theme + '/' + i + '.png');
 			if (level_data.map_elements_proto[i].shadow)
 				game.resources.addImage('mapobj_' + i + '_shadow', 'images/' + level_data.theme + '/' + i + '_shadow.png');
+		}
+		
+		//Load buildings
+		objects = level_data.getAvailableBuildings();
+		for (i in objects)
+		{
+			for (j in objects[i])
+				objects[i][j].loadResources();
+		}
+		
+		//Load units
+		objects = level_data.getAvailableUnits();
+		for (i in objects)
+		{
+			for (j in objects[i])
+				objects[i][j].loadResources();
 		}
 	};
 	

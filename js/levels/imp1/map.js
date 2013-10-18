@@ -1107,19 +1107,35 @@ var CurrentLevel = {
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 0, 1, PLAYER_HUMAN, true);
 		AbstractBuilding.createNew(HeadquarterBuilding, 5, 2, PLAYER_HUMAN, true);
 		AbstractBuilding.createNew(TaelonPowerBuilding, 18, 1, PLAYER_HUMAN, true);
+		game.players[PLAYER_HUMAN].addMoney(4000);
 		
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 47, 20, PLAYER_COMPUTER1, true);
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 10, 52, PLAYER_COMPUTER1, true);
 		AbstractBuilding.createNew(TaelonPowerBuilding, 4, 43, PLAYER_COMPUTER1, true);
-		
-		game.players[PLAYER_HUMAN].addMoney(4000);
+		AbstractUnit.createNew(SpiderBikeUnit, 53, 23, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(SpiderBikeUnit, 16, 47, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(SpiderBikeUnit, 54, 25, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(RaiderUnit, 10, 45, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(RaiderUnit, 52, 29, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(RaiderUnit, 52, 17, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(RaiderUnit, 46, 21, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(RaiderUnit, 41, 29, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(RaiderUnit, 41, 17, PLAYER_COMPUTER1, true);
+		AbstractUnit.createNew(RaiderUnit, 10, 51, PLAYER_COMPUTER1, true);
 	},
 		
 	getAvailableUnits: function()
 	{
 		return [
-			ConstructionRigUnit, FreighterUnit, GuardianUnit,
-			ScoutRunnerUnit
+			[],
+			[
+				ConstructionRigUnit, FreighterUnit, GuardianUnit,
+				ScoutRunnerUnit
+			],
+			[
+				RaiderUnit, SpiderBikeUnit
+			]
+			
 		];
 	},
 		
@@ -1130,11 +1146,15 @@ var CurrentLevel = {
 		AssemblyPlantBuilding.upgradable = false;
 		
 		return [
-			HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding,
-			TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
-			//Civilian buildings
-			WaterWellBuilding, TaelonMineBuilding, CivilianHorizontalBridge,
-			CivilianSmallWall1, CivilianSmallWall2
+			[
+				WaterWellBuilding, TaelonMineBuilding, CivilianHorizontalBridge,
+				CivilianSmallWall1, CivilianSmallWall2
+			],
+			[
+				HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding,
+				TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding
+			],
+			[]
 		];
 	}
 };

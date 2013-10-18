@@ -17,14 +17,14 @@ var InterfaceConstructManager = {
 	
 	init: function(units, buildings)
 	{
-		this.available_units = units;
-		this.all_buildings = buildings;
+		this.available_units = units[PLAYER_HUMAN];
+		this.all_buildings = buildings[PLAYER_HUMAN];
 		
 		this._popup_ctx = $('#cell_popup').get(0).getContext('2d');
 		
-		for (var i in buildings)
-			if (buildings[i].can_build)
-				this.available_buildings.push(buildings[i]);
+		for (var i in this.all_buildings)
+			if (this.all_buildings[i].can_build)
+				this.available_buildings.push(this.all_buildings[i]);
 	},
 	
 	pageUp: function()
@@ -147,21 +147,6 @@ var InterfaceConstructManager = {
 		}
 		
 		return {is_changed: have_changes, is_new: have_new};
-	},
-	
-	loadUnitResources: function()
-	{
-		for (var i=0; i<this.available_units.length; ++i)
-		{
-			var obj = this.available_units[i];
-			obj.loadResources();
-		}
-	},
-	
-	loadBuildingResources: function()
-	{
-		for (var i=0; i<this.all_buildings.length; ++i)
-			this.all_buildings[i].loadResources();
 	},
 	
 	drawUnits: function()
