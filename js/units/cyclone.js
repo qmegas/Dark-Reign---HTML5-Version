@@ -136,7 +136,7 @@ CycloneUnit.health_explosions = {
 	60: 'smor_explosion'
 };
 
-CycloneUnit.require_building = [AssemblyPlantBuilding, RearmingDeckBuilding, Headquarter3Building];
+CycloneUnit.require_building = [AssemblyPlantBuilding, RearmingDeckBuilding, IMHeadquarter3Building];
 
 CycloneUnit.construction_building = [AssemblyPlantBuilding, AssemblyPlant2Building];
 CycloneUnit.construction_time = 30;

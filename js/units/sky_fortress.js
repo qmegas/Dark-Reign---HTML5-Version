@@ -75,7 +75,7 @@ SkyFortressUnit.health_explosions = {
 	60: 'smor_explosion'
 };
 
-SkyFortressUnit.require_building = [AssemblyPlantBuilding, RearmingDeckBuilding, Headquarter3Building];
+SkyFortressUnit.require_building = [AssemblyPlantBuilding, RearmingDeckBuilding, IMHeadquarter3Building];
 
 SkyFortressUnit.construction_building = [AssemblyPlantBuilding, AssemblyPlant2Building];
 SkyFortressUnit.construction_time = 50;

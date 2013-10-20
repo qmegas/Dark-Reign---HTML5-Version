@@ -54,7 +54,7 @@ ReconDroneUnit.health_explosions = {
 	60: 'smor_explosion'
 };
 
-ReconDroneUnit.require_building = [Headquarter2Building, AssemblyPlantBuilding];
+ReconDroneUnit.require_building = [IMHeadquarter2Building, AssemblyPlantBuilding];
 
 ReconDroneUnit.construction_building = [AssemblyPlantBuilding, AssemblyPlant2Building];
 ReconDroneUnit.construction_time = 8;

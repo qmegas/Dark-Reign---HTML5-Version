@@ -57,7 +57,7 @@ MadUnit.health_explosions = {
 	0: 'death_with_sparks_explosion'
 };
 
-MadUnit.require_building = [Headquarter2Building, AssemblyPlantBuilding];
+MadUnit.require_building = [IMHeadquarter2Building, AssemblyPlantBuilding];
 
 MadUnit.construction_building = [AssemblyPlantBuilding, AssemblyPlant2Building];
 MadUnit.construction_time = 16;

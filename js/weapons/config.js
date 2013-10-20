@@ -64,6 +64,22 @@ var WeaponConfig = {
 		hit_explosion: 'fortress_hit_explosion',
 		bulet_speed: 1127
 	},
+	GatLaser: {
+		bulet_animation: 'eolaspr3_animation',
+		minimum_range: 0,
+		maximum_range: 5,
+		firedelay: 102,
+		can_shoot_ground: true,
+		can_shoot_flyer: true,
+		offence: {
+			type: 'E2',
+			strength: 10,
+			area_effect: 8
+		},
+		fire_sound: 'gxfgtwc0',
+		hit_explosion: 'eolasex0_explosion',
+		bulet_speed: 645
+	},
 	GatPlasma: {
 		bulet_animation: 'eoplspr1_animation',
 		minimum_range: 0,

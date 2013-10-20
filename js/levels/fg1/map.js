@@ -2464,14 +2464,14 @@ var CurrentLevel = {
 			//Player buildings
 			[
 				//Main buildings
-				HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
+				IMHeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
 				TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
 				NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
 				FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
 				RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 
 				VerticalBridgeBuilding, CenterBridgeBuilding,
 				//Upgrades
-				Headquarter2Building, Headquarter3Building, 
+				IMHeadquarter2Building, IMHeadquarter3Building, 
 				TrainingFacility2Building, AssemblyPlant2Building
 			],
 			

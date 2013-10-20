@@ -124,7 +124,7 @@ ConstructionRigUnit.response_sounds = ['gvicnrl0', 'gvicnrl1', 'gvicnrl2'];
 ConstructionRigUnit.cost = 300;
 ConstructionRigUnit.shield_type = 'TankPlatingWet';
 
-ConstructionRigUnit.require_building = [HeadquarterBuilding];
+ConstructionRigUnit.require_building = [IMHeadquarterBuilding];
 
-ConstructionRigUnit.construction_building = [HeadquarterBuilding, Headquarter2Building, Headquarter3Building];
+ConstructionRigUnit.construction_building = [IMHeadquarterBuilding, IMHeadquarter2Building, IMHeadquarter3Building];
 ConstructionRigUnit.construction_time = 6;

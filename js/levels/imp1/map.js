@@ -1105,13 +1105,15 @@ var CurrentLevel = {
 		AbstractBuilding.createNew(CivilianSmallWall1, 52, 36, PLAYER_NEUTRAL, true);
 		
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 0, 1, PLAYER_HUMAN, true);
-		AbstractBuilding.createNew(HeadquarterBuilding, 5, 2, PLAYER_HUMAN, true);
+		AbstractBuilding.createNew(IMHeadquarterBuilding, 5, 2, PLAYER_HUMAN, true);
 		AbstractBuilding.createNew(TaelonPowerBuilding, 18, 1, PLAYER_HUMAN, true);
 		game.players[PLAYER_HUMAN].addMoney(4000);
 		
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 47, 20, PLAYER_COMPUTER1, true);
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 10, 52, PLAYER_COMPUTER1, true);
 		AbstractBuilding.createNew(TaelonPowerBuilding, 4, 43, PLAYER_COMPUTER1, true);
+		AbstractBuilding.createNew(FGHeadquarterBuilding, 0, 50, PLAYER_COMPUTER1, true);
+		AbstractBuilding.createNew(FGLaserTurretBuilding, 10, 38, PLAYER_COMPUTER1, true);
 		AbstractUnit.createNew(SpiderBikeUnit, 53, 23, PLAYER_COMPUTER1, true);
 		AbstractUnit.createNew(SpiderBikeUnit, 16, 47, PLAYER_COMPUTER1, true);
 		AbstractUnit.createNew(SpiderBikeUnit, 54, 25, PLAYER_COMPUTER1, true);
@@ -1141,7 +1143,7 @@ var CurrentLevel = {
 		
 	getAvailableBuildings: function()
 	{
-		HeadquarterBuilding.upgradable = false;
+		IMHeadquarterBuilding.upgradable = false;
 		TrainingFacilityBuilding.upgradable = false;
 		AssemblyPlantBuilding.upgradable = false;
 		
@@ -1151,10 +1153,12 @@ var CurrentLevel = {
 				CivilianSmallWall1, CivilianSmallWall2
 			],
 			[
-				HeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding,
+				IMHeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding,
 				TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding
 			],
-			[]
+			[
+				FGHeadquarterBuilding, FGLaserTurretBuilding
+			]
 		];
 	}
 };

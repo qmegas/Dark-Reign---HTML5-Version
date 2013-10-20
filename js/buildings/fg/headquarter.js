@@ -1,50 +1,53 @@
-function HeadquarterBuilding(pos_x, pos_y, player)
+function FGHeadquarterBuilding(pos_x, pos_y, player)
 {
-	this._proto = HeadquarterBuilding;
-	
+	this._proto = FGHeadquarterBuilding;
+
 	this.init(pos_x, pos_y, player);
 }
 
-AbstractBuilding.setBuildingCommonOptions(HeadquarterBuilding);
+AbstractBuilding.setBuildingCommonOptions(FGHeadquarterBuilding);
 
-HeadquarterBuilding.res_key = 'headquarter';
-HeadquarterBuilding.obj_name = 'Headquarter 1';
-HeadquarterBuilding.cost = 750;
-HeadquarterBuilding.build_time = 15;
-HeadquarterBuilding.sell_cost = 375;
-HeadquarterBuilding.sell_time = 7;
-HeadquarterBuilding.health_max = 1440;
+FGHeadquarterBuilding.res_key = 'fg_headquarter';
+FGHeadquarterBuilding.obj_name = 'Headquarter 1';
+FGHeadquarterBuilding.cost = 750;
+FGHeadquarterBuilding.build_time = 15;
+FGHeadquarterBuilding.sell_cost = 375;
+FGHeadquarterBuilding.sell_time = 7;
+FGHeadquarterBuilding.health_max = 1200;
 
-HeadquarterBuilding.energy = 100;
-HeadquarterBuilding.enabled = Array.factory(PLAYERS_COUNT, true);
-HeadquarterBuilding.can_build = true;
-HeadquarterBuilding.crater = 4;
+FGHeadquarterBuilding.energy = 100;
+FGHeadquarterBuilding.enabled = Array.factory(PLAYERS_COUNT, true);
+FGHeadquarterBuilding.can_build = true;
+FGHeadquarterBuilding.crater = 4;
 
-HeadquarterBuilding.cell_size = {x: 5, y: 4};
-HeadquarterBuilding.cell_matrix = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
-HeadquarterBuilding.move_matrix = [0,0,1,1,1,1,1,0,0,1,0,1,1,1,1,1,0,1,1,1];
-HeadquarterBuilding.cell_padding = {x: 2, y: 2};
-HeadquarterBuilding.images = {
+FGHeadquarterBuilding.cell_size = {x: 5, y: 4};
+FGHeadquarterBuilding.cell_matrix = [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+FGHeadquarterBuilding.move_matrix = [1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0];
+FGHeadquarterBuilding.cell_padding = {x: 2, y: 2};
+FGHeadquarterBuilding.images = {
 	normal: {
-		size: {x: 109, y: 138},
-		padding: {x: -11, y: 42}
+		size: {x: 119, y: 125},
+		padding: {x: 0, y: 29}
 	},
 	shadow: {
-		size: {x: 122, y: 88},
-		padding: {x: -19, y: -6}
+		size: {x: 117, y: 70},
+		padding: {x: -1, y: -10}
 	}
 };
-HeadquarterBuilding.hotpoints = [
-	{x: 24, y: -36},
-	{x: 92, y: 52},
-	{x: 88, y: 31},
-	{x: 40, y: 8}
+FGHeadquarterBuilding.hotpoints = [
+	{x: 13, y: -36},
+	{x: 32, y: 25},
+	{x: 40, y: 40},
+	{x: 50, y: 18},
+	{x: 49, y: 56},
+	{x: 78, y: 23},
+	{x: 89, y: 34}
 ];
-HeadquarterBuilding.health_explosions = {
+FGHeadquarterBuilding.health_explosions = {
 	0: 'headquarter_0_explosion',
 	33: 'headquarter_33_explosion',
 	60: 'headquarter_60_explosion',
 	80: 'headquarter_80_explosion'
 };
 
-HeadquarterBuilding.upgradable = true;
+//FGHeadquarterBuilding.upgradable = true;

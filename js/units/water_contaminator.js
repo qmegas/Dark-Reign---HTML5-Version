@@ -58,7 +58,7 @@ WaterContaminatorUnit.health_explosions = {
 	60: 'smor_explosion'
 };
 
-WaterContaminatorUnit.require_building = [Headquarter3Building, AssemblyPlantBuilding];
+WaterContaminatorUnit.require_building = [IMHeadquarter3Building, AssemblyPlantBuilding];
 
 WaterContaminatorUnit.construction_building = [AssemblyPlantBuilding, AssemblyPlant2Building];
 WaterContaminatorUnit.construction_time = 100;
