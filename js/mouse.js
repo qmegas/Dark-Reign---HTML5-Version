@@ -189,6 +189,9 @@ var MousePointer = {
 		{
 			if (game.objects[objid].is_building)
 			{
+				if (game.objects[objid].player != PLAYER_HUMAN)
+					return this._drawCursor(current_time, Cursor.SELECT);
+				
 				if (
 					game.objects[objid]._proto.is_bridge && 
 					game.selected_objects.length>0 && 
@@ -331,41 +334,44 @@ var MousePointer = {
 								game.moveSelectedUnits(pos);
 								return;
 							}
-
-							//Is harvesting?
-							if (game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
+							
+							if (game.objects[unitid].player == PLAYER_HUMAN)
 							{
-								for (var i in game.selected_objects)
-									game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
-								return;
-							}
+								//Is harvesting?
+								if (game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
+								{
+									for (var i in game.selected_objects)
+										game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
+									return;
+								}
 
-							//Rearm Cyclones
-							if (game.selected_info.cyclones && game.objects[unitid]._proto==RearmingDeckBuilding && game.objects[unitid].state==BUILDING_STATE_NORMAL)
-							{
-								for (var i in game.selected_objects)
-									game.objects[game.selected_objects[i]].orderRearm(game.objects[unitid], true);
-								return;
-							}
+								//Rearm Cyclones
+								if (game.selected_info.cyclones && game.objects[unitid]._proto==RearmingDeckBuilding && game.objects[unitid].state==BUILDING_STATE_NORMAL)
+								{
+									for (var i in game.selected_objects)
+										game.objects[game.selected_objects[i]].orderRearm(game.objects[unitid], true);
+									return;
+								}
 
-							//Is healing humans
-							if (game.selected_info.humans && game.objects[unitid].isHealer())
-							{
-								for (var i in game.selected_objects)
-									game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
-								return;
-							}
+								//Is healing humans
+								if (game.selected_info.humans && game.objects[unitid].isHealer())
+								{
+									for (var i in game.selected_objects)
+										game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
+									return;
+								}
 
-							//Is fixing vehical
-							if (
-								game.selected_objects.length>0 &&
-								!game.selected_info.humans && 
-								!game.selected_info.is_building && 
-								game.objects[unitid].isFixer())
-							{
-								for (var i in game.selected_objects)
-									game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
-								return;
+								//Is fixing vehical
+								if (
+									game.selected_objects.length>0 &&
+									!game.selected_info.humans && 
+									!game.selected_info.is_building && 
+									game.objects[unitid].isFixer())
+								{
+									for (var i in game.selected_objects)
+										game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
+									return;
+								}
 							}
 						}
 						

@@ -2,6 +2,7 @@ Build 45
 - Added Freedom Guard Units: Raider, Spider Bike (and DoubleRailGun weapon)
 - Added Freedom Guard buildings: Headquarter, Laser Turret
 - Some buildings refactoring
+- Bugfix: disable ability to harvest for other player buildings
 
 Build 44 (13.10.2013)
 - Added level objective text in game menu

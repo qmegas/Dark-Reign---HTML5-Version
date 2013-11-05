@@ -20,8 +20,9 @@ function LevelBuilder(level_data)
 					building: -1,
 					map_element: -1,
 					shroud: (GAMECONFIG.shroud ? 1 : 0),
-					fog: (GAMECONFIG.shroud ? 0 : 1) ,
-					fog_new_state: ((!GAMECONFIG.fog && !GAMECONFIG.shroud) ? 1 : 0)
+					fog: (GAMECONFIG.fog ? 0 : 1) ,
+					fog_new_state: ((!GAMECONFIG.fog && !GAMECONFIG.shroud) ? 1 : 0),
+					fog_image: -1 //(GAMECONFIG.fog ? 0 : -1)
 				};
 	}
 	

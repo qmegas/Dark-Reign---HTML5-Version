@@ -7,7 +7,8 @@ To do:
 - High priority bugs:
 	- when ordering scouted unit it don't stop scout
 	- when disabling order, unit should stop
-	- disable ability to harvest for other player buildings
+	- Disable effects under the fog
+	- Can't attack building by selected units
 
 - Medium priority bugs:
 	- Add Boost weapon (weapon for Amper unit)
@@ -17,7 +18,7 @@ To do:
 	- Add Hostage Taker weapon
 	- Air Defense Site should have 3 weapons instead one
 	- Add animation for repair station
-	- More beautiful Fog of War and Shroud
+	- More beautiful shroud
 
 - Low priority bugs:
 	- Mouse cursor should not change when mouse over other player's units

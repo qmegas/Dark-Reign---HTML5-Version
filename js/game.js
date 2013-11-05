@@ -123,7 +123,6 @@ function Game()
 			game.moveViewport(CurrentLevel.start_positions[0].x - 10, CurrentLevel.start_positions[0].y - 10, false);
 			InterfaceConstructManager.drawUnits();
 			levelBuilder.generateMap();
-			InterfaceFogOfWar.drawShroud();
 			game._resetSelectionInfo();
 			InterfaceEnergyWaterDraw.drawAll();
 			InterfaceMinimap.switchState();

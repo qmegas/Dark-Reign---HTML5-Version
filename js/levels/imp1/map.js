@@ -1107,6 +1107,7 @@ var CurrentLevel = {
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 0, 1, PLAYER_HUMAN, true);
 		AbstractBuilding.createNew(IMHeadquarterBuilding, 5, 2, PLAYER_HUMAN, true);
 		AbstractBuilding.createNew(TaelonPowerBuilding, 18, 1, PLAYER_HUMAN, true);
+		AbstractUnit.createNew(SpiderBikeUnit, 20, 20, PLAYER_HUMAN, true);
 		game.players[PLAYER_HUMAN].addMoney(4000);
 		
 		AbstractBuilding.createNew(WaterLaunchPadBuilding, 47, 20, PLAYER_COMPUTER1, true);
