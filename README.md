@@ -1,6 +1,6 @@
 ## About
 
-This is project about recreation of old RTS game [Dark Reign: The Future of War](http://en.wikipedia.org/wiki/Dark_Reign:_The_Future_of_War) by using HTML5 technologies.
+The goal of this project is to recreate an old RTS game [Dark Reign: The Future of War](http://en.wikipedia.org/wiki/Dark_Reign:_The_Future_of_War) by using HTML5 technologies.
 
 ## How to run the game
 
