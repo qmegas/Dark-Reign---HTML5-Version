@@ -13,7 +13,7 @@ var BrowserCheck = {
 		
 		//OGG support
 		var v = document.createElement('audio');
-		ret = v.canPlayType('audio/ogg; codecs="theora, vorbis"');
+		ret = v.canPlayType('audio/ogg');
 		if (!ret)
 			return false;
 		
