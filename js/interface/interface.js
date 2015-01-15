@@ -26,7 +26,6 @@ var InterfaceGUI = {
 		//---------
 		game.resources.addImage('map-tiles', 'images/levels/'+CurrentLevel.tiles);
 		game.resources.addImage('minimap', 'images/levels/'+CurrentLevel.minimap.image);
-		game.resources.addImage('clr', 'images/buildings/clr.png');
 		game.resources.addImage('font', 'images/font.png');
 	},
 		
