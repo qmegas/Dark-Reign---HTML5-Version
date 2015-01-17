@@ -10,7 +10,7 @@
  */
 function SimpleEffect(info)
 {
-	var frame_speed = 50, position = null, direction = 0;
+	var frame_speed = 50, position = null, direction = 0, cell = null;
 	
 	this.uid = -1;
 	this.is_effect = true;
@@ -25,6 +25,11 @@ function SimpleEffect(info)
 			x: pos.x - this.info.hotpoint.x,
 			y: pos.y - this.info.hotpoint.y
 		};
+	};
+	
+	this.setCell = function(obj_cell)
+	{
+		cell = obj_cell;
 	};
 	
 	this.setDirection = function(val)
@@ -74,6 +79,9 @@ function SimpleEffect(info)
 	
 	this._checkOnScreen = function()
 	{
+		if ((cell !== null) && CurrentLevel.map_cells[cell.x][cell.y].fog == 0)
+			return false;
+		
 		if ((game.viewport_x > (position.x + this.info.size.x)) || 
 			(game.viewport_y > (position.y + this.info.size.y)) ||
 			((game.viewport_x + VIEWPORT_SIZE) < position.x) ||

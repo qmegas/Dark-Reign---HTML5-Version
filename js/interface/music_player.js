@@ -2,7 +2,7 @@ var InterfaceMusicPlayer = {
 	_volume: GAMECONFIG.defaultMusicVolume,
 	_tracks: (GAMECONFIG.playMusic) ? ['track1','track2','track3','track4','track5','track6','track7','track8'] : [],
 	_player: null,
-	_current_track: 0,
+	_current_track: -1,
 	
 	start: function()
 	{
@@ -15,7 +15,7 @@ var InterfaceMusicPlayer = {
 			InterfaceMusicPlayer.nextTrack();
 		});
 		
-		this.setTrack(0);
+		this.nextTrack();
 		this.setVolume(GAMECONFIG.defaultMusicVolume);
 	},
 		
@@ -46,15 +46,12 @@ var InterfaceMusicPlayer = {
 		
 	nextTrack: function()
 	{
-		if (this._tracks.length == 1)
-			this._player.play();
-		else
-		{
-			this._current_track++;
-			if (this._current_track == this._tracks.length)
-				this._current_track = 0;
-			
-			this.setTrack(this._current_track);
-		}
+		var track;
+		//do {
+			track = parseInt(Math.random() * this._tracks.length);
+		//} while (track != this._current_track);
+		
+		this._current_track = track;
+		this.setTrack(this._current_track);
 	}
 };

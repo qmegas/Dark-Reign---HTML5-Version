@@ -9,6 +9,10 @@ function Animator()
 			if (!game.objects[effects[i].id])
 				continue;
 			game.objects[effects[i].id].setPosition(this._getHotpointPosition(effects[i].point));
+			game.objects[effects[i].id].setCell({
+				x: game.objects[object_id].position_cell.x,
+				y: game.objects[object_id].position_cell.y
+			});
 		}
 	};
 	

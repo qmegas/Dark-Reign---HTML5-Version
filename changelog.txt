@@ -3,6 +3,7 @@ Build 45
 - Added Freedom Guard buildings: Headquarter, Laser Turret
 - Some buildings refactoring
 - Restored Chrome support
+- Added music player randomization
 - Bugfix: disable ability to harvest for other player buildings
 
 Build 44 (13.10.2013)

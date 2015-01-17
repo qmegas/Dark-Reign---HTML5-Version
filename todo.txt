@@ -7,7 +7,7 @@ To do:
 - High priority bugs:
 	- when ordering scouted unit it don't stop scout
 	- when disabling order, unit should stop
-	- Disable effects under the fog
+	- Disable effects under the fog - optimize the way how effects added to drawing queue
 	- Can't attack building by selected units
 
 - Medium priority bugs:
