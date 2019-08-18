@@ -24,3 +24,6 @@ OR [See it live](http://qmegas.info/dark-reign-html5/)
 
 ## Help required
 Need help to improve pathfinding algorithms. If you are good at this, then please contact me.
+
+## License
+MIT
