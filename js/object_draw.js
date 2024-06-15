@@ -53,10 +53,13 @@ function ObjectDraw()
 	
 	this._drawElement = function(element)
 	{
-		game.viewport_ctx.drawImage(
-			game.resources.get(element.res_key), 
-			element.src_x, element.src_y, element.src_width, element.src_height, 
-			element.x, element.y, element.src_width, element.src_height
-		);
+		const resource = game.resources.get(element.res_key)
+		if (resource) {
+			game.viewport_ctx.drawImage(
+				resource, 
+				element.src_x, element.src_y, element.src_width, element.src_height, 
+				element.x, element.y, element.src_width, element.src_height
+			);
+		}
 	};
 }
