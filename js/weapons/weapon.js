@@ -52,7 +52,7 @@ function WeaponHolder(config_name)
 	
 	this.canAttackTarget = function(target)
 	{
-		if (target.type == 'object')
+		if (target && target.type == 'object')
 		{
 			if (unit.uid == target.objid)
 				return false;
@@ -63,7 +63,7 @@ function WeaponHolder(config_name)
 				return config.can_shoot_ground;
 		}
 		
-		if (target.type == 'ground')
+		if (target && target.type == 'ground')
 			return config.can_shoot_ground;
 		
 		return false;
@@ -88,7 +88,7 @@ function WeaponHolder(config_name)
 	
 	this.isTargetAlive = function()
 	{
-		if (target.type == 'object')
+		if (target && target.type == 'object')
 			if (game.objects[target.objid] === undefined)
 			{
 				if (unit.is_building)
@@ -105,7 +105,7 @@ function WeaponHolder(config_name)
 	{
 		var pos = target, obj;
 		
-		if (target.type == 'object')
+		if (target && target.type == 'object')
 		{
 			obj = game.objects[target.objid];
 			pos = {x: obj.position.x, y: obj.position.y};
@@ -124,7 +124,7 @@ function WeaponHolder(config_name)
 	
 	this.getTargetLayer = function()
 	{
-		return (target.type == 'object' && game.objects[target.objid]._proto.move_mode == MOVE_MODE_FLY) ? MOVE_MODE_FLY : MOVE_MODE_GROUND;
+		return (target && target.type == 'object' && game.objects[target.objid]._proto.move_mode == MOVE_MODE_FLY) ? MOVE_MODE_FLY : MOVE_MODE_GROUND;
 	};
 	
 	this._getDistance = function()
