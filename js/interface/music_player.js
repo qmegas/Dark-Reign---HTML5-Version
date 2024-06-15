@@ -60,11 +60,6 @@ var InterfaceMusicPlayer = {
 			loop: true
 		});
 
-		// Clear listener after first call.
-		this._player.once('load', function(){
-		  self._player.play();
-		});
-
 		// Fires when the sound finishes playing.
 		this._player.on('end', function(){  
 			self.nextTrack();
