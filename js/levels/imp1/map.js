@@ -1163,10 +1163,8 @@ var CurrentLevel = {
 				//SkyFortressUnit, WaterContaminatorUnit, HostageTakerUnit,
 			],
 			[
-
+				RaiderUnit, SpiderBikeUnit
 			]
-			
-			
 		];
 	},
 		
