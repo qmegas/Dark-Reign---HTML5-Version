@@ -9,6 +9,8 @@ function MapEditor()
 	this.path = [];
 	
 	this.resources = new ResourseLoader();
+
+	this.map_elements = []
 	
 	this.init = function()
 	{
@@ -16,6 +18,7 @@ function MapEditor()
 		
 		var levelBuilder = new LevelBuilder(CurrentLevel);
 		levelBuilder.build();
+		levelBuilder.loadMapElements();
 		
 		this.resources.addImage('map-tiles', 'images/levels/'+CurrentLevel.tiles);
 		this._loadMapResources();
@@ -31,6 +34,10 @@ function MapEditor()
 			for (y=0; y<CurrentLevel.size.y-1; ++y)
 				this._drawCell(x, y, this.map[x][y].type);
 	};
+
+	this.addPlayer = function() {
+
+	}
 	
 	this._loadMapResources = function()
 	{
@@ -130,16 +137,16 @@ $(function(){
 	game.init();
 	
 	$('#grid').click(function(event){
-		game.clicked(event.layerX, event.layerY);
+		game.clicked(event.offsetX, event.offsetY);
 	});
-	$('#grid').mousedown(function(){
+	$('#grid').on('mousedown pointerdown', function(){
 		qdraw = true;
 	});
-	$('#grid').mousemove(function(event){
+	$('#grid').on('mousemove pointermove', function(event){
 		if (qdraw)
-			game.clicked(event.layerX, event.layerY);
+			game.clicked(event.offsetX, event.offsetY);
 	});
-	$('#grid').mouseup(function(){
+	$('#grid').on('mouseup pointerup', function(){
 		qdraw = false;
 	});
 	
