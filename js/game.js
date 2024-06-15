@@ -129,7 +129,15 @@ function Game()
 			InterfaceMusicPlayer.start();
 			
 			$('.load-screen').hide();
-			$('.game').show();
+			$('.game').css({'display': 'flex'});   
+
+			/*
+			$('.game').bind('click.pointerlock', (e) => {
+				$('.game').get(0).requestPointerLock({
+				    unadjustedMovement: false,
+				  });
+			})
+			*/
 			
 			this.started = true;
 			init_finish_callback();
@@ -839,6 +847,17 @@ function Game()
 			case 'music_volume':
 				InterfaceMusicPlayer.setVolume(value/100);
 				break;
+			case 'game_speed':
+				// TODO
+				RUNS_PER_SECOND = value
+				console.warn('TODO game_speed', value);
+				break;
+
+			case 'panning_speed':
+				// TODO
+				console.warn('TODO panning_speed', value/ 100);
+				break;
+
 		}
 	};
 }
