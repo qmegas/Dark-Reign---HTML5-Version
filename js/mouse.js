@@ -69,7 +69,10 @@ var MousePointer = {
 	setPosition: function(event)
 	{
 		this.show_cursor = true;
-		this.position = {x: event.layerX, y: event.layerY};
+		this.position = {
+			x: event.offsetX, 
+			y: event.offsetY
+		};
 	},
 	
 	draw: function(current_time)
