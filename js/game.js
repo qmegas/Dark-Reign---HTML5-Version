@@ -384,6 +384,7 @@ function Game()
 	
 	this.minimapNavigation = function(start)
 	{
+		console.log('minimapNavigation', start)
 		this.minimap_navigation = start;
 	};
 	
@@ -636,11 +637,15 @@ function Game()
 	this.toggleActionState = function(state)
 	{
 		var prev_state = this.action_state;
-		if (this.action_state != ACTION_STATE_NONE)
-			this.cleanActionState();
 		
-		if (state == prev_state)
+		// Toggle
+		if (prev_state == state) {
+			this.cleanActionState();
 			return;
+		}
+
+		if (prev_state != ACTION_STATE_NONE)
+			this.cleanActionState();
 		
 		switch (state)
 		{
