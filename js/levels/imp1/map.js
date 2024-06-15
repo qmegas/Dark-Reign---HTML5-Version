@@ -1126,7 +1126,8 @@ var CurrentLevel = {
 		AbstractUnit.createNew(RaiderUnit, 10, 51, PLAYER_COMPUTER1, true);
 	},
 		
-	getAvailableUnits: function()
+	// Example limitation imp1
+	_getAvailableUnits: function()
 	{
 		return [
 			[],
@@ -1137,6 +1138,34 @@ var CurrentLevel = {
 			[
 				RaiderUnit, SpiderBikeUnit
 			]
+			
+		];
+	},
+
+	getAvailableUnits: function()
+	{
+		return [
+			[],
+			[
+				// fg
+				//RaiderUnit, SpiderBikeUnit,
+
+				// imp
+				ConstructionRigUnit, FreighterUnit, 
+				GuardianUnit, BionUnit,
+				ScoutRunnerUnit, InvaderTransportUnit, 
+				PlasmaTankUnit, ShredderUnit, 
+				
+				// Upgrade imp
+				// InfiltratorUnit, ExterminatorUnit, AmperUnit, MadUnit, 
+				//TachyonTankUnit, ScarabUnit, HoverFreighterUnit,
+				//ReconDroneUnit, CycloneUnit, 
+				//SkyFortressUnit, WaterContaminatorUnit, HostageTakerUnit,
+			],
+			[
+
+			]
+			
 			
 		];
 	},
