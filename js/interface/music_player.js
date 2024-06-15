@@ -27,7 +27,7 @@ var InterfaceMusicPlayer = {
 
 		// Fires when the sound finishes playing.
 		this._player.on('end', function(){  
-			this.nextTrack();
+			self.nextTrack();
 		});
 		
 		this.nextTrack();
