@@ -1,0 +1,61 @@
+{
+	"name":"Dark Reign HTML5",
+    "short_name":"Dark Reign",
+    "theme_color": "#fe5406",
+    "background_color": "#000000",
+    "description": "Dark Reign demake in HTML5",
+    "categories": [
+        "game"
+    ],
+    "orientation": "any",
+    "display_override": ["fullscreen", "minimal-ui"],
+    "display": "standalone",
+    "dir": "auto",
+    "lang": "en",
+    "start_url": "/",
+    "scope": "/",
+    "icons": [
+        {
+            "sizes": "512x512",
+            "src": "icon512_maskable.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "any",
+            "sizes": "512x512",
+            "src": "icon512_rounded.png",
+            "type": "image/png"
+        }
+    ],
+  	"screenshots": [
+	    {
+	      "src": "screenshots/capture-1.png",
+	      "type": "image/png",
+	      "sizes": "1600x1200"
+	    },
+	    {
+	      "src": "screenshots/capture-2.png",
+          "type": "image/png",
+	      "sizes": "1280x800",
+          "form_factor": "wide"
+	    }
+  ],
+  "splash_screens": [],
+  "shortcuts": [],
+  "launch_handler": {},
+  "permissions": [
+    "notifications",
+    "cookies",
+    "pageCapture",
+    "unlimitedStorage"
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+darkreign",
+      "url": "/game.html?%s"
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 640
+  }
+}
