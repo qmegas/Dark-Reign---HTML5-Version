@@ -690,6 +690,7 @@ canvas, img {
 	width: 64px;
 	height: 50px;
 	background-position: 9px 2px;
+	background-repeat: no-repeat;
 }
 .game .right-frame .panel .unit-boxes .box .unit-image {
 	width: 64px;
