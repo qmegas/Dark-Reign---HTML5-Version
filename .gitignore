@@ -8,3 +8,8 @@
 /music/track2.ogg
 /music/track5.ogg
 /videos/
+
+
+# System Files
+*.DS_Store
+*Thumbs.db
