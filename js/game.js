@@ -117,6 +117,8 @@ function Game()
 		this.resources.onComplete = function(){
 			game.fontDraw = new FontDraw('font', 14);
 			
+			InterfaceGUI.drawMenu();
+
 			//Init units
 			CurrentLevel.getInitUnits();
 		
