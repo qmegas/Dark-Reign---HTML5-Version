@@ -6,7 +6,9 @@ var InterfaceMinimap = {
 	init: function()
 	{
 		this._viewport_ctx = $('#minimap_viewport').get(0).getContext('2d');
-		this._objects_ctx = $('#minimap_objects').get(0).getContext('2d');
+		this._objects_ctx = $('#minimap_objects').get(0).getContext('2d', {
+			willReadFrequently: true
+		});
 	},
 	
 	drawViewport: function()
