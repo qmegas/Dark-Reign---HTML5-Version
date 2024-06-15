@@ -37,7 +37,7 @@ function ScrollWidget()
 	
 	this._setHandlers = function()
 	{
-		$(options.button_up).bind('mousedown pointerup', function(){
+		$(options.button_up).bind('mousedown pointerdown', function(){
 			current_pos -= 10;
 			if (current_pos <= 0)
 				current_pos = 0;
@@ -45,7 +45,7 @@ function ScrollWidget()
 			self._scroll();
 		});
 		
-		$(options.button_down).bind('mousedown pointerup', function(){
+		$(options.button_down).bind('mousedown pointerdown', function(){
 			current_pos += 10;
 			if (current_pos > overflow_size)
 				current_pos = overflow_size;
@@ -54,7 +54,7 @@ function ScrollWidget()
 		});
 		
 		$(options.button_slider)
-			.bind('mousedown pointerup', function(){
+			.bind('mousedown pointerdown', function(){
 				slider_hold = true;
 			})
 			.bind('mouseup pointerup', function(){
@@ -80,9 +80,9 @@ function ScrollWidget()
 	
 	this._unsetHandlers = function()
 	{
-		$(options.button_up).unbind('mousedown');
-		$(options.button_down).unbind('mousedown');
-		$(options.button_slider).unbind('mousedown mouseup mousemove').hide();
+		$(options.button_up).unbind('mousedown pointerdown');
+		$(options.button_down).unbind('mousedown  pointerdown');
+		$(options.button_slider).unbind('mousedown pointerdown mouseup pointerup mousemove pointermove').hide();
 		
 		is_set = false;
 		slider_hold = false;
