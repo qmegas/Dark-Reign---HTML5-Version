@@ -1,8 +1,9 @@
 var PUNKT_SOUNDS = 6;
 
-function GameShell()
+function GameMenu()
 {
-	var self = this, scroll = new ScrollWidget();
+	var self = this, 
+		scroll = new ScrollWidget();
 	
 	this.curr_srcreen = '';
 	this.prev_screen = '';
@@ -16,13 +17,7 @@ function GameShell()
 	this.current_level = 1;
 	
 	this.init = function()
-	{
-		if (!BrowserCheck.check())
-		{
-			BrowserCheck.standartMessage();
-			return;
-		}
-		
+	{	
 		this.resources.addImage('css1', 'images/shell/level_select.png');
 		this.resources.addImage('css2', 'images/shell/archive.png');
 		this.resources.addImage('css3', 'images/shell/objective.png');
@@ -288,22 +283,18 @@ function GameShell()
 
 $(function(){
 
-	function startGameShell() {
+	function startGameMenu() {
 		if (!game) {
-			game = new GameShell();
+			game = new GameMenu();
 			game.init();
 		}
 	}
 
 	var img = new Image();
 	img.src = 'images/interface/load-screen.png';
-	img.onload = function(){
-		startGameShell()
-	};
+	img.onload = startGameMenu;
 
-	$('.load-screen').click(function(){
-		startGameShell()
-	});
+	$('.load-screen').click(startGameMenu);
 	
 	$('.moovable').click(function(){
 		var $this = $(this);

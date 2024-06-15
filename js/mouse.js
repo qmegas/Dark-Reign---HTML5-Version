@@ -67,7 +67,7 @@ var MousePointer = {
 	},
 	
 	setPosition: function(event)
-	{
+	{	
 		this.show_cursor = true;
 		this.position = {
 			x: event.offsetX, 
@@ -284,7 +284,7 @@ var MousePointer = {
 	},	
 	
 	getCellPosition: function()
-	{
+	{	
 		return {
 			x: Math.floor((this.position.x + game.viewport_x - 12)/CELL_SIZE),
 			y: Math.floor((this.position.y + game.viewport_y - 12)/CELL_SIZE)

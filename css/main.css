@@ -18,12 +18,13 @@ body {
 }
 
 
-.game-shell {
+.shell-main {
 	width: 640px;
 	height: 480px;
     aspect-ratio: 640 / 480;
     scale: 200%;
     position: relative;
+    max-height: 100vh;
 }
 
 ::selection {
