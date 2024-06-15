@@ -5,7 +5,11 @@ body {
 	overscroll-behavior: none;
 }
 
-body {
+canvas, img {
+    image-rendering: pixelated;
+}
+
+.body-game {
 	padding: 0;
 	margin: 0;
 	cursor: url("../images/icursor.png"), auto;
@@ -13,18 +17,30 @@ body {
     align-items: center;
     justify-content: center;
 	background-color: #000;
+	overflow: hidden;
 }
 
-canvas, img {
-    image-rendering: pixelated;
+.body-editor {
+	position: relative;
+	overflow: auto;
+	max-width: 100%;
+	overflow: hidden;
 }
 
 .shell-main {
+    position: relative;
 	width: 640px;
 	height: 480px;
+    max-height: 100%;
     aspect-ratio: 640 / 480;
     scale: 200%;
+}
+
+.shell-editor {
     position: relative;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
     max-height: 100%;
 }
 
@@ -682,6 +698,7 @@ canvas, img {
 }
 .game .right-frame .panel#panel_special {
 	color: #fff;
+	    padding-left: 20px;
 }
 .game .right-frame .panel .unit-boxes .box {
 	float: left;
@@ -747,10 +764,10 @@ canvas, img {
 .game .right-frame .panel#panel_menu {
 	padding-left: 20px;
 }
-.game .right-frame .panel#panel_menu .spacer1 {
+.game .right-frame .panel .spacer1 {
 	height: 12px;
 }
-.game .right-frame .panel#panel_menu .scrolls {
+.game .right-frame .panel .scrolls {
 	margin-top: 10px;
 	padding-left: 6px;
 }
@@ -780,9 +797,6 @@ canvas, img {
 
 .game .right-frame .panel#panel_orders {
 	padding-left: 20px;
-}
-.game .right-frame .panel#panel_orders .spacer1 {
-	height: 19px;
 }
 .game .right-frame .panel#panel_orders .spacer2 {
 	height: 8px;
@@ -971,8 +985,12 @@ canvas, img {
 	height: 22px;
 	background: url("../images/interface/buttons.png") no-repeat 0 0;
 	text-align: center;
+	border: none;
+	outline: none;
 }
-
+.dk-button.disable {
+	cursor: not-allowed;
+}
 .dk-button.small {
 	width: 71px;
 }
@@ -997,6 +1015,20 @@ canvas, img {
 }
 .dk-button.medium.disable {
 	background-position: -593px 0;
+}
+
+.dk-button.large {
+	width: 150px;
+	background-position: -697px 0;
+}
+.dk-button.large:hover {
+	background-position: -850px 0;
+}
+.dk-button.large:active {
+	background-position: -1003px 0;
+}
+.dk-button.large.disable {
+	background-position: -1157px 0;
 }
 .dk-button img {
 	padding-top: 7px;
