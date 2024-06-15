@@ -31,7 +31,7 @@ function GameMenu()
 		this.resources.addImage('font-red', 'images/shell/font-red.png');
 		this.resources.addImage('font-white', 'images/shell/font-white.png');
 		this.resources.addImage('font-game', 'images/font.png');
-		
+			
 		this.resources.addSound('bridge_sound', 'sounds/shell/bridge.' + AUDIO_TYPE);
 		for (var i = 1; i <= PUNKT_SOUNDS; ++i)
 			this.resources.addSound('punct_sound' + i, 'sounds/shell/punct_' + i + '.' + AUDIO_TYPE);
@@ -222,18 +222,10 @@ function GameMenu()
 	
 	this._runVideo = function(video_name, callback, muted)
 	{
-
-		function ended() {
-			$('#video_container').html('');
-			if (callback) {
-				delete callback
-				callback();
-			}
-		}
-
 		if (!GAMECONFIG.playVideo)
 		{
-			ended()
+			if (callback)
+				callback();
 			return;
 		}
 			
@@ -241,20 +233,22 @@ function GameMenu()
 		video.muted = !!muted
 		video.addEventListener('ended', function(){
 			this.removeEventListener('ended', arguments.callee, false);
-			ended()
+			$('#video_container').html('');
+			if (callback)
+				callback();
 		});
 
 		video.addEventListener('click', function () {
 			video.currentTime = video.duration
-			video.pause()
-			ended()
+			video.play()
 		})
 		
 		$cont.append(video);
 		$cont.show();
 		video.play().catch((err) => {
 			console.warn(err);
-			ended()
+			if (callback)
+				callback();
 		});
 	};
 	
