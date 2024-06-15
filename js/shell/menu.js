@@ -192,10 +192,14 @@ function GameMenu()
 	this.videoIntro = function()
 	{
 		self._runVideo('cube_in', function(){
+
+			// Play menu background
+			// TODO ref and mute state for user
 			new Howl({
-				urls: ['sounds/shell/bridge.' + AUDIO_TYPE],
+				src: ['sounds/shell/bridge.' + AUDIO_TYPE],
 				autoplay: true,
-				loop: true
+				loop: true,
+				volume: 0.1
 			});
 
 			setInterval(self.playPunktSound, 13000);
@@ -228,6 +232,11 @@ function GameMenu()
 				callback();
 			return;
 		}
+
+		function skip() {
+			const event = new Event("ended");
+			video.dispatchEvent(event);
+		}
 			
 		var video = self.resources.get(video_name), $cont = $('#video_container');
 		video.muted = !!muted
@@ -238,17 +247,16 @@ function GameMenu()
 				callback();
 		});
 
+		// Add video skip
 		video.addEventListener('click', function () {
-			video.currentTime = video.duration
-			video.play()
+			skip()
 		})
 		
 		$cont.append(video);
 		$cont.show();
 		video.play().catch((err) => {
 			console.warn(err);
-			if (callback)
-				callback();
+			skip()
 		});
 	};
 	
@@ -289,6 +297,12 @@ $(function(){
 			game.init();
 		}
 	}
+
+	var nav = window.location.hash;
+	if (nav) {
+		game.navigate(nav)
+	}
+
 
 	var img = new Image();
 	img.src = 'images/interface/load-screen.png';
