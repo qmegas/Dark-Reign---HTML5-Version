@@ -3,6 +3,7 @@ var InterfaceMusicPlayer = {
 	_tracks: (GAMECONFIG.playMusic) ? ['track1','track2','track3','track4','track5','track6','track7','track8'] : [],
 	_player: null,
 	_current_track: -1,
+	playing: true,
 	
 	start: function()
 	{
@@ -35,6 +36,16 @@ var InterfaceMusicPlayer = {
 
 	stop() {
 		this._player.stop();
+	},
+
+	toggle() {
+		if (this.playing) {
+			this.stop();
+		} else {
+			this.start();
+		}
+
+		this.playing = !this.playing;
 	},
 		
 	setVolume: function(volume)
