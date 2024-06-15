@@ -1,11 +1,4 @@
-var GAMECONFIG = {
-	playMusic: true,
-	playVideo: true,
-	defaultMusicVolume: 1,
-	defaultSoundVolume: 1,
-	shroud: true,
-	fog: true
-};
+
 
 var CELL_SIZE = 24;
 var VIEWPORT_SIZE = 448;
@@ -51,6 +44,18 @@ var TACTIC_HIGH = 3;
 
 var v = document.createElement('audio');
 var AUDIO_TYPE = v.canPlayType('audio/ogg') ? 'ogg' : 'mp3';
+
+var v = document.createElement('video');
+var VIDEO_TYPE = v.canPlayType('video/webm') ? 'webm' : 'mp4';
+
+var GAMECONFIG = {
+	playMusic: true,
+	playVideo: true,
+	defaultMusicVolume: 1,
+	defaultSoundVolume: 1,
+	shroud: true,
+	fog: true
+};
 
 var game;
 
