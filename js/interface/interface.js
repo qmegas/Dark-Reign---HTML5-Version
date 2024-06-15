@@ -131,10 +131,10 @@ var InterfaceGUI = {
 	setHandlers: function()
 	{
 		//Interface stop button
-		$('#top_button_stop').on('mousedown touchstart', function(){
+		$('#top_button_stop').on('mousedown pointerup', function(){
 			$(this).addClass('active');
 		});
-		$('#top_button_stop').on('mouseup touchend', function(){
+		$('#top_button_stop').on('mouseup pointerup', function(){
 			$(this).removeClass('active');
 		});
 		$('#top_button_stop').click(function(){
@@ -210,12 +210,12 @@ var InterfaceGUI = {
 			$('#cell_popup').hide();
 		});
 
-		$('#minimap_viewport').on('mousedown touchstart', function(event){
+		$('#minimap_viewport').on('mousedown pointerup', function(event){
 			game.minimapNavigation(true);
-			game.minimapMove(event.layerX, event.layerY);
+			game.minimapMove(event.offsetX, event.offsetY);
 		});
 
-		$('#minimap_viewport').on('mouseup touchend', function(){
+		$('#minimap_viewport').on('mouseup pointerup', function(){
 			game.minimapNavigation(false);
 		});
 
@@ -223,26 +223,26 @@ var InterfaceGUI = {
 			game.minimapNavigation(false);
 		});
 
-		$('#minimap_viewport').mousemove(function(event){
-			game.minimapMove(event.layerX, event.layerY);
+		$('#minimap_viewport').on('mousemove pointermove', function(event){
+			game.minimapMove(event.offsetX, event.offsetY);
 		});
 
 		$('#mouseview').bind('contextmenu', function(){
 			game.onClick('right');
 			return false;
 		});
-		$('#mouseview').on('mousedown touchstart', function(event){
+		$('#mouseview').on('mousedown pointerup', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStart();
 		});
-		$('#mouseview').on('mouseup touchend', function(event){
+		$('#mouseview').on('mouseup pointerup', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStop();
 		});
 		$('#mouseview').mouseout(function(){
 			MousePointer.show_cursor = false;
 		});
-		$('#mouseview').on('mousemove touchmove', function(event){
+		$('#mouseview').on('mousemove pointermove', function(event){
 			MousePointer.setPosition(event);
 		});
 
@@ -254,7 +254,7 @@ var InterfaceGUI = {
 			InterfaceConstructManager.pageDown();
 		});
 		
-		$('.scroll-box').on('mousedown touchstart', function(event){
+		$('.scroll-box').on('mousedown pointerup', function(event){
 			var $this = $(this), proc = parseInt(event.offsetX / $this.width() * 100);
 			$this.children().css('width', proc + '%');
 			game.changeGameParam($this.attr('data-param'), proc);
