@@ -378,7 +378,6 @@ function Game()
 	
 	this.minimapNavigation = function(start)
 	{
-		console.log('minimapNavigation', start)
 		this.minimap_navigation = start;
 	};
 	
