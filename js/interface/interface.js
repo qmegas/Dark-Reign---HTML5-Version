@@ -28,6 +28,33 @@ var InterfaceGUI = {
 		game.resources.addImage('minimap', 'images/levels/'+CurrentLevel.minimap.image);
 		game.resources.addImage('font', 'images/font.png');
 	},
+
+	drawMenu: function() {
+
+		$('#menu_pause img')
+			.attr('src', game.fontDraw.getDataUrl('Pause game'))
+		$('#menu_restart img')
+			.attr('src', game.fontDraw.getDataUrl('Restart game'))
+		$('#menu_quit img')
+			.attr('src', game.fontDraw.getDataUrl('qui game'))
+		$('#menu_fullscreen img')
+			.attr('src', game.fontDraw.getDataUrl('Toggle full-screen'))
+		$('#menu_pause_music img')
+			.attr('src', game.fontDraw.getDataUrl('Pause music'))
+
+		$('#panel_paths img')
+			.attr('src', game.fontDraw.getDataUrl('"Paths" Not Available'))
+		$('#panel_comms img')
+			.attr('src', game.fontDraw.getDataUrl('"Comms" Not Available'))
+	},
+
+	toggleFullScreen: function() {
+	  if (!document.fullscreenElement) {
+	    document.documentElement.requestFullscreen();
+	  } else if (document.exitFullscreen) {
+	    document.exitFullscreen();
+	  }
+	},
 		
 	tabChanged: function(tab_id)
 	{
@@ -304,6 +331,17 @@ var InterfaceGUI = {
 		});
 		$('#order_set_default').click(InterfaceGUI.changeDefaultTactic);
 
+		$('#menu_pause').click(function(){
+			game.togglePause();
+		});
+
+		$('#menu_pause_music').click(function(){
+			InterfaceMusicPlayer.toggle();
+		})
+
+		$('#menu_fullscreen').click(function(){
+			InterfaceGUI.toggleFullScreen();
+		});
 		$('#menu_restart').click(function(){
 			location.reload();
 		});
