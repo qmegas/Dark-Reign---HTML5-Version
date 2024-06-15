@@ -732,12 +732,14 @@ function AbstractBuilding()
 
 //Static methods
 AbstractBuilding.drawBuildMouse = function(obj, x, y)
-{
+{				
+	// TODO Requesting unexisting resource: clr resources.js:140 
+	/*
 	if (obj.is_bridge)
 	{
 		BridgeTypeBuilding.drawBuildMouse(obj, x, y);
-		return;
 	}
+	*/
 		
 	var i = -1, color_type = obj.res_multicolor ? 'yellow' : '';
 
