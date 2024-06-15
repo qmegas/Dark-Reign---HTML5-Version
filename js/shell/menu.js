@@ -209,8 +209,10 @@ function GameShell()
 			var video = self.resources.get('ring0');
 			$('#level_select').show().append(video);
 			$(video).attr('loop', true);
-			video.play();
-		});
+			video.play().catch((err) => {
+				console.warn(err);
+			});
+		}, true);
 	};
 	
 	this._moveCube = function(animation_name, callback)
@@ -223,7 +225,7 @@ function GameShell()
 		});
 	};
 	
-	this._runVideo = function(video_name, callback)
+	this._runVideo = function(video_name, callback, muted)
 	{
 		if (!GAMECONFIG.playVideo)
 		{
@@ -233,17 +235,26 @@ function GameShell()
 		}
 			
 		var video = self.resources.get(video_name), $cont = $('#video_container');
-		
+		video.muted = !!muted
 		video.addEventListener('ended', function(){
 			this.removeEventListener('ended', arguments.callee, false);
 			$('#video_container').html('');
 			if (callback)
 				callback();
 		});
+
+		video.addEventListener('click', function () {
+			video.currentTime = video.duration
+			video.play()
+		})
 		
 		$cont.append(video);
 		$cont.show();
-		video.play();
+		video.play().catch((err) => {
+			console.warn(err);
+			if (callback)
+				callback();
+		});
 	};
 	
 	this.makeLinkImage = function(text)
@@ -276,12 +287,23 @@ function GameShell()
 }
 
 $(function(){
+
+	function startGameShell() {
+		if (!game) {
+			game = new GameShell();
+			game.init();
+		}
+	}
+
 	var img = new Image();
 	img.src = 'images/interface/load-screen.png';
 	img.onload = function(){
-		game = new GameShell();
-		game.init();
+		startGameShell()
 	};
+
+	$('.load-screen').click(function(){
+		startGameShell()
+	});
 	
 	$('.moovable').click(function(){
 		var $this = $(this);
@@ -293,7 +315,7 @@ $(function(){
 	$('#archive_up').click(function(){
 		ShellArchive.pageUp();
 	});
-	$('#archive_content .text').live('click', function(){
+	$('#archive_content .text').on('click', function(){
 		ShellArchive.viewPage($(this).attr('data-node'));
 	});
 });
