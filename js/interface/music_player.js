@@ -57,7 +57,7 @@ var InterfaceMusicPlayer = {
 			src: ['music/track' + track + '.' + AUDIO_TYPE],
 			volume: this.volume,
 			autoplay: true,
-			loop: true
+			loop: false
 		});
 
 		// Fires when the sound finishes playing.
