@@ -304,6 +304,14 @@ var InterfaceGUI = {
 		});
 		$('#order_set_default').click(InterfaceGUI.changeDefaultTactic);
 
+		$('#menu_restart').click(function(){
+			location.reload();
+		});
+
+		$('#menu_quit').click(function(){
+			location.href = '/menu.html'
+		});
+
 		$(document).keydown(function(event) {
 			var prevent = true;
 			switch (event.which)
