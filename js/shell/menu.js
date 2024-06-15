@@ -38,16 +38,16 @@ function GameMenu()
 		
 		if (GAMECONFIG.playVideo)
 		{
-			this.resources.addVideo('cube_in', 'videos/cube_in' + VIDEO_TYPE, 'menu_video');
-			this.resources.addVideo('cube01', 'videos/cube01' + VIDEO_TYPE, 'menu_video');
-			this.resources.addVideo('cube02', 'videos/cube02' + VIDEO_TYPE, 'menu_video');
-			this.resources.addVideo('cube03', 'videos/cube03' + VIDEO_TYPE, 'menu_video');
-			this.resources.addVideo('cube04', 'videos/cube04' + VIDEO_TYPE, 'menu_video');
-			this.resources.addVideo('cube05', 'videos/cube05' + VIDEO_TYPE, 'menu_video');
-			this.resources.addVideo('brief_fg', 'videos/brief_fg' + VIDEO_TYPE);
-			this.resources.addVideo('brief_imp', 'videos/brief_imp' + VIDEO_TYPE);
+			this.resources.addVideo('cube_in', 'videos/cube_in.' + VIDEO_TYPE, 'menu_video');
+			this.resources.addVideo('cube01', 'videos/cube01.' + VIDEO_TYPE, 'menu_video');
+			this.resources.addVideo('cube02', 'videos/cube02.' + VIDEO_TYPE, 'menu_video');
+			this.resources.addVideo('cube03', 'videos/cube03.' + VIDEO_TYPE, 'menu_video');
+			this.resources.addVideo('cube04', 'videos/cube04.' + VIDEO_TYPE, 'menu_video');
+			this.resources.addVideo('cube05', 'videos/cube05.' + VIDEO_TYPE, 'menu_video');
+			this.resources.addVideo('brief_fg', 'videos/brief_fg.' + VIDEO_TYPE);
+			this.resources.addVideo('brief_imp', 'videos/brief_imp.' + VIDEO_TYPE);
 		}
-		this.resources.addVideo('ring0', 'videos/m_ring00' + VIDEO_TYPE, 'ring');
+		this.resources.addVideo('ring0', 'videos/m_ring00.' + VIDEO_TYPE, 'ring');
 		
 		
 		this.resources.onLoaded = function(loaded, total){
