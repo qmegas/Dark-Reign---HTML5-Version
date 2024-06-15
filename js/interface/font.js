@@ -50,7 +50,7 @@ function FontDraw(font_name, size)
 
 		ctx.drawImage(
 			_cache_table[key].canvas, 0, 0, _cache_table[key].width, size,
-			x - 0.5, y - 0.5, _cache_table[key].width, size
+			x, y, _cache_table[key].width, size
 		);
 	};
 
