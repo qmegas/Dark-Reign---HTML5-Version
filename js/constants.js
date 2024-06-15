@@ -49,7 +49,8 @@ var TACTIC_LOW = 1;
 var TACTIC_MED = 2;
 var TACTIC_HIGH = 3;
 
-var AUDIO_TYPE = 'ogg';
+var v = document.createElement('audio');
+var AUDIO_TYPE = v.canPlayType('audio/ogg') ? 'ogg' : 'mp3';
 
 var game;
 
