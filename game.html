@@ -2,8 +2,12 @@
 <html>
 	<head>
 		<title>Dark Reign HTML5</title>
+		<meta name="theme-color" content="#fe5406">
+    	<link rel="manifest" href="/manifest.json" importance="low" >
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
-		<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="js/lib/howler.min.js"></script>
+		<script type="text/javascript" src="js/lib/worker-timers.min.js"></script>
 		<script type="text/javascript" src="js/constants.js"></script>
 		<script type="text/javascript" src="js/debug.js"></script>
 		<script type="text/javascript" src="js/interface/money.js"></script>
@@ -101,7 +105,7 @@
 		<script type="text/javascript" src="js/shell/main.js"></script>
 		<script type="text/javascript" src="js/game.js"></script>
 	</head>
-	<body>
+	<body class="body-game">
 		<div class="shell-main">
 			<div class="load-screen">
 				<div class="progress" id="progress-bar"></div>
@@ -143,10 +147,10 @@
 				<div class="right-frame">
 					<div class="tab-buttons">
 						<div class="tab build active" data-panel="panel_build" id="tab_button_build"></div>
-						<div class="tab comms"></div>
+						<div class="tab comms" data-panel="panel_comms"></div>
 						<div class="tab menu" data-panel="panel_menu"></div>
 						<div class="tab orders" data-panel="panel_orders"></div>
-						<div class="tab paths"></div>
+						<div class="tab paths" data-panel="panel_paths"></div>
 						<div class="tab special" data-panel="panel_special"></div>
 					</div>
 					<div class="panel" id="panel_build">
@@ -223,6 +227,18 @@
 							</div>
 						</div>
 					</div>
+					<div class="panel hidden" id="panel_comms">
+						<div class="spacer1"></div>
+						<div class="dk-button disable large centered">
+							<img src="images/interface/texts/set_default.png" />
+						</div>
+					</div>
+					<div class="panel hidden" id="panel_paths">
+						<div class="spacer1"></div>
+						<div class="dk-button disable large centered">
+							<img src="images/interface/texts/set_default.png" />
+						</div>
+					</div>
 					<div class="panel hidden" id="panel_menu">
 						<div class="spacer1"></div>
 						<div class="title">
@@ -235,6 +251,26 @@
 								<div class="scroll-box" data-param="music_volume"><div class="scale"></div></div>
 								<div class="scroll-box" data-param="game_speed"><div class="scale"></div></div>
 								<div class="scroll-box" data-param="panning_speed"><div class="scale"></div></div>
+							</div>
+							<div style="clear: both;"></div>
+						</div>
+
+						<div class="spacer1"></div>
+						<div class="menu-buttons">
+							<div class="dk-button large centered" id="menu_save_load">
+								<img src="images/interface/texts/set_default.png" />
+							</div>
+							<div class="dk-button large centered" id="menu_objectives">
+								<img src="images/interface/texts/set_default.png" />
+							</div>
+							<div class="dk-button large centered" id="menu_restart">
+								<img src="images/interface/texts/set_default.png" />
+							</div>
+							<div class="dk-button large centered" id="menu_abandon">
+								<img src="images/interface/texts/set_default.png" />
+							</div>
+							<div class="dk-button large centered" id="menu_quit">
+								<img src="images/interface/texts/set_default.png" />
 							</div>
 						</div>
 					</div>
@@ -301,12 +337,16 @@
 							</div>
 						</div>
 						<div>
-							<div class="dk-button medium centered" id="order_set_default">
+							<div class="dk-button large centered" id="order_set_default">
 								<img src="images/interface/texts/set_default.png" />
 							</div>
 						</div>
 					</div>
 					<div class="panel hidden" id="panel_special">
+						<div class="spacer1"></div>
+						<div class="title">
+							<img src="images/interface/texts/options.png" />
+						</div>
 						<input type="checkbox" id="debug_quick_build"> <label for="debug_quick_build">Quick building</label><br>
 						<input type="checkbox" id="debug_show_obj"> <label for="debug_show_obj">Show object places</label><br>
 						<input type="checkbox" id="debug_show_type"> <label for="debug_show_type">Show ground type</label><br>

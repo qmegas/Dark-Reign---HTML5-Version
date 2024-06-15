@@ -2,14 +2,108 @@
 <html>
 	<head>
 		<title>Level edit</title>
-		<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    	<link rel="manifest" href="/manifest.json" importance="low" >
+		<link href="css/main.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="js/lib/howler.min.js"></script>
+		<script type="text/javascript" src="js/browser_check.js"></script>
 		<script type="text/javascript" src="js/constants.js"></script>
+		<script type="text/javascript" src="js/debug.js"></script>
+		<script type="text/javascript" src="js/interface/money.js"></script>
+		<script type="text/javascript" src="js/interface/sound_queue.js"></script>
+		<script type="text/javascript" src="js/interface/font.js"></script>
+		<script type="text/javascript" src="js/interface/dialog.js"></script>
+		<script type="text/javascript" src="js/interface/energy.js"></script>
+		<script type="text/javascript" src="js/interface/minimap.js"></script>
+		<script type="text/javascript" src="js/interface/interface.js"></script>
+		<script type="text/javascript" src="js/interface/music_player.js"></script>
+		<script type="text/javascript" src="js/interface/construct_manager.js"></script>
+		<script type="text/javascript" src="js/interface/fog.js"></script>
 		<script type="text/javascript" src="js/resources.js"></script>
+		<script type="text/javascript" src="js/player.js"></script>
+		<script type="text/javascript" src="js/map_cell.js"></script>
+		
+		<script type="text/javascript" src="js/effects/craters.js"></script>
+		<script type="text/javascript" src="js/effects/config.js"></script>
+		<script type="text/javascript" src="js/effects/animation_list.js"></script>
+		<script type="text/javascript" src="js/effects/simple.js"></script>
+		<script type="text/javascript" src="js/effects/map_element.js"></script>
+		<script type="text/javascript" src="js/animator.js"></script>
+		
+		<script type="text/javascript" src="js/weapons/config.js"></script>
+		<script type="text/javascript" src="js/weapons/weapon.js"></script>
+		<script type="text/javascript" src="js/weapons/bulet.js"></script>
+		<script type="text/javascript" src="js/weapons/damage_table.js"></script>
+		<script type="text/javascript" src="js/weapons/persistent_damage.js"></script>
+		
+		<script type="text/javascript" src="js/buildings/abstract.js"></script>
+		<script type="text/javascript" src="js/buildings/bridge_type.js"></script>
+		<script type="text/javascript" src="js/buildings/im/headquarter.js"></script>
+		<script type="text/javascript" src="js/buildings/im/headquarter2.js"></script>
+		<script type="text/javascript" src="js/buildings/im/headquarter3.js"></script>
+		<script type="text/javascript" src="js/buildings/im/water_launch_pad.js"></script>
+		<script type="text/javascript" src="js/buildings/im/taelon_power_generator.js"></script>
+		<script type="text/javascript" src="js/buildings/im/training_facility.js"></script>
+		<script type="text/javascript" src="js/buildings/im/training_facility2.js"></script>
+		<script type="text/javascript" src="js/buildings/im/assembly_plant.js"></script>
+		<script type="text/javascript" src="js/buildings/im/assembly_plant2.js"></script>
+		<script type="text/javascript" src="js/buildings/im/camera_tower.js"></script>
+		<script type="text/javascript" src="js/buildings/im/field_hospital.js"></script>
+		<script type="text/javascript" src="js/buildings/im/horizontal_bridge.js"></script>
+		<script type="text/javascript" src="js/buildings/im/plasma_turret.js"></script>
+		<script type="text/javascript" src="js/buildings/im/neutron_accelerator.js"></script>
+		<script type="text/javascript" src="js/buildings/im/vertical_bridge.js"></script>
+		<script type="text/javascript" src="js/buildings/im/air_defence_site.js"></script>
+		<script type="text/javascript" src="js/buildings/im/repair_station.js"></script>
+		<script type="text/javascript" src="js/buildings/im/temporal_gate.js"></script>
+		<script type="text/javascript" src="js/buildings/im/rearming_deck.js"></script>
+		<script type="text/javascript" src="js/buildings/im/rift_creator.js"></script>
+		<script type="text/javascript" src="js/buildings/im/center_bridge.js"></script>
+		<script type="text/javascript" src="js/buildings/fg/headquarter.js"></script>
+		<script type="text/javascript" src="js/buildings/fg/laser_turret.js"></script>
+		<script type="text/javascript" src="js/buildings/civilian/taelon_mine.js"></script>
+		<script type="text/javascript" src="js/buildings/civilian/water_well.js"></script>
+		<script type="text/javascript" src="js/buildings/civilian/vertical_bridge.js"></script>
+		<script type="text/javascript" src="js/buildings/civilian/horizontal_bridge.js"></script>
+		<script type="text/javascript" src="js/buildings/civilian/small_wall1.js"></script>
+		<script type="text/javascript" src="js/buildings/civilian/small_wall2.js"></script>
+		<script type="text/javascript" src="js/buildings/dependencies.js"></script>
+		
+		<script type="text/javascript" src="js/units/abstract.js"></script>
+		<script type="text/javascript" src="js/units/construction_rig.js"></script>
+		<script type="text/javascript" src="js/units/freighter.js"></script>
+		<script type="text/javascript" src="js/units/hover_freighter.js"></script>
+		<script type="text/javascript" src="js/units/guardian.js"></script>
+		<script type="text/javascript" src="js/units/bion.js"></script>
+		<script type="text/javascript" src="js/units/exterminator.js"></script>
+		<script type="text/javascript" src="js/units/scout_runner.js"></script>
+		<script type="text/javascript" src="js/units/invader_transport.js"></script>
+		<script type="text/javascript" src="js/units/plasma_tank.js"></script>
+		<script type="text/javascript" src="js/units/amper.js"></script>
+		<script type="text/javascript" src="js/units/mad.js"></script>
+		<script type="text/javascript" src="js/units/recon_drone.js"></script>
+		<script type="text/javascript" src="js/units/tachyon_tank.js"></script>
+		<script type="text/javascript" src="js/units/scarab.js"></script>
+		<script type="text/javascript" src="js/units/cyclone.js"></script>
+		<script type="text/javascript" src="js/units/sky_fortress.js"></script>
+		<script type="text/javascript" src="js/units/shredder.js"></script>
+		<script type="text/javascript" src="js/units/infiltrator.js"></script>
+		<script type="text/javascript" src="js/units/hostage_taker.js"></script>
+		<script type="text/javascript" src="js/units/water_contaminator.js"></script>
+		<script type="text/javascript" src="js/units/raider.js"></script>
+		<script type="text/javascript" src="js/units/spider_bike.js"></script>
+		
+		<script type="text/javascript" src="js/ai/tactical.js"></script>
+		<script type="text/javascript" src="js/actions_heap.js"></script>
+		<script type="text/javascript" src="js/construct_queue.js"></script>
+		<script type="text/javascript" src="js/pathfinding.js"></script>
+		<script type="text/javascript" src="js/mouse.js"></script>
 		<script type="text/javascript" src="js/levels/builder.js"></script>
+		<script type="text/javascript" src="js/object_draw.js"></script>
 		<script type="text/javascript" src="js/levels/imp1/map.js"></script>
 		<script type="text/javascript" src="js/map_edit.js"></script>
 	</head>
-	<body>
+	<body class="body-editor">
 		<div>
 			<input type="radio" name="type" value="0" class="radio" id="type0" /> Normal
 			<input type="radio" name="type" value="1" class="radio" id="type1" /> Trees
@@ -17,8 +111,11 @@
 			<input type="radio" name="type" value="3" class="radio" id="type3" /> No walking
 			<input type="button" value="Export Data" id="export" /><br/>
 		</div>
-		<canvas id="map_view" style="position: absolute; top: 100px; left: 0"></canvas>
-		<canvas id="grid"  style="position: absolute; top: 100px; left: 0; z-index: 90"></canvas>
-		<textarea id="text" style="display: none; z-index: 100; position: absolute; top: 100px; left: 0; width: 1000px; height: 400px"></textarea>
+			
+		<div class="shell-editor">
+			<canvas id="map_view" style="position: absolute; top: 100px; left: 0"></canvas>
+			<canvas id="grid"  style="position: absolute; top: 100px; left: 0; z-index: 90"></canvas>
+			<textarea id="text" style="display: none; z-index: 100; position: absolute; top: 100px; left: 0; width: 1000px; height: 400px"></textarea>
+		</div>
 	</body>
 </html>
