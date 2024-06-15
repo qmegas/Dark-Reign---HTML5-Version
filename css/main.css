@@ -1,7 +1,29 @@
+html,
+body {
+
+
+	height: 100%;
+	width: 100%;
+	//overflow: hidden;
+}
+
 body {
 	padding: 0;
 	margin: 0;
 	cursor: url("../images/icursor.png"), auto;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	background-color: #000;
+}
+
+
+.game-shell {
+	width: 640px;
+	height: 480px;
+    aspect-ratio: 640 / 480;
+    scale: 200%;
+    position: relative;
 }
 
 ::selection {
@@ -14,8 +36,8 @@ body {
 
 .load-screen {
 	margin: 0;
-	width: 640px;
-	height: 480px;
+	width: 100%;
+	height: 100%;
 	background: url("../images/interface/load-screen.png") no-repeat 0 0;
 }
 .load-screen .progress {
@@ -27,8 +49,16 @@ body {
 	left: 70px;
 }
 
+.main-menu {
+	background-color: #000;
+	width: 100%;
+	height: 100%;
+}
+
 .shell-menu {
 	background-color: #000;
+	width: 100%;
+	height: 100%;
 }
 .shell-menu .link {
 	font-size: 0;
@@ -178,14 +208,16 @@ body {
 	top: 68px;
 	left: 157px;
 }
+
 .shell-menu .menu_video {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 640px;
-	height: 480px;
+	width: 100%;
+	height: 100%;
 	z-index: 999;
 }
+
 .shell-menu #archive {
 	background: url("../images/shell/archive.png") no-repeat 0 0;
 	height: 480px;
@@ -419,8 +451,8 @@ body {
 
 
 .game {
-	width: 640px;
-	height: 480px;
+	width: 100%;
+	height: 100%;
 	display: none;
 }
 .game .left-frame {
@@ -985,8 +1017,8 @@ body {
 	top: 0;
 	left: 0;
 	display: none;
-	width: 640px;
-	height: 480px;
+	width: 100%;
+	height: 100%;
 }
 .dialog-screen .simple {
 	background: url("../images/dialog/simple_form.png") no-repeat;
