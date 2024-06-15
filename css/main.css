@@ -3,6 +3,7 @@ body {
 	height: 100%;
 	width: 100%;
 	overscroll-behavior: none;
+	font-size: 1rem;
 }
 
 canvas, img {
@@ -18,6 +19,11 @@ canvas, img {
     justify-content: center;
 	background-color: #000;
 	overflow: hidden;
+	-webkit-user-select: none; 
+	-webkit-touch-callout: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	user-select: none; 
 }
 
 .body-editor {
@@ -1036,7 +1042,12 @@ canvas, img {
 .dk-button:active img {
 	padding-top: 8px;
 }
-
+.dk-button img[src*="image/"] {
+	padding-top: 4px;
+}
+.dk-button:active img[src*="image/"] {
+	padding-top: 3px;
+}
 .dk-button#upgrade_button .caption {
 	margin: 7px 0 0 16px;
 	width: 40px;
