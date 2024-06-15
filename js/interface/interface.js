@@ -127,11 +127,22 @@ var InterfaceGUI = {
 		for (var i in game.selected_objects)
 			game.objects[game.selected_objects[i]].orderStop();
 	},
+
+	addTouchOffsets: function (evt, element) {
+		var touches = evt.originalEvent.touches || evt.originalEvent.changedTouches
+	    if (touches && touches.length) {
+	    	var touch = touches[0];
+	    	var rect = element.getBoundingClientRect();
+		    evt.offsetX = (touch.pageX - rect.left) / (rect.right - rect.left) * element.width;
+		    evt.offsetY = (touch.pageY - rect.top) / (rect.bottom - rect.top) * element.height
+	    }
+	    return evt;
+	},
 	
 	setHandlers: function()
 	{
 		//Interface stop button
-		$('#top_button_stop').on('mousedown pointerup', function(){
+		$('#top_button_stop').on('mousedown pointerdown', function(){
 			$(this).addClass('active');
 		});
 		$('#top_button_stop').on('mouseup pointerup', function(){
@@ -210,12 +221,13 @@ var InterfaceGUI = {
 			$('#cell_popup').hide();
 		});
 
-		$('#minimap_viewport').on('mousedown pointerudown', function(event){
+		$('#minimap_viewport').on('mousedown touchstart', function(event){
 			game.minimapNavigation(true);
+			InterfaceGUI.addTouchOffsets(event, this)
 			game.minimapMove(event.offsetX, event.offsetY);
 		});
 
-		$('#minimap_viewport').on('mouseup pointerup', function(){
+		$('#minimap_viewport').on('mouseup touchend', function(){
 			game.minimapNavigation(false);
 		});
 
@@ -223,7 +235,8 @@ var InterfaceGUI = {
 			game.minimapNavigation(false);
 		});
 
-		$('#minimap_viewport').on('mousemove pointermove', function(event){
+		$('#minimap_viewport').on('mousemove touchmove', function(event){
+			InterfaceGUI.addTouchOffsets(event, this)
 			game.minimapMove(event.offsetX, event.offsetY);
 		});
 
@@ -231,18 +244,19 @@ var InterfaceGUI = {
 			game.onClick('right');
 			return false;
 		});
-		$('#mouseview').on('mousedown pointerudown', function(event){
+		$('#mouseview').on('mousedown touchstart', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStart();
 		});
-		$('#mouseview').on('mouseup pointerup', function(event){
+		$('#mouseview').on('mouseup touchend', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStop();
 		});
 		$('#mouseview').mouseout(function(){
 			MousePointer.show_cursor = false;
 		});
-		$('#mouseview').on('mousemove pointermove', function(event){
+		$('#mouseview').on('mousemove touchmove', function(event){
+			InterfaceGUI.addTouchOffsets(event, this)
 			MousePointer.setPosition(event);
 		});
 
@@ -254,7 +268,8 @@ var InterfaceGUI = {
 			InterfaceConstructManager.pageDown();
 		});
 		
-		$('.scroll-box').on('mousedown pointerup', function(event){
+		$('.scroll-box').on('mousedown touchstart', function(event) {
+			InterfaceGUI.addTouchOffsets(event, this)
 			var $this = $(this), proc = parseInt(event.offsetX / $this.width() * 100);
 			$this.children().css('width', proc + '%');
 			game.changeGameParam($this.attr('data-param'), proc);
