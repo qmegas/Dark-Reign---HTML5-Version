@@ -130,14 +130,6 @@ function Game()
 			
 			$('.load-screen').hide();
 			$('.game').css({'display': 'flex'});   
-
-			/*
-			$('.game').bind('click.pointerlock', (e) => {
-				$('.game').get(0).requestPointerLock({
-				    unadjustedMovement: false,
-				  });
-			})
-			*/
 			
 			this.started = true;
 			init_finish_callback();
