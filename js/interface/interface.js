@@ -131,10 +131,10 @@ var InterfaceGUI = {
 	setHandlers: function()
 	{
 		//Interface stop button
-		$('#top_button_stop').mousedown(function(){
+		$('#top_button_stop').on('mousedown touchstart', function(){
 			$(this).addClass('active');
 		});
-		$('#top_button_stop').mouseup(function(){
+		$('#top_button_stop').on('mouseup touchend', function(){
 			$(this).removeClass('active');
 		});
 		$('#top_button_stop').click(function(){
@@ -179,7 +179,9 @@ var InterfaceGUI = {
 			return false;
 		});
 		$('.unit-image').mouseover(function(){
-			var cellid = $(this).parent('div').attr('data-cell'), position = $(this).offset();
+			var cellid = $(this).parent('div').attr('data-cell'), 
+				position = $(this).offset();
+				
 			InterfaceConstructManager.cellPopupPrepere(cellid);
 
 			position.left -= 392;
@@ -208,12 +210,12 @@ var InterfaceGUI = {
 			$('#cell_popup').hide();
 		});
 
-		$('#minimap_viewport').mousedown(function(event){
+		$('#minimap_viewport').on('mousedown touchstart', function(event){
 			game.minimapNavigation(true);
 			game.minimapMove(event.layerX, event.layerY);
 		});
 
-		$('#minimap_viewport').mouseup(function(){
+		$('#minimap_viewport').on('mouseup touchend', function(){
 			game.minimapNavigation(false);
 		});
 
@@ -229,27 +231,30 @@ var InterfaceGUI = {
 			game.onClick('right');
 			return false;
 		});
-		$('#mouseview').mousedown(function(event){
+		$('#mouseview').on('mousedown touchstart', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStart();
 		});
-		$('#mouseview').mouseup(function(event){
+		$('#mouseview').on('mouseup touchend', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStop();
 		});
 		$('#mouseview').mouseout(function(){
 			MousePointer.show_cursor = false;
 		});
-		$('#mouseview').mousemove(function(event){
+		$('#mouseview').on('mousemove touchmove', function(event){
 			MousePointer.setPosition(event);
 		});
+
 		$('#cm_page_up').click(function(){
 			InterfaceConstructManager.pageUp();
 		});
+		
 		$('#cm_page_down').click(function(){
 			InterfaceConstructManager.pageDown();
 		});
-		$('.scroll-box').live('mousedown', function(event){
+		
+		$('.scroll-box').on('mousedown touchstart', function(event){
 			var $this = $(this), proc = parseInt(event.offsetX / $this.width() * 100);
 			$this.children().css('width', proc + '%');
 			game.changeGameParam($this.attr('data-param'), proc);
