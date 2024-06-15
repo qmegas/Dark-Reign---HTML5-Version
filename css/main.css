@@ -17,6 +17,9 @@ body {
 	background-color: #000;
 }
 
+canvas, img {
+    image-rendering: pixelated;
+}
 
 .shell-main {
 	width: 640px;
