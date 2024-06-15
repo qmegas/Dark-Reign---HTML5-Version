@@ -7,8 +7,6 @@ var InterfaceMusicPlayer = {
 	
 	start: function()
 	{
-		var self = this;
-
 		if (this._tracks.length == 0)
 			return;
 		
@@ -52,7 +50,9 @@ var InterfaceMusicPlayer = {
 		
 	setTrack: function(trackid)
 	{
-		var track = parseInt(Math.random() * this._tracks.length) + 1;
+		var self = this,	
+			track = parseInt(Math.random() * this._tracks.length) + 1;
+		
 		this._player = new Howl({
 			src: ['music/track' + track + '.' + AUDIO_TYPE],
 			volume: this.volume,
