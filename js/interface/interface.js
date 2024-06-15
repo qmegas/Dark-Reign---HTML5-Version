@@ -210,7 +210,7 @@ var InterfaceGUI = {
 			$('#cell_popup').hide();
 		});
 
-		$('#minimap_viewport').on('mousedown pointerup', function(event){
+		$('#minimap_viewport').on('mousedown pointerudown', function(event){
 			game.minimapNavigation(true);
 			game.minimapMove(event.offsetX, event.offsetY);
 		});
@@ -231,7 +231,7 @@ var InterfaceGUI = {
 			game.onClick('right');
 			return false;
 		});
-		$('#mouseview').on('mousedown pointerup', function(event){
+		$('#mouseview').on('mousedown pointerudown', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStart();
 		});
