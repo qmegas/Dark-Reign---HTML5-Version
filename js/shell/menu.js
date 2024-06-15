@@ -222,10 +222,18 @@ function GameMenu()
 	
 	this._runVideo = function(video_name, callback, muted)
 	{
+
+		function ended() {
+			$('#video_container').html('');
+			if (callback) {
+				delete callback
+				callback();
+			}
+		}
+
 		if (!GAMECONFIG.playVideo)
 		{
-			if (callback)
-				callback();
+			ended()
 			return;
 		}
 			
@@ -233,22 +241,20 @@ function GameMenu()
 		video.muted = !!muted
 		video.addEventListener('ended', function(){
 			this.removeEventListener('ended', arguments.callee, false);
-			$('#video_container').html('');
-			if (callback)
-				callback();
+			ended()
 		});
 
 		video.addEventListener('click', function () {
 			video.currentTime = video.duration
-			video.play()
+			video.pause()
+			ended()
 		})
 		
 		$cont.append(video);
 		$cont.show();
 		video.play().catch((err) => {
 			console.warn(err);
-			if (callback)
-				callback();
+			ended()
 		});
 	};
 	
