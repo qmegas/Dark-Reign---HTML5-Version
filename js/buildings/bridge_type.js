@@ -40,6 +40,7 @@ var BridgeTypeBuilding = {
 					if ((cell.type!=CELL_TYPE_EMPTY && cell.type!=CELL_TYPE_WATER) || cell.shroud==1 || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
 					{
 						/*
+						// TODO where is game.resources.get('clr')
 						MousePointer.mouse_ctx.drawImage(
 							game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
 							xxx*CELL_SIZE - game.viewport_x + 12, yyy*CELL_SIZE - game.viewport_y + 12, CELL_SIZE, CELL_SIZE
@@ -63,6 +64,7 @@ var BridgeTypeBuilding = {
 
 					yyy = yy+y;
 					/*
+					// TODO where is game.resources.get('clr')
 					game.viewport_ctx.drawImage(
 						game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
 						xxx*CELL_SIZE - game.viewport_x + 12, yyy*CELL_SIZE - game.viewport_y + 12, CELL_SIZE, CELL_SIZE
