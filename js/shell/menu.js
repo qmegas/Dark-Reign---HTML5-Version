@@ -306,7 +306,7 @@ $(function(){
 	$('#archive_up').click(function(){
 		ShellArchive.pageUp();
 	});
-	$('#archive_content .text').on('click', function(){
+	$('#archive_content').on('click', '.text', function(){
 		ShellArchive.viewPage($(this).attr('data-node'));
 	});
 });
