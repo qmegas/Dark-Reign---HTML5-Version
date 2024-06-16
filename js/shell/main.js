@@ -20,9 +20,9 @@ function MainShell()
 
 	this.resize = function () {
 		var documentElement = document.documentElement
-		const scaleWith = ((100 / 640) * documentElement.clientWidth)
-		const scaleHeight = ((100 / 480) * documentElement.clientHeight)
-		const scale = Math.min(scaleWith, scaleHeight);
+		var scaleWith = ((100 / 640) * documentElement.clientWidth)
+		var scaleHeight = ((100 / 480) * documentElement.clientHeight)
+		var scale = Math.min(scaleWith, scaleHeight);
 		$('.shell-main').get(0).style.scale =  Math.max(scale, 0) + '%'
 	}
 }
