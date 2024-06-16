@@ -36,7 +36,7 @@ var InterfaceGUI = {
 		$('#menu_restart img')
 			.attr('src', game.fontDraw.getDataUrl('Restart game'))
 		$('#menu_quit img')
-			.attr('src', game.fontDraw.getDataUrl('qui game'))
+			.attr('src', game.fontDraw.getDataUrl('Quit game'))
 		$('#menu_fullscreen img')
 			.attr('src', game.fontDraw.getDataUrl('Toggle full-screen'))
 		$('#menu_pause_music img')
