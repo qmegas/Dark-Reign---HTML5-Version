@@ -176,7 +176,12 @@ var InterfaceGUI = {
 			$(this).removeClass('active');
 		});
 		$('#top_button_stop').click(function(){
+
+			// Cancel any order on selected_objects
 			InterfaceGUI.stopButton();
+			
+			// Cancel any actions
+			game.cleanActionState();
 		});
 		//Interface sell building button
 		$('#top_button_sell').click(function(){
