@@ -177,10 +177,10 @@ var InterfaceGUI = {
 		});
 		$('#top_button_stop').click(function(){
 
-			// Cancel any order on selected_objects
+			//Cancel any order on selected_objects
 			InterfaceGUI.stopButton();
 			
-			// Cancel any actions
+			//Cancel any actions
 			game.cleanActionState();
 		});
 		//Interface sell building button
