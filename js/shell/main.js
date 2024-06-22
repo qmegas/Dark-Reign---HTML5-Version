@@ -1,6 +1,11 @@
 function MainShell()
 {
 	var self = this;
+
+	var size = {
+		height: 480,
+		width: 640,
+	}
 	
 	this.init = function()
 	{
@@ -19,10 +24,10 @@ function MainShell()
 	};
 
 	this.resize = function () {
-		var documentElement = document.documentElement
-		var scaleWith = ((100 / 640) * documentElement.clientWidth)
-		var scaleHeight = ((100 / 480) * documentElement.clientHeight)
-		var scale = Math.min(scaleWith, scaleHeight);
+		var documentElement = document.documentElement,
+			scaleWidth = ((100 / size.width) * documentElement.clientWidth),
+			scaleHeight = ((100 / size.height) * documentElement.clientHeight),
+			scale = Math.min(scaleWidth, scaleHeight);
 		$('.shell-main').get(0).style.scale =  Math.max(scale, 0) + '%'
 	}
 }
