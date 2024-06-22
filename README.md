@@ -27,3 +27,5 @@ Need help to improve pathfinding algorithms. If you are good at this, then pleas
 
 ## License
 MIT
+
+Dark Reign is a registered trademark of Activision.
