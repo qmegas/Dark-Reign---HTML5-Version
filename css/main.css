@@ -41,7 +41,11 @@ canvas, img {
     max-height: 100%;
     aspect-ratio: 640 / 480;
     scale: 200%;
-    transform-origin: top;
+    transform-origin: center;
+
+    @media (min-aspect-ratio: 2/1) {
+    	transform-origin: top;
+    }
 }
 
 .shell-editor {
