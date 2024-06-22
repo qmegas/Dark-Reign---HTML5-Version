@@ -1,13 +1,14 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Dark Reign HTML5</title>
+    	<meta charset="utf-8">
+		<title>Dark Reign HTML5 - Game</title>
 		<meta name="theme-color" content="#fe5406">
     	<link rel="manifest" href="/manifest.json" importance="low" >
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="js/lib/jquery.min.js"></script>
 		<script type="text/javascript" src="js/lib/howler.min.js"></script>
-		<script type="text/javascript" src="js/lib/worker-timers.min.js"></script>
+		<!--<script type="text/javascript" src="js/lib/worker-timers.min.js"></script>-->
 		<script type="text/javascript" src="js/constants.js"></script>
 		<script type="text/javascript" src="js/debug.js"></script>
 		<script type="text/javascript" src="js/interface/money.js"></script>
@@ -16,8 +17,8 @@
 		<script type="text/javascript" src="js/interface/dialog.js"></script>
 		<script type="text/javascript" src="js/interface/energy.js"></script>
 		<script type="text/javascript" src="js/interface/minimap.js"></script>
-		<script type="text/javascript" src="js/interface/interface.js"></script>
 		<script type="text/javascript" src="js/interface/music_player.js"></script>
+		<script type="text/javascript" src="js/interface/interface.js"></script>
 		<script type="text/javascript" src="js/interface/construct_manager.js"></script>
 		<script type="text/javascript" src="js/interface/fog.js"></script>
 		<script type="text/javascript" src="js/resources.js"></script>
@@ -95,6 +96,7 @@
 		<script type="text/javascript" src="js/units/spider_bike.js"></script>
 		
 		<script type="text/javascript" src="js/ai/tactical.js"></script>
+		<script type="text/javascript" src="js/ai/defense.js"></script>
 		<script type="text/javascript" src="js/actions_heap.js"></script>
 		<script type="text/javascript" src="js/construct_queue.js"></script>
 		<script type="text/javascript" src="js/pathfinding.js"></script>
@@ -230,13 +232,13 @@
 					<div class="panel hidden" id="panel_comms">
 						<div class="spacer1"></div>
 						<div class="dk-button disable large centered">
-							<img src="images/interface/texts/set_default.png" />
+							<img src="" />
 						</div>
 					</div>
 					<div class="panel hidden" id="panel_paths">
 						<div class="spacer1"></div>
 						<div class="dk-button disable large centered">
-							<img src="images/interface/texts/set_default.png" />
+							<img src="" />
 						</div>
 					</div>
 					<div class="panel hidden" id="panel_menu">
@@ -257,20 +259,28 @@
 
 						<div class="spacer1"></div>
 						<div class="menu-buttons">
+							<!--
 							<div class="dk-button large centered" id="menu_save_load">
 								<img src="images/interface/texts/set_default.png" />
 							</div>
 							<div class="dk-button large centered" id="menu_objectives">
 								<img src="images/interface/texts/set_default.png" />
 							</div>
-							<div class="dk-button large centered" id="menu_restart">
-								<img src="images/interface/texts/set_default.png" />
+							-->
+							<div class="dk-button large centered" id="menu_fullscreen">
+								<img />
 							</div>
-							<div class="dk-button large centered" id="menu_abandon">
-								<img src="images/interface/texts/set_default.png" />
+							<div class="dk-button large centered" id="menu_pause_music">
+								<img />
+							</div>
+							<div class="dk-button large centered" id="menu_restart">
+								<img />
+							</div>
+							<div class="dk-button large centered" id="menu_pause">
+								<img />
 							</div>
 							<div class="dk-button large centered" id="menu_quit">
-								<img src="images/interface/texts/set_default.png" />
+								<img />
 							</div>
 						</div>
 					</div>
@@ -393,5 +403,14 @@
 			</div>
 		</div>
 		<canvas style="display: none; position: absolute" id="cell_popup" width="400" height="200"></canvas>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FNMMP323W"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-9FNMMP323W');
+		</script>
 	</body>
 </html>
