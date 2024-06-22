@@ -22,6 +22,7 @@ function AbstractBuilding()
 	this.is_effect = false;
 	this.is_building = true;
 	this.is_selected = false;
+	this._is_have_weapon = false;
 	
 	this.position = {x: 0, y: 0};
 	
@@ -45,6 +46,8 @@ function AbstractBuilding()
 	
 	this.damage_animator = null;
 	
+	this._last_scan_time = 0;
+	
 	this.init = function(pos_x, pos_y, player)
 	{
 		this.player = player;
@@ -58,6 +61,7 @@ function AbstractBuilding()
 		{
 			this.weapon = new WeaponHolder(this._proto.weapon);
 			this.weapon.init(this);
+			this._is_have_weapon = true;
 		}
 	};
 	
@@ -280,6 +284,10 @@ function AbstractBuilding()
 	
 	this.run = function() 
 	{
+		if (this instanceof FGLaserTurretBuilding) {
+			
+		}
+
 		switch (this.state)
 		{
 			case BUILDING_STATE_ATTACK:
@@ -315,6 +323,15 @@ function AbstractBuilding()
 				else
 					this.state = BUILDING_STATE_NORMAL;
 				break;
+		}
+
+
+		
+		var time = (new Date()).getTime();
+		if  ((time - this._last_scan_time) > UNIT_SCAN_INTERVAL)
+		{
+			this._last_scan_time = time;
+			DefenseAI.regularScan(this);
 		}
 	};
 	
@@ -494,6 +511,23 @@ function AbstractBuilding()
 			target: target
 		};
 	};
+
+	this.isCanAttackTarget = function(target, callback)
+	{
+		if (!this._is_have_weapon)
+			return false;
+		
+		var ret = false;
+		if (this.weapon && this.weapon.canAttackTarget(target))
+		{
+			if (callback)
+				callback(this.weapon);
+			
+			ret = true;
+		}
+		
+		return ret;
+	};
 	
 	this.orderStop = function()
 	{
@@ -672,7 +706,7 @@ function AbstractBuilding()
 	
 	this.triggerEvent = function(event, params)
 	{
-		TacticalAI.handleUnitEvent(this, event, params);
+		DefenseAI.handleUnitEvent(this, event, params);
 	};
 	
 	this.onObjectDeletion = function() 
