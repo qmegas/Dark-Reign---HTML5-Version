@@ -26,8 +26,7 @@ function InvaderTransportUnit(pos_x, pos_y, player)
 	
 	this.onObjectDeletionCustom = function() 
 	{
-		if (this.haveInsideUnits())
-			this.extract();
+		this.extractCarry();
 	};
 }
 
