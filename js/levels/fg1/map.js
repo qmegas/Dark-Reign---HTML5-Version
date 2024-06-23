@@ -2453,9 +2453,7 @@ var CurrentLevel = {
                 TachyonTankUnit, ScarabUnit, CycloneUnit, 
                 SkyFortressUnit, WaterContaminatorUnit
             ],
-            []
-            
-            
+            []  
         ];
     },
     
@@ -2481,8 +2479,7 @@ var CurrentLevel = {
             
             //Computer buildings
             [
-
-                // imp
+                //Main buildings
                 ConstructionRigUnit, FreighterUnit, HoverFreighterUnit,
                 GuardianUnit, BionUnit, PlasmaTurretBuilding,
                 ScoutRunnerUnit, InvaderTransportUnit, 
