@@ -2411,79 +2411,83 @@ var CurrentLevel = {
 		{key: 'tree5', x: 77, y: 118},
 		{key: 'tree6', x: 78, y: 118}
 	],
-	
-	getInitUnits: function()
-	{
-		AbstractUnit.createNew(ConstructionRigUnit, 63, 4, PLAYER_HUMAN, true);
-		AbstractUnit.createNew(ConstructionRigUnit, 66, 4, PLAYER_HUMAN, true);
-		AbstractUnit.createNew(ConstructionRigUnit, 64, 6, PLAYER_HUMAN, true);
-		
-		AbstractBuilding.createNew(WaterWellBuilding, 72, 1, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(WaterWellBuilding, 17, 25, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(WaterWellBuilding, 57, 43, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(WaterWellBuilding, 14, 67, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(WaterWellBuilding, 63, 85, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(WaterWellBuilding, 22, 113, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(TaelonMineBuilding, 2, 2, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(TaelonMineBuilding, 73, 114, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(CivilianVerticalBridge, 21, 17, PLAYER_NEUTRAL, true);
-		AbstractBuilding.createNew(CivilianVerticalBridge, 54, 94, PLAYER_NEUTRAL, true);
-		
-		game.players[PLAYER_HUMAN].addMoney(15000);
-		
-		//Test unit
-		AbstractUnit.createNew(ConstructionRigUnit, 65, 110, PLAYER_COMPUTER1, true);
-	},
-	
-	getAvailableUnits: function()
-	{
-		return [
-			[],
-			[
-				ConstructionRigUnit, FreighterUnit, HoverFreighterUnit,
-				RaiderUnit, SpiderBikeUnit,
-				GuardianUnit, BionUnit, ExterminatorUnit,
-				InfiltratorUnit, ScoutRunnerUnit, InvaderTransportUnit, 
-				PlasmaTankUnit, AmperUnit, MadUnit, 
-				ReconDroneUnit, ShredderUnit, HostageTakerUnit,
-				TachyonTankUnit, ScarabUnit, CycloneUnit, 
-				SkyFortressUnit, WaterContaminatorUnit
-			],
-			[]
-			
-			
-		];
-	},
-	
-	getAvailableBuildings: function()
-	{
-		return [
-			//Civilian buildings
-			[WaterWellBuilding, TaelonMineBuilding, CivilianVerticalBridge],
-			
-			//Player buildings
-			[
-				//Main buildings
-				IMHeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
-				TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
-				NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
-				FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
-				RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 
-				VerticalBridgeBuilding, CenterBridgeBuilding,
-				//Upgrades
-				IMHeadquarter2Building, IMHeadquarter3Building, 
-				TrainingFacility2Building, AssemblyPlant2Building
-			],
-			
-			//Computer buildings
-			[
+    
+    getInitUnits: function()
+    {
+        AbstractUnit.createNew(ConstructionRigUnit, 63, 4, PLAYER_HUMAN, true);
+        AbstractUnit.createNew(ConstructionRigUnit, 66, 4, PLAYER_HUMAN, true);
+        AbstractUnit.createNew(ConstructionRigUnit, 64, 6, PLAYER_HUMAN, true);
 
-				// imp
-				ConstructionRigUnit, FreighterUnit, HoverFreighterUnit,
-				GuardianUnit, BionUnit,
-				ScoutRunnerUnit, InvaderTransportUnit, 
-				PlasmaTankUnit, ShredderUnit, 
-			]
-		];
-	}
+        AbstractBuilding.createNew(WaterWellBuilding, 72, 1, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(WaterWellBuilding, 17, 25, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(WaterWellBuilding, 57, 43, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(WaterWellBuilding, 14, 67, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(WaterWellBuilding, 63, 85, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(WaterWellBuilding, 22, 113, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(TaelonMineBuilding, 2, 2, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(TaelonMineBuilding, 73, 114, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(CivilianVerticalBridge, 21, 17, PLAYER_NEUTRAL, true);
+        AbstractBuilding.createNew(CivilianVerticalBridge, 54, 94, PLAYER_NEUTRAL, true);
+        
+        game.players[PLAYER_HUMAN].addMoney(15000);
+        
+        //Test unit
+        AbstractUnit.createNew(ConstructionRigUnit, 65, 110, PLAYER_COMPUTER1, true);
+        AbstractBuilding.createNew(PlasmaTurretBuilding, 58, 103, PLAYER_COMPUTER1, true);
+        AbstractBuilding.createNew(PlasmaTurretBuilding, 74, 100, PLAYER_COMPUTER1, true);
+        AbstractBuilding.createNew(PlasmaTurretBuilding, 63, 86, PLAYER_COMPUTER1, true);
+        AbstractBuilding.createNew(PlasmaTurretBuilding, 75, 70, PLAYER_COMPUTER1, true);
+    },
+    
+    getAvailableUnits: function()
+    {
+        return [
+            [],
+            [
+                ConstructionRigUnit, FreighterUnit, HoverFreighterUnit,
+                RaiderUnit, SpiderBikeUnit,
+                GuardianUnit, BionUnit, ExterminatorUnit,
+                InfiltratorUnit, ScoutRunnerUnit, InvaderTransportUnit, 
+                PlasmaTankUnit, AmperUnit, MadUnit, 
+                ReconDroneUnit, ShredderUnit, HostageTakerUnit,
+                TachyonTankUnit, ScarabUnit, CycloneUnit, 
+                SkyFortressUnit, WaterContaminatorUnit
+            ],
+            []
+            
+            
+        ];
+    },
+    
+    getAvailableBuildings: function()
+    {
+        return [
+            //Civilian buildings
+            [WaterWellBuilding, TaelonMineBuilding, CivilianVerticalBridge],
+            
+            //Player buildings
+            [
+                //Main buildings
+                IMHeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
+                TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
+                NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
+                FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
+                RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 
+                VerticalBridgeBuilding, CenterBridgeBuilding,
+                //Upgrades
+                IMHeadquarter2Building, IMHeadquarter3Building, 
+                TrainingFacility2Building, AssemblyPlant2Building
+            ],
+            
+            //Computer buildings
+            [
+
+                // imp
+                ConstructionRigUnit, FreighterUnit, HoverFreighterUnit,
+                GuardianUnit, BionUnit, PlasmaTurretBuilding,
+                ScoutRunnerUnit, InvaderTransportUnit, 
+                PlasmaTankUnit, ShredderUnit, 
+            ]
+        ];
+    }
 };
