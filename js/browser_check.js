@@ -11,12 +11,6 @@ var BrowserCheck = {
 		if (!ret)
 			return false;
 		
-		//OGG support
-		var v = document.createElement('audio');
-		ret = v.canPlayType('audio/ogg');
-		if (!ret)
-			return false;
-		
 		//Video support
 		ret = !!document.createElement('video').canPlayType;
 		if (!ret)

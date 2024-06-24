@@ -117,6 +117,8 @@ function Game()
 		this.resources.onComplete = function(){
 			game.fontDraw = new FontDraw('font', 14);
 			
+			InterfaceGUI.drawMenu();
+
 			//Init units
 			CurrentLevel.getInitUnits();
 		
@@ -129,7 +131,7 @@ function Game()
 			InterfaceMusicPlayer.start();
 			
 			$('.load-screen').hide();
-			$('.game').show();
+			$('.game').css({'display': 'flex'});   
 			
 			this.started = true;
 			init_finish_callback();
@@ -628,11 +630,15 @@ function Game()
 	this.toggleActionState = function(state)
 	{
 		var prev_state = this.action_state;
-		if (this.action_state != ACTION_STATE_NONE)
-			this.cleanActionState();
 		
-		if (state == prev_state)
+		// Toggle
+		if (prev_state == state) {
+			this.cleanActionState();
 			return;
+		}
+
+		if (prev_state != ACTION_STATE_NONE)
+			this.cleanActionState();
 		
 		switch (state)
 		{
@@ -839,6 +845,17 @@ function Game()
 			case 'music_volume':
 				InterfaceMusicPlayer.setVolume(value/100);
 				break;
+			case 'game_speed':
+				// TODO
+				RUNS_PER_SECOND = value
+				console.warn('TODO game_speed', value);
+				break;
+
+			case 'panning_speed':
+				// TODO
+				console.warn('TODO panning_speed', value/ 100);
+				break;
+
 		}
 	};
 }

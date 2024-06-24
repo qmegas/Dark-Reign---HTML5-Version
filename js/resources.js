@@ -154,7 +154,9 @@ function ResourseLoader()
 		else
 			item.volume = self.soundVolume;
 		
-		item.play();
+		item.play().catch((e) => {
+			console.warn(e)
+		});
 	};
 	
 	this.playOnPosition = function(key, multiple, position, pos_pixels)

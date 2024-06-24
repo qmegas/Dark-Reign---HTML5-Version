@@ -28,6 +28,33 @@ var InterfaceGUI = {
 		game.resources.addImage('minimap', 'images/levels/'+CurrentLevel.minimap.image);
 		game.resources.addImage('font', 'images/font.png');
 	},
+
+	drawMenu: function() {
+
+		$('#menu_pause img')
+			.attr('src', game.fontDraw.getDataUrl('Pause game'))
+		$('#menu_restart img')
+			.attr('src', game.fontDraw.getDataUrl('Restart game'))
+		$('#menu_quit img')
+			.attr('src', game.fontDraw.getDataUrl('Quit game'))
+		$('#menu_fullscreen img')
+			.attr('src', game.fontDraw.getDataUrl('Toggle full-screen'))
+		$('#menu_pause_music img')
+			.attr('src', game.fontDraw.getDataUrl('Pause music'))
+
+		$('#panel_paths img')
+			.attr('src', game.fontDraw.getDataUrl('"Paths" Not Available'))
+		$('#panel_comms img')
+			.attr('src', game.fontDraw.getDataUrl('"Comms" Not Available'))
+	},
+
+	toggleFullScreen: function() {
+	  if (!document.fullscreenElement) {
+	    document.documentElement.requestFullscreen();
+	  } else if (document.exitFullscreen) {
+	    document.exitFullscreen();
+	  }
+	},
 		
 	tabChanged: function(tab_id)
 	{
@@ -127,18 +154,34 @@ var InterfaceGUI = {
 		for (var i in game.selected_objects)
 			game.objects[game.selected_objects[i]].orderStop();
 	},
+
+	addTouchOffsets: function (evt, element) {
+		var touches = evt.originalEvent.touches || evt.originalEvent.changedTouches
+	    if (touches && touches.length) {
+	    	var touch = touches[0];
+	    	var rect = element.getBoundingClientRect();
+		    evt.offsetX = (touch.pageX - rect.left) / (rect.right - rect.left) * element.width;
+		    evt.offsetY = (touch.pageY - rect.top) / (rect.bottom - rect.top) * element.height
+	    }
+	    return evt;
+	},
 	
 	setHandlers: function()
 	{
 		//Interface stop button
-		$('#top_button_stop').mousedown(function(){
+		$('#top_button_stop').on('mousedown pointerdown', function(){
 			$(this).addClass('active');
 		});
-		$('#top_button_stop').mouseup(function(){
+		$('#top_button_stop').on('mouseup pointerup', function(){
 			$(this).removeClass('active');
 		});
 		$('#top_button_stop').click(function(){
+
+			//Cancel any order on selected_objects
 			InterfaceGUI.stopButton();
+			
+			//Cancel any actions
+			game.cleanActionState();
 		});
 		//Interface sell building button
 		$('#top_button_sell').click(function(){
@@ -179,7 +222,9 @@ var InterfaceGUI = {
 			return false;
 		});
 		$('.unit-image').mouseover(function(){
-			var cellid = $(this).parent('div').attr('data-cell'), position = $(this).offset();
+			var cellid = $(this).parent('div').attr('data-cell'), 
+				position = $(this).offset();
+				
 			InterfaceConstructManager.cellPopupPrepere(cellid);
 
 			position.left -= 392;
@@ -208,12 +253,13 @@ var InterfaceGUI = {
 			$('#cell_popup').hide();
 		});
 
-		$('#minimap_viewport').mousedown(function(event){
+		$('#minimap_viewport').on('mousedown touchstart', function(event){
 			game.minimapNavigation(true);
-			game.minimapMove(event.layerX, event.layerY);
+			InterfaceGUI.addTouchOffsets(event, this)
+			game.minimapMove(event.offsetX, event.offsetY);
 		});
 
-		$('#minimap_viewport').mouseup(function(){
+		$('#minimap_viewport').on('mouseup touchend', function(){
 			game.minimapNavigation(false);
 		});
 
@@ -221,35 +267,41 @@ var InterfaceGUI = {
 			game.minimapNavigation(false);
 		});
 
-		$('#minimap_viewport').mousemove(function(event){
-			game.minimapMove(event.layerX, event.layerY);
+		$('#minimap_viewport').on('mousemove touchmove', function(event){
+			InterfaceGUI.addTouchOffsets(event, this)
+			game.minimapMove(event.offsetX, event.offsetY);
 		});
 
 		$('#mouseview').bind('contextmenu', function(){
 			game.onClick('right');
 			return false;
 		});
-		$('#mouseview').mousedown(function(event){
+		$('#mouseview').on('mousedown touchstart', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStart();
 		});
-		$('#mouseview').mouseup(function(event){
+		$('#mouseview').on('mouseup touchend', function(event){
 			if (event.button == 0)
 				MousePointer.selectionStop();
 		});
 		$('#mouseview').mouseout(function(){
 			MousePointer.show_cursor = false;
 		});
-		$('#mouseview').mousemove(function(event){
+		$('#mouseview').on('mousemove touchmove', function(event){
+			InterfaceGUI.addTouchOffsets(event, this)
 			MousePointer.setPosition(event);
 		});
+
 		$('#cm_page_up').click(function(){
 			InterfaceConstructManager.pageUp();
 		});
+		
 		$('#cm_page_down').click(function(){
 			InterfaceConstructManager.pageDown();
 		});
-		$('.scroll-box').live('mousedown', function(event){
+		
+		$('.scroll-box').on('mousedown touchstart', function(event) {
+			InterfaceGUI.addTouchOffsets(event, this)
 			var $this = $(this), proc = parseInt(event.offsetX / $this.width() * 100);
 			$this.children().css('width', proc + '%');
 			game.changeGameParam($this.attr('data-param'), proc);
@@ -283,6 +335,25 @@ var InterfaceGUI = {
 			InterfaceGUI.ordersChange(TACTIC_ORDER_SND, 0, 0);
 		});
 		$('#order_set_default').click(InterfaceGUI.changeDefaultTactic);
+
+		$('#menu_pause').click(function(){
+			game.togglePause();
+		});
+
+		$('#menu_pause_music').click(function(){
+			InterfaceMusicPlayer.toggle();
+		})
+
+		$('#menu_fullscreen').click(function(){
+			InterfaceGUI.toggleFullScreen();
+		});
+		$('#menu_restart').click(function(){
+			location.reload();
+		});
+
+		$('#menu_quit').click(function(){
+			location.href = '/menu.html'
+		});
 
 		$(document).keydown(function(event) {
 			var prevent = true;

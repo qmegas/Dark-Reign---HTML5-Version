@@ -2476,7 +2476,14 @@ var CurrentLevel = {
 			],
 			
 			//Computer buildings
-			[]
+			[
+
+				// imp
+				ConstructionRigUnit, FreighterUnit, HoverFreighterUnit,
+				GuardianUnit, BionUnit,
+				ScoutRunnerUnit, InvaderTransportUnit, 
+				PlasmaTankUnit, ShredderUnit, 
+			]
 		];
 	}
 };
