@@ -7,48 +7,53 @@ body {
 }
 
 canvas, img {
-    image-rendering: pixelated;
+   /*image-rendering: pixelated;*/
 }
 
 .body-game {
 	padding: 0;
 	margin: 0;
 	cursor: url("../images/icursor.png"), auto;
+	background-color: #000;
 	display: flex;
     align-items: center;
     justify-content: center;
-	background-color: #000;
-	overflow: hidden;
-	-webkit-user-select: none; 
-	-webkit-touch-callout: none; 
-	-moz-user-select: none; 
-	-ms-user-select: none; 
-	user-select: none; 
 	touch-action: manipulation;
+    -webkit-touch-callout: none; /* Safari */
+        -webkit-user-select: none; /* Chrome */     
+           -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; 
+}
+
+.cell_popup {
+	display: none; 
+	position: absolute;
+	pointer-events: none;
+    z-index: 1;
 }
 
 .body-editor {
 	position: relative;
 	overflow: auto;
 	max-width: 100%;
-	overflow: hidden;
 }
 
 .shell-main {
-    position: relative;
-	width: 640px;
-	height: 480px;
-    max-height: 100%;
-    aspect-ratio: 640 / 480;
-    scale: 200%;
+	position: relative;
+	max-height: 100%;
+	scale: 1;
+	display: flex;
+	justify-content: center;
+	transform-origin: center;
 }
 
 .shell-editor {
-    position: relative;
-    overflow: auto;
-    width: 100%;
-    height: 100%;
-    max-height: 100%;
+	position: relative;
+	overflow: auto;
+	width: 100%;
+	height: 100%;
+	max-height: 100%;
 }
 
 ::selection {
@@ -61,8 +66,8 @@ canvas, img {
 
 .load-screen {
 	margin: 0;
-	width: 100%;
-	height: 100%;
+	width: 640px;
+	height: 480px;
 	background: url("../images/interface/load-screen.png") no-repeat 0 0;
 }
 .load-screen .progress {
@@ -73,17 +78,12 @@ canvas, img {
 	top: 419px;
 	left: 70px;
 }
-
-.main-menu {
-	background-color: #000;
-	width: 100%;
-	height: 100%;
-}
-
 .shell-menu {
 	background-color: #000;
 	width: 100%;
 	height: 100%;
+	display: none;
+	overflow: hidden;
 }
 .shell-menu .link {
 	font-size: 0;
@@ -476,8 +476,8 @@ canvas, img {
 
 
 .game {
-	width: 100%;
-	height: 100%;
+	width: 640px;
+	height: 480px;
 	display: none;
 }
 .game .left-frame {
@@ -487,6 +487,10 @@ canvas, img {
 }
 .game .left-frame .top-panel {
 	height: 32px;
+	min-width: 448px;
+	display: flex;
+    justify-content: center;
+	background: url("../images/interface/topbg.png") repeat;
 }
 .game .left-frame .top-panel .dummy-first {
 	width: 6px;
@@ -631,6 +635,7 @@ canvas, img {
 	float: left;
 	width: 192px;
 	height: 480px;
+	z-index: 1;
 }
 .game .right-frame .tab-buttons {
 	width: 192px;
@@ -705,7 +710,7 @@ canvas, img {
 }
 .game .right-frame .panel#panel_special {
 	color: #fff;
-	    padding-left: 20px;
+	padding-left: 20px;
 }
 .game .right-frame .panel .unit-boxes .box {
 	float: left;
@@ -1088,3 +1093,4 @@ canvas, img {
 	float: left;
 	display: none;
 }
+
