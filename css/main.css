@@ -42,10 +42,7 @@ canvas, img {
 .shell-main {
 	position: relative;
 	max-height: 100%;
-	scale: 1;
-	display: flex;
-	justify-content: center;
-	transform-origin: center;
+ 	max-width: 100%;
 }
 
 .shell-editor {
@@ -1093,4 +1090,3 @@ canvas, img {
 	float: left;
 	display: none;
 }
-

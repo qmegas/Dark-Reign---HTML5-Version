@@ -56,14 +56,16 @@ function MainShell()
 
 		} else if (config.mode === 'hd') {
 
-			VIEWPORT_SIZE_X = Math.max(config.width, parseInt(viewportSize.width));
-			VIEWPORT_SIZE_Y = Math.max(config.height, parseInt(viewportSize.height))
+			VIEWPORT_SIZE_X = parseInt(viewportSize.width);
+			VIEWPORT_SIZE_Y = parseInt(viewportSize.height);
 
 			// Rescale menu and load screnn
 			$('.shell-main .shell-menu, .shell-main .load-screen').css({
 				width: config.width,
 				height: config.height,
-				scale:  Math.max(scale, 0) + '%'
+				scale:  Math.max(scale, 0) + '%',
+				color: scale < 100 ? 'red' : 'blue',
+    			'transform-origin': scale < 100 ? 'left' : 'center'
 			});
 			
 			// Set scale to 1

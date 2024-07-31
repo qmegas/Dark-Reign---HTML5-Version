@@ -1,6 +1,7 @@
 <!doctype html>
-<html>
+<html lang="en">
 	<head>
+    	<meta charset="utf-8">
 		<title>Level edit</title>
     	<link rel="manifest" href="/manifest.json" importance="low" >
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
@@ -94,6 +95,7 @@
 		<script type="text/javascript" src="js/units/spider_bike.js"></script>
 		
 		<script type="text/javascript" src="js/ai/tactical.js"></script>
+		<script type="text/javascript" src="js/ai/defense.js"></script>
 		<script type="text/javascript" src="js/actions_heap.js"></script>
 		<script type="text/javascript" src="js/construct_queue.js"></script>
 		<script type="text/javascript" src="js/pathfinding.js"></script>
@@ -110,6 +112,8 @@
 			<input type="radio" name="type" value="2" class="radio" id="type2" checked /> Water
 			<input type="radio" name="type" value="3" class="radio" id="type3" /> No walking
 			<input type="button" value="Export Data" id="export" /><br/>
+			<input type="text" name="x" value="" id="coord_x" />
+			<input type="text" name="y" value="" id="coord_y" />
 		</div>
 			
 		<div class="shell-editor">
@@ -117,5 +121,14 @@
 			<canvas id="grid"  style="position: absolute; top: 100px; left: 0; z-index: 90"></canvas>
 			<textarea id="text" style="display: none; z-index: 100; position: absolute; top: 100px; left: 0; width: 1000px; height: 400px"></textarea>
 		</div>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FNMMP323W"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-9FNMMP323W');
+		</script>
 	</body>
 </html>

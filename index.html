@@ -4,6 +4,8 @@
     <title>Dark Reign HTML5 - A Recreated Classic RTS Game</title>
     <meta name="description" content="Dark Reign HTML5 is a recreation of the classic RTS game 'Dark Reign: The Future of War' using HTML5 technologies. Play the modern version of this iconic game online.">
     <meta name="robots" content="index, follow">
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="" />
     <meta name="theme-color" content="#fe5406">
     <link rel="manifest" href="/manifest.json" importance="low">
     <link href="css/main.css" rel="stylesheet" type="text/css">
@@ -126,22 +128,13 @@
 	<script type="text/javascript" src="js/shell/main.js"></script>
 	<script type="text/javascript" src="js/shell/archive.js"></script>
 	<script type="text/javascript" src="js/shell/menu.js"></script>
-
-	<!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9FNMMP323W"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-9FNMMP323W');
-    </script>
 	</head>
 	<body class="body-game">
 		<div class="shell-main">
+			<div class="load-screen">
+				<div class="progress" id="progress-bar"></div>
+			</div>
 			<div class="shell-menu"> 
-				<div class="load-screen">
-					<div class="progress" id="progress-bar"></div>
-				</div>
 				
 				<div id="video_container"></div>
 				
@@ -228,5 +221,13 @@
 	    <noscript>
 	      <p>We're sorry, but this page doesn't work properly without JavaScript enabled.</p>
 	    </noscript>
+		<!-- Google Analytics -->
+	    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9FNMMP323W"></script>
+	    <script>
+	        window.dataLayer = window.dataLayer || [];
+	        function gtag(){dataLayer.push(arguments);}
+	        gtag('js', new Date());
+	        gtag('config', 'G-9FNMMP323W');
+	    </script>
 	</body>
 </html>
