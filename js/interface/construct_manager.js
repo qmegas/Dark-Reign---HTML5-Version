@@ -1,5 +1,4 @@
 var CM_ITEMS_COUNT = 15;
-
 var CM_VIEW_UNITS = 1;
 var CM_VIEW_BUILDINGS = 2;
 
@@ -420,15 +419,15 @@ var InterfaceConstructManager = {
 	
 	_canvasRedraw: function(index)
 	{
-		var offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
-			ctx = $('#cell_canvas_' + index).get(0).getContext('2d'), 
+		var to_point, txt, prog,
+			offset = (this.current_view_type == CM_VIEW_UNITS) ? this.unit_offset : this.building_offset,
 			obj = this.available_units[offset + index], 
-			to_point, txt, prog;
-		
-		ctx.clearRect(0, 0, 64, 50);
+			ctx = $('#cell_canvas_' + index).get(0).getContext('2d');
 		
 		if (obj.producing_count == 0)
 			return;
+		
+		ctx.clearRect(0, 0, 64, 50);
 		
 		prog = obj.producing_progress/obj.construction_time;
 		if (prog > 0 && prog < 1)
