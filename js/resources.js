@@ -12,16 +12,21 @@ function ResourseLoader()
 	
 	this._counterUp = function()
 	{
+		//console.debug('ResourseLoader._counterUp', self.loaded, self.total)
 		self.loaded++;
-			self.onLoaded(self.loaded, self.total);
-			if (self.loaded == self.total)
-				self.onComplete();
+		self.onLoaded(self.loaded, self.total);
+
+		if (self.loaded == self.total){
+			self.onComplete();
+		}
 	};
 	
 	this._makeColoredImage = function(source_img, key, color)
 	{
-		var img = self.get(source_img), canvas = document.createElement('canvas'), ctx = canvas.getContext('2d'),
-			codes = {}, rgb_code;
+		var codes = {}, rgb_code,
+			img = self.get(source_img), 
+			canvas = document.createElement('canvas'), 
+			ctx = canvas.getContext('2d');
 		
 		codes[1396609] = {red: {r: 136, g: 7, b: 0}};
 		codes[2385097] = {red: {r: 187, g: 7, b: 14}};
@@ -65,12 +70,14 @@ function ResourseLoader()
 	
 	this.addImage = function(key, image_path, multicolor)
 	{
+		if (!image_path) {
+			console.warn('failed add image', key);
+			return;
+		}
+
 		var skey = multicolor ? key + 'yellow' : key;
 		if (self.isSet(skey))
 			return;
-		
-		if (!image_path)
-			debugger;
 		
 		var img = new Image();
 		img.src = image_path;
@@ -81,6 +88,9 @@ function ResourseLoader()
 			if (multicolor)
 				self._makeColoredImage(skey, key, 'red');
 			self._counterUp();
+		};
+		img.onerror = function() {
+			console.warn('failed to load', img.src);
 		};
 	};
 	
@@ -94,9 +104,12 @@ function ResourseLoader()
 		self.items[key] = audio;
 		self.total++;
 		
-		audio.addEventListener('canplaythrough', function(){
+		audio.addEventListener('loadedmetadata', function(){
 			self._counterUp();
 		});
+		audio.onerror = function() {
+			console.warn('failed to load', audio.src);
+		};
 	};
 	
 	this.addVideo = function(key, video_path, class_name)
@@ -108,7 +121,10 @@ function ResourseLoader()
 		$(video).attr({
 			id: 'example_video_test',
 			'class': class_name,
-			preload: 'auto'
+			preload: 'auto',
+			autoplay: false,
+			playsinline: true,
+			muted: true
 		});
 		$(source).attr({
 			type: 'video/webm',
@@ -118,10 +134,17 @@ function ResourseLoader()
 		
 		self.items[key] = video;
 		self.total++;
+
+		video.addEventListener('abort', function(event){
+			console.log(event)
+		});
 		
-		video.addEventListener('canplaythrough', function(){
+		video.addEventListener('loadedmetadata', function(){
 			self._counterUp();
 		});
+		video.onerror = function() {
+			console.warn('failed to load', video.src);
+		};
 	};
 	
 	this.addDirect = function(key, obj)
@@ -155,7 +178,7 @@ function ResourseLoader()
 			item.volume = self.soundVolume;
 		
 		item.play().catch((e) => {
-			console.warn(e)
+			console.warn(key, e)
 		});
 	};
 	
@@ -169,7 +192,10 @@ function ResourseLoader()
 				y: position.y * CELL_SIZE
 			};
 		
-		len =  Math.sqrt(Math.pow((game.viewport_x + VIEWPORT_SIZE/2) - position.x, 2) + Math.pow((game.viewport_y + VIEWPORT_SIZE/2) - position.y, 2));
+		len =  Math.sqrt(
+			Math.pow((game.viewport_x + VIEWPORT_SIZE_X/2) - position.x, 2) + 
+			Math.pow((game.viewport_y + VIEWPORT_SIZE_Y/2) - position.y, 2)
+		);
 		
 		if (len < half_screen_size)
 			volume = 1;
