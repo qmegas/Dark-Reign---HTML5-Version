@@ -113,7 +113,9 @@ var InterfaceFogOfWar = {
 	
 	_redrawCell: function(x, y)
 	{
-		var pixel_pos, spriteid = this._getSpriteId(x, y), correct_cell = MapCell.isCorrectCord(x, y);
+		var pixel_pos, 
+			spriteid = this._getSpriteId(x, y), 
+			correct_cell = MapCell.isCorrectCord(x, y);
 		
 		if (!correct_cell || (CurrentLevel.map_cells[x][y].fog_image != spriteid))
 		{
