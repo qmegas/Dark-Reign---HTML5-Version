@@ -4,7 +4,7 @@ define('CURSOR_SIZE', 32);
 define('VIEW_ICONS', 323);
 define('START_POS', 12);
 
-$fp = fopen('C:\\Documents and Settings\\LENOVO User\\My Documents\\DR html\\Helpers\\1\\MOUSE.CRS', 'rb');
+$fp = fopen(__DIR__ . '/../vendors/DarkReign/dark/graphics/INTFACE/MOUSE.CRS', 'rb');
 fseek($fp, START_POS);
 $img = imagecreatetruecolor(CURSOR_SIZE, CURSOR_SIZE*VIEW_ICONS);
 $j = 0;

@@ -1,8 +1,9 @@
 <?php
 
-$index_file = "C:\\Documents and Settings\\LENOVO User\\My Documents\\DR html\\Helpers\\Dark Reign 1.7\\DARK\\SHELL\\shell.rli";
-$data_file = "C:\\Documents and Settings\\LENOVO User\\My Documents\\DR html\\Helpers\\Dark Reign 1.7\\DARK\\SHELL\\shell.rld";
-$outdir = "C:\\Documents and Settings\\LENOVO User\\My Documents\\DR html\\Helpers\\tests\\1\\";
+$index_file = __DIR__ . "/../vendors/DarkReign/dark/shell/shell.rli";
+$data_file = __DIR__ . "/../vendors/DarkReign/dark/shell/shell.rld";
+$outdir = __DIR__ . "/../vendors/";
+
 
 $fp = fopen($index_file, 'rb');
 $fd = fopen($data_file, 'rb');

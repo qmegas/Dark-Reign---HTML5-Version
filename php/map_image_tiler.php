@@ -7,7 +7,7 @@ class Tiler
 {
 	public function makeTiles()
 	{
-		$file = 'C:\\1.png';
+		$file = __DIR__ . '/maps/imp1.png';
 		$img = imagecreatefrompng($file);
 		$tiles = array();
 		$info = getimagesize($file);
@@ -54,7 +54,7 @@ class Tiler
 			imagedestroy($tile);
 			++$i;
 		}
-		imagepng($img, 'C:\\2.png');
+		imagepng($img, __DIR__ . '/maps/2.png');
 		imagedestroy($img);
 		
 		//Build map array
@@ -74,7 +74,7 @@ class Tiler
 	
 	public function buildImage($data)
 	{
-		$file = 'C:\\2.png';
+		$file = __DIR__ . '/maps/imp1.png';
 		$data = json_decode($data);
 		
 		$final_width = count($data);
@@ -101,7 +101,7 @@ class Tiler
 			foreach ($data_y as $y => $tile_index)
 				imagecopy($img, $tiles[$tile_index], $x*24, $y*24, 0, 0, 24, 24);
 		
-		imagepng($img, 'C:\\3.png');
+		imagepng($img, __DIR__ . '/maps/imp1-full.png');
 		imagedestroy($img);
 		
 		echo 'Time: '.(microtime(true) - $debug);
@@ -112,3 +112,4 @@ $data = '[[0,1,2,1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
 
 $t = new Tiler();
 $t->buildImage($data);
+$t->makeTiles();

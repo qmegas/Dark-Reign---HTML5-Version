@@ -1,7 +1,7 @@
 <?php
 
-$source_file = 'F:\\My Docs\\DR Helpers\\Dark Reign 1.7\\DARK\\sndfx\\SOUNDS.FTG';
-$output_dir = 'F:\\My Docs\\DR Helpers\\Sounds\\';
+$source_file = __DIR__ . "/../vendors/DarkReign/dark/sndfx/SOUNDS.FTG";
+$output_dir = __DIR__ . "/../sounds/";
 
 $fh = fopen($source_file, 'rb');
 if (!$fh)
