@@ -32,7 +32,9 @@ ShredderUnit.parts = [
 			[{x: 6, y: 6}, {x: 12, y: 11}, {x: 13, y: 12}, {x: 0, y: 2}],
 			[{x: 6, y: 6}, {x: 12, y: 11}, {x: 13, y: 12}, {x: -3, y: 6}],
 			[{x: 6, y: 6}, {x: 12, y: 11}, {x: 13, y: 12}, {x: -3, y: 10}],
-		]
+		],
+		//TODO weapon close combat?
+		// weapon: ''
 	}
 ];
 ShredderUnit.shadow = {
