@@ -2,18 +2,19 @@
 	"name":"Dark Reign HTML5",
     "short_name":"Dark Reign",
     "theme_color": "#fe5406",
-    "background_color": "#000000",
+    "background_color": "#282828",
     "description": "Dark Reign in HTML5",
     "categories": [
     "games"
     ],
     "orientation": "any",
     "display_override": [
-    "window-controls-overlay",
-    "minimal-ui",
-    "fullscreen"
+      "borderless",
+      "window-controls-overlay",
+      "minimal-ui",
+      "fullscreen"
     ],
-    "display": "standalone",
+    "display": "fullscreen",
     "dir": "auto",
     "lang": "en",
     "start_url": "/",
