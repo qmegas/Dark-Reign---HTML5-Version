@@ -18,6 +18,10 @@ var BridgeTypeBuilding = {
 			obj.images.normal.size.x, obj.images.normal.size.y
 		);
 
+		MousePointer.mouse_ctx.save();
+		MousePointer.mouse_ctx.globalCompositeOperation = "overlay";
+		MousePointer.mouse_ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+		
 		if (BridgeTypeBuilding.isCorrectLandForBuild(x, y, obj.cell_size.x, obj.cell_size.y))
 		{
 			for (xx = 0; xx<obj.cell_size.x; ++xx)
@@ -39,13 +43,12 @@ var BridgeTypeBuilding = {
 					var cell = CurrentLevel.map_cells[xxx][yyy], unitid = MapCell.getSingleUserId(cell);
 					if ((cell.type!=CELL_TYPE_EMPTY && cell.type!=CELL_TYPE_WATER) || cell.shroud==1 || (unitid!=-1 && unitid!=game.action_state_options.requested_unit))
 					{
-						/*
-						// TODO where is game.resources.get('clr')
-						MousePointer.mouse_ctx.drawImage(
-							game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
-							xxx*CELL_SIZE - game.viewport_x + 12, yyy*CELL_SIZE - game.viewport_y + 12, CELL_SIZE, CELL_SIZE
+
+						MousePointer.mouse_ctx.fillRect(
+							xxx*CELL_SIZE - game.viewport_x + 12, 
+							yyy*CELL_SIZE - game.viewport_y + 12, 
+							CELL_SIZE, CELL_SIZE
 						);
-						*/
 					}
 				}
 			}
@@ -63,16 +66,17 @@ var BridgeTypeBuilding = {
 						continue;
 
 					yyy = yy+y;
-					/*
-					// TODO where is game.resources.get('clr')
-					game.viewport_ctx.drawImage(
-						game.resources.get('clr'), 0, 0, CELL_SIZE, CELL_SIZE, 
-						xxx*CELL_SIZE - game.viewport_x + 12, yyy*CELL_SIZE - game.viewport_y + 12, CELL_SIZE, CELL_SIZE
+
+
+					MousePointer.mouse_ctx.fillRect(
+						xxx*CELL_SIZE - game.viewport_x + 12, 
+						yyy*CELL_SIZE - game.viewport_y + 12, 
+						CELL_SIZE, CELL_SIZE
 					);
-					*/
 				}
 			}
 		}
+		MousePointer.mouse_ctx.restore();
 	},
 		
 	canBuild: function(obj, x, y, unit)
