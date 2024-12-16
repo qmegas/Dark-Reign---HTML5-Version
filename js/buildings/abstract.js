@@ -501,7 +501,7 @@ function AbstractBuilding()
 		
 		if (this.state != BUILDING_STATE_NORMAL && this.state != BUILDING_STATE_ATTACK)
 			return;
-		
+
 		if (this.weapon.canAttackTarget(target))
 			this.weapon.setTarget(target);
 		
@@ -790,7 +790,7 @@ AbstractBuilding.drawBuildMouse = function(obj, x, y)
 		y*CELL_SIZE - game.viewport_y - obj.images.normal.padding.y + 12, 
 		obj.images.normal.size.x, obj.images.normal.size.y
 	);
-		
+	
 	MousePointer.mouse_ctx.save();
 	MousePointer.mouse_ctx.globalCompositeOperation = "overlay";
 	MousePointer.mouse_ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
