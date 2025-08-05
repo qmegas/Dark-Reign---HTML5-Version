@@ -115,8 +115,10 @@ function FontDraw(font_name, size)
 
 	this._bufferDraw = function(canvas, text, color)
 	{
-		var ctx = canvas.get(0).getContext('2d'), current_position = 0, ascii, letter, line = 0,
-			color_offset = this._getColorOffset(color), font = game.resources.get(font_name);
+		var current_position = 0, ascii, letter, line = 0,
+			color_offset = this._getColorOffset(color), 
+			font = game.resources.get(font_name),
+			ctx = canvas.get(0).getContext('2d');
 
 		for (var i = 0; i < text.length; ++i)
 		{
