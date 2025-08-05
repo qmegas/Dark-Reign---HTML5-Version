@@ -84,8 +84,8 @@ function SimpleEffect(info)
 		
 		if ((game.viewport_x > (position.x + this.info.size.x)) || 
 			(game.viewport_y > (position.y + this.info.size.y)) ||
-			((game.viewport_x + VIEWPORT_SIZE) < position.x) ||
-			((game.viewport_y + VIEWPORT_SIZE) < position.y))
+			((game.viewport_x + VIEWPORT_SIZE_X) < position.x) ||
+			((game.viewport_y + VIEWPORT_SIZE_Y) < position.y))
 			return false;
 		
 		return true;
