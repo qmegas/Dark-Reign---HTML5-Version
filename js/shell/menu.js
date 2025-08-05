@@ -57,6 +57,7 @@ function GameMenu()
 		
 		this.resources.onComplete = function(){
 			$('.load-screen').hide();
+			$('.shell-menu').show();
 			
 			self.fontNormal = new FontDraw('font-normal', 18);
 			self.fontRed = new FontDraw('font-red', 20);
