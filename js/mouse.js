@@ -56,6 +56,19 @@ var MousePointer = {
 
 	mouse_ctx: null,
 
+	max_movement: {
+		x: VIEWPORT_SIZE_X * 2,
+		y: VIEWPORT_SIZE_Y
+	},
+
+	setMaxMovement(level_data)
+	{	
+		this.max_movement = {
+			x: CELL_SIZE*(level_data.size.x) - (VIEWPORT_SIZE_X - RIGHT_FRAME_X),
+			y: CELL_SIZE*(level_data.size.y + 1.5) - VIEWPORT_SIZE_Y
+		};
+	},
+
 	init: function()
 	{
 		this.mouse_ctx = document.getElementById('mouseview').getContext('2d');
@@ -63,7 +76,7 @@ var MousePointer = {
 
 	clearView: function()
 	{
-		this.mouse_ctx.clearRect(0, 0, VIEWPORT_SIZE, VIEWPORT_SIZE);
+		this.mouse_ctx.clearRect(0, 0, VIEWPORT_SIZE_X, VIEWPORT_SIZE_Y);
 	},
 	
 	setPosition: function(event)
@@ -73,6 +86,42 @@ var MousePointer = {
 			x: event.offsetX, 
 			y: event.offsetY
 		};
+	},
+
+	matchElementFromEvent: function(event, element) {
+	    event.preventDefault();
+	    var touch = event.touches && event.touches[0];
+	    return element = touch && document.elementFromPoint(touch.pageX,touch.pageY);
+	},
+
+	getEventPosition: function (evt, element) {
+		var touches = evt.changedTouches
+	    if (touches && touches.length) {
+		    var rect = element.getBoundingClientRect(),
+		    	layerX = touches[0].clientX - rect.left,
+	    		layerY = touches[0].clientY - rect.top,
+	    		parent = $('.shell-main'),
+	    		currentScale = 1 / (parseFloat(parent.css('scale')) || 1);
+			
+			evt.offsetX = layerX * currentScale;
+			evt.offsetY = layerY * currentScale;
+	    }
+
+	    if (!evt.offsetX) {
+	    	console.warn('getEventPosition', event)
+	    }
+
+	    return {
+	    	x: evt.offsetX || this.position.x,
+	    	y: evt.offsetY || this.position.y,
+	    };
+	},
+
+	getEventElementOffset(evt, element) {
+		return {
+	    	top: element.offsetTop,
+	    	left: element.offsetLeft,
+	    }
 	},
 	
 	draw: function(current_time)
@@ -110,14 +159,14 @@ var MousePointer = {
 			
 			if (this.position.x < PANNING_FIELD_SIZE)
 				move_x = -1;
-			else if (this.position.x > (VIEWPORT_SIZE - PANNING_FIELD_SIZE))
+			else if (this.position.x > (VIEWPORT_SIZE_X - PANNING_FIELD_SIZE))
 				move_x = 1;
 			else
 				game.viewport_move_mouse_x = 0;
 			
 			if (this.position.y < PANNING_FIELD_SIZE)
 				move_y = -1;
-			else if (this.position.y > (VIEWPORT_SIZE - PANNING_FIELD_SIZE))
+			else if (this.position.y > (VIEWPORT_SIZE_Y - PANNING_FIELD_SIZE))
 				move_y = 1;
 			else
 				game.viewport_move_mouse_y = 0;
@@ -131,10 +180,10 @@ var MousePointer = {
 					
 					//check if can move
 					if (move_x != 0)
-						if ((move_x==-1 && game.viewport_x<=0) || (move_x==1 && game.viewport_x>=CurrentLevel.max_movement.x))
+						if ((move_x==-1 && game.viewport_x<=0) || (move_x==1 && game.viewport_x>=this.max_movement.x))
 							move_x = 0;
 					if (move_y != 0)
-						if ((move_y==-1 && game.viewport_y<=0) || (move_y==1 && game.viewport_y>=CurrentLevel.max_movement.y))
+						if ((move_y==-1 && game.viewport_y<=0) || (move_y==1 && game.viewport_y>=this.max_movement.y))
 							move_y = 0;
 					
 					//Draw move pointer
@@ -192,9 +241,12 @@ var MousePointer = {
 		{
 			if (game.objects[objid].is_building)
 			{
+				/*
+				//TODO disabled cause bad behavior
 				if (game.objects[objid].player != PLAYER_HUMAN)
 					return this._drawCursor(current_time, Cursor.SELECT);
-				
+				*/
+
 				if (
 					game.objects[objid]._proto.is_bridge && 
 					game.selected_objects.length>0 && 
@@ -225,7 +277,9 @@ var MousePointer = {
 					return this._drawCursor(current_time, Cursor.ENTER);
 			}
 			
-			if (game.objects[objid].player!=PLAYER_HUMAN && game.players[PLAYER_HUMAN].isEnemy(game.objects[objid].player))
+			if (
+				game.objects[objid].player!=PLAYER_HUMAN && 
+					game.players[PLAYER_HUMAN].isEnemy(game.objects[objid].player))
 			{
 				if (this._checkAttackAbility(objid))
 					return this._drawCursor(current_time, Cursor.ATTACK);
@@ -321,7 +375,8 @@ var MousePointer = {
 		
 				if (Math.abs(sizes.width)<4 && Math.abs(sizes.height)<4)
 				{
-					unitid = MapCell.isFogged(pos) ? -1 : MapCell.getSingleUserId(CurrentLevel.map_cells[pos.x][pos.y]);
+					unitid = MapCell.isFogged(pos) ? -1 : 
+						MapCell.getSingleUserId(CurrentLevel.map_cells[pos.x][pos.y]);
 					
 					if (unitid != -1)
 					{
@@ -338,29 +393,45 @@ var MousePointer = {
 								return;
 							}
 							
-							if (game.objects[unitid].player == PLAYER_HUMAN)
+							if (
+								game.objects[unitid].player == PLAYER_HUMAN || 
+									game.objects[unitid].player == PLAYER_NEUTRAL
+							)
 							{
 								//Is harvesting?
-								if (game.selected_info.harvesters && game.objects[unitid].isHarvestPlatform())
+								if (
+									game.selected_info.harvesters && 
+										game.objects[unitid].isHarvestPlatform())
 								{
 									for (var i in game.selected_objects)
-										game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
+										game.objects[game.selected_objects[i]] && 
+											game.objects[game.selected_objects[i]].orderHarvest(game.objects[unitid], true);
 									return;
 								}
 
 								//Rearm Cyclones
-								if (game.selected_info.cyclones && game.objects[unitid]._proto==RearmingDeckBuilding && game.objects[unitid].state==BUILDING_STATE_NORMAL)
+								if (
+									game.selected_info.cyclones && 
+										game.objects[unitid]._proto == RearmingDeckBuilding && 
+											game.objects[unitid].state == BUILDING_STATE_NORMAL
+								)
 								{
 									for (var i in game.selected_objects)
-										game.objects[game.selected_objects[i]].orderRearm(game.objects[unitid], true);
+										game.objects[game.selected_objects[i]] && 
+											game.objects[game.selected_objects[i]].orderRearm(game.objects[unitid], true);
 									return;
 								}
 
 								//Is healing humans
-								if (game.selected_info.humans && game.objects[unitid].isHealer())
+								if (
+									game.selected_info.humans && 
+										game.objects[unitid].isHealer()
+								)
 								{
 									for (var i in game.selected_objects)
-										game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
+										game.objects[game.selected_objects[i]] &&
+											// TODO s[i]].orderHeal undefined
+											game.objects[game.selected_objects[i]].orderHeal(game.objects[unitid], (i==0));
 									return;
 								}
 
@@ -372,7 +443,8 @@ var MousePointer = {
 									game.objects[unitid].isFixer())
 								{
 									for (var i in game.selected_objects)
-										game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
+										game.objects[game.selected_objects[i]] &&
+											game.objects[game.selected_objects[i]].orderFix(game.objects[unitid], (i==0));
 									return;
 								}
 							}
@@ -389,13 +461,16 @@ var MousePointer = {
 							if (game.selected_info.move_mode_min<=MOVE_MODE_HOVER && game.objects[unitid].haveFreeSpace(game.selected_info.min_mass))
 							{
 								for (var i in game.selected_objects)
-									game.objects[game.selected_objects[i]].orderToCarry(game.objects[unitid], (i==0));
+									game.objects[game.selected_objects[i]] &&
+										game.objects[game.selected_objects[i]].orderToCarry(game.objects[unitid], (i==0));
 								return;
 							}
 						}
 						
 						//Attack enemy unit
-						if (game.objects[unitid].player!=PLAYER_HUMAN && game.players[PLAYER_HUMAN].isEnemy(game.objects[unitid].player))
+						if (
+							game.objects[unitid].player!=PLAYER_HUMAN && 
+								game.players[PLAYER_HUMAN].isEnemy(game.objects[unitid].player))
 						{
 							if (this._checkAttackAbility(unitid))
 								this._actAttack(pos);
@@ -404,7 +479,10 @@ var MousePointer = {
 					else
 					{
 						//Teleport
-						if (game.selected_info.is_building && game.objects[game.selected_objects[0]].isTeleport())
+						// TODO undefined isTeleport
+						if (
+							game.selected_info.is_building && 
+								game.objects[game.selected_objects[0]].isTeleport())
 						{
 							if (game.objects[game.selected_objects[0]].canTeleport())
 							{
