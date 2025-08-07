@@ -327,7 +327,7 @@ function AbstractBuilding()
 
 
 		
-		var time = (new Date()).getTime();
+		var time = performance.now();
 		if  ((time - this._last_scan_time) > UNIT_SCAN_INTERVAL)
 		{
 			this._last_scan_time = time;
@@ -719,10 +719,11 @@ function AbstractBuilding()
 	this.onConstructed = function() 
 	{
 		this._proto.count[this.player]++;
-			
+		
 		if (this.state == BUILDING_STATE_CONSTRUCTION)
 			InterfaceSoundQueue.addSound('construction_complete');
 		if (this.state == BUILDING_STATE_UPGRADING)
+			InterfaceSoundQueue.addSound('construction_complete');
 			this.health = this._proto.health_max;
 		
 		InterfaceConstructManager.recalcUnitAvailability(this.player);
