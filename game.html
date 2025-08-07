@@ -112,10 +112,10 @@
 	</head>
 	<body class="body-game">
 		<div class="shell-main">
-			<div class="load-screen">
+			<div class="load-screen" style="display: none;">>
 				<div class="progress" id="progress-bar"></div>
 			</div>
-			<div class="game">
+			<div class="game" style="display: none;">
 				<div class="left-frame">
 					<div class="top-panel">
 						<div class="dummy-first"></div>
@@ -395,14 +395,14 @@
 				<canvas id="cell_popup" class="cell_popup" width="400" height="200"></canvas>
 			</div>
 			
-			<div class="dialog-screen" id="dialog_box">
+			<div class="dialog-screen" style="display: none;" id="dialog_box">
 				<div class="simple" id="dialog_simple">
 					<div class="text-container">
 						<img src="#" id="dialog_text" />
 					</div>
 					<div class="buttons-box">
-						<div class="dk-button small" id="d_button1"><img src="#" id="d_button1_img" /></div>
-						<div class="dk-button small" id="d_button2"><img src="#" id="d_button2_img" /></div>
+						<button class="dk-button small" id="d_button1"><img src="#" id="d_button1_img" /></button>
+						<button class="dk-button small" id="d_button2"><img src="#" id="d_button2_img" /></button>
 					</div>
 				</div>
 			</div>
