@@ -1,5 +1,9 @@
 var ProducingQueue = {
 	_queue: {},
+
+	init: function () {
+		this.run()
+	},
 		
 	//@todo Separate functionality by players
 	addProduction: function(obj) 
