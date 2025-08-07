@@ -36,16 +36,49 @@ var TacticalAI = {
 				break;
 		}
 	},
+
+	_planTactic(unit) {
+		// Find something to spent you input 
+
+		// TODO I under attack ?
+
+		// TODO Can i build something?
+		// - haveEnoughMoney
+
+		var action_state_options = {
+			object: IMHeadquarterBuilding,
+			requested_unit: 1,
+			pos: unit.position
+		};
+		
+		var canBuildBuilding = AbstractBuilding.canBuild(
+			action_state_options.object, 
+			action_state_options.pos.x, 
+			action_state_options.pos.y, 
+			unit
+		);
+
+		if (canBuildBuilding) {
+			unit.orderBuild(pos.x, pos.y, action_state_options.object);
+			game.cleanActionState();
+		}
+	},
 		
 	regularScan: function(unit)
-	{
+	{	
 		/**
 		 * Right now i implement tactical AI when unit is idle
 		 * But multi-part units may attack even when moving.
 		 * That should be implemented later
 		 */
-		if (unit.state != UNIT_STATE_STAND)
+		if (unit.state != UNIT_STATE_STAND) {
 			return;
+		}
+
+		var player_type = game.players[unit.player].type;
+		if (player_type == PLAYER_COMPUTER1) {
+			this._planTactic(unit)
+		}
 		
 		if (this._noAmmo(unit))
 			return;
@@ -89,6 +122,7 @@ var TacticalAI = {
 		}
 		return true;
 	},
+
 	_goFixing: function(unit)
 	{
 		if (unit.tactic.tolerance == TACTIC_HIGH)
@@ -126,8 +160,12 @@ var TacticalAI = {
 		if (unit.is_building)
 			return;
 		
-		if (unit.state != UNIT_STATE_STAND)
-			return;
+		if (
+			unit.state != UNIT_STATE_STAND
+		) {
+			//console.log('should have stopped')
+			//return;
+		}
 		
 		if (!game.objects[params.attacker])
 			return;
@@ -135,9 +173,12 @@ var TacticalAI = {
 		if (unit.tactic.independance == TACTIC_LOW)
 			return;
 		
-		var pos1 = unit.getCell(), pos2 = game.objects[params.attacker].getCell(), alpha, distance, new_x, new_y;
+		var pos1 = unit.getCell(), 
+			pos2 = game.objects[params.attacker].getCell(), 
+			alpha, distance, new_x, new_y;
 		
-		if (unit.isCanAttackTarget({type: 'object', objid: params.attacker}))
+		var canAttack = unit.isCanAttackTarget({type: 'object', objid: params.attacker});
+		if (canAttack)
 		{
 			//Run toward
 			alpha = Math.atan2(pos2.x - pos1.x, pos2.y - pos1.y);
@@ -153,12 +194,22 @@ var TacticalAI = {
 		new_x = Math.round(Math.sin(alpha)*distance + pos1.x);
 		new_y = Math.round(Math.cos(alpha)*distance + pos1.y);
 		
-		if (MapCell.isCorrectCord(new_x, new_y))
+		// Attack
+		if (canAttack) {
+			console.log('orderAttack', params.attacker)
+			unit.orderAttack(params.attacker);
+
+		// Get closer
+		} else if (MapCell.isCorrectCord(new_x, new_y)) {
+			console.log('orderMove', new_x, new_y)
 			unit.orderMove(new_x, new_y);
 		
 		//Or run to random cell
-		if (unit.move_path.length == 0)
+		} else if (unit.move_path.length == 0) {
+			console.log('move closer to ', params.attacker)
+			console.log('_runToRandom', unit)
 			this._runToRandom(unit);
+		}
 		
 		//Return to start position
 		unit.action.return_position = cloneObj(pos1);
