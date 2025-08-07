@@ -22,8 +22,9 @@ function WeaponHolder(config_name)
 	};
 	
 	this.getDelayState = function()
-	{
-		return ((new Date()).getTime() - last_shoot) / config.firedelay;
+	{	
+		var delay = (performance.now() - last_shoot) / config.firedelay;
+		return delay;
 	};
 	
 	this.reArm = function()
@@ -50,20 +51,20 @@ function WeaponHolder(config_name)
 		}
 	};
 	
-	this.canAttackTarget = function(target)
+	this.canAttackTarget = function(trg)
 	{
-		if (target && target.type == 'object')
+		if (trg && trg.type == 'object')
 		{
-			if (unit.uid == target.objid)
+			if (unit.uid == trg.objid)
 				return false;
 			
-			if (game.objects[target.objid]._proto.move_mode == MOVE_MODE_FLY)
+			if (game.objects[trg.objid]._proto.move_mode == MOVE_MODE_FLY)
 				return config.can_shoot_flyer;
 			else
 				return config.can_shoot_ground;
 		}
 		
-		if (target && target.type == 'ground')
+		if (trg && trg.type == 'ground')
 			return config.can_shoot_ground;
 		
 		return false;
@@ -72,6 +73,11 @@ function WeaponHolder(config_name)
 	this.setTarget = function(trg)
 	{
 		target = trg;
+	};
+
+	this.isTarget = function(trg)
+	{
+		return target === trg;
 	};
 	
 	//Can shoot now?
@@ -144,7 +150,11 @@ function WeaponHolder(config_name)
 	};
 	
 	this.canReach = function(trigger_events)
-	{
+	{	
+		if (!target) {
+			return false;
+		}
+
 		var distance = this._getDistance();
 		
 		if (distance < config.minimum_range)
@@ -168,7 +178,7 @@ function WeaponHolder(config_name)
 	{
 		var position_from = position, to = this.getTargetPosition();
 		
-		last_shoot = (new Date()).getTime();
+		last_shoot = performance.now();
 		
 		//Decrease ammo
 		if (config.ammo)
