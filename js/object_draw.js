@@ -28,8 +28,10 @@ function ObjectDraw()
 		
 		for (i=0; i<this._layers.length; ++i)
 		{
+			//console.time('_keySort')
 			//this._keySort(i);
-			
+			//console.timeEnd('_keySort')
+
 			for (j in this._layers[i])
 				for (k=0; k<this._layers[i][j].length; ++k)
 					this._drawElement(this._layers[i][j][k]);
