@@ -9,16 +9,21 @@ var InterfaceFogOfWar = {
 	_fog_img_offsets: [],
 	_first_draw: true,
 		
-	init: function()
+	init: function(level_data)
 	{
-		this._fog_ctx = document.getElementById('map_fog').getContext('2d');
+		this._fog_ctx = $('#map_fog').get(0).getContext('2d');
 		this._fog_ctx.fillStyle = '#000';
 		
-		this._layer_size = {x: CELL_SIZE*CurrentLevel.size.x, y: CELL_SIZE*CurrentLevel.size.y};
-		this._last_x = CurrentLevel.size.x - 2;
-		this._last_y = CurrentLevel.size.y - 2;
+		this._layer_size = {x: CELL_SIZE*level_data.size.x, y: CELL_SIZE*level_data.size.y};
+		this._last_x = level_data.size.x - 2;
+		this._last_y = level_data.size.y - 2;
 		
 		//Precalculate offsets
+		this._fog_img_offsets = []
+		this._redraw_indexes = null;
+		this.need_redraw = true;
+		this._first_draw = true;
+
 		for (var i=0; i<this._img_indexes.length; ++i)
 			this._fog_img_offsets.push({
 				x: (i%13) * CELL_SIZE,
@@ -143,7 +148,7 @@ var InterfaceFogOfWar = {
 		
 	redrawFog: function()
 	{
-		if (!this.need_redraw)
+		if (!this.need_redraw || !this._fog_ctx)
 			return;
 		
 		var x, y;

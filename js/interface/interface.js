@@ -1,7 +1,7 @@
 var InterfaceGUI = {
 	_current_tab: 'panel_build',
 		
-	preloadImages: function()
+	preloadImages: function(level_data)
 	{
 		//-- CSS --
 		game.resources.addImage('css1', 'images/interface/load-screen.png');
@@ -24,8 +24,8 @@ var InterfaceGUI = {
 		game.resources.addImage('css18', 'images/interface/order_check.png');
 		game.resources.addImage('css19', 'images/interface/checkbox.png');
 		//---------
-		game.resources.addImage('map-tiles', 'images/levels/'+CurrentLevel.tiles);
-		game.resources.addImage('minimap', 'images/levels/'+CurrentLevel.minimap.image);
+		game.resources.addImage('map-tiles', 'images/levels/'+level_data.tiles);
+		game.resources.addImage('minimap', 'images/levels/'+level_data.minimap.image);
 		game.resources.addImage('font', 'images/font.png');
 	},
 
@@ -87,7 +87,7 @@ var InterfaceGUI = {
 		
 	changeDefaultTactic: function()
 	{
-		if (game.selected_objects.length==0 || game.selected_objects.is_building)
+		if (game.selected_objects.length==0)
 			return;
 		
 		var info = game.selected_info.tactic_info;
@@ -104,9 +104,8 @@ var InterfaceGUI = {
 		
 	ordersChange: function(order, type, val)
 	{
-		if (game.selected_objects.length==0 || game.selected_objects.is_building)
+		if (game.selected_objects.length==0)
 			return;
-		
 		this._changeSelectionOrders(order, type, val);
 		
 		game.rebuildSelectionInfo(true);
@@ -114,7 +113,7 @@ var InterfaceGUI = {
 		
 	orderChangePredefinedSet: function(set)
 	{
-		if (game.selected_objects.length==0 || game.selected_objects.is_building)
+		if (game.selected_objects.length==0)
 			return;
 		
 		this._changeSelectionOrders(TACTIC_ORDER_DEFAULT, 'pursuit', set.pursuit);
@@ -131,6 +130,9 @@ var InterfaceGUI = {
 		for (i in game.selected_objects)
 		{
 			uid = game.selected_objects[i];
+			if (game.objects[uid].is_building) {
+				continue;
+			}
 			if (order != TACTIC_ORDER_DEFAULT)
 			{
 				if (game.selected_info.tactic_info.order == order)
@@ -151,37 +153,25 @@ var InterfaceGUI = {
 		
 	stopButton: function()
 	{
+		//Cancel any order on selected_objects
 		for (var i in game.selected_objects)
 			game.objects[game.selected_objects[i]].orderStop();
-	},
-
-	addTouchOffsets: function (evt, element) {
-		var touches = evt.originalEvent.touches || evt.originalEvent.changedTouches
-	    if (touches && touches.length) {
-	    	var touch = touches[0];
-	    	var rect = element.getBoundingClientRect();
-		    evt.offsetX = (touch.pageX - rect.left) / (rect.right - rect.left) * element.width;
-		    evt.offsetY = (touch.pageY - rect.top) / (rect.bottom - rect.top) * element.height
-	    }
-	    return evt;
+			
+		//Cancel any actions
+		game.cleanActionState();
 	},
 	
 	setHandlers: function()
 	{
 		//Interface stop button
-		$('#top_button_stop').on('mousedown pointerdown', function(){
+		$('#top_button_stop').on('mousedown touchstart', function(){
 			$(this).addClass('active');
 		});
-		$('#top_button_stop').on('mouseup pointerup', function(){
+		$('#top_button_stop').on('mouseup touchend touchcancel', function(){
 			$(this).removeClass('active');
 		});
 		$('#top_button_stop').click(function(){
-
-			//Cancel any order on selected_objects
 			InterfaceGUI.stopButton();
-			
-			//Cancel any actions
-			game.cleanActionState();
 		});
 		//Interface sell building button
 		$('#top_button_sell').click(function(){
@@ -221,74 +211,87 @@ var InterfaceGUI = {
 			InterfaceConstructManager.cellClick(cellid, 'right');
 			return false;
 		});
-		$('.unit-image').mouseover(function(){
-			var cellid = $(this).parent('div').attr('data-cell'), 
-				position = $(this).offset();
+		$('.unit-image').mouseover(function(event){
+			var cellid = $(this).parent('div').attr('data-cell');
 				
 			InterfaceConstructManager.cellPopupPrepere(cellid);
 
+			var position = MousePointer.getEventElementOffset(event, this)
 			position.left -= 392;
 			$('#cell_popup').css(position);
 			$('#cell_popup').show();
 		});
-		$('.unit-image').mouseout(function(e){
+
+		$('.unit-image').on('mouseout, pointerout', function(e){
 			$('#cell_popup').hide();
 		});
 
 		$('#upgrade_button').click(function(){
 			game.buildingUpgrade();
 		});
-		$('#upgrade_button').mouseover(function(){
+		$('#upgrade_button').on('mouseover, pointerover',function(event){
 			if ($(this).hasClass('disable'))
 				return;
 
 			var position = $(this).offset();
 			InterfaceConstructManager.upgradePopupPrepere();
 
+			var position = MousePointer.getEventElementOffset(event, this)
 			position.left -= 398;
 			$('#cell_popup').css(position);
 			$('#cell_popup').show();
 		});
-		$('#upgrade_button').mouseout(function(){
+		$('#upgrade_button').on('mouseout, pointerout', function(){
 			$('#cell_popup').hide();
 		});
 
-		$('#minimap_viewport').on('mousedown touchstart', function(event){
-			game.minimapNavigation(true);
-			InterfaceGUI.addTouchOffsets(event, this)
-			game.minimapMove(event.offsetX, event.offsetY);
-		});
-
-		$('#minimap_viewport').on('mouseup touchend', function(){
-			game.minimapNavigation(false);
-		});
-
-		$('#minimap_viewport').mouseout(function(){
-			game.minimapNavigation(false);
-		});
-
-		$('#minimap_viewport').on('mousemove touchmove', function(event){
-			InterfaceGUI.addTouchOffsets(event, this)
-			game.minimapMove(event.offsetX, event.offsetY);
-		});
-
-		$('#mouseview').bind('contextmenu', function(){
+		$('#mouseview').bind('contextmenu', function(event){
+			event.preventDefault();
 			game.onClick('right');
 			return false;
 		});
+		
+		$('#mouseview').bind('dblclick', function(event){
+			if (event.button == 0 || 
+				(event.touches && event.touches.length <= 1)
+			) {
+				// TODO implement all same units select 
+				console.warn('TODO implement all same units select')
+			}
+		});
+
 		$('#mouseview').on('mousedown touchstart', function(event){
-			if (event.button == 0)
+			if (event.button == 0 || 
+				(event.touches && event.touches.length <= 1)
+			) {
+				MousePointer.getEventPosition(event, this)
+				MousePointer.setPosition(event);
 				MousePointer.selectionStart();
+			}
 		});
 		$('#mouseview').on('mouseup touchend', function(event){
-			if (event.button == 0)
+			if (event.button == 0 || 
+				(event.touches && event.touches.length <= 1)
+			) {
+				MousePointer.getEventPosition(event, this)
 				MousePointer.selectionStop();
+			}
 		});
-		$('#mouseview').mouseout(function(){
+		$('#mouseview').on('mouseout pointerleave pointerout touchcancel', function(){
 			MousePointer.show_cursor = false;
 		});
 		$('#mouseview').on('mousemove touchmove', function(event){
-			InterfaceGUI.addTouchOffsets(event, this)
+
+			// Ignore multi touch
+			if (event.touches && event.touches.length > 1) {
+				return;
+			}
+
+			if (MousePointer.is_selection) {
+				event.preventDefault()
+			}
+
+			MousePointer.getEventPosition(event, this)
 			MousePointer.setPosition(event);
 		});
 
@@ -301,11 +304,18 @@ var InterfaceGUI = {
 		});
 		
 		$('.scroll-box').on('mousedown touchstart', function(event) {
-			InterfaceGUI.addTouchOffsets(event, this)
+			MousePointer.getEventPosition(event, this)
 			var $this = $(this), proc = parseInt(event.offsetX / $this.width() * 100);
 			$this.children().css('width', proc + '%');
+			// TODO set inital value
 			game.changeGameParam($this.attr('data-param'), proc);
 		});
+
+		// TODO set initial values
+		//$('[data-param=game_speed]')
+		//$('[data-param=panning_speed]')
+		//game.changeGameParam('game_speed', RUNS_PER_SECOND);
+		//game.changeGameParam('panning_speed', ANIMATION_SPEED);
 		
 		//Order tab handlers
 		$('#order_options .dk-order-chk').click(function(){
@@ -348,7 +358,7 @@ var InterfaceGUI = {
 			InterfaceGUI.toggleFullScreen();
 		});
 		$('#menu_restart').click(function(){
-			location.reload();
+			game.restart();
 		});
 
 		$('#menu_quit').click(function(){
@@ -359,6 +369,10 @@ var InterfaceGUI = {
 			var prevent = true;
 			switch (event.which)
 			{
+				case 27: //Escape
+					InterfaceGUI.stopButton();
+					break;
+				
 				case 37: //Left
 					game.viewport_move_x = -1;
 					break;
@@ -389,6 +403,9 @@ var InterfaceGUI = {
 
 				case 65: //a - attack
 					game.toggleActionState(ACTION_STATE_ATTACK);
+					break;
+				case 77: //m - attack
+					InterfaceMusicPlayer.toggle();
 					break;
 				case 80: //p - pause/unpause game
 					game.togglePause();

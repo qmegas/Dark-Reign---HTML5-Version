@@ -3,29 +3,36 @@ var InterfaceMusicPlayer = {
 	_tracks: (GAMECONFIG.playMusic) ? ['track1','track2','track3','track4','track5','track6','track7','track8'] : [],
 	_player: null,
 	_current_track: -1,
-	playing: true,
+	playing: false,
 	
 	start: function()
 	{
-		if (this._tracks.length == 0)
+		if (this.playing || this._tracks.length == 0)
 			return;
 		
 		this.nextTrack();
 		this.setVolume(GAMECONFIG.defaultMusicVolume);
+
+		this.playing = true;
 	},
 
 	stop() {
-		this._player.stop();
+
+	    if (this._player) {
+	    	this._player.stop();
+	    	this._player = null;
+	    }
+
+		this.playing = false;
 	},
 
 	toggle() {
+
 		if (this.playing) {
 			this.stop();
 		} else {
 			this.start();
 		}
-
-		this.playing = !this.playing;
 	},
 		
 	setVolume: function(volume)
@@ -52,17 +59,18 @@ var InterfaceMusicPlayer = {
 	{
 		var self = this,	
 			track = parseInt(Math.random() * this._tracks.length) + 1;
-		
+
 		this._player = new Howl({
 			src: ['music/track' + track + '.' + AUDIO_TYPE],
 			volume: this.volume,
 			autoplay: true,
 			loop: false
 		});
-
 		// Fires when the sound finishes playing.
-		this._player.on('end', function(){  
-			self.nextTrack();
+		this._player.on('end', function(){
+			if (this.playing) {
+				self.nextTrack();
+			}  
 		});
 	},
 		

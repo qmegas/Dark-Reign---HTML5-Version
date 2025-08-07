@@ -6,6 +6,10 @@ var InterfaceMoneyDraw = {
 	
 	init: function()
 	{
+		this._money_was = 0;
+		this._money_display = 0;
+		this._money_current = 0;
+
 		for (var i=0; i<9; ++i)
 			this._dom_pointers[i] = $('#money'+(i+1));
 	},
@@ -42,6 +46,10 @@ var InterfaceMoneyDraw = {
 		{
 			numbers[i] = tmp % 10;
 			tmp = parseInt(tmp/10);
+		}
+
+		if (!this._dom_pointers.length) {
+			return
 		}
 		
 		for (i = 0; i<9; ++i)

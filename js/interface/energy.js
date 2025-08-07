@@ -3,12 +3,16 @@ var InterfaceEnergyWaterDraw = {
 	_current: 0,
 	_water_current: 0,
 	
-	_last_sound_notification: (new Date()).getTime() + 15000,
+	_last_sound_notification: Date.now() + 15000,
 	_last_blink: this._last_sound_notification,
 	_ctx: null,
 	
 	init: function()
 	{
+		this._max = 0;
+		this._current = 0;
+		this._water_current = 0;
+
 		this._ctx = $('#energy_scale').get(0).getContext('2d');
 		
 		$('#energy_scale').click(function(event){
@@ -39,6 +43,10 @@ var InterfaceEnergyWaterDraw = {
 	waterDraw: function()
 	{
 		var CANVAS_H = 81, bar_size = parseInt(this._water_current/200*CANVAS_H);
+
+		if (!this._ctx) {
+			return;
+		}
 		
 		//Background
 		this._ctx.fillStyle = '#bbbbbb';
@@ -103,6 +111,10 @@ var InterfaceEnergyWaterDraw = {
 		{
 			$('#metrics_box').addClass('blicked');
 			bar_color = ((this._current - this._max) > 250) ? '#ff0e00' : '#ffff00';
+		}
+
+		if (!this._ctx) {
+			return;
 		}
 
 		//Background
