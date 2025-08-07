@@ -71,10 +71,19 @@ function MapEditor()
 		}
 		this.ctx.stroke();
 	};
+
+	this.getCellFromCursorPosition = function(event) {
+		return {
+			x: Math.floor((event.offsetX - 12) / CELL_SIZE), 
+			y: Math.floor((event.offsetY - 12) / CELL_SIZE),
+		}
+	};
 	
-	this.clicked = function(x, y)
+	this.clicked = function(event)
 	{
-		var cell_x = Math.floor((x - 12) / CELL_SIZE), cell_y = Math.floor((y - 12) / CELL_SIZE);
+		var cell_pos = this.getCellFromCursorPosition(event),
+			cell_x = cell_pos.x,
+			cell_y = cell_pos.y;
 		
 		if (cell_x<0 || cell_y<0 || cell_x>=CurrentLevel.size.x-1 || cell_y>=CurrentLevel.size.y-1)
 			return;
@@ -137,16 +146,19 @@ $(function(){
 	game.init();
 	
 	$('#grid').click(function(event){
-		game.clicked(event.offsetX, event.offsetY);
+		game.clicked(event);
 	});
-	$('#grid').on('mousedown pointerdown', function(){
+	$('#grid').on('mousedown', function(){
 		qdraw = true;
 	});
-	$('#grid').on('mousemove pointermove', function(event){
+	$('#grid').on('mousemove', function(event){
+		var cell_pos = game.getCellFromCursorPosition(event);
+		$('#coord_x').attr('value', cell_pos.x)
+		$('#coord_y').attr('value', cell_pos.y)
 		if (qdraw)
-			game.clicked(event.offsetX, event.offsetY);
+			game.clicked(event);
 	});
-	$('#grid').on('mouseup pointerup', function(){
+	$('#grid').on('mouseup', function(){
 		qdraw = false;
 	});
 	
