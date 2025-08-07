@@ -6,6 +6,11 @@ function ResourseLoader()
 	this.total = 0;
 	this.loaded = 0;
 	this.items = {};
+
+	// Audio node management
+	const MAX_AUDIO_NODES_PER_KEY = 10;
+	this.audioPools = {}; // Pool of reusable audio nodes per key
+	this.activeAudioNodes = {}; // Track currently playing nodes per key
 	
 	this.onLoaded = function(){};
 	this.onComplete = function(){};
@@ -76,40 +81,48 @@ function ResourseLoader()
 		}
 
 		var skey = multicolor ? key + 'yellow' : key;
+
 		if (self.isSet(skey))
 			return;
 		
 		var img = new Image();
-		img.src = image_path;
-		self.items[skey] = img;
-		self.total++;
 			
 		img.onload = function(){
 			if (multicolor)
 				self._makeColoredImage(skey, key, 'red');
 			self._counterUp();
 		};
+
 		img.onerror = function() {
 			console.warn('failed to load', img.src);
 		};
+
+		img.src = image_path;
+
+		self.items[skey] = img;
+		self.total++;
 	};
 	
 	this.addSound = function(key, sound_path)
 	{
+		console.log('addSound', key, sound_path)
 		if (self.isSet(key))
 			return;
-		
+	
 		var audio = new Audio();
-		audio.src = sound_path;
-		self.items[key] = audio;
-		self.total++;
+
+		audio.onerror = function(){
+			console.warn('failed to load', audio.src);
+		};
 		
 		audio.addEventListener('loadedmetadata', function(){
 			self._counterUp();
 		});
-		audio.onerror = function() {
-			console.warn('failed to load', audio.src);
-		};
+
+		audio.src = sound_path;
+
+		self.items[key] = audio;
+		self.total++;
 	};
 	
 	this.addVideo = function(key, video_path, class_name)
@@ -126,25 +139,30 @@ function ResourseLoader()
 			playsinline: true,
 			muted: true
 		});
-		$(source).attr({
-			type: 'video/webm',
-			src: video_path
-		});
-		$(video).append(source);
-		
-		self.items[key] = video;
-		self.total++;
+
+		video.onerror = function(){
+			console.warn('failed to load', video.src);
+		};
 
 		video.addEventListener('abort', function(event){
-			console.log(event)
+			console.warn('abort to load', video.src);
 		});
 		
 		video.addEventListener('loadedmetadata', function(){
 			self._counterUp();
 		});
-		video.onerror = function() {
-			console.warn('failed to load', video.src);
-		};
+
+		$(source).attr({
+			// TODO check codec
+			type: 'video/webm',
+			src: video_path
+		});
+
+		$(video).append(source);
+		
+		self.items[key] = video;
+		self.total++;
+
 	};
 	
 	this.addDirect = function(key, obj)
@@ -164,13 +182,144 @@ function ResourseLoader()
 		
 		return self.items[key];
 	};
+
+	// Initialize arrays for a key if they don't exist
+	this._initializeAudioArrays = function(key)
+	{
+		if (!self.audioPools[key]) {
+			self.audioPools[key] = [];
+		}
+		if (!self.activeAudioNodes[key]) {
+			self.activeAudioNodes[key] = [];
+		}
+	};
+	
+	// Get an available audio node (recycled or new)
+	this._getAudioNode = function(key)
+	{
+		self._initializeAudioArrays(key);
+		
+		var pool = self.audioPools[key];
+		var active = self.activeAudioNodes[key];
+		
+		// First, try to find a recycled node that's not playing
+		for (var i = 0; i < pool.length; i++) {
+			var node = pool[i];
+			if (node.paused || node.ended) {
+				// Reset the recycled node
+				console.count('_getAudioNode:resuse')
+				node.currentTime = 0;
+				return node;
+			}
+		}
+		
+		// If we haven't reached the limit, create a new node
+		var totalNodes = pool.length + active.length;
+		if (totalNodes < MAX_AUDIO_NODES_PER_KEY) {
+			var originalAudio = self.get(key);
+			var newNode = originalAudio.cloneNode(true);
+			
+			// Set up recycling when audio ends
+			newNode.addEventListener('ended', function() {
+				console.count('_getAudioNode:ended')
+				self._recycleAudioNode(key, newNode);
+			});
+			
+			return newNode;
+		}
+		
+		// If we've reached the limit, recycle the oldest active node
+		if (active.length > 0) {
+			var oldestNode = active.shift();
+			oldestNode.pause();
+			oldestNode.currentTime = 0;
+			console.count('_getAudioNode:recycle')
+			return oldestNode;
+		}
+		
+		// Fallback: should never reach here, but return first pool node if it exists
+		if (pool.length > 0) {
+			var fallbackNode = pool[0];
+			fallbackNode.pause();
+			fallbackNode.currentTime = 0;
+			return fallbackNode;
+		}
+		
+		// Last resort: create a new node (shouldn't happen)
+		return self.get(key).cloneNode(true);
+	};
+	
+	// Move a node from active to recycled pool
+	this._recycleAudioNode = function(key, audioNode)
+	{
+		var active = self.activeAudioNodes[key];
+		var pool = self.audioPools[key];
+		
+		// Remove from active list
+		var activeIndex = active.indexOf(audioNode);
+		if (activeIndex !== -1) {
+			active.splice(activeIndex, 1);
+		}
+		
+		// Add to recycled pool (if not already there)
+		if (pool.indexOf(audioNode) === -1) {
+			pool.push(audioNode);
+		}
+	};
+	
+	// Add a node to the active list
+	this._addToActive = function(key, audioNode)
+	{
+		self.activeAudioNodes[key].push(audioNode);
+	};
+	
+	// Optional: Method to clear all audio pools (useful for cleanup)
+	this.clearAudioPools = function()
+	{
+		for (var key in self.audioPools) {
+			var pool = self.audioPools[key];
+			for (var i = 0; i < pool.length; i++) {
+				var node = pool[i];
+				node.pause();
+				node.currentTime = 0;
+				if (node.disconnect) {
+					node.disconnect();
+				}
+			}
+		}
+		
+		for (var key in self.activeAudioNodes) {
+			var active = self.activeAudioNodes[key];
+			for (var i = 0; i < active.length; i++) {
+				var node = active[i];
+				node.pause();
+				node.currentTime = 0;
+				if (node.disconnect) {
+					node.disconnect();
+				}
+			}
+		}
+		
+		self.audioPools = {};
+		self.activeAudioNodes = {};
+	};
 	
 	this.play = function(key, volume, multiple)
 	{
-		var item = self.get(key);
+		var item;
 		
 		if (multiple)
-			item = item.cloneNode(true);
+		{
+			// Get a recycled or new audio node
+			item = self._getAudioNode(key);
+			
+			// Add to active list
+			self._addToActive(key, item);
+		}
+		else
+		{
+			item = self.get(key);
+		}
 		
 		if (volume)
 			item.volume = volume * self.soundVolume;
