@@ -1,7 +1,16 @@
 
 
 var CELL_SIZE = 24;
+
+var RIGHT_FRAME_X = 192;
+var TOP_BAR_Y = 32;
+
+var VIEWPORT_SIZE_X = 640;
+var VIEWPORT_SIZE_Y = 480;
+
 var VIEWPORT_SIZE = 448;
+var VIEWPORT_SIZE_X = 640;
+var VIEWPORT_SIZE_Y = 480;
 
 var PANNING_FIELD_SIZE = 30;
 
@@ -43,7 +52,7 @@ var TACTIC_MED = 2;
 var TACTIC_HIGH = 3;
 
 var v = document.createElement('audio');
-var AUDIO_TYPE = v.canPlayType('audio/ogg') ? 'ogg' : 'mp3';
+var AUDIO_TYPE = 'mp3'; //v.canPlayType('audio/ogg') ? 'ogg' : 'mp3';
 
 var v = document.createElement('video');
 var VIDEO_TYPE = v.canPlayType('video/webm') ? 'webm' : 'mp4';

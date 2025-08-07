@@ -65,14 +65,14 @@ function MainShell()
 				height: config.height,
 				scale:  Math.max(scale, 0) + '%',
 				color: scale < 100 ? 'red' : 'blue',
-    			'transform-origin': scale < 100 ? 'left' : 'center'
+    			'transform-origin': scale < 100 ? 'left' : 'center',
 			});
 			
 			// Set scale to 1
 			$('.shell-main').css({
 				//'width': config.width,
 				//'height': config.height,
-				scale: 1
+				transform: "scale(1) translate(0, 0)"
 			});
 
 			$('.game .top-panel').css({
@@ -83,6 +83,11 @@ function MainShell()
 			$('.game').css({
 				width: VIEWPORT_SIZE_X,
 				height: VIEWPORT_SIZE_Y,
+				overflow: 'hidden'
+			});
+
+			$('.body-game').css({
+				overflow: 'hidden'
 			});
 
 			$('.game .left-frame').css({

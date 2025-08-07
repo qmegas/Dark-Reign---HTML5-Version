@@ -1,3 +1,7 @@
+
+var USER_WORKER_TIMER = false;
+var GAME_TIMER;
+
 function Game()
 {
 	this.viewport_x = 0;
@@ -11,8 +15,10 @@ function Game()
 	this.paused = false;
 	this.started = false;
 	
-	this.resources = new ResourseLoader();
+	this.resources = null
+	this.fontDraw = null;
 	
+	this.level = null
 	this.players = [];
 	this.objects = [];
 	this.effects = [];
@@ -21,7 +27,6 @@ function Game()
 	this.selected_objects = [];
 	this.selected_info = {};
 	this.tactical_groups = {};
-	this.fontDraw = null;
 	
 	//Drawers
 	this.objDraw = new ObjectDraw();
@@ -32,8 +37,58 @@ function Game()
 	this.action_state_options = {};
 	this.interface_update_time = 0;
 	this.minimap_navigation = false;
+
+	//GameOver
+	// TODO check game over
 	
 	this.debug = new Debuger();
+	
+	this.init = function(init_finish_callback)
+	{
+		if (!BrowserCheck.check()) {
+			BrowserCheck.standartMessage();
+			return;
+		}
+
+		$('.load-screen').show();
+		$('.game').hide();
+
+		// Handle UI onces		
+		InterfaceGUI.setHandlers();	
+
+		// Handle resize
+		$(window).on('resize orientationchange devicepixelratiochange', () => {
+			this.resizeViewPort()
+		});
+
+		window.addEventListener("hashchange", (event) => { 
+			var level = (window.location.hash).substr(1);
+
+			if (level) {
+				this.loadLevel(level, () => {
+					this.start();
+				});
+			}
+		});
+		
+		// Load level via hash
+		var level = (window.location.hash || '#fg1').substr(1);
+
+		this.loadLevel(level, init_finish_callback);
+	};
+
+	this.loadLevel = function(level, init_finish_callback) {
+
+		this.cancelDraw();
+
+		this.level = level
+ 		this.resources = new ResourseLoader();
+
+ 		var levelUrl = './js/levels/' + this.level + '/map.js';
+		this.resources.loadScript(levelUrl, () => {
+			this.initLevel(init_finish_callback);
+		});
+	}
 	
 	this.addPlayer = function(player)
 	{
@@ -42,25 +97,35 @@ function Game()
 	
 	this.moveViewport = function(x, y, relative)
 	{
-		if (relative)
-		{
+
+		if (relative) {
 			this.viewport_x += x*CELL_SIZE;
 			this.viewport_y += y*CELL_SIZE;
-		}
-		else
-		{
+		} else {
 			this.viewport_x = x*CELL_SIZE;
 			this.viewport_y = y*CELL_SIZE;
 		}
 		
-		if (this.viewport_x < 0)
+		if (this.viewport_x < 0){
 			this.viewport_x = 0;
-		if (this.viewport_y < 0)
+		}
+		
+		if (this.viewport_y < 0){
 			this.viewport_y = 0;
-		if (this.viewport_x > CurrentLevel.max_movement.x)
-			this.viewport_x = CurrentLevel.max_movement.x;
-		if (this.viewport_y > CurrentLevel.max_movement.y)
-			this.viewport_y = CurrentLevel.max_movement.y;
+		}
+
+		this.drawViewport(this.viewport_x, this.viewport_y);
+	};
+
+	this.drawViewport = function(x, y) {
+
+		if (this.viewport_x > MousePointer.max_movement.x) {
+			this.viewport_x = MousePointer.max_movement.x;
+		}
+		
+		if (this.viewport_y > MousePointer.max_movement.y){
+			this.viewport_y = MousePointer.max_movement.y;
+		}
 		
 		$('#map_view, #map_fog').css({
 			left: -this.viewport_x,
@@ -69,73 +134,179 @@ function Game()
 		
 		InterfaceMinimap.drawViewport();
 	};
-	
-	this.init = function(init_finish_callback)
-	{
-		if (!BrowserCheck.check())
-		{
-			BrowserCheck.standartMessage();
-			return;
-		}
-		
-		var level = window.location.hash || '#fg1';
-		level = level.substr(1);
-		this.resources.loadScript('./js/levels/' + level + '/map.js', function(){
-			game.initLevel(init_finish_callback);
-		});
+
+	this.resizeViewPort = function () {
+		MousePointer.setMaxMovement(CurrentLevel);
+	 	this.drawViewport(this.viewport_x, this.viewport_y);
 	};
 
 	this.initLevel = function(init_finish_callback)
-	{
+	{	
+		//State
+		this.players = [];
+		this.objects = [];
+		this.effects = [];
+		this.map_elements = [];
+		this.kill_objects = [];
+		this.selected_objects = [];
+		this.selected_info = {};
+		this.tactical_groups = {};
+		
+		//Flags
+		this.action_state = 0;
+		this.action_state_options = {};
+		this.interface_update_time = 0;
+		this.minimap_navigation = false;
+			
+		this.cancelDraw();
+
 		this.viewport_ctx = $('#viewport').get(0).getContext('2d');
 		
 		var levelBuilder = new LevelBuilder(CurrentLevel);
 		levelBuilder.build();
 		
-		$('#minimap_viewport, #minimap_objects')
-			.attr('width', CurrentLevel.minimap.x)
-			.attr('height', CurrentLevel.minimap.y);
-		
+		// Weapon setup
 		DamageTable.init();
+			
+		InterfaceFogOfWar.init(CurrentLevel);
 		
 		//Interface init
-		InterfaceConstructManager.init(CurrentLevel.getAvailableUnits(), CurrentLevel.getAvailableBuildings());
+		InterfaceConstructManager.init(
+			CurrentLevel.getAvailableUnits(), 
+			CurrentLevel.getAvailableBuildings()
+		);
+		
+		// Reset resources
 		InterfaceMoneyDraw.init();
 		InterfaceEnergyWaterDraw.init();
-		InterfaceMinimap.init();
-		InterfaceFogOfWar.init();
-		MousePointer.init();
+
+		InterfaceMinimap.init(CurrentLevel);
+		MousePointer.setMaxMovement(CurrentLevel)
 		
 		//Preloading images
-		InterfaceGUI.preloadImages();
+		InterfaceGUI.preloadImages(CurrentLevel);
 		levelBuilder.loadMapElements();
-		this._loadGameResources();
+
+		//Reset fonts
+		this.fontDraw = null;
+
 		this.resources.onLoaded = function(loaded, total){
 			var progress = parseInt(500/total*loaded);
-			$('#progress-bar').css({width: progress+'px'});
+			$('#progress-bar').css({width: progress+'px'}, 'fast');
 		};
-		this.resources.onComplete = function(){
-			game.fontDraw = new FontDraw('font', 14);
-			
-			InterfaceGUI.drawMenu();
 
-			//Init units
-			CurrentLevel.getInitUnits();
+		this.resources.onComplete = () => {
+			this.fontDraw = new FontDraw('font', 14);
 		
-			game.moveViewport(CurrentLevel.start_positions[0].x - 10, CurrentLevel.start_positions[0].y - 10, false);
-			InterfaceConstructManager.drawUnits();
+			this._resetSelectionInfo();
+
+			this.moveViewport(
+				CurrentLevel.start_positions[0].x - 10, 
+				CurrentLevel.start_positions[0].y - 10, false
+			);
+
+			// Init units
+			CurrentLevel.getInitUnits();
+			
+			// Generate map
 			levelBuilder.generateMap();
-			game._resetSelectionInfo();
+			InterfaceFogOfWar.redrawFog();
+
+			// Inut Gui
+			InterfaceGUI.drawMenu();
+			InterfaceConstructManager.drawUnits();
 			InterfaceEnergyWaterDraw.drawAll();
-			InterfaceMinimap.switchState();
-			InterfaceMusicPlayer.start();
-			
+			InterfaceMinimap.switchState();		
+			MousePointer.init();
+
 			$('.load-screen').hide();
-			$('.game').css({'display': 'flex'});   
-			
-			this.started = true;
-			init_finish_callback();
+			$('.game').show();
+
+			this.draw();
+
+			if (init_finish_callback) {
+				init_finish_callback();				
+			}
 		};
+		
+		this._loadGameResources();
+	};
+
+	this.start = function()
+	{
+		var game = this;
+		
+		if (USER_WORKER_TIMER) {
+			GAME_TIMER && WorkerTimers.clearTimeout(GAME_TIMER);
+			(function render() {
+				GAME_TIMER = WorkerTimers.setTimeout(function(){
+					game.run();
+					render();
+				}, 1000 / RUNS_PER_SECOND);
+			}());
+		} else {
+
+			GAME_TIMER && clearTimeout(GAME_TIMER);
+
+			(function render() {
+				GAME_TIMER = setTimeout(function(){
+					game.run();
+					render();
+				}, 1000 / RUNS_PER_SECOND);
+			}());
+	
+			/*			
+			GAME_TIMER && clearInterval(GAME_TIMER)
+			GAME_TIMER = setInterval(function(){
+				game.run();
+			}, 1000 / RUNS_PER_SECOND);
+			*/
+		}
+
+		InterfaceMusicPlayer.start();
+
+		this.paused = false;
+		this.started = true;
+	};
+
+	this.stop = function() {
+
+		if (USER_WORKER_TIMER) {
+			GAME_TIMER && WorkerTimers.clearTimeout(GAME_TIMER);
+		} else {
+
+			GAME_TIMER && clearTimeout(GAME_TIMER);
+		}
+
+		InterfaceMusicPlayer.stop();
+		
+		this.paused = true;
+		this.started = false;
+	};
+
+	this.restart = function() {
+
+		// TODO pure restart
+		//location.reload();
+		this.stop();
+		this.loadLevel(this.level, () => {
+			this.start()
+		})
+	};
+
+	this.save = function () {
+		return JSON.stringify({
+			players: this.players,
+			objects: this.objects,
+			selected_objects: this.selected_objects,
+			tactical_groups: this.tactical_groups,
+		})
+	};
+
+
+	this.load = function (str) {
+		var data = JSON.parse(str)
+		Object.assign(this, data)
 	};
 	
 	this.run = function()
@@ -149,6 +320,7 @@ function Game()
 		this.debug.countRun();
 		
 		//Kill objects
+		var killedUnit = false;
 		for (i = 0; i<this.kill_objects.length; ++i)
 		{
 			var unit = this.objects[this.kill_objects[i]];
@@ -157,6 +329,9 @@ function Game()
 				continue;
 			
 			unit.onObjectDeletion();
+
+			//Mark Killed Units (vs Effects and Others Objects)
+			killedUnit = killedUnit || (unit instanceof AbstractBuilding || unit instanceof AbstractUnit);
 			
 			//Remove user from selected array
 			var sindex = this.selected_objects.indexOf(unit.uid);
@@ -167,6 +342,12 @@ function Game()
 			this.objects[this.kill_objects[i]] = null;
 			delete this.objects[this.kill_objects[i]];
 		}
+
+		//Check for game over conditions
+		if (killedUnit) {
+			this._checkGameOver()
+		}
+
 		this.kill_objects = [];
 		
 		//Proceed objects
@@ -188,32 +369,70 @@ function Game()
 		//Money draw
 		InterfaceMoneyDraw.draw();
 	};
+
+	this._checkGameOver = function() {
+
+		var i, cur_unit;
+		var playersUnits = {};
+		for (i in this.objects) {	
+			cur_unit = this.objects[i];
+			if ((cur_unit instanceof AbstractBuilding || cur_unit instanceof AbstractUnit)) {
+				playersUnits[cur_unit.player] = playersUnits[cur_unit.player] ? playersUnits[cur_unit.player] + 1 : 1;
+			}
+		}
+
+		if (!playersUnits[PLAYER_HUMAN]) {
+			this.gameOver(false)
+		} else if (!playersUnits[PLAYER_COMPUTER1]) {
+			this.gameOver(true)
+		}
+	}
+
+	this.cancelDraw = function() {
+		// Stop annimation
+		if (this.requestAnimFrameTimer) {
+			window.cancelAnimationFrame(this.requestAnimFrameTimer)
+			console.count('cancelAnimationFrame')
+		}
+	};
+
+	this.requestDraw = function() {
+		this.requestAnimFrameTimer = window.requestAnimationFrame(() => {
+			delete this.requestAnimFrameTimer
+			this.draw();
+		});
+	};
 	
 	this.draw = function()
 	{
-		if (!this.paused)
-			this._draw();
-		
-		window.requestAnimFrame(function(){
-			game.draw();
-		});
+		this.cancelDraw();
+		this._draw();
+		this.requestDraw();
 	};
 	
 	this._draw = function()
 	{
-		var cur_time = (new Date()).getTime(), onscreen = [], unitid, eindex, mapelem_onscreen = [];
-		var top_x = parseInt(this.viewport_x / CELL_SIZE) - 1, top_y = parseInt(this.viewport_y / CELL_SIZE) - 1;
+		var unitid, eindex, 
+			onscreen = [], 
+			mapelem_onscreen = []
+			// If paused fo no animate
+			cur_time = this.paused ? this.interface_update_time : Date.now();
+		
+		var top_x = parseInt(this.viewport_x / CELL_SIZE) - 1, 
+			top_y = parseInt(this.viewport_y / CELL_SIZE) - 1;
 		
 		//Debug
 		this.debug.countDraw();
 		
-		this.viewport_ctx.clearRect(0, 0, VIEWPORT_SIZE, VIEWPORT_SIZE);
+		this.viewport_ctx.clearRect(0, 0, VIEWPORT_SIZE_X, VIEWPORT_SIZE_Y);
 		MousePointer.clearView();
 		this.objDraw.clear();
 		
 		//Detect onscreen units
-		for (var y=0; y<21; ++y)
-			for (var x=0; x<21; ++x)
+		var max_y = VIEWPORT_SIZE_Y / CELL_SIZE,
+			max_x = VIEWPORT_SIZE_X / CELL_SIZE;
+		for (var y=0; y<max_y; ++y)
+			for (var x=0; x<max_x; ++x)
 			{
 				if (CurrentLevel.map_cells[top_x+x] && CurrentLevel.map_cells[top_x+x][top_y+y])
 				{
@@ -261,10 +480,15 @@ function Game()
 		//Round 4: On mouse selection
 		var mouse_pos = MousePointer.getCellPosition();
 		unitid = -1;
-		if (MapCell.isCorrectCord(mouse_pos.x, mouse_pos.y) && CurrentLevel.map_cells[mouse_pos.x][mouse_pos.y].fog>0)
+		if (MapCell.isCorrectCord(mouse_pos.x, mouse_pos.y) && 
+				CurrentLevel.map_cells[mouse_pos.x][mouse_pos.y].fog>0
+		) {
 			unitid = MapCell.getSingleUserId(CurrentLevel.map_cells[mouse_pos.x][mouse_pos.y]);
-		if (unitid != -1) // && !this.objects[unitid].is_selected)
+		}
+
+		if (unitid != -1) {// && !this.objects[unitid].is_selected)
 			this.objects[unitid].drawSelection(true);
+		}
 		
 		//Round 5: Update fog of war
 		InterfaceFogOfWar.redrawFog();
@@ -273,7 +497,7 @@ function Game()
 		if (this.debug.show_obj)
 		{
 			this.viewport_ctx.fillStyle = 'rgba(0, 0, 255, 0.3)';
-			var start_x = parseInt(this.viewport_x/24), start_y = parseInt(this.viewport_y/24);
+			var start_x = parseInt(this.viewport_x/CELL_SIZE), start_y = parseInt(this.viewport_y/CELL_SIZE);
 			for (var x=0; x<20; ++x)
 			{
 				if (CurrentLevel.map_cells[start_x+x] === undefined)
@@ -285,7 +509,7 @@ function Game()
 						continue;
 					
 					if (MapCell.getSingleUserId(CurrentLevel.map_cells[start_x+x][start_y+y]) != -1)
-						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x + 12, (start_y+y)*24-this.viewport_y + 12, 24, 24);
+						this.viewport_ctx.fillRect((start_x+x)*CELL_SIZE-this.viewport_x + 12, (start_y+y)*CELL_SIZE-this.viewport_y + 12, CELL_SIZE, CELL_SIZE);
 				}
 			}
 		}
@@ -293,7 +517,7 @@ function Game()
 		//DEBUG: Ground type
 		if (this.debug.show_type)
 		{
-			var start_x = parseInt((this.viewport_x-12)/24), start_y = parseInt((this.viewport_y-12)/24), skip;
+			var start_x = parseInt((this.viewport_x-12)/CELL_SIZE), start_y = parseInt((this.viewport_y-12)/CELL_SIZE), skip;
 			for (var x=0; x<20; ++x)
 			{
 				if (CurrentLevel.map_cells[start_x+x] === undefined)
@@ -324,7 +548,7 @@ function Game()
 							break;
 					}
 					if (!skip)
-						this.viewport_ctx.fillRect((start_x+x)*24-this.viewport_x + 12, (start_y+y)*24-this.viewport_y + 12, 24, 24);
+						this.viewport_ctx.fillRect((start_x+x)*CELL_SIZE-this.viewport_x + 12, (start_y+y)*CELL_SIZE-this.viewport_y + 12, CELL_SIZE, CELL_SIZE);
 				}
 			}
 		}
@@ -334,17 +558,17 @@ function Game()
 		{
 			this.viewport_ctx.strokeStyle = '#ffffff';
 			this.viewport_ctx.beginPath();
-			var start = 24 - (this.viewport_x - parseInt(this.viewport_x/24)*24) - 11.5; 
+			var start = CELL_SIZE - (this.viewport_x - parseInt(this.viewport_x/CELL_SIZE)*CELL_SIZE) - 11.5; 
 			for (var i=0; i<20; ++i)
 			{
-				this.viewport_ctx.moveTo(start + i*24, 0);
-				this.viewport_ctx.lineTo(start + i*24, 448);
+				this.viewport_ctx.moveTo(start + i*CELL_SIZE, 0);
+				this.viewport_ctx.lineTo(start + i*CELL_SIZE, VIEWPORT_SIZE_X);
 			}
-			start = 24 - (this.viewport_y - parseInt(this.viewport_y/24)*24) - 11.5; 
+			start = CELL_SIZE - (this.viewport_y - parseInt(this.viewport_y/CELL_SIZE)*CELL_SIZE) - 11.5; 
 			for (i=0; i<20; ++i)
 			{
-				this.viewport_ctx.moveTo(0, start + i*24);
-				this.viewport_ctx.lineTo(448, start + i*24);
+				this.viewport_ctx.moveTo(0, start + i*CELL_SIZE);
+				this.viewport_ctx.lineTo(VIEWPORT_SIZE_Y, start + i*CELL_SIZE);
 			}
 			this.viewport_ctx.stroke();
 		}
@@ -441,7 +665,8 @@ function Game()
 		for (x=x1; x<=x2; ++x)
 			for (y=y1; y<=y2; ++y)
 			{
-				cur_unit = MapCell.getSingleUserId(CurrentLevel.map_cells[x][y]);
+				cur_unit = !CurrentLevel.map_cells[x] ?	-1 :
+								MapCell.getSingleUserId(CurrentLevel.map_cells[x][y]);
 				if ((cur_unit !== -1) && this.objects[cur_unit].canBeSelected())
 				{
 					//Do not select buildings on multiselect
@@ -460,7 +685,10 @@ function Game()
 	
 	this.rebuildSelectionInfo = function(skip_constructor)
 	{
-		var i, cur_unit, harvesters = true, humans_only = true, cyclones = true;
+		var i, cur_unit, 
+			harvesters = false, 
+			humans_only = true, 
+			cyclones = true;
 		
 		for (i in this.selected_objects)
 		{
@@ -471,9 +699,9 @@ function Game()
 			else
 			{
 				this.selected_info.min_mass = Math.min(this.selected_info.min_mass, this.objects[cur_unit]._proto.mass);
-				harvesters = harvesters && this.objects[cur_unit].canHarvest();
-				cyclones = cyclones && (this.objects[cur_unit]._proto == CycloneUnit);
-				humans_only = humans_only && this.objects[cur_unit].isHuman();
+				harvesters = harvesters || this.objects[cur_unit].canHarvest();
+				cyclones = cyclones || (this.objects[cur_unit]._proto == CycloneUnit);
+				humans_only = humans_only || this.objects[cur_unit].isHuman();
 				this.selected_info.move_mode = Math.max(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
 				this.selected_info.move_mode_min = Math.min(this.selected_info.move_mode, this.objects[cur_unit]._proto.move_mode);
 				
@@ -497,7 +725,7 @@ function Game()
 		}
 		
 		if (this.selected_objects.length > 0)
-		{
+		{	
 			this.selected_info.harvesters = harvesters;
 			this.selected_info.cyclones = cyclones;
 			this.selected_info.humans = humans_only;
@@ -597,9 +825,9 @@ function Game()
 	{
 		var upgraded = false;
 		
-		if (this.selected_info.is_building && this.objects[game.selected_objects[0]].isUpgradePossible())
+		if (this.selected_info.is_building && this.objects[this.selected_objects[0]].isUpgradePossible())
 		{
-			var new_obj, old_obj = this.objects[game.selected_objects[0]], pos;
+			var new_obj, old_obj = this.objects[this.selected_objects[0]], pos;
 			
 			if (this.players[PLAYER_HUMAN].haveEnoughMoney(old_obj._proto.upgrade_to.cost))
 			{
@@ -624,7 +852,7 @@ function Game()
 		}
 		
 		if (!upgraded)
-			game.resources.play('cant_build');
+			this.resources.play('cant_build');
 	};
 	
 	this.toggleActionState = function(state)
@@ -673,6 +901,7 @@ function Game()
 				break;
 			case ACTION_STATE_BUILD:
 				InterfaceConstructManager.removeCellSelection();
+				this._deselectUnits();
 				break;
 			case ACTION_STATE_REPAIR:
 				$('#top_button_repair').removeClass('active');
@@ -749,6 +978,25 @@ function Game()
 		
 		return obj;
 	};
+
+	this.gameOver = function(winner) {
+		if(this.started) {
+			
+			this.stop();
+
+			this.dialog.setOptions({
+				text: winner ? 'Victory' : 'Game Over',
+				buttons: [{
+					text: 'Restart',
+					callback: () => {
+						this.dialog.hide();
+						this.restart();
+					}
+				}]
+			});
+			this.dialog.show();
+		}
+	}
 	
 	this.togglePause = function()
 	{
@@ -757,11 +1005,11 @@ function Game()
 		if (this.paused)
 		{
 			this.dialog.setOptions({
-				text: 'game_paused',
+				text: 'Game Paused',
 				buttons: [{
-					text: 'continue',
-					callback: function(){
-						game.togglePause();
+					text: 'Continue',
+					callback: () => {
+						this.togglePause();
 					}
 				}]
 			});
@@ -846,14 +1094,16 @@ function Game()
 				InterfaceMusicPlayer.setVolume(value/100);
 				break;
 			case 'game_speed':
-				// TODO
-				RUNS_PER_SECOND = value
-				console.warn('TODO game_speed', value);
+				// Max, 120, Min 0, Default: 50
+				RUNS_PER_SECOND = Math.min(120, Math.max(1, value))
+				console.warn('RUNS_PER_SECOND', RUNS_PER_SECOND);
+				startInterval(game)
 				break;
 
 			case 'panning_speed':
-				// TODO
-				console.warn('TODO panning_speed', value/ 100);
+				// min, 120, Max 1, Default: 50
+				ANIMATION_SPEED = Math.min(120, Math.max(1, value))
+				console.warn('ANIMATION_SPEED', ANIMATION_SPEED);
 				break;
 
 		}
@@ -863,12 +1113,10 @@ function Game()
 $(function(){
 	var img = new Image();
 	img.src = 'images/interface/load-screen.png';
-	img.onload = function(){
+	img.onload = () => {
 		game = new Game();
-		game.init(function(){
-			game.draw();
-			setInterval(function(){game.run();}, 1000/RUNS_PER_SECOND);
+		game.init(() => {
+			game.start()
 		});
-		InterfaceGUI.setHandlers();
 	};
 });
