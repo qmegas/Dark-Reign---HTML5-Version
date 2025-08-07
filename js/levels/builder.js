@@ -1,12 +1,5 @@
 function LevelBuilder(level_data)
 {
-	function setMaxMovement()
-	{
-		level_data.max_movement = {
-			x: CELL_SIZE*level_data.size.x-VIEWPORT_SIZE,
-			y: CELL_SIZE*level_data.size.y-VIEWPORT_SIZE
-		};
-	}
 	
 	function createMatrix()
 	{
@@ -28,7 +21,6 @@ function LevelBuilder(level_data)
 	
 	this.build = function()
 	{
-		setMaxMovement();
 		createMatrix();
 		
 		game.addPlayer(new Player('#ffff00', '', PLAYER_NEUTRAL));
@@ -67,7 +59,10 @@ function LevelBuilder(level_data)
 	
 	this.generateMap = function()
 	{
-		var ctx = $('#map_view').get(0).getContext('2d'), tiles = game.resources.get('map-tiles'), delta = tiles.width/CELL_SIZE;
+		var ctx = $('#map_view').get(0).getContext('2d'), 
+			tiles = game.resources.get('map-tiles'), 
+			delta = tiles.width / CELL_SIZE;
+		
 		var element, proto, eid, xx, yy, i, j;
 		
 		$('#map_view, #map_fog').attr({

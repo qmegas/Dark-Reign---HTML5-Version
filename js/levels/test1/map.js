@@ -2476,8 +2476,8 @@ var CurrentLevel = {
 
 
 		var x = AbstractUnit.createNew(GuardianUnit, 66, 25, PLAYER_COMPUTER1, true);
- 		return;
-        setInterval(() => {
+ 	
+ 	    setInterval(() => {
         	//AbstractUnit.createNew(PlasmaTankUnit, 62, 25, PLAYER_COMPUTER1, true);
         	//AbstractUnit.createNew(BionUnit, 64, 25, PLAYER_COMPUTER1, true);
         	var x = AbstractUnit.createNew(GuardianUnit, 66, 25, PLAYER_COMPUTER1, true);
