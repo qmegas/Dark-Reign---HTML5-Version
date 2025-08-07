@@ -16,14 +16,27 @@ var InterfaceConstructManager = {
 	
 	init: function(units, buildings)
 	{
-		this.available_units = units[PLAYER_HUMAN];
-		this.all_buildings = buildings[PLAYER_HUMAN];
 		
 		this._popup_ctx = $('#cell_popup').get(0).getContext('2d');
+	
+		this.current_view_type = CM_VIEW_UNITS;
+		this.current_view_offset = 0;
+		this.unit_offset = 0;
+		this.building_offset = 0;
 		
+		this.available_buildings = []
+		this.available_units = units[PLAYER_HUMAN];
+		this.all_buildings = buildings[PLAYER_HUMAN];
+
 		for (var i in this.all_buildings)
 			if (this.all_buildings[i].can_build)
 				this.available_buildings.push(this.all_buildings[i]);
+
+		//Clear Units in productions
+		ProducingQueue.init()
+
+		if (!$('#tab_button_build').hasClass('active'))
+			$('#tab_button_build').click();
 	},
 	
 	pageUp: function()
@@ -164,10 +177,6 @@ var InterfaceConstructManager = {
 		this.removeCellSelection();
 		this.current_view_type = CM_VIEW_BUILDINGS;
 		this._drawCells();
-		
-		//Make sure build tab is shown
-		if (!$('#tab_button_build').hasClass('active'))
-			$('#tab_button_build').click();
 	},
 	
 	_drawCells: function()
