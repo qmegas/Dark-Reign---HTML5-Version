@@ -66,7 +66,10 @@ function AbstractUnit(pos_x, pos_y, player)
 		
 		for (var i=0; i<this._proto.parts.length; ++i)
 		{
-			this.parts[i] = {weapon: null, direction: 0};
+			this.parts[i] = {
+				weapon: null, 
+				direction: 0
+			};
 			
 			if (this._proto.parts[i].weapon)
 			{
@@ -178,7 +181,7 @@ function AbstractUnit(pos_x, pos_y, player)
 	
 	this.orderAttack = function(target)
 	{
-		var set_target = this.isCanAttackTarget(target, function(weapon){
+		var set_target = this.isCanAttackTarget(target, function(weapon) {
 			weapon.setTarget(target);
 		});
 		
@@ -376,7 +379,7 @@ function AbstractUnit(pos_x, pos_y, player)
 				this.runCustom();
 		}
 		
-		var time = (new Date()).getTime();
+		var time = performance.now();
 		if  ((time - this._last_scan_time) > UNIT_SCAN_INTERVAL)
 		{
 			this._last_scan_time = time;
