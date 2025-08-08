@@ -1,15 +1,19 @@
-/nbproject/private/
-/music/track1.ogg
-/music/track7.ogg
-/music/track3.ogg
-/music/track4.ogg
-/music/track6.ogg
-/music/track8.ogg
-/music/track2.ogg
-/music/track5.ogg
-/videos/
-
+# TODO remove assets
+/src/videos/
+/src/music/track1.ogg
+/src/music/track7.ogg
+/src/music/track3.ogg
+/src/music/track4.ogg
+/src/music/track6.ogg
+/src/music/track8.ogg
+/src/music/track2.ogg
+/src/music/track5.ogg
 
 # System Files
 *.DS_Store
 *Thumbs.db
+
+# Others
+/dist
+/nbproject
+/nbproject/private/
