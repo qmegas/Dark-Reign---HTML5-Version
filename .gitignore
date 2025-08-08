@@ -1,13 +1,6 @@
 # TODO remove assets
 /src/videos/
-/src/music/track1.ogg
-/src/music/track7.ogg
-/src/music/track3.ogg
-/src/music/track4.ogg
-/src/music/track6.ogg
-/src/music/track8.ogg
-/src/music/track2.ogg
-/src/music/track5.ogg
+/src/music/
 
 # System Files
 *.DS_Store
