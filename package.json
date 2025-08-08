@@ -1,0 +1,16 @@
+{
+  "name": "dark-reign-html5",
+  "version": "1.0.0",
+  "description": "The goal of this project is to recreate an old RTS game [Dark Reign: The Future of War](http://en.wikipedia.org/wiki/Dark_Reign:_The_Future_of_War) by using HTML5 technologies.",
+  "main": "src/index.html",
+  "author": "qmegas",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npm run serve --  -p 3000 -c-1",
+    "serve": "http-server src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}
