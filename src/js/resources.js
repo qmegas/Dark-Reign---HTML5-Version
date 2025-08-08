@@ -75,6 +75,7 @@ function ResourseLoader()
 	
 	this.addImage = function(key, image_path, multicolor)
 	{
+		//console.log('ResourseLoader:addImage', key, mage_path, multicolor)
 		if (!image_path) {
 			console.warn('failed add image', key);
 			return;
@@ -95,6 +96,12 @@ function ResourseLoader()
 
 		img.onerror = function() {
 			console.warn('failed to load', img.src);
+
+			if (image_path.includes('/snow/')) {
+				image_path = image_path.replace('/snow/', '/jungle/')
+				img.src = image_path;
+				debugger;
+			}
 		};
 
 		img.src = image_path;
@@ -105,7 +112,7 @@ function ResourseLoader()
 	
 	this.addSound = function(key, sound_path)
 	{
-		console.log('addSound', key, sound_path)
+		//console.log('ResourseLoader:addSound', key, sound_path)
 		if (self.isSet(key))
 			return;
 	
@@ -127,6 +134,7 @@ function ResourseLoader()
 	
 	this.addVideo = function(key, video_path, class_name)
 	{
+		//console.log('ResourseLoader:addVideo', key, video_path, class_name)
 		if (self.isSet(key))
 			return;
 		

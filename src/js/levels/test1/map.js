@@ -2522,6 +2522,7 @@ var CurrentLevel = {
                 //Main buildings
                 IMHeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
                 TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
+                //
                 NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
                 FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
                 RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 

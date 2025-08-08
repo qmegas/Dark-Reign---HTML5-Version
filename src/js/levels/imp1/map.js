@@ -1150,49 +1150,57 @@ var CurrentLevel = {
 	},
 
 	getAvailableUnits: function()
-	{
-		return [
-			[],
-			[
-				// fg
-				//RaiderUnit, SpiderBikeUnit,
+    {
+        return [
+            [],
+            [
+                ConstructionRigUnit, FreighterUnit, HoverFreighterUnit,
+                // * Troops
+                // ** fg
+                RaiderUnit, InfiltratorUnit,
+                // * imp
+                GuardianUnit, BionUnit, ExterminatorUnit,
+                // * Vehicules
+                // ** fg
+                SpiderBikeUnit, ScoutRunnerUnit,
+                InvaderTransportUnit, 
+                PlasmaTankUnit, AmperUnit, MadUnit, 
+                ReconDroneUnit, ShredderUnit, HostageTakerUnit,
+                TachyonTankUnit, ScarabUnit, CycloneUnit, 
+                SkyFortressUnit, WaterContaminatorUnit
+            ],
+            []  
+        ];
+    },
+    
+    getAvailableBuildings: function()
+    {
+		//IMHeadquarterBuilding.upgradable = false;
+		//TrainingFacilityBuilding.upgradable = false;
+		//AssemblyPlantBuilding.upgradable = false;
 
-				// imp
-				ConstructionRigUnit, FreighterUnit, 
-				GuardianUnit, BionUnit,
-				ScoutRunnerUnit, InvaderTransportUnit, 
-				PlasmaTankUnit, ShredderUnit, 
-				
-				// Upgrade imp
-				// InfiltratorUnit, ExterminatorUnit, AmperUnit, MadUnit, 
-				//TachyonTankUnit, ScarabUnit, HoverFreighterUnit,
-				//ReconDroneUnit, CycloneUnit, 
-				//SkyFortressUnit, WaterContaminatorUnit, HostageTakerUnit,
-			],
-			[
-				RaiderUnit, SpiderBikeUnit
-			]
-		];
-	},
-		
-	getAvailableBuildings: function()
-	{
-		IMHeadquarterBuilding.upgradable = false;
-		TrainingFacilityBuilding.upgradable = false;
-		AssemblyPlantBuilding.upgradable = false;
-		
-		return [
-			[
-				WaterWellBuilding, TaelonMineBuilding, CivilianHorizontalBridge,
-				CivilianSmallWall1, CivilianSmallWall2
-			],
-			[
-				IMHeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding,
-				TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding
-			],
-			[
-				FGHeadquarterBuilding, FGLaserTurretBuilding
-			]
-		];
-	}
+        return [
+            //Civilian buildings
+            [WaterWellBuilding, TaelonMineBuilding, CivilianVerticalBridge],
+            
+            //Player buildings
+            [
+                //Main buildings
+                IMHeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
+                TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
+                //
+                NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
+                FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
+                RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 
+                VerticalBridgeBuilding, CenterBridgeBuilding,
+                //Upgrades
+                IMHeadquarter2Building, IMHeadquarter3Building, 
+                TrainingFacility2Building, AssemblyPlant2Building
+            ],
+            
+            //Computer buildings
+            [
+            ]
+        ];
+    }
 };

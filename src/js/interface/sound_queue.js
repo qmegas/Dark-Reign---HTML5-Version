@@ -31,8 +31,6 @@ var InterfaceSoundQueue = {
 
 		sound.volume = game.resources.soundVolume;
 
-		console.log('InterfaceSoundQueue', this._queue.length )
-
 		function ended(){
 			sound.removeEventListener('ended', arguments.callee, false);
 			queue._queue.shift();

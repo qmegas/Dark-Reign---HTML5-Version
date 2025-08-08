@@ -1,0 +1,47 @@
+
+/*
+HD
+*/
+
+.top-panel {
+    display: flex;
+    justify-content: center;
+    background-color: #1f1f1f;
+	background: url("../images/interface/topbg.png") repeat;
+}
+
+/* 480px -> 960px */
+/* 640px -> 1280px */
+.shell-main {
+ width: 1280px;
+ height: 960px;
+ scale: 100%;
+}
+
+/* 480px -> 960px */
+.game .left-frame,
+.game .right-frame {
+ height: 960px;
+}
+
+.game .right-frame {
+	z-index: 1;
+    position: absolute;
+    right: 0;
+}
+
+/* 448px -> 928p (960px - 32)x */
+.game .left-frame .game-area {
+ width: 1088px;
+ height: 928px;
+}
+
+.game .left-frame .game-area .view {
+ width: 1280px;
+ height: 928px;
+}
+
+/* 448px -> 1088px (1280 - 192) */
+.game .left-frame {
+ width: 1280px;
+}
