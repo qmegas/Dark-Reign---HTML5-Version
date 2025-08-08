@@ -2484,7 +2484,7 @@ var CurrentLevel = {
         	x.tactic.order = TACTIC_ORDER_HARASS
         	var x = AbstractUnit.createNew(GuardianUnit, 68, 25, PLAYER_COMPUTER1, true);
         	x.tactic.order = TACTIC_ORDER_HARASS
-        }, 5000);
+        }, 30000);
     },
     
     getAvailableUnits: function()
@@ -2520,14 +2520,21 @@ var CurrentLevel = {
             //Player buildings
             [
                 //Main buildings
+                // ** fg
+            	FGHeadquarterBuilding,
+                // * imp
                 IMHeadquarterBuilding, WaterLaunchPadBuilding, TaelonPowerBuilding, 
                 TrainingFacilityBuilding, AssemblyPlantBuilding, PlasmaTurretBuilding,
-                //
+                // Tech
+                // ** fg
+                FGLaserTurretBuilding,
+                // * imp
                 NeutronAcceleratorBuilding, AirDefenceSiteBuilding, CameraTowerBuilding, 
                 FieldHospitalBuilding, RepairStationBuilding, TemporalGateBuilding,
                 RearmingDeckBuilding, RiftCreatorBuilding, HorizontalBridgeBuilding, 
                 VerticalBridgeBuilding, CenterBridgeBuilding,
                 //Upgrades
+                // * imp
                 IMHeadquarter2Building, IMHeadquarter3Building, 
                 TrainingFacility2Building, AssemblyPlant2Building
             ],
