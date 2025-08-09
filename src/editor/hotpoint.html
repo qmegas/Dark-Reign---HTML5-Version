@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script type="text/javascript" src="../js/lib/jquery.min.js"></script>
+		<script type="text/javascript">
+			var img, cols = 1, rows = 1, points = {}, points_num = 0;
+			
+			function redrawImage()
+			{
+				var i, j, cur_point, ctx = $('#img').get(0).getContext('2d'), width = img.width / cols, height = img.height / rows;
+				
+				ctx.clearRect(0, 0, img.width, img.height);
+				ctx.drawImage(img, 0, 0);
+				
+				//Grid
+				ctx.strokeStyle = '#999999';
+				ctx.beginPath();
+				for (i=0; i<cols; ++i)
+				{
+					ctx.moveTo((i+1)*width - 0.5, 0);
+					ctx.lineTo((i+1)*width - 0.5, img.height);
+				}
+				for (i=0; i<rows; ++i)
+				{
+					ctx.moveTo(0, (i+1)*height - 0.5);
+					ctx.lineTo(img.width, (i+1)*height - 0.5);
+				}
+				ctx.stroke();
+				
+				if (points_num == 0)
+					return;
+				
+				cur_point = parseInt($('#points').val());
+				for (i=0; i<cols; ++i)
+				{
+					for (j=0; j<rows; ++j)
+					{
+						drawX(ctx, points[cur_point][i].x + i*width, points[cur_point][i].y + j*height);
+					}
+				}
+			}
+			
+			function drawX(ctx, x, y)
+			{
+				ctx.strokeStyle = '#ff0000';
+				ctx.beginPath();
+				ctx.moveTo(x - 0.5, y-3.5);
+				ctx.lineTo(x - 0.5, y+2.5);
+				ctx.moveTo(x-3.5, y - 0.5);
+				ctx.lineTo(x+2.5, y - 0.5);
+				ctx.stroke();
+			}
+			
+			$(function(){
+				$('#load_img').click(function(){
+					img = new Image();
+					img.src = $('#file').val();
+					img.onload = function(){
+						$('#img').attr({
+							width: img.width,
+							height: img.height
+						});
+						redrawImage();
+					};
+				});
+				
+				$('#row_cols').click(function(){
+					cols = parseInt($('#cols').val());
+					rows = parseInt($('#rows').val());
+					points = {};
+					points_num = 0;
+					$('#points option').remove();
+					
+					redrawImage();
+				});
+				
+				$('#add_point').click(function(){
+					points_num++;
+					
+					var i, new_arr = [];
+					for (i=0; i<cols; ++i)
+						new_arr.push({x: 0, y: 0});
+					points[points_num] = new_arr;
+					
+					$('#points')
+						.append('<option value="' + points_num + '">Point #' + points_num + '</option>')
+						.val(points_num);
+					redrawImage();
+				});
+				
+				$('#points').change(function(){
+					redrawImage();
+				});
+				
+				$('#img').click(function(event){
+					if (points_num == 0)
+						return;
+					
+					var cur_point = parseInt($('#points').val()), 
+						width = img.width / cols,
+						height = img.height / rows,
+						col = parseInt(event.offsetX / width),
+						add_to_all = $('#add_to_all').is(':checked');
+						
+					if (add_to_all)
+					{
+						for (var i=0; i<cols; ++i)
+							points[cur_point][i] = {
+								x: event.offsetX % width,
+								y: event.offsetY % height
+							};
+					}
+					else
+					{
+						points[cur_point][col] = {
+							x: event.offsetX % width,
+							y: event.offsetY % height
+						};
+					}
+					
+					redrawImage();
+				});
+				
+				$('#export').click(function(){
+					var i, j, x, y, txt = 'hotspots: [\n';
+					
+					for (i=0; i<cols; ++i)
+					{
+						txt += '	[';
+						for (j=1; j<=points_num; ++j)
+						{
+							x = points[j][i].x;
+							y = points[j][i].y;
+							if (j > 1)
+							{
+								x -= points[1][i].x;
+								y -= points[1][i].y;
+							}
+							txt += '{x: '+x+', y: '+y+'}';
+							if (j<points_num)
+								txt += ', ';
+						}
+						txt += '],\n';
+					}
+					txt += ']';
+					
+					$('#export_wnd').val(txt).show();
+				});
+			});
+		</script>
+	</head>
+	<body>
+		Image path: <input type="text" size="60" id="file" value="../images/units/construction_rig/0move.png" /> 
+		<input type="button" id="load_img" value="Load image" /><br/>
+		Cols: <input type="text" size="4" id="cols" /> Rows: <input type="text" size="4" id="rows" /> <input type="button" id="row_cols" value="Set" /><br>
+		Points: 
+		<select id="points"></select> <input type="button" id="add_point" value="Add point" /><br/>
+		<input type="checkbox" id="add_to_all" /> <label for="add_to_all">Add to all frames</label><br/>
+		<canvas id="img" width="0" height="0"></canvas><br>
+		<input type="button" value="Export" id="export" />
+		<textarea id="export_wnd" style="display: none" cols="60" rows="10"></textarea>
+	</body>
+</html>

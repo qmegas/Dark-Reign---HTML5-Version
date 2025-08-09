@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+	<head><meta charset="utf-8">
+    <title>Dark Reign HTML5 - A Recreated Classic RTS Game</title>
+    <meta name="description" content="Dark Reign HTML5 is a recreation of the classic RTS game 'Dark Reign: The Future of War' using HTML5 technologies. Play the modern version of this iconic game online.">
+    <meta name="robots" content="index, follow">
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="" />
+    <meta name="theme-color" content="#fe5406">
+    <link rel="manifest" href="/manifest.json" importance="low">
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+
+    <!-- Open Schema / schema.org -->
+    <script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "WebPage",
+	  "name": "Dark Reign HTML5 - A Recreated Classic RTS Game",
+	  "url": "https://dark-reign.net",
+	  "description": "Dark Reign HTML5 is a recreation of the classic RTS game 'Dark Reign: The Future of War' using HTML5 technologies. Play the modern version of this iconic game online.",
+	  "author": {
+	    "@type": "Person",
+	    "name": "qmegas",
+	    "url": "https://qmegas.info/dark-reign-html5/"
+	  },
+	  "publisher": {
+	    "@type": "Organization",
+	    "name": "Dark Reign HTML5",
+	    "url": "https://dark-reign.net",
+	    "logo": {
+	      "@type": "ImageObject",
+	      "url": "https://dark-reign.net/icons/icon512_rounded.png"
+	    }
+	  },
+	  "image": "https://dark-reign.net/screenshots/capture-1.png",
+	  "mainEntity": {
+	    "@type": "VideoGame",
+	    "name": "Dark Reign HTML5",
+	    "genre": "Real-time strategy",
+	    "url": "https://dark-reign.net",
+	    "author": {
+	      "@type": "Person",
+	      "name": "qmegas"
+	    },
+	    "publisher": {
+	      "@type": "Organization",
+	      "name": "Dark Reign HTML5"
+	    },
+	    "datePublished": "2024",
+	    "operatingSystem": ["Web"],
+	    "applicationCategory": "Game",
+	    "playMode": ["SinglePlayer", "MultiPlayer"],
+	    "image": "https://dark-reign.net/images/og-image.png"
+	  },
+	  "potentialAction": {
+	    "@type": "WatchAction",
+	    "target": [
+	      {
+	        "@type": "EntryPoint",
+	        "urlTemplate": "https://x.com/DarkReignNet/status/1802394668438553018?t=T2rz0xNBuvTtZA4i2yuM3w&s=19",
+	        "actionPlatform": [
+	          "http://schema.org/DesktopWebPlatform",
+	          "http://schema.org/MobileWebPlatform"
+	        ]
+	      }
+	    ]
+	  },
+	  "sameAs": [
+	    "https://youtube.com/@darkreignhtml5",
+	    "https://x.com/DarkReignNet",
+	    "https://dark-reign.net"
+	  ]
+	}
+	</script>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Dark Reign HTML5 - A Recreated Classic RTS Game">
+    <meta property="og:description" content="Dark Reign HTML5 is a recreation of the classic RTS game 'Dark Reign: The Future of War' using HTML5 technologies. Play the modern version of this iconic game online.">
+    <meta property="og:image" content="https://dark-reign.net/screenshots/capture-1.png">
+    <meta property="og:url" content="https://dark-reign.net">
+    <meta property="og:site_name" content="Dark Reign HTML5">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dark Reign HTML5 - A Recreated Classic RTS Game">
+    <meta name="twitter:description" content="Dark Reign HTML5 is a recreation of the classic RTS game 'Dark Reign: The Future of War' using HTML5 technologies. Play the modern version of this iconic game online.">
+    <meta name="twitter:image" content="https://dark-reign.net/screenshots/capture-1.png">
+    <meta name="twitter:site" content="@DarkReignNet">
+    <meta name="twitter:creator" content="@hthetiot">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dark-reign.net">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" importance="low">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Dark Reign HTML5">
+    <meta name="apple-mobile-web-app-title" content="Dark Reign HTML5">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msapplication-starturl" content="/">
+    
+    <!-- Icons for various platforms -->
+    <link rel="icon" sizes="192x192" href="/icons/icon192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#fe5406">
+    <meta name="theme-color" content="#fe5406">
+
+	<!-- Preloading Resources -->
+	<link rel="preload" as="image" href="/images/icursor.png" fetchpriority="high">
+	<link rel="preload" as="image" href="/images/interface/load-screen.png" fetchpriority="high">
+	<link rel="preload" as="image" href="/images/interface/load-bar.png" fetchpriority="high">
+
+	<!-- Stylesheets and Scripts -->
+	<link href="css/main.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="js/lib/howler.min.js"></script>
+	<script type="text/javascript" src="js/constants.js"></script>
+	<script type="text/javascript" src="js/interface/font.js"></script>
+	<script type="text/javascript" src="js/resources.js"></script>
+	<script type="text/javascript" src="js/browser_check.js"></script>
+	<script type="text/javascript" src="js/shell/scroll.js"></script>
+	<script type="text/javascript" src="js/shell/main.js"></script>
+	<script type="text/javascript" src="js/shell/archive.js"></script>
+	<script type="text/javascript" src="js/shell/menu.js"></script>
+	</head>
+	<body class="body-game">
+		<div class="shell-main">
+			<div class="load-screen">
+				<div class="progress" id="progress-bar"></div>
+			</div>
+			<div class="shell-menu"> 
+				
+				<div id="video_container"></div>
+				
+				<div id="level_select">
+					<div class="link top moovable" data-to="objective" data-way="up">
+						<div class="bull"></div><br>
+						<div class="text" id="link_mession_text"></div>
+					</div>
+					<div class="link right moovable" data-to="archive" data-way="right">
+						<div class="text" id="link_archive_text"></div>
+						<div class="bull"></div>
+					</div>
+					
+					<div class="dselect fg moovable" data-param="fg" data-to="launch" data-way="up"></div>
+					<div class="dselect imp moovable" data-param="imp" data-to="launch" data-way="up"></div>
+					
+					<div id="level_name"></div>
+				</div>
+				
+				<div id="archive">
+					<div class="link left moovable" data-to="back" data-way="left">
+						<div class="bull"></div>
+						<div class="text" id="link_back_text"></div>
+					</div>
+					
+					<div id="archive_content"></div>
+					
+					<div class="scroll up" id="arch_scroll_up"></div>
+					<div class="scroll down" id="arch_scroll_down"></div>
+					<div class="scroll slider" id="arch_scroll_slider"></div>
+					
+					<div id="archive_up"></div>
+				</div>
+				
+				<div id="objective">
+					<div class="link-obj fg moovable" data-param="fg" data-to="launch" data-way="up">
+						<div class="bull"></div>
+						<div class="text" id="link_fg_text"></div>
+					</div>
+					<div class="link-obj imp moovable" data-param="imp" data-to="launch" data-way="up">
+						<div class="bull"></div>
+						<div class="text" id="link_imp_text"></div>
+					</div>
+					
+					<div class="link right moovable" data-to="archive" data-way="right">
+						<div class="text" id="link_archive2_text"></div>
+						<div class="bull"></div>
+					</div>
+					<div class="link bottom moovable" data-to="level_select" data-way="down">
+						<div class="text" id="link_main_text"></div><br>
+						<div class="bull"></div>
+					</div>
+					
+					<div id="level_name_obj"></div>
+					
+					<div class="objective_content">
+						<canvas id="objective_text" width="413"></canvas>
+					</div>
+					
+					<div class="scroll up" id="obj_scroll_up"></div>
+					<div class="scroll down" id="obj_scroll_down"></div>
+					<div class="scroll slider" id="obj_scroll_slider"></div>
+				</div>
+				
+				<div id="launch">
+					<div class="link-back moovable" data-to="back" data-way="down">
+						<div class="text" id="link_lan_back_text"></div>
+					</div>
+					<div class="link-launch" id="launch_btn">
+						<div class="text" id="link_launch_text"></div>
+					</div>
+					
+					<div class="launch_objective">
+						<canvas id="launch_text" width="413"></canvas>
+					</div>
+					
+					<div class="scroll up" id="launch_scroll_up"></div>
+					<div class="scroll down" id="launch_scroll_down"></div>
+					<div class="scroll slider" id="launch_scroll_slider"></div>
+				</div>
+			</div>
+		</div>
+	    <!-- NoScripts -->
+	    <noscript>
+	      <p>We're sorry, but this page doesn't work properly without JavaScript enabled.</p>
+	    </noscript>
+		<!-- Google Analytics -->
+	    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9FNMMP323W"></script>
+	    <script>
+	        window.dataLayer = window.dataLayer || [];
+	        function gtag(){dataLayer.push(arguments);}
+	        gtag('js', new Date());
+	        gtag('config', 'G-9FNMMP323W');
+	    </script>
+	</body>
+</html>
